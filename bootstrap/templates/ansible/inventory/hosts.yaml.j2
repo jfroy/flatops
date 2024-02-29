@@ -1,0 +1,23 @@
+---
+kubernetes:
+  children:
+    controllers:
+      hosts:
+        #% for item in bootstrap_node_inventory %#
+        #% if item.controller %#
+        "#{ item.name }#":
+          ansible_user: "#{ item.ssh_user }#"
+          ansible_host: "#{ item.address }#"
+        #% endif %#
+        #% endfor %#
+    #% if bootstrap_node_inventory | selectattr('controller', 'equalto', False) | list | length %#
+    workers:
+      hosts:
+        #% for item in bootstrap_node_inventory %#
+        #% if not item.controller %#
+        "#{ item.name }#":
+          ansible_user: "#{ item.ssh_user }#"
+          ansible_host: "#{ item.address }#"
+        #% endif %#
+        #% endfor %#
+    #% endif %#
