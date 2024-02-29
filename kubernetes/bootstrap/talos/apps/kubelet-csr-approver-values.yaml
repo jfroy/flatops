@@ -1,0 +1,3 @@
+---
+providerRegex: ^(uzumaki-1)$
+bypassDnsResolution: true
