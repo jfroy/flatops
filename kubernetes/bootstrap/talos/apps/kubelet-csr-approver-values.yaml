@@ -1,3 +1,3 @@
 ---
-providerRegex: ^(uzumaki-1)$
+providerRegex: ^(talosvm-1)$
 bypassDnsResolution: true

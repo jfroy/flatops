@@ -6,39 +6,35 @@ talosVersion: v1.6.5
 kubernetesVersion: v1.29.2
 
 clusterName: &cluster home-kubernetes
-endpoint: https://192.168.1.8:6443
+endpoint: https://10.17.3.8:6443
 clusterPodNets:
   - "10.69.0.0/16"
 clusterSvcNets:
   - "10.96.0.0/16"
 additionalApiServerCertSans: &sans
-  - "192.168.1.8"
+  - "10.17.3.8"
   - 127.0.0.1 # KubePrism
-  - "k8s.flat"
 additionalMachineCertSans: *sans
 cniConfig:
   name: none
 
 nodes:
-  - hostname: "uzumaki-1"
-    ipAddress: "192.168.1.12"
-    installDiskSelector:
-      serial: "abc"
-    machineSpec:
-      secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/
+  - hostname: "talosvm-1"
+    ipAddress: "10.17.3.10"
+    installDisk: "/dev/vda"
+    talosImageURL: factory.talos.dev/installer/00ab8bfc733f8c73253f8791d7184b78ffd235b3ddbeb12fa2cb2c0361b3a4b0
     controlPlane: true
     networkInterfaces:
       - interface: eth0
         dhcp: false
         addresses:
-          - "192.168.1.12/24"
+          - "10.17.3.10/24"
         mtu: 1500
         routes:
           - network: 0.0.0.0/0
-            gateway: "192.168.1.1"
+            gateway: "10.17.3.1"
         vip:
-          ip: "192.168.1.8"
+          ip: "10.17.3.8"
 
 patches:
   # Configure containerd
@@ -82,14 +78,14 @@ patches:
           rotate-server-certificates: true
         nodeIP:
           validSubnets:
-            - "192.168.1.0/24"
+            - "10.17.3.0/24"
 
   # Force nameserver
   - |-
     machine:
       network:
         nameservers:
-          - 192.168.1.1
+          - 1.1.1.1
 
   # Configure NTP
   - |-
@@ -127,20 +123,6 @@ patches:
         extraKernelArgs:
           - net.ifnames=0
 
-  # Encrypt system disk with TPM
-  - |-
-    machine:
-      systemDiskEncryption:
-        ephemeral:
-          provider: luks2
-          keys:
-            - slot: 0
-              tpm: {}
-        state:
-          provider: luks2
-          keys:
-            - slot: 0
-              tpm: {}
 
 controlPlane:
   patches:
@@ -164,7 +146,7 @@ controlPlane:
           extraArgs:
             listen-metrics-urls: http://0.0.0.0:2381
           advertisedSubnets:
-            - "192.168.1.0/24"
+            - "10.17.3.0/24"
 
     # Disable default API server admission plugins.
     - |-

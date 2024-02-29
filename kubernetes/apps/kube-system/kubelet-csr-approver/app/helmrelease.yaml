@@ -23,7 +23,7 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    providerRegex: ^(uzumaki-1)$
+    providerRegex: ^(talosvm-1)$
     bypassDnsResolution: true
     metrics:
       enable: true
