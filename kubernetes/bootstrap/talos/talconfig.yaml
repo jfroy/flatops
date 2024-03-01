@@ -5,7 +5,7 @@ talosVersion: v1.6.5
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.29.2
 
-clusterName: &cluster home-kubernetes
+clusterName: &cluster talos-dev
 endpoint: https://10.17.3.8:6443
 clusterPodNets:
   - "10.69.0.0/16"
@@ -129,7 +129,7 @@ controlPlane:
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnMasters: true
+        allowSchedulingOnControlPlanes: true
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0

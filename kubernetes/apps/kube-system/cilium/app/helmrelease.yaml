@@ -34,7 +34,7 @@ spec:
       hostRoot: /sys/fs/cgroup
     cluster:
       id: 1
-      name: home-kubernetes
+      name: talos-dev
     containerRuntime:
       integration: containerd
     # NOTE: This might need to be set if you have more than one active NIC on your hosts
