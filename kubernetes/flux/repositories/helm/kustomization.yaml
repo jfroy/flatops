@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
+  - ./democratic-csi.yaml
   - ./jetstack.yaml
   - ./metrics-server.yaml
   - ./openebs.yaml
