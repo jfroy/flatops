@@ -29,6 +29,9 @@ spec:
         driver: freenas-api-iscsi
     csiDriver:
       name: org.democratic-csi.iscsi
+    controller:
+      annotations:
+        reloader.stakater.com/search: "true"
     node:
       hostPID: true
       driver:
