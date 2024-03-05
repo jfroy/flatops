@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: iscsi-driver-config
+stringData:
+    driver-config-file.yaml: ENC[AES256_GCM,data:JbuStc+fWsTUkJXYGHR7Vqts8eIs45Er0cSzAm9tRz82uMZxOu532rWRZCUV6Ttj40RZ3/UqpAlLmaL4Dy7RIT+v0wo2Mgt4vMnEA/DyCSMXPWusy1tQYGCIsN/vczuscBcZMoA+jIupxXcwq1w36LMZCeess9OuRT3QJeEoQfE1f4hHNTnHYpJmFJPf0GnKElVsTO74DOiraxhAV+m12xCRTNSSOTIHad04RebORudLDed8ltk1hvkUi0AreEFHiysQ1knwW7SqrzKQ7AQcY6gnYnupZUyCwavS4k5FCN5ALe8tH+MdC4MVEumCE4BoWiImwd5zijXWKRVN3JZ0Ddd3E3XjNpAuNNLhzz6owpeD2dgEiysg+trZrWHeD/BlUPMda0QCYAlwZR/+9TaBr3SrtIo+fq3l58XRwn/pA+lR6SYAVs3fjttmcEnkx7tJ96wQYdQN0CjRmWUGjhRWEECy/lBpl46G9gar3MmlRZ3XQwNVSqCffAwYZRfKPUKELvjwoK+D37zbuk8JcYSecrKSpMwfCONpFB/s3lH+ANctPQGRjKR+Bg9WprihOlzRAqUaf4VPcIqtHZxVlwCCTqV7+/fbixZ1QPW6bc5ho+bmmNzRYYc4RXzyVURCdBhNBrYYnuF3VD214uy0ydvLh+gO/Nk9bl51XEZdAQse1b7AfjXD7N/JNguBc1anYuzFZELP6b1C36gsa9Hyvs8NVl4tsedXbUKiYH5+AHi8vw7w1oUgdZSd1K9Cc3smJw20eKW9GKXjtad9s34HED/zL60KTNCWKJaXQHEA9o554+/ZnYubsYbmuZb7jO6I9AoyFP2LO956aH8AF/YPUNSMUr8MsN0OADZZPUbU5IzzZ3Kg5D6YXGts2kuK/u+zPc/kw2YSPfPLnMmoQ1MenItv4Uh06fGIqFSBeNGqI1qiBO1KZ0Zy4M/uC6SthuZ2YdUKZX4ef9i3RrnPDhf/JoK8yrQwpo6Kbzp/WXColFVhNuqJ+k1T1LL6NJv/2xDJtixK1KCPvNu670XsZQSm9bNmGiUNOrYY8stKEy9pxGYRs5l6Q7rsB8tH7mqRg1RViT9A1XEF26KkvVoYLzfY4ZjU8yh68p3hwRsfWQbGre6gsFiuJmOpYeUXKNYa0Y0vgjM87RICvd+bu7OlpS+xwQvVA9FhwM8NRqbtsSSmWCHJK8TKG7SZ+PvGuGiW4AMqfHsTJqpV214WUKvdKlbdg8Dg5C5wAjNPz68cXY1o6arb57H9XM3KR3pPIoZ5WVg1nwVPW8kAHNJWAyW9RH/ueibGOJm6xqNucGj2ut91ku9AkCn2pMZPBZ6764565j5cvmWufhBL84DTgG2fmaHGk4sVScBc3qYPoQv9UGAehOsfl368cAeMwC71A84TuS+desXrkUytxCFRF4PssJkKTNo1kFfoWrEijIbSBSCLConCEUSRosyMz/qyiRS9irebBaZPXNh/bLSkLlx4Ksr2SGlc2ScLLn9Ynw01QTAcOIhxKrHVwsc+Ycx+cKCojQMbANuyFoAdtq97qPaSg+KhgIb+L4FtQatZVKv0QDPc1kP5YMaYkmp/Vw1tHkuojjmUvdajZj8hgptvqXIGvp9Bu41RQjAD5voOXiyVV3T0alPMthDiq195YoGP6FiCPYewt5ihypDIHtRq4HMZqqa0bSFlDbT40vfem2gbHMdyw3/UAVRzI5yppR/++0pWJUe55OMEXg==,iv:Flsu96DcpaslxKT5Xv3qMEYB/ABmyosGCCv/tr94sTQ=,tag:lT+uQzqUbIxaifHy1iCMbw==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSL2J4N3h5U3JDR1FEbkx6
+            K0p4SVd0WEtCZ1dheVVlRUhkT2lsdVJqNWtrCnRiaWUyczJKcmpzaGppYVV6eFNq
+            MU8xSXYvVnFkbW4yMWM2OE02aGROWmMKLS0tIGJpaVNTWjZrTnE3bCt5bWtMVWZp
+            MmNzclBDNWpYdjB4bGxBMDllRVk5OFEKgG1LNbCmzJIklfjMkLC6Wmy+jjbDH8z+
+            GmIlIzV7lVJD3994J2XhwqXnFenvfplKIYA72/DJxM46cn39AY8EIw==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-03-05T19:51:31Z"
+    mac: ENC[AES256_GCM,data:m11kypJZ4Wt/EgQEV4dtR8zw/f/7MbDDTx41BkX1E1KqbWrOUHcgWOdFEQolh0uThmC4oUKWKb3SRDkOtLrfRHalB4mByQ8GQzctBOzgkfK5q6S2/MDQBTiRpKUPLCEPLBwGZDjeC+a3whsDWjiEC6W3+etSAkAIA+NVAofVWfk=,iv:2bYjk+b75UJnUaPFbevy/Qd2TWaJCKU7NFmmkqu4ZSQ=,tag:dw154Sw1oMAl79FuO0DnjA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData)$
+    version: 3.8.1
