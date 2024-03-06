@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: talos-dev
+  name: tailscale-operator
 spec:
   interval: 5m
   chart:
@@ -35,5 +35,6 @@ spec:
     operatorConfig:
       defaultTags:
         - "tag:k8s-operator-talos-dev"
+      hostname: talos-dev
     proxyConfig:
       defaultTags: "tag:k8s-talos-dev"
