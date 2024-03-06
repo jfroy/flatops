@@ -10,6 +10,8 @@ resources:
   - ./metrics-server.yaml
   - ./openebs.yaml
   - ./postfinance.yaml
+  - ./prometheus-community.yaml
   - ./stakater.yaml
   - ./tailscale.yaml
+  - ./truecharts.yaml
   - ./xenitab.yaml
