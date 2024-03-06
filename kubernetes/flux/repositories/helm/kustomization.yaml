@@ -11,4 +11,5 @@ resources:
   - ./openebs.yaml
   - ./postfinance.yaml
   - ./stakater.yaml
+  - ./tailscale.yaml
   - ./xenitab.yaml
