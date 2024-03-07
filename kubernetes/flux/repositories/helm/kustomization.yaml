@@ -7,7 +7,10 @@ resources:
   - ./bjw-s.yaml
   - ./cilium.yaml
   - ./democratic-csi.yaml
+  - ./external-dns.yaml
+  - ./ingress-nginx.yaml
   - ./jetstack.yaml
+  - ./k8s-gateway.yaml
   - ./metrics-server.yaml
   - ./openebs.yaml
   - ./postfinance.yaml
