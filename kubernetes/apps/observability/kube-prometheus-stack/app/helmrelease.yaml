@@ -26,14 +26,11 @@ spec:
       retries: 3
   values:
     cleanPrometheusOperatorObjectNames: true
-    crds:
-      enabled: true
     alertmanager:
       enabled: false
     grafana:
       enabled: false
     kubeApiServer:
-      enabled: true
       serviceMonitor:
         metricRelabelings:
           # Drop high cardinality labels
@@ -44,7 +41,6 @@ spec:
             sourceLabels: ["__name__"]
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
     kubelet:
-      enabled: true
       serviceMonitor:
         metricRelabelings:
           # Drop high cardinality labels
@@ -56,27 +52,27 @@ spec:
             sourceLabels: ["__name__"]
             regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeControllerManager:
-      enabled: true
+      endpoints: &cp
+        - 10.17.3.10
       service:
-        selector:
-          k8s-app: kube-controller-manager
-    coreDns:
-      enabled: true
+        enabled: false
+        # selector:
+        #   k8s-app: kube-controller-manager
     kubeEtcd:
-      enabled: true
-    kubeScheduler:
-      enabled: true
+      endpoints: *cp
       service:
-        selector:
-          k8s-app: kube-scheduler
+        enabled: false
+    kubeScheduler:
+      endpoints: *cp
+      service:
+        enabled: false
+      #   selector:
+      #     k8s-app: kube-scheduler
     kubeProxy:
       enabled: false
-    kubeStateMetrics:
-      enabled: true
     kube-state-metrics:
       prometheus:
         monitor:
-          enabled: true
           relabelings:
             - sourceLabels: [__meta_kubernetes_pod_node_name]
               separator: ;
@@ -84,12 +80,9 @@ spec:
               targetLabel: nodename
               replacement: $1
               action: replace
-    nodeExporter:
-      enabled: true
     prometheus-node-exporter:
       prometheus:
         monitor:
-          enabled: true
           relabelings:
             - sourceLabels: [__meta_kubernetes_pod_node_name]
               separator: ;
