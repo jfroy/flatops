@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.6.5
+talosVersion: v1.6.6
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.29.2
 
@@ -22,7 +22,7 @@ nodes:
   - hostname: "talosvm-1"
     ipAddress: "10.17.3.10"
     installDisk: "/dev/vda"
-    talosImageURL: factory.talos.dev/installer/00ab8bfc733f8c73253f8791d7184b78ffd235b3ddbeb12fa2cb2c0361b3a4b0
+    talosImageURL: factory.talos.dev/installer/3401021d503c0982c200e6f1d6fd10e5cae47ad1d3e8aeaf521bf3673ac09dd0
     controlPlane: true
     networkInterfaces:
       - interface: eth0
