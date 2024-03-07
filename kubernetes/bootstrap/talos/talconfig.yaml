@@ -22,7 +22,9 @@ nodes:
   - hostname: "talosvm-1"
     ipAddress: "10.17.3.10"
     installDisk: "/dev/vda"
-    talosImageURL: factory.talos.dev/installer/3401021d503c0982c200e6f1d6fd10e5cae47ad1d3e8aeaf521bf3673ac09dd0
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer-secureboot/3401021d503c0982c200e6f1d6fd10e5cae47ad1d3e8aeaf521bf3673ac09dd0
     controlPlane: true
     networkInterfaces:
       - interface: eth0
@@ -123,6 +125,20 @@ patches:
         extraKernelArgs:
           - net.ifnames=0
 
+  # Encrypt system disk with TPM
+  - |-
+    machine:
+      systemDiskEncryption:
+        ephemeral:
+          provider: luks2
+          keys:
+            - slot: 0
+              tpm: {}
+        state:
+          provider: luks2
+          keys:
+            - slot: 0
+              tpm: {}
 
 controlPlane:
   patches:
