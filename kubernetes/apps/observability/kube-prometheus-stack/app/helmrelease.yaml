@@ -57,12 +57,18 @@ spec:
             regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeControllerManager:
       enabled: true
+      service:
+        selector:
+          k8s-app: kube-controller-manager
     coreDns:
       enabled: true
     kubeEtcd:
       enabled: true
     kubeScheduler:
       enabled: true
+      service:
+        selector:
+          k8s-app: kube-scheduler
     kubeProxy:
       enabled: false
     kubeStateMetrics:
