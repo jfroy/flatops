@@ -54,18 +54,16 @@ spec:
     kubeControllerManager:
       endpoints: &cp
         - 10.17.3.10
-      service:
-        enabled: false
+      # service:
         # selector:
         #   k8s-app: kube-controller-manager
     kubeEtcd:
       endpoints: *cp
-      service:
-        enabled: false
+      # service:
+      #   enabled: false
     kubeScheduler:
       endpoints: *cp
-      service:
-        enabled: false
+      # service:
       #   selector:
       #     k8s-app: kube-scheduler
     kubeProxy:
