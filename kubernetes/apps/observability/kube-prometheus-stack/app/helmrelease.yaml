@@ -24,6 +24,9 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
   values:
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
@@ -111,7 +114,10 @@ spec:
         retentionSize: 5GB
         externalLabels:
           cluster: talos-dev
-        ## Prometheus StorageSpec for persistent data
-        ## ref: https://github.com/prometheus-operator/prometheus-operator/blob/main/Documentation/user-guides/storage.md
-        ##
-        storageSpec: {}
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: openebs-hostpath
+              resources:
+                requests:
+                  storage: 10Gi
