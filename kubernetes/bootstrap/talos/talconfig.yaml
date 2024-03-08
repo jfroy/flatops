@@ -140,6 +140,14 @@ patches:
             - slot: 0
               tpm: {}
 
+  # Increase the UDP buffer size
+  # https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
+  - |-
+    machine:
+      sysctls:
+        net.core.rmem_max: 2500000
+        net.core.wmem_max: 2500000
+
 controlPlane:
   patches:
     # Cluster configuration
