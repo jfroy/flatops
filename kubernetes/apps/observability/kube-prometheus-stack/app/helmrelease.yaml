@@ -62,15 +62,11 @@ spec:
         #   k8s-app: kube-controller-manager
     kubeEtcd:
       endpoints: *cp
-      # service:
-      #   enabled: false
     kubeScheduler:
       endpoints: *cp
-      # service:
-      #   selector:
-      #     k8s-app: kube-scheduler
     kubeProxy:
       enabled: false
+      forceDeployDashboards: true
     kube-state-metrics:
       prometheus:
         monitor:
@@ -91,29 +87,31 @@ spec:
               targetLabel: nodename
               replacement: $1
               action: replace
+    # prometheusOperator:
+    #   thanosImage:
+    #     registry: quay.io
+    #     repository: thanos/thanos
+    #     tag: "${THANOS_VERSION}"
     prometheus:
-      thanosService:
-        enabled: false
-      thanosServiceMonitor:
-        enabled: false
-      ingress:
-        enabled: false
+      # thanosService:
+      #   enabled: true
+      # thanosServiceMonitor:
+      #   enabled: true
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        enableFeatures:
+          - auto-gomaxprocs
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
+        externalLabels:
+          cluster: talos-dev
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
         scrapeConfigSelectorNilUsesHelmValues: false
-        enableAdminAPI: false
-        enableFeatures:
-          - auto-gomaxprocs
-          - memory-snapshot-on-shutdown
-          - new-service-discovery-manager
         retention: 2d
         retentionSize: 5GB
-        externalLabels:
-          cluster: talos-dev
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -121,3 +119,6 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
+        # thanos:
+        #   image: quay.io/thanos/thanos:${THANOS_VERSION}
+        #   version: "${THANOS_VERSION#v}"
