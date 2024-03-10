@@ -68,6 +68,7 @@ spec:
     kubeProxy:
       enabled: false
     kube-state-metrics:
+      fullnameOverride: kube-state-metrics
       prometheus:
         monitor:
           relabelings:
@@ -78,6 +79,7 @@ spec:
               replacement: $1
               action: replace
     prometheus-node-exporter:
+      fullnameOverride: prometheus-node-exporter
       prometheus:
         monitor:
           relabelings:
@@ -87,6 +89,8 @@ spec:
               targetLabel: nodename
               replacement: $1
               action: replace
+    prometheusOperator:
+      fullnameOverride: prometheus-operator
     prometheus:
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
