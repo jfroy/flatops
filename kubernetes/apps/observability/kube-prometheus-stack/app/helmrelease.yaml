@@ -93,7 +93,8 @@ spec:
       fullnameOverride: prometheus-operator
     prometheus:
       prometheusSpec:
-        scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        # Must match grafana datasources.datasources.yaml.datasources.Prometheus.jsonData.timeInterval
+        scrapeInterval: 1m
         enableFeatures:
           - auto-gomaxprocs
           - memory-snapshot-on-shutdown

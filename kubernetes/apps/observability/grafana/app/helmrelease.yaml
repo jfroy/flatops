@@ -59,6 +59,7 @@ spec:
             isDefault: true
             jsonData:
               prometheusType: Prometheus
+              # Must match prometheus prometheus.prometheusSpec.scrapeInterval
               timeInterval: 1m
     dashboardProviders:
       dashboardproviders.yaml:
