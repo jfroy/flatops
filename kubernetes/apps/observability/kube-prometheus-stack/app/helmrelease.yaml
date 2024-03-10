@@ -122,3 +122,14 @@ spec:
         # thanos:
         #   image: quay.io/thanos/thanos:${THANOS_VERSION}
         #   version: "${THANOS_VERSION#v}"
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              version: v1
+              kind: ConfigMap
+              labelSelector: grafana_dashboard=1
+            patch: |
+              - op: add
+                path: /metadata/annotations/grafana_folder
+                value: Kubernetes
