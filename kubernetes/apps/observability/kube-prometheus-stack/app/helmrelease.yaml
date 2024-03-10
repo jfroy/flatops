@@ -87,16 +87,7 @@ spec:
               targetLabel: nodename
               replacement: $1
               action: replace
-    # prometheusOperator:
-    #   thanosImage:
-    #     registry: quay.io
-    #     repository: thanos/thanos
-    #     tag: "${THANOS_VERSION}"
     prometheus:
-      # thanosService:
-      #   enabled: true
-      # thanosServiceMonitor:
-      #   enabled: true
       prometheusSpec:
         scrapeInterval: 1m # Must match interval in Grafana Helm chart
         enableFeatures:
@@ -119,9 +110,6 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-        # thanos:
-        #   image: quay.io/thanos/thanos:${THANOS_VERSION}
-        #   version: "${THANOS_VERSION#v}"
   postRenderers:
     - kustomize:
         patches:
