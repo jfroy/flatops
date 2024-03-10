@@ -33,6 +33,7 @@ spec:
       enabled: false
     grafana:
       enabled: false
+      forceDeployDashboards: true
     kubeApiServer:
       serviceMonitor:
         metricRelabelings:
@@ -66,7 +67,6 @@ spec:
       endpoints: *cp
     kubeProxy:
       enabled: false
-      forceDeployDashboards: true
     kube-state-metrics:
       prometheus:
         monitor:
