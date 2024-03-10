@@ -46,6 +46,7 @@ spec:
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
     kubelet:
       serviceMonitor:
+        interval: 30s
         metricRelabelings:
           # Drop high cardinality labels
           - action: labeldrop
