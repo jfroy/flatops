@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: cnpg-database
-  path: ./kubernetes/apps/cnpg-database/cnpg-cluster/helm-cluster
+  path: ./kubernetes/apps/cnpg-database/cnpg-cluster/cluster
   prune: true
   sourceRef:
     kind: GitRepository
