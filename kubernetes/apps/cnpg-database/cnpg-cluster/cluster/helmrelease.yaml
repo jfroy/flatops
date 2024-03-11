@@ -32,3 +32,5 @@ spec:
       instances: 1
       storage:
         storageClass: openebs-hostpath
+      monitoring:
+        enabled: true
