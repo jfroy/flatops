@@ -60,7 +60,7 @@ spec:
             jsonData:
               prometheusType: Prometheus
               # Must match prometheus prometheus.prometheusSpec.scrapeInterval
-              timeInterval: 1m
+              timeInterval: 30s
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1

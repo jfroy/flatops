@@ -46,7 +46,6 @@ spec:
             regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
     kubelet:
       serviceMonitor:
-        interval: 30s
         metricRelabelings:
           # Drop high cardinality labels
           - action: labeldrop
@@ -95,7 +94,7 @@ spec:
     prometheus:
       prometheusSpec:
         # Must match grafana datasources.datasources.yaml.datasources.Prometheus.jsonData.timeInterval
-        scrapeInterval: 1m
+        scrapeInterval: 30s
         enableFeatures:
           - auto-gomaxprocs
           - memory-snapshot-on-shutdown
