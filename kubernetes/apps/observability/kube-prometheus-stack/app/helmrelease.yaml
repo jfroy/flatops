@@ -361,8 +361,16 @@ spec:
               targetLabel: nodename
               replacement: $1
               action: replace
+
     prometheusOperator:
       fullnameOverride: prometheus-operator
+      admissionWebhooks:
+        certManager:
+          enabled: true
+          issuerRef:
+            name: letsencrypt-production
+            kind: ClusterIssuer
+
     prometheus:
       prometheusSpec:
         # Must match grafana datasources.datasources.yaml.datasources.Prometheus.jsonData.timeInterval
