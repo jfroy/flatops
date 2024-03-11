@@ -367,9 +367,6 @@ spec:
       admissionWebhooks:
         certManager:
           enabled: true
-          issuerRef:
-            name: letsencrypt-production
-            kind: ClusterIssuer
 
     prometheus:
       prometheusSpec:
