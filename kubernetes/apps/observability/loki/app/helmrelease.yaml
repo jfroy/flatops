@@ -49,5 +49,8 @@ spec:
       replicas: 1
       persistence:
         storageClass: openebs-hostpath
+    ingress:
+      enabled: true
+      ingressClassName: internal
     gateway:
       enabled: false
