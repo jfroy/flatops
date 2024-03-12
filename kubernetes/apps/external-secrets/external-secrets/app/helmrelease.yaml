@@ -21,9 +21,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
   values:
     serviceMonitor:
       enabled: true
@@ -31,3 +28,7 @@ spec:
     webhook:
       certManager:
         enabled: true
+        cert:
+          issuerRef:
+            kind: ClusterIssuer
+            name: self-signed
