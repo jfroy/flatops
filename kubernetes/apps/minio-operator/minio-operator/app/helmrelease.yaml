@@ -23,4 +23,7 @@ spec:
       retries: 3
   values:
     operator:
+      env:
+        - name: PROMETHEUS_NAMESPACE
+          value: observability
       replicaCount: 1
