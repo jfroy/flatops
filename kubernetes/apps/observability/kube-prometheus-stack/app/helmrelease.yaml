@@ -30,7 +30,17 @@ spec:
   values:
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
-      enabled: false
+      alertmanagerSpec:
+        useExistingSecret: true
+        configSecret: alertmanager-config
+        replicas: 1
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: openebs-hostpath
+              resources:
+                requests:
+                  storage: 1Gi
     grafana:
       enabled: false
       forceDeployDashboards: true
