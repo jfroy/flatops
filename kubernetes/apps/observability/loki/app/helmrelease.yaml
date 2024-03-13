@@ -45,6 +45,8 @@ spec:
           installOperator: false
       lokiCanary:
         enabled: false
+    # NOTE: monolithic loki is fine for dev cluster, but breaks the dashboads. Use simple scalable
+    # deployment for prod.
     singleBinary:
       replicas: 1
       persistence:
