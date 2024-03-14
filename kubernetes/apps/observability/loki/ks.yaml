@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: external-secrets
   force: true
   path: ./kubernetes/apps/observability/loki/app
   prune: true

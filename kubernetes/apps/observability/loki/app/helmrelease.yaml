@@ -15,6 +15,9 @@ spec:
         kind: HelmRepository
         name: grafana
         namespace: flux-system
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
   install:
     remediation:
       retries: 3
@@ -22,14 +25,40 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-      strategy: uninstall
   values:
     loki:
       auth_enabled: false
+      memberlist: loki-memberlist
       commonConfig:
         replication_factor: 1
       storage:
-        type: filesystem
+        bucketNames:
+          chunks: loki
+          ruler: loki
+          admin: loki
+        type: s3
+        s3:
+          endpoint: minio.storage.svc
+          secretAccessKey: "${CONSOLE_SECRET_KEY}"
+          accessKeyId: "${CONSOLE_ACCESS_KEY}"
+          s3ForcePathStyle: true
+          insecure: false
+      schemaConfig:
+        configs:
+          - from: "2024-01-01"
+            index:
+              period: 24h
+              prefix: index_
+            object_store: s3
+            schema: v12
+            store: tsdb
+      query_scheduler:
+        max_outstanding_requests_per_tenant: 32768
+      storage_config:
+        tsdb_shipper:
+          shared_store: s3
+      querier:
+        max_concurrent: 16
     test:
       enabled: false
     monitoring:
@@ -45,12 +74,25 @@ spec:
           installOperator: false
       lokiCanary:
         enabled: false
-    # NOTE: monolithic loki is fine for dev cluster, but breaks the dashboads. Use simple scalable
-    # deployment for prod.
-    singleBinary:
+    write:
       replicas: 1
-      persistence:
+      extraArgs: &extraArgs
+        - "-config.expand-env=true"
+      extraEnvFrom: &extraEnvFrom
+        - secretRef:
+            name: minio-loki
+      persistence: &persistence
         storageClass: openebs-hostpath
+    read:
+      replicas: 1
+      extraArgs: *extraArgs
+      extraEnvFrom: *extraEnvFrom
+      persistence: *persistence
+    backend:
+      replicas: 1
+      extraArgs: *extraArgs
+      extraEnvFrom: *extraEnvFrom
+      persistence: *persistence
     ingress:
       enabled: true
       ingressClassName: internal
