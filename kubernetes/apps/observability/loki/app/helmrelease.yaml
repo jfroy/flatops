@@ -93,8 +93,3 @@ spec:
       extraArgs: *extraArgs
       extraEnvFrom: *extraEnvFrom
       persistence: *persistence
-    ingress:
-      enabled: true
-      ingressClassName: internal
-    gateway:
-      enabled: false
