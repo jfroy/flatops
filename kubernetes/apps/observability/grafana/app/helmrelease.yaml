@@ -101,6 +101,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/kubernetes-folder
+          - name: 'kubernetes-dotdc'
+            orgId: 1
+            folder: 'Kubernetes (dotdc)'
+            type: file
+            disableDeletion: true
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/kubernetes-dotdc-folder
           - name: nginx
             orgId: 1
             folder: Nginx
@@ -214,6 +222,25 @@ spec:
           gnetId: 11454
           revision: 14
           datasource: Prometheus
+      kubernetes-dotdc:
+        k8s-system-api-server:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+          token: ''
+        k8s-system-coredns:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+          token: ''
+        k8s-views-global:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+          token: ''
+        k8s-views-namespaces:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+          token: ''
+        k8s-views-nodes:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+          token: ''
+        k8s-views-pods:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
+          token: ''
       nginx:
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
