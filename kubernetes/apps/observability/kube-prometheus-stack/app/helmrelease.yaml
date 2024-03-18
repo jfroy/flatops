@@ -47,7 +47,6 @@ spec:
     kubeApiServer:
       serviceMonitor:
         metricRelabelings:
-          # Drop high cardinality labels
           - action: drop
             sourceLabels: ["__name__"]
             regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
@@ -108,12 +107,9 @@ spec:
       prometheus:
         monitor:
           relabelings:
-            - sourceLabels: [__meta_kubernetes_pod_node_name]
-              separator: ;
-              regex: ^(.*)$
+            - action: replace
+              sourceLabels: [__meta_kubernetes_pod_node_name]
               targetLabel: nodename
-              replacement: $1
-              action: replace
       customResourceState:
         enabled: true
         config:
@@ -365,12 +361,11 @@ spec:
       prometheus:
         monitor:
           relabelings:
-            - sourceLabels: [__meta_kubernetes_pod_node_name]
-              separator: ;
-              regex: ^(.*)$
+            - action: replace
+              sourceLabels: [__meta_kubernetes_pod_node_name]
               targetLabel: nodename
-              replacement: $1
-              action: replace
+            - action: labeldrop
+              regex: (pod)
 
     prometheusOperator:
       fullnameOverride: prometheus-operator

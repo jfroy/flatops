@@ -31,6 +31,9 @@ spec:
       enabled: false
     serviceMonitor:
       enabled: true
+      metricRelabelings:
+        - action: labeldrop
+          regex: (pod)
     # ingress:
     #   enabled: true
     #   ingressClassName: internal
