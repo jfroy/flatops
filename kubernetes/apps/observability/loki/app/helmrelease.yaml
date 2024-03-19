@@ -38,7 +38,7 @@ spec:
           admin: loki
         type: s3
         s3:
-          endpoint: minio.storage.svc
+          endpoint: minio.storage.svc.cluster.local
           secretAccessKey: "$${CONSOLE_SECRET_KEY}"
           accessKeyId: "$${CONSOLE_ACCESS_KEY}"
           s3ForcePathStyle: true
