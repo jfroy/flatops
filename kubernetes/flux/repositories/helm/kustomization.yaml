@@ -23,4 +23,5 @@ resources:
   - ./stakater.yaml
   - ./tailscale.yaml
   - ./truecharts.yaml
+  - ./vector.yaml
   - ./xenitab.yaml
