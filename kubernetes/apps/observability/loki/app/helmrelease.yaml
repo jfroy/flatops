@@ -42,7 +42,8 @@ spec:
           secretAccessKey: "$${CONSOLE_SECRET_KEY}"
           accessKeyId: "$${CONSOLE_ACCESS_KEY}"
           s3ForcePathStyle: true
-          insecure: false
+          http_config:
+            insecure_skip_verify: true # minio uses cluster CA which won't be trusted
       schemaConfig:
         configs:
           - from: "2024-01-01"
