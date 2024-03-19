@@ -39,8 +39,8 @@ spec:
         type: s3
         s3:
           endpoint: minio.storage.svc
-          secretAccessKey: "${CONSOLE_SECRET_KEY}"
-          accessKeyId: "${CONSOLE_ACCESS_KEY}"
+          secretAccessKey: "$${CONSOLE_SECRET_KEY}"
+          accessKeyId: "$${CONSOLE_ACCESS_KEY}"
           s3ForcePathStyle: true
           insecure: false
       schemaConfig:
