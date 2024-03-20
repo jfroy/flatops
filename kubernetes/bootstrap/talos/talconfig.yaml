@@ -3,7 +3,7 @@
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.6.6
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.29.2
+kubernetesVersion: v1.29.3
 
 clusterName: &cluster talos-dev
 endpoint: https://10.17.3.8:6443
@@ -24,10 +24,11 @@ nodes:
     installDisk: "/dev/vda"
     machineSpec:
       secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/b6b07dab4fba4cbd77f4ba1dd2f098142eeda8461bf4e789ba0f2db605d2b9ec
+    talosImageURL: factory.talos.dev/installer-secureboot/3401021d503c0982c200e6f1d6fd10e5cae47ad1d3e8aeaf521bf3673ac09dd0
     controlPlane: true
     networkInterfaces:
-      - interface: eth0
+      - deviceSelector:
+          hardwareAddr: "52:54:00:2a:9e:4a"
         dhcp: false
         addresses:
           - "10.17.3.10/24"
@@ -75,12 +76,9 @@ patches:
     machine:
       kubelet:
         extraArgs:
-          image-gc-low-threshold: 50
-          image-gc-high-threshold: 55
           rotate-server-certificates: true
         nodeIP:
-          validSubnets:
-            - "10.17.3.0/24"
+          validSubnets: ["10.17.3.0/24"]
 
   # Force nameserver
   - |-
@@ -94,8 +92,7 @@ patches:
     machine:
       time:
         disabled: false
-        servers:
-          - time.cloudflare.com
+        servers: ["time.cloudflare.com"]
 
   # Custom sysctl settings
   - |-
@@ -113,17 +110,7 @@ patches:
           - destination: /var/openebs/local
             type: bind
             source: /var/openebs/local
-            options:
-              - bind
-              - rshared
-              - rw
-
-  # Disable predictable NIC naming
-  - |-
-    machine:
-      install:
-        extraKernelArgs:
-          - net.ifnames=0
+            options: ["bind", "rshared", "rw"]
 
   # Encrypt system disk with TPM
   - |-
@@ -183,9 +170,7 @@ controlPlane:
         features:
           kubernetesTalosAPIAccess:
             enabled: true
-            allowedRoles:
-              - os:admin
-            allowedKubernetesNamespaces:
-              - system-upgrade
+            allowedRoles: ["os:admin"]
+            allowedKubernetesNamespaces: ["system-upgrade"]
 
 

@@ -13,9 +13,8 @@ cluster:
   name: talos-dev
 containerRuntime:
   integration: containerd
-# NOTE: This might need to be set if you have more than one active NIC on your hosts
-# devices:
-#   - eno0
+# NOTE: devices might need to be set if you have more than one active NIC on your hosts
+# devices: eno+ eth+
 endpointRoutes:
   enabled: true
 hubble:

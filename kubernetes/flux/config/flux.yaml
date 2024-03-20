@@ -42,16 +42,16 @@ spec:
           value: --concurrent=8
         - op: add
           path: /spec/template/spec/containers/0/args/-
-          value: --requeue-dependency=5s
-        - op: add
-          path: /spec/template/spec/containers/0/args/-
           value: --kube-api-qps=500
         - op: add
           path: /spec/template/spec/containers/0/args/-
           value: --kube-api-burst=1000
+        - op: add
+          path: /spec/template/spec/containers/0/args/-
+          value: --requeue-dependency=5s
       target:
         kind: Deployment
-        name: "(kustomize-controller|helm-controller|source-controller)"
+        name: (kustomize-controller|helm-controller|source-controller)
     - patch: |
         apiVersion: apps/v1
         kind: Deployment
@@ -68,7 +68,7 @@ spec:
                       memory: 2Gi
       target:
         kind: Deployment
-        name: "(kustomize-controller|helm-controller|source-controller)"
+        name: (kustomize-controller|helm-controller|source-controller)
     # Enable Helm near OOM detection
     # https://fluxcd.io/flux/installation/configuration/helm-oom-detection/
     - patch: |
