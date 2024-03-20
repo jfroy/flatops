@@ -17,6 +17,7 @@ resources:
   - ./kubernetes-dashboard.yaml
   - ./metrics-server.yaml
   - ./minio.yaml
+  - ./node-feature-discovery.yaml
   - ./openebs.yaml
   - ./postfinance.yaml
   - ./prometheus-community.yaml
