@@ -36,3 +36,5 @@ spec:
       hostname: talos-dev
     proxyConfig:
       defaultTags: "tag:k8s-talos-dev"
+    apiServerProxyConfig:
+      mode: "true"
