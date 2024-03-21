@@ -1,0 +1,26 @@
+---
+# NOTE: Escape with $${ENV_VAR} to avoid interpolation by Flux
+web:
+  port: $${WEB_PORT}
+storage:
+  type: postgres
+  path: $${POSTGRES_URI}
+  caching: true
+metrics: true
+debug: false
+ui:
+  title: Status | Gatus
+  header: Status
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 5m
+endpoints:
+  - name: flux-webhook
+    group: external
+    url: https://flux-webhook.devbu.io
+    interval: 5m
+    client:
+      dns-resolver: tcp://1.1.1.1:53
+    conditions:
+      - "[STATUS] == 404"
