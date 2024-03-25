@@ -9,6 +9,9 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cilium-config
+    - name: gateway-crd
   path: ./kubernetes/apps/kube-system/cilium/app
   prune: false # never should be deleted
   sourceRef:
@@ -29,14 +32,12 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cilium
   path: ./kubernetes/apps/kube-system/cilium/config
   prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+  wait: true
   interval: 5m
   retryInterval: 1m
   timeout: 5m

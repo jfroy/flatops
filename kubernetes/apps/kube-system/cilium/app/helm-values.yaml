@@ -14,8 +14,9 @@ cluster:
   name: talos-dev
 containerRuntime:
   integration: containerd
-enableCiliumEndpointSlice: true
 ingressController:
+  enabled: true
+gatewayAPI:
   enabled: true
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
 # devices: eno+ eth+
