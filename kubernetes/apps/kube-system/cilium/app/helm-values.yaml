@@ -14,6 +14,9 @@ cluster:
   name: talos-dev
 containerRuntime:
   integration: containerd
+enableCiliumEndpointSlice: true
+ingressController:
+  enabled: true
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
 # devices: eno+ eth+
 endpointRoutes:
@@ -64,6 +67,8 @@ l2announcements:
 loadBalancer:
   algorithm: maglev
   mode: dsr
+  l7:
+    backend: envoy
 localRedirectPolicy: true
 operator:
   replicas: 1
