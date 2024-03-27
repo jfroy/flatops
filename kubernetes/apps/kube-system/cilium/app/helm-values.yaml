@@ -17,6 +17,8 @@ containerRuntime:
 ingressController:
   enabled: true
   loadbalancerMode: shared
+  defaultSecretNamespace: kube-system
+  defaultSecretName: "${SECRET_DOMAIN/./-}-production-tls"
   service:
     annotations:
       io.cilium/lb-ipam-ips: "192.168.6.4"
@@ -43,9 +45,19 @@ hubble:
       enabled: true
       annotations:
         grafana_folder: Cilium
+  tls:
+    auto:
+      method: certmanager
+      certManagerIssuerRef:
+        name: cluster-ca
+        kind: ClusterIssuer
+        group: cert-manager.io
   relay:
     enabled: true
     rollOutPods: true
+    tls:
+      server:
+        enabled: true
     prometheus:
       serviceMonitor:
         enabled: true
