@@ -9,6 +9,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  # NOTE: Cannot depend on cilium-config to prevent helm stalls
   dependsOn:
     - name: gateway-crd
   path: ./kubernetes/apps/kube-system/cilium/app
@@ -16,7 +17,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+  wait: false
   interval: 5m
   retryInterval: 1m
   timeout: 5m
@@ -31,8 +32,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cilium
+  # NOTE: Cannot depend on cilium to prevent helm stalls
   path: ./kubernetes/apps/kube-system/cilium/config
   prune: false # never should be deleted
   sourceRef:
