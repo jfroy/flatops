@@ -30,5 +30,6 @@ spec:
         enabled: true
         cert:
           issuerRef:
+            name: cluster-ca
             kind: ClusterIssuer
-            name: self-signed
+            group: cert-manager.io

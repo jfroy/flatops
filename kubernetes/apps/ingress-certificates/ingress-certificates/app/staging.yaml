@@ -8,6 +8,7 @@ spec:
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
+    group: cert-manager.io
   commonName: "${SECRET_DOMAIN}"
   dnsNames:
     - "${SECRET_DOMAIN}"

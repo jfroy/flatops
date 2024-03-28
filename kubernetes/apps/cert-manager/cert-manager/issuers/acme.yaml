@@ -1,3 +1,4 @@
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -12,7 +13,7 @@ spec:
       - dns01:
           cloudflare:
             apiTokenSecretRef:
-              name: cert-manager-secret
+              name: cloudflare-api-token
               key: api-token
         selector:
           dnsZones:
@@ -32,15 +33,8 @@ spec:
       - dns01:
           cloudflare:
             apiTokenSecretRef:
-              name: cert-manager-secret
+              name: cloudflare-api-token
               key: api-token
         selector:
           dnsZones:
             - "${SECRET_DOMAIN}"
----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: self-signed
-spec:
-  selfSigned: {}
