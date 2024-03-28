@@ -22,10 +22,14 @@ spec:
     remediation:
       retries: 3
   values:
+    extendedMetricLabels: true
     serviceMonitor:
       enabled: true
       interval: 1m
+    # Webhook crushloops when Cert-Manager is used with default values
+    # https://github.com/external-secrets/external-secrets/issues/2519
     webhook:
+      lookaheadInterval: 240h  # 10d
       certManager:
         enabled: true
         cert:
@@ -33,3 +37,4 @@ spec:
             name: cluster-ca
             kind: ClusterIssuer
             group: cert-manager.io
+          duration: 2160h  # 90d
