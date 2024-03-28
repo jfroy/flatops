@@ -5,7 +5,9 @@ api:
   address: 0.0.0.0:8686
 
 sources:
-  kubernetes_source:
+  internal_metrics:
+    type: internal_metrics
+  vector:
     type: vector
     version: "2"
     address: 0.0.0.0:6000
@@ -13,7 +15,7 @@ sources:
 transforms:
   kubernetes_remap:
     type: remap
-    inputs: ["kubernetes_source"]
+    inputs: ["vector"]
     source: |
       # Standardize 'app' index
       .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
@@ -21,7 +23,7 @@ transforms:
       del(.pod_labels)
 
 sinks:
-  kubernetes:
+  loki:
     inputs: ["kubernetes_remap"]
     type: loki
     endpoint: http://loki-gateway.observability
@@ -33,3 +35,7 @@ sinks:
       app: '{{ custom_app_name }}'
       namespace: '{{ kubernetes.pod_namespace }}'
       node: '{{ kubernetes.pod_node_name }}'
+  prom_exporter:
+    type: prometheus_exporter
+    inputs: [internal_metrics]
+    address: 0.0.0.0:9090

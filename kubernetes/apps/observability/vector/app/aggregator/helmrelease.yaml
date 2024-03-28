@@ -28,13 +28,13 @@ spec:
     workloadResourceAnnotations:
       reloader.stakater.com/auto: "true"
     containerPorts:
-      - name: kubernetes
+      - name: vector
         containerPort: 6000
       - name: prom-exporter
         containerPort: 9090
     service:
       ports:
-      - name: kubernetes
+      - name: vector
         port: 6000
       - name: prom-exporter
         port: 9090

@@ -2,7 +2,9 @@
 data_dir: /vector-data-dir
 
 sources:
-  kubernetes_source:
+  internal_metrics:
+    type: internal_metrics
+  kubernetes_logs:
     type: kubernetes_logs
     use_apiserver_cache: true
     pod_annotation_fields:
@@ -17,9 +19,13 @@ sources:
       node_labels: ""
 
 sinks:
-  vector_aggregator:
+  prom_exporter:
+    type: prometheus_exporter
+    inputs: [internal_metrics]
+    address: 0.0.0.0:9090
+  vector:
     type: vector
     compression: true
     version: "2"
     address: vector-aggregator.observability:6000
-    inputs: ["kubernetes_source"]
+    inputs: ["kubernetes_logs"]
