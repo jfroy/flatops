@@ -9,8 +9,5 @@ configMapGenerator:
   - name: gatus-config
     files:
       - config.yaml=./resources/config.yaml
-  - name: helmvalues
-    files:
-      - values.yaml=./helm-values.yaml
 generatorOptions:
   disableNameSuffixHash: true
