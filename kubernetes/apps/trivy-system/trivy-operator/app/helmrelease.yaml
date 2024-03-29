@@ -22,10 +22,16 @@ spec:
     remediation:
       retries: 3
   values:
+    operator:
+      builtInTrivyServer: true
+      serverAdditionalAnnotations:
+        reloader.stakater.com/auto: "true"
     serviceMonitor:
       enabled: true
     trivy:
+      storageClassName: openebs-hostpath
       ignoreUnfixed: true
+      existingSecret: true
     nodeCollector:
       volumeMounts:
         - name: var-lib-etcd
