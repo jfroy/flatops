@@ -34,19 +34,16 @@ spec:
       metricRelabelings:
         - action: labeldrop
           regex: (pod)
-    # ingress:
-    #   enabled: true
-    #   ingressClassName: internal
-    #   hosts:
-    #     - &host grafana.example.com
-    #   tls:
-    #     - hosts:
-    #         - *host
+    ingress:
+      enabled: true
+      ingressClassName: internal
+      hosts:
+        - &host "grafana.${SECRET_DOMAIN}"
+      tls:
+        - hosts:
+            - *host
     persistence:
       enabled: false
-      # inMemory:
-      #   enabled: true
-
     plugins: []
     datasources:
       datasources.yaml:
