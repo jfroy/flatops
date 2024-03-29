@@ -17,6 +17,10 @@ sources:
       namespace_labels: ""
     node_annotation_fields:
       node_labels: ""
+    # https://github.com/vectordotdev/vector/issues/12014
+    # https://github.com/vectordotdev/vector/issues/13467
+    max_line_bytes: 131072  # 128 KiB
+    max_read_bytes: 131072  # 128 KiB
 
 sinks:
   prom_exporter:
