@@ -25,6 +25,8 @@ spec:
   values:
     role: "Stateless-Aggregator"
     replicas: 1
+    workloadResourceAnnotations:
+      reloader.stakater.com/auto: "true"
     containerPorts:
       - name: kubernetes
         containerPort: 6000

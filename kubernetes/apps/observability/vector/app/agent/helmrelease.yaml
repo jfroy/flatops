@@ -24,6 +24,8 @@ spec:
       retries: 3
   values:
     role: "Agent"
+    workloadResourceAnnotations:
+      reloader.stakater.com/auto: "true"
     containerPorts:
       - name: prom-exporter
         containerPort: 9090
