@@ -14,12 +14,12 @@ ui:
 connectivity:
   checker:
     target: 1.1.1.1:53
-    interval: 5m
+    interval: 10m
 endpoints:
   - name: flux-webhook
     group: external
     url: "https://flux-webhook.${SECRET_DOMAIN}"
-    interval: 5m
+    interval: 10m
     client:
       dns-resolver: tcp://1.1.1.1:53
     conditions:
