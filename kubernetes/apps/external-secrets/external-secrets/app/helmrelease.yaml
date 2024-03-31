@@ -26,7 +26,14 @@ spec:
     serviceMonitor:
       enabled: true
       interval: 1m
-    # Webhook crushloops when Cert-Manager is used with default values
+      metricRelabelings:
+        - action: drop
+          sourceLabels: ["__name__"]
+          regex: workqueue_(work|queue)_duration_seconds_bucket
+        - action: drop
+          sourceLabels: ["__name__"]
+          regex: controller_runtime_reconcile_time_seconds_bucket
+    # Webhook crashloops when Cert-Manager is used with default values
     # https://github.com/external-secrets/external-secrets/issues/2519
     webhook:
       lookaheadInterval: 240h  # 10d

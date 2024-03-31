@@ -29,3 +29,21 @@ spec:
       podMonitorEnabled: true
       grafanaDashboard:
         create: true
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |-
+              apiVersion: monitoring.coreos.com/v1
+              kind: PodMonitor
+              metadata:
+                name: cloudnative-pg
+              spec:
+                podMetricsEndpoints:
+                - port: metrics
+                  metricRelabelings:
+                    - action: drop
+                      sourceLabels: ["__name__"]
+                      regex: workqueue_(work|queue)_duration_seconds_bucket
+                    - action: drop
+                      sourceLabels: ["__name__"]
+                      regex: controller_runtime_reconcile_time_seconds_bucket

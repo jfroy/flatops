@@ -26,8 +26,15 @@ spec:
           - image-reflector-controller
   podMetricsEndpoints:
     - port: http-prom
+      metricRelabelings:
+        - action: drop
+          sourceLabels: ["__name__"]
+          regex: workqueue_(work|queue)_duration_seconds_bucket
+        - action: drop
+          regex: controller_runtime_reconcile_time_seconds_bucket;(0.005|0.01|0.025|0.05|0.1|0.15|0.2|0.25|0.3|0.35|0.4|0.45|0.5|0.6|0.7|0.8|0.9|1.25|1.5|1.75|2|2.5|3|3.5|4|4.5|5|6|7|8|9|15|20|25|30|40|50)
+          sourceLabels: ["__name__", "le"]
       relabelings:
-        # Ref: https://github.com/prometheus-operator/prometheus-operator/issues/4816
-        - sourceLabels: [__meta_kubernetes_pod_phase]
-          action: keep
-          regex: Running
+      # Ref: https://github.com/prometheus-operator/prometheus-operator/issues/4816
+      - sourceLabels: [__meta_kubernetes_pod_phase]
+        action: keep
+        regex: Running

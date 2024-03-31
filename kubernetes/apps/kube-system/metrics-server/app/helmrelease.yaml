@@ -29,3 +29,7 @@ spec:
       enabled: true
     serviceMonitor:
       enabled: true
+      metricRelabelings:
+        - action: drop
+          sourceLabels: ["__name__"]
+          regex: workqueue_(work|queue)_duration_seconds_bucket

@@ -28,6 +28,14 @@ spec:
         reloader.stakater.com/auto: "true"
     serviceMonitor:
       enabled: true
+      endpointAdditionalProperties:
+        metricRelabelings:
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: workqueue_(work|queue)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: controller_runtime_reconcile_time_seconds_bucket
     trivy:
       storageClassName: openebs-hostpath
       ignoreUnfixed: true
