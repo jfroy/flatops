@@ -27,6 +27,8 @@ spec:
   dependsOn:
     - name: openebs
       namespace: openebs-system
+  driftDetection:
+    mode: enabled
   values:
     cleanPrometheusOperatorObjectNames: true
     alertmanager:
