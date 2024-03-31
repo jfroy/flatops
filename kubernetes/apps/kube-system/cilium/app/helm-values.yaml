@@ -17,7 +17,7 @@ containerRuntime:
 ingressController:
   enabled: true
   loadbalancerMode: shared
-  defaultSecretNamespace: kube-system
+  defaultSecretNamespace: cilium-secrets
   defaultSecretName: "${SECRET_DOMAIN/./-}-production-tls"
   service:
     annotations:
