@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app flux-monitoring
+  name: &app flux-addons
   namespace: flux-system
 spec:
   targetNamespace: flux-system
@@ -11,13 +11,13 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: kube-prometheus-stack
-  path: ./kubernetes/apps/flux-system/monitoring/app
+    - name: external-secrets-stores
+  path: ./kubernetes/apps/flux-system/addons/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+  wait: false
   interval: 5m
   retryInterval: 1m
   timeout: 5m
@@ -38,7 +38,7 @@ spec:
   sourceRef:
     kind: OCIRepository
     name: capacitor
-  wait: true
+  wait: false
   interval: 5m
   retryInterval: 1m
   timeout: 5m
