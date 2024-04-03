@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets
+    - name: external-secrets-stores
   force: true
   path: ./kubernetes/apps/observability/loki/app
   prune: true
