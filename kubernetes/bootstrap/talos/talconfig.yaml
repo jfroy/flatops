@@ -92,9 +92,11 @@ patches:
   - |-
     machine:
       sysctls:
-        fs.inotify.max_queued_events: 65536
-        fs.inotify.max_user_watches: 524288
-        fs.inotify.max_user_instances: 8192
+        fs.inotify.max_queued_events: "65536"
+        fs.inotify.max_user_watches: "524288"
+        fs.inotify.max_user_instances: "8192"
+        net.core.rmem_max: "2500000"
+        net.core.wmem_max: "2500000"
 
   # Mount openebs-hostpath in kubelet
   - |-
@@ -120,14 +122,6 @@ patches:
           keys:
             - slot: 0
               tpm: {}
-
-  # Increase the UDP buffer size
-  # https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes
-  - |-
-    machine:
-      sysctls:
-        net.core.rmem_max: 2500000
-        net.core.wmem_max: 2500000
 
 controlPlane:
   patches:
