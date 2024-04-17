@@ -99,7 +99,7 @@ bootstrap_tls_sans: []
 # (Required) Age Public Key (e.g. age1...)
 # 1. Generate a new key with the following command:
 #    > task sops:age-keygen
-# 2. Copy the public key and paste it below
+# 2. Copy the PUBLIC key and paste it below
 bootstrap_sops_age_pubkey: ""
 
 # (Optional) Use cilium BGP control plane when L2 announcements won't traverse VLAN network segments.
@@ -139,7 +139,7 @@ bootstrap_github_webhook_token: ""
 #   1. Generate a new key with the following command:
 #      > ssh-keygen -t ecdsa -b 521 -C "github-deploy-key" -f github-deploy.key -q -P ""
 #   2. Make sure to paste public key from "github-deploy.key.pub" into
-#      the deploy keys section of your repository settings.
+#      the deploy keys section of your GitHub repository settings.
 #   3. Uncomment and paste the private key below
 #   4. Optionally set your repository on GitHub to private
 # bootstrap_github_private_key: |
