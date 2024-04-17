@@ -75,6 +75,8 @@ spec:
       enabled: false
 
     gateway:
+      deploymentStrategy:
+        type: Recreate  # dev cluster only has 1 node
       image:
         registry: ghcr.io
 
