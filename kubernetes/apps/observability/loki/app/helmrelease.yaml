@@ -31,6 +31,8 @@ spec:
     loki:
       auth_enabled: false
       memberlist: loki-memberlist
+      limits_config:
+        allow_structured_metadata: false
       commonConfig:
         replication_factor: 1
       storage:
