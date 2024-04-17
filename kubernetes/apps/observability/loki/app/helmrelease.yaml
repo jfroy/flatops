@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 5.43.6
+      version: 6.2.0
       sourceRef:
         kind: HelmRepository
         name: grafana
@@ -55,28 +55,27 @@ spec:
             object_store: s3
             schema: v12
             store: tsdb
+          - from: "2024-04-18"
+            index:
+              period: 24h
+              prefix: index_
+            object_store: s3
+            schema: v13
+            store: tsdb
       query_scheduler:
         max_outstanding_requests_per_tenant: 32768
-      storage_config:
-        tsdb_shipper:
-          shared_store: s3
       querier:
         max_concurrent: 16
+
     test:
       enabled: false
-    monitoring:
-      dashboards:
-        annotations:
-          grafana_folder: Loki
-      serviceMonitor:
-        metricsInstance:
-          enabled: false
-      selfMonitoring:
-        enabled: false
-        grafanaAgent:
-          installOperator: false
-      lokiCanary:
-        enabled: false
+    lokiCanary:
+      enabled: false
+
+    gateway:
+      image:
+        registry: ghcr.io
+
     write:
       replicas: 1
       extraArgs: &extraArgs
@@ -96,3 +95,9 @@ spec:
       extraArgs: *extraArgs
       extraEnvFrom: *extraEnvFrom
       persistence: *persistence
+
+    sidecar:
+      image:
+        repository: ghcr.io/kiwigrid/k8s-sidecar
+      rules:
+        searchNamespace: ALL
