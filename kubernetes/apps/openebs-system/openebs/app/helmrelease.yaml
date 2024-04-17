@@ -23,6 +23,8 @@ spec:
   values:
     ndm:
       enabled: false
+    ndmOperator:
+      enabled: false
     localprovisioner:
       enabled: true
       image: quay.io/openebs/provisioner-localpv
