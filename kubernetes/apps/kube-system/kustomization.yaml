@@ -5,11 +5,11 @@ resources:
   - ./namespace.yaml
   # --
   - ./cilium/ks.yaml
-  - ./external-snapshotter/ks.yaml
   - ./gateway-crd/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reflector/ks.yaml
   - ./reloader/ks.yaml
+  - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
