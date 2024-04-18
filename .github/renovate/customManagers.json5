@@ -5,9 +5,8 @@
       "customType": "regex",
       "description": ["Process custom dependencies"],
       "fileMatch": [
-        "(^|/).taskfiles/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)ansible/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"
+        "(^|/).taskfiles/.+\\.ya?ml$",
+        "(^|/)kubernetes/.+\\.ya?ml$"
       ],
       "matchStrings": [
         // # renovate: datasource=helm depName=cilium repository=https://helm.cilium.io
