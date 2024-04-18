@@ -42,6 +42,13 @@ spec:
       tls:
         - hosts:
             - *host
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: grafana
     persistence:
       enabled: false
     plugins: []
