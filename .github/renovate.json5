@@ -4,8 +4,6 @@
     "config:recommended",
     "docker:enableMajor",
     "replacements:k8s-registry-move",
-    ":automergeBranch",
-    ":automergePatch",
     ":dependencyDashboard",
     ":disableRateLimiting",
     ":semanticCommits",
@@ -24,7 +22,7 @@
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
   "rebaseWhen": "conflicted",
-  "schedule": ["on saturday"],
+  "schedule": ["every weekend"],
   "ignorePaths": ["**/*.sops.*", "**/.archive/**", "**/resources/**"],
   "flux": {
     "fileMatch": [
