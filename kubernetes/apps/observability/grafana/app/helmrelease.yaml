@@ -39,9 +39,6 @@ spec:
       ingressClassName: internal
       hosts:
         - &host "grafana.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - *host
     topologySpreadConstraints:
       - maxSkew: 1
         topologyKey: kubernetes.io/hostname
