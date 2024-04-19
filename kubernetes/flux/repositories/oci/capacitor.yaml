@@ -9,4 +9,4 @@ spec:
   interval: 12h
   url: oci://ghcr.io/gimlet-io/capacitor-manifests
   ref:
-    tag: v0.3.3
+    tag: v0.4.2
