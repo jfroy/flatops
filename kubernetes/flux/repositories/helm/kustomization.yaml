@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./1password.yaml
   - ./aquasecurity.yaml
+  - ./backube.yaml
   - ./bitnami.yaml
   - ./bjw-s.yaml
   - ./cilium.yaml
