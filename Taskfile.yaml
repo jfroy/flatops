@@ -33,8 +33,10 @@ includes:
   repository:
     aliases: ["repo"]
     taskfile: .taskfiles/Repository/Taskfile.yaml
+  rook: .taskfiles/Rook/Taskfile.yaml
   talos: .taskfiles/Talos/Taskfile.yaml
   sops: .taskfiles/Sops/Taskfile.yaml
+  volsync: .taskfiles/VolSync/Taskfile.yaml
   workstation: .taskfiles/Workstation/Taskfile.yaml
   user:
     taskfile: .taskfiles/User
