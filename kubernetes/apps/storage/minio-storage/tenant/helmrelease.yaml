@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: tenant
+  name: minio-dev-tenant
 spec:
   interval: 5m
   chart:
