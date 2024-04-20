@@ -28,13 +28,13 @@ jobs:
         with:
           path: pull
 
-      - name: Checkout Default Branch
+      - name: Checkout default branch
         uses: actions/checkout@v4
         with:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
-      - name: Diff Resources
+      - name: Diff resources
         uses: docker://ghcr.io/allenporter/flux-local:main
         with:
           args: >-
@@ -48,21 +48,18 @@ jobs:
             --sources "home-kubernetes"
             --output-file diff.patch
 
-      - name: Generate Diff
-        id: diff
+      - name: Generate diff markdown
+        id: diff-md
         run: |
-          cat diff.patch
-          echo "diff<<EOF" >> $GITHUB_OUTPUT
-          cat diff.patch >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo '```diff' > diff.md
+          cat diff.patch >> diff.md
+          echo '```' >> diff.md
+          echo "size=$(stat -c%s diff.patch)" >> "$GITHUB_OUTPUT"
 
-      - if: ${{ steps.diff.outputs.diff != '' }}
-        name: Add comment
+      - name: Add comment
+        if: ${{ steps.diff-md.outputs.size > 0 }}
         uses: mshick/add-pr-comment@v2
         with:
           message-id: "${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}"
           message-failure: Diff was not successful
-          message: |
-            ```diff
-            ${{ steps.diff.outputs.diff }}
-            ```
+          message-path: diff.md
