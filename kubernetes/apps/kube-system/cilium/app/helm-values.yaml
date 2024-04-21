@@ -21,7 +21,7 @@ ingressController:
   defaultSecretName: "${SECRET_DOMAIN/./-}-production-tls"
   service:
     annotations:
-      io.cilium/lb-ipam-ips: "192.168.6.4"
+      io.cilium/lb-ipam-ips: "10.100.0.4"
 gatewayAPI:
   enabled: true
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
