@@ -8,3 +8,4 @@ data:
   TIMEZONE: "America/Los_Angeles"
   CLUSTER_CIDR: "10.69.0.0/16"
   NODE_CIDR: "192.168.6.0/24"
+  BGP_ADVERTISED_CIDR: "10.100.0.0/16"
