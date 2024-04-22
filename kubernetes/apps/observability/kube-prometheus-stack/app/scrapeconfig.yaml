@@ -6,7 +6,9 @@ metadata:
   name: &name node-exporter
 spec:
   staticConfigs:
-    - targets: ["pikvm.flat:9100"]
+    - targets:
+      - "pikvm.flat:9100"
+      - "homeassistant.flat:9100"
   metricsPath: /metrics
   relabelings:
     - action: replace
