@@ -11,6 +11,8 @@ cgroup:
 cluster:
   id: 1
   name: talos-dev
+cni:
+  exclusive: false
 containerRuntime:
   integration: containerd
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
