@@ -31,3 +31,4 @@ resources:
   - ./tailscale.yaml
   - ./truecharts.yaml
   - ./vector.yaml
+  - ./victoriametrics.yaml

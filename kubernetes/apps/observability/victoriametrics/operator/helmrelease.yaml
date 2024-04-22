@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: vm-operator
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: victoria-metrics-operator
+      version: 0.30.1
+      sourceRef:
+        kind: HelmRepository
+        name: victoriametrics
+        namespace: flux-system
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: kube-prometheus-stack
+      namespace: observability
+  values:
+    fullnameOverride: vm-operator
+    operator:
+      enable_converter_ownership: true
+      useCustomConfigReloader: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 500Mi
+      requests:
+        cpu: 100m
+        memory: 150Mi
+    admissionWebhooks:
+      enabled: true
+      certManager:
+        enabled: true
+        issuer:
+          name: cluster-ca
+          kind: ClusterIssuer
+          group: cert-manager.io
