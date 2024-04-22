@@ -123,6 +123,14 @@ patches:
             - slot: 0
               tpm: {}
 
+  # Enable Host DNS: https://www.talos.dev/v1.7/talos-guides/network/host-dns/
+  - |-
+    machine:
+      features:
+        hostDNS:
+          enabled: true
+          resolveMemberNames: true
+
 controlPlane:
   patches:
     # Cluster configuration
@@ -160,5 +168,3 @@ controlPlane:
             enabled: true
             allowedRoles: ["os:admin"]
             allowedKubernetesNamespaces: ["system-upgrade"]
-
-
