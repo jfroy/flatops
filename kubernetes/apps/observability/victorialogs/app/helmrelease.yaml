@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: victoria-logs
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: victoria-logs-single
+      version: 0.3.7
+      sourceRef:
+        kind: HelmRepository
+        name: victoriametrics
+        namespace: flux-system
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    server:
+      persistentVolume:
+        enabled: true
+        storageClass: openebs-hostpath
+      serviceMonitor:
+        enabled: true
+    fluent-bit:
+      enabled: true
