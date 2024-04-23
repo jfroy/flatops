@@ -166,6 +166,12 @@ spec:
           revision: 6
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
+        smart:
+          # renovate: depName="Dashboard for smartctl_exporter"
+          gnetId: 20204
+          revision: 1
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         spegel:
           # renovate: depName="Spegel"
           gnetId: 18089
