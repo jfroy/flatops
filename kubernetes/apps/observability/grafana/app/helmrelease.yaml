@@ -48,7 +48,8 @@ spec:
             app.kubernetes.io/name: grafana
     persistence:
       enabled: false
-    plugins: []
+    plugins:
+      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.2.1/victorialogs-datasource-v0.2.1.zip;victorialogs-datasource
 
     datasources:
       datasources.yaml:
@@ -75,6 +76,10 @@ spec:
             jsonData:
               timeout: 60
               maxLines: 1000
+          - name: VictoriaLogs
+            type: victorialogs-datasource
+            access: proxy
+            url: http://victoria-logs-victoria-logs-single-server.observability:9428
 
     dashboardProviders:
       dashboardproviders.yaml:
@@ -310,6 +315,8 @@ spec:
         reporting_enabled: false
       news:
         news_feed_enabled: false
+      plugins:
+        allow_loading_unsigned_plugins: "victorialogs-datasource"
 
     sidecar:
       dashboards:
