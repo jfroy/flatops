@@ -32,6 +32,17 @@ nodes:
         dhcp: true
         vip:
           ip: "192.168.6.8"
+  - hostname: "talosvm-2"
+    ipAddress: "192.168.6.193"
+    installDisk: "/dev/vda"
+    machineSpec:
+      secureboot: true
+    talosImageURL: factory.talos.dev/installer-secureboot/3401021d503c0982c200e6f1d6fd10e5cae47ad1d3e8aeaf521bf3673ac09dd0
+    controlPlane: false
+    networkInterfaces:
+      - deviceSelector:
+          hardwareAddr: "52:54:00:0e:a2:1a"
+        dhcp: true
 
 patches:
   # Configure containerd
