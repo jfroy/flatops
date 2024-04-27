@@ -9,7 +9,10 @@ resources:
   - ./prometheusrule.yaml
 configMapGenerator:
   - name: alertmanager-config-tpl
-    files:
-      - alertmanager.yaml=./resources/alertmanager.yaml
+    files: [./resources/alertmanager.yaml]
+  - name: kube-state-metrics-config
+    files: [./resources/kube-state-metrics-config.yaml]
 generatorOptions:
   disableNameSuffixHash: true
+configurations:
+  - kustomizeconfig.yaml
