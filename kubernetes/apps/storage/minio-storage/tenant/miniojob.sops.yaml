@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+    name: mc-job-sa
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0ZzdLWlZKTFBqRDBwS3Ro
+            OEZBR2pjRFkzZmNvZDZtMTBTNDErTnVKVTNFClNPVWRqV29mOHJmYWFEMm1ieGVa
+            MWRmbzRQWnFJNldsTG1ScVZaemo2OUUKLS0tIHZZOUZDeHBaZU1RUzBDMHpuSldK
+            cHE1WFhqbzBhSjNHbGdvQWNNUGZ6bE0KwkWuWq0RET24obJzzI2MR/iTNGq7wb0t
+            weCAmsPBQYYVA+iVooT2QKR53T9ahGCAsjybzrxsWDeelNyM4p3rAg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-05-01T20:10:50Z"
+    mac: ENC[AES256_GCM,data:0N2gHnF9kvN5d6i+9KfQNWBQnB0/G4BqF7eI02tifUtb0RqqnzANIeqS8LYI3QFSeDgncbZzeV8ddIdPvr/rW3xqzhveJYxERGbGxeImf59ongfB5CpRAmKO9lqlFzwqjXaVZTAH9CiFQrgMoZ00VExaAK5hcaeZto5+Al61oUs=,iv:tahN9n6dMJfbsNnvU5FcXYI53rCD0mBOL7OmLKpUb30=,tag:G4+CMcgYCkFHls3MN3v/VA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData|password)$
+    version: 3.8.1
+---
+apiVersion: sts.min.io/v1alpha1
+kind: PolicyBinding
+metadata:
+    name: mc-job-binding
+spec:
+    application:
+        namespace: storage
+        serviceaccount: mc-job-sa
+    policies:
+        - consoleAdmin
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0ZzdLWlZKTFBqRDBwS3Ro
+            OEZBR2pjRFkzZmNvZDZtMTBTNDErTnVKVTNFClNPVWRqV29mOHJmYWFEMm1ieGVa
+            MWRmbzRQWnFJNldsTG1ScVZaemo2OUUKLS0tIHZZOUZDeHBaZU1RUzBDMHpuSldK
+            cHE1WFhqbzBhSjNHbGdvQWNNUGZ6bE0KwkWuWq0RET24obJzzI2MR/iTNGq7wb0t
+            weCAmsPBQYYVA+iVooT2QKR53T9ahGCAsjybzrxsWDeelNyM4p3rAg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-05-01T20:10:50Z"
+    mac: ENC[AES256_GCM,data:0N2gHnF9kvN5d6i+9KfQNWBQnB0/G4BqF7eI02tifUtb0RqqnzANIeqS8LYI3QFSeDgncbZzeV8ddIdPvr/rW3xqzhveJYxERGbGxeImf59ongfB5CpRAmKO9lqlFzwqjXaVZTAH9CiFQrgMoZ00VExaAK5hcaeZto5+Al61oUs=,iv:tahN9n6dMJfbsNnvU5FcXYI53rCD0mBOL7OmLKpUb30=,tag:G4+CMcgYCkFHls3MN3v/VA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData|password)$
+    version: 3.8.1
+---
+apiVersion: job.min.io/v1alpha1
+kind: MinIOJob
+metadata:
+    name: minio-job-create-sa
+spec:
+    serviceAccountName: mc-job-sa
+    tenant:
+        name: minio-dev
+        namespace: storage
+    commands:
+        - name: add-user-volsync
+          op: admin/user/add
+          args:
+            user: volsync
+            password: ENC[AES256_GCM,data:2jPvDkHic9yFNw3n4SdF,iv:DtjFNxla9rZj3RJJ7gkCvZrQs1CsET5piNij0Osr9SI=,tag:xODmcYGHlnM3ay0yKgJ/Jg==,type:str]
+        - name: add-policy-volsync
+          op: admin/policy/create
+          args:
+            name: volsync-access
+            policy: |
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Action": [
+                                "s3:*"
+                            ],
+                            "Resource": [
+                                "arn:aws:s3:::volsync",
+                                "arn:aws:s3:::volsync/*"
+                            ]
+                        }
+                    ]
+                }
+        - op: admin/policy/attach
+          dependsOn:
+            - add-user-volsync
+            - add-policy-volsync
+          args:
+            policy: volsync-access
+            user: volsync
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0ZzdLWlZKTFBqRDBwS3Ro
+            OEZBR2pjRFkzZmNvZDZtMTBTNDErTnVKVTNFClNPVWRqV29mOHJmYWFEMm1ieGVa
+            MWRmbzRQWnFJNldsTG1ScVZaemo2OUUKLS0tIHZZOUZDeHBaZU1RUzBDMHpuSldK
+            cHE1WFhqbzBhSjNHbGdvQWNNUGZ6bE0KwkWuWq0RET24obJzzI2MR/iTNGq7wb0t
+            weCAmsPBQYYVA+iVooT2QKR53T9ahGCAsjybzrxsWDeelNyM4p3rAg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-05-01T20:10:50Z"
+    mac: ENC[AES256_GCM,data:0N2gHnF9kvN5d6i+9KfQNWBQnB0/G4BqF7eI02tifUtb0RqqnzANIeqS8LYI3QFSeDgncbZzeV8ddIdPvr/rW3xqzhveJYxERGbGxeImf59ongfB5CpRAmKO9lqlFzwqjXaVZTAH9CiFQrgMoZ00VExaAK5hcaeZto5+Al61oUs=,iv:tahN9n6dMJfbsNnvU5FcXYI53rCD0mBOL7OmLKpUb30=,tag:G4+CMcgYCkFHls3MN3v/VA==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData|password)$
+    version: 3.8.1
