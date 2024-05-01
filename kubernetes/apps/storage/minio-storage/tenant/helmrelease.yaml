@@ -51,3 +51,9 @@ spec:
         failureThreshold: 6
       readiness: *probe
       prometheusOperator: true
+    ingress:
+      api:
+        enabled: true
+        ingressClassName: internal
+        host: minio.${SECRET_DOMAIN}
+        path: /
