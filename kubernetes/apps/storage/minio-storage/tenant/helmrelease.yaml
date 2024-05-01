@@ -36,8 +36,10 @@ spec:
         enabled: true
       buckets:
         - name: loki
+        - name: volsync
       users:
         - name: loki-user-secret
+        - name: volsync-user-secret
       liveness: &probe
         httpGet:
           path: /minio/health/live
