@@ -31,11 +31,12 @@ spec:
           app:
             image:
               repository: ghcr.io/twin/gatus
-              tag: v5.8.0@sha256:fecb4c38722df59f5e00ab4fcf2393d9b8dad9161db208d8d79386dc86da8a55
+              tag: v5.10.0@sha256:658a9cb993ff0b16832947dab8de885b2e2a66037330b839310fa3f39d5c00f4
             env:
               TZ: America/Los_Angeles
               GATUS_CONFIG_PATH: /config
-              WEB_PORT: &port 80
+              GATUS_DELAY_START_SECONDS: 5
+              CUSTOM_WEB_PORT: &port 80
               POSTGRES_URI:
                 valueFrom:
                   secretKeyRef:
@@ -47,7 +48,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: &path /health
+                    path: /health
                     port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
@@ -72,8 +73,9 @@ spec:
               FOLDER: /config
               LABEL: gatus.io/enabled
               NAMESPACE: ALL
-              RESOURCE: configmap
+              RESOURCE: both
               UNIQUE_FILENAMES: true
+              METHOD: WATCH
             securityContext: *securityContext
             resources: *resources
             restartPolicy: Always
@@ -103,6 +105,18 @@ spec:
             path: /metrics
             interval: 1m
             scrapeTimeout: 10s
+    ingress:
+      app:
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+        hosts:
+          - host: status.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
     serviceAccount:
       create: true
       name: gatus
