@@ -18,6 +18,10 @@ spec:
             - secretRef:
                 name: ${app}-volsync-secret
           resources: {}
+          volumeMounts:
+            - name: kube-root-ca
+              mountPath: /etc/ssl/certs/ca-certificates.crt
+              subPath: ca.crt
         - name: r2
           image: docker.io/restic/restic:0.16.4
           args: ["unlock", "--remove-all"]
@@ -25,3 +29,14 @@ spec:
             - secretRef:
                 name: ${app}-volsync-r2-secret
           resources: {}
+          volumeMounts:
+            - name: kube-root-ca
+              mountPath: /etc/ssl/certs/ca-certificates.crt
+              subPath: ca.crt
+      volumes:
+        - name: kube-root-ca
+          configMap:
+            name: kube-root-ca.crt
+            items:
+              - key: ca.crt
+                path: ca.crt
