@@ -40,16 +40,26 @@ spec:
       users:
         - name: loki-user-secret
         - name: volsync-user-secret
-      liveness: &probe
+      liveness:
         httpGet:
           path: /minio/health/live
           port: 9000
           scheme: HTTPS
-        initialDelaySeconds: 30
+        initialDelaySeconds: 120
         periodSeconds: 30
         timeoutSeconds: 10
-        failureThreshold: 6
-      readiness: *probe
+        successThreshold: 1
+        failureThreshold: 3
+      readiness:
+        httpGet:
+          path: /minio/health/ready
+          port: 9000
+          scheme: HTTPS
+        initialDelaySeconds: 120
+        periodSeconds: 15
+        timeoutSeconds: 10
+        successThreshold: 1
+        failureThreshold: 3
       prometheusOperator: true
     ingress:
       api:
