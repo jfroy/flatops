@@ -40,7 +40,8 @@ spec:
               # QBITTORRENT__PORT: &port 80
               # QBITTORRENT__BT_PORT: &bittorrentPort 50413
               # QBT_Application__MemoryWorkingSetLimit: 10000
-              # QBT_Preferences__WebUI__AlternativeUIEnabled: false
+              QBT_Preferences__WebUI__AlternativeUIEnabled: true
+              QBT_Preferences__WebUI__RootFolder: /share/vuetorrent
               # QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               # QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
               #   10.42.0.0/16, 192.168.42.0/24
@@ -64,7 +65,7 @@ spec:
             #       timeoutSeconds: 1
             #       failureThreshold: 3
             #   readiness: *probes
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -73,6 +74,28 @@ spec:
                 cpu: 100m
               limits:
                 memory: 1Gi
+        initContainers:
+          vuetorrent:
+            image:
+              repository: ghcr.io/jfroy/vuetorrent
+              tag: 2.8.0@sha256:ee811e6c58ca9a3443ab7971479c6b25a2047fe8f275463075fd75f15bc38df2
+            command:
+            - "/bin/sh"
+            - "-c"
+            - "ln -s /proc/$$$$$$/root/vuetorrent /share/vuetorrent; touch /share/startup; sleep infinity"
+            probes:
+              startup:
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /bin/sh
+                      - -c
+                      - test -f /share/startup
+                  initialDelaySeconds: 1
+                  periodSeconds: 1
+            securityContext: *securityContext
+            restartPolicy: Always
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -108,3 +131,17 @@ spec:
     persistence:
       config:
         existingClaim: qbittorrent
+      share:
+        type: emptyDir
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: qbittorrent
+            patch: |
+              - op: add
+                path: /spec/template/spec/shareProcessNamespace
+                value: true
