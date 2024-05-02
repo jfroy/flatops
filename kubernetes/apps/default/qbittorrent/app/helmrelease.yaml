@@ -33,14 +33,10 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/hotio/qbittorrent
-              tag: release-4.6.4@sha256:c9cc47011232f57aef6915daa8f0015e6027b85c310947bee8982387ee6c5734
+              repository: ghcr.io/jfroy/qbittorrent
+              tag: 4.6.4@sha256:f2681ae6901748c2124f14a6f1c1cdb0e936f1bdf1c60fb6fc6cd2a965b93f3d
             env:
               TZ: America/Los_Angeles
-              PUID: 568
-              PGID: 568
-              UMASK: 002
-              S6_READ_ONLY_ROOT: "1"
               # QBITTORRENT__PORT: &port 80
               # QBITTORRENT__BT_PORT: &bittorrentPort 50413
               # QBT_Application__MemoryWorkingSetLimit: 10000
@@ -70,7 +66,7 @@ spec:
             #   readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
@@ -84,6 +80,7 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
         seccompProfile: { type: RuntimeDefault }
     service:
       app:
