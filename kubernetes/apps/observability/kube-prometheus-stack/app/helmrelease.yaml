@@ -116,6 +116,9 @@ spec:
             sourceLabels: ["__name__"]
             regex: prober_probe_duration_seconds_bucket
         metricRelabelings:
+          # Drop high-cardinality labels.
+          - action: labeldrop
+            regex: (uid|id|name|pod_uid|interface)
           - action: drop
             sourceLabels: ["__name__"]
             regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
@@ -134,7 +137,7 @@ spec:
       endpoints: *cp
       serviceMonitor: *sm
     kubeProxy:
-      enabled: false
+      enabled: false  # KubeProxy is disabled in the cluster, see Cilium/Talos configs
 
     prometheus-node-exporter:
       fullnameOverride: node-exporter
@@ -175,9 +178,11 @@ spec:
         retentionSize: 5GB
         resources:
           requests:
-            cpu: 100m
+            cpu: 250m
+            memory: 2Gi
           limits:
-            memory: 1500Mi
+            cpu: 1000m
+            memory: 8Gi
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -185,6 +190,13 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
+        # topologySpreadConstraints:
+        #   - maxSkew: 1
+        #     topologyKey: "kubernetes.io/hostname"
+        #     whenUnsatisfiable: "DoNotSchedule"
+        #     labelSelector:
+        #       matchLabels:
+        #         prometheus: "kps"
 
   postRenderers:
     - kustomize:
