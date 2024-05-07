@@ -29,16 +29,18 @@ spec:
       namespace: observability
   values:
     fullnameOverride: vm-operator
+    rbac:
+      pspEnabled: false
     operator:
       enable_converter_ownership: true
       useCustomConfigReloader: true
     resources:
       limits:
-        cpu: 500m
-        memory: 500Mi
+        cpu: 200m
+        memory: 2Gi
       requests:
-        cpu: 100m
-        memory: 150Mi
+        cpu: 5m
+        memory: 50M
     admissionWebhooks:
       enabled: true
       certManager:
