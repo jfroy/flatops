@@ -50,6 +50,7 @@ spec:
       enabled: false
     plugins:
       - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.2.1/victorialogs-datasource-v0.2.1.zip;victorialogs-datasource
+      - https://github.com/VictoriaMetrics/grafana-datasource/releases/download/v0.8.1/victoriametrics-datasource-v0.8.1.zip;victoriametrics-datasource
 
     datasources:
       datasources.yaml:
@@ -316,7 +317,7 @@ spec:
       news:
         news_feed_enabled: false
       plugins:
-        allow_loading_unsigned_plugins: "victorialogs-datasource"
+        allow_loading_unsigned_plugins: "victorialogs-datasource,victoriametrics-datasource"
 
     sidecar:
       dashboards:
