@@ -16,8 +16,8 @@ route:
   group_by: ["alertname", "job"]
   group_interval: 10m
   group_wait: 1m
-  receiver: "null"
-  repeat_interval: 12h
+  receiver: discord
+  repeat_interval: 1h
   routes:
     - receiver: "null"
       matchers: ["alertname = InfoInhibitor"]
@@ -26,8 +26,52 @@ route:
       group_wait: 0s
       matchers: ["alertname = Watchdog"]
       repeat_interval: 5m
+    - receiver: discord
+      continue: true
+      matchers:
+        - severity = "critical"
+        - severity = "warning" # gotta try it out to know what's what
 receivers:
   - name: heartbeat
     webhook_configs:
       - url: "{{ .ALERTMANAGER_HEALTHCHECKS_IO_URL }}"
   - name: "null"
+  - name: discord
+    discord_configs:
+      - send_resolved: true
+        webhook_url: "{{ .DISCORD_WEBHOOK_URL }}"
+        # yoinked below from onedr0p, blame him if something doesn't work
+        title: >-
+          {{ .GroupLabels.alertname }} - {{ .GroupLabels.namespace }}
+          {{- if ne .CommonLabels.severity "" }} ({{ .CommonLabels.severity}}){{- end }}
+          ({{ .GroupLabels.cluster }})
+          [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}]
+        message: |-
+          {{- $root := . }}
+          {{- $rm := stringSlice "instance" "kubernetes_node" "endpoint" "prometheus" "service" "cluster" "container" "job" "severity" }}
+          {{- $common := ( ( .CommonLabels.Remove $root.GroupLabels.Names ).Remove $rm ) }}
+          {{- if gt (len $common.SortedPairs) 0 }}
+          ## Common Labels
+          {{- range $common.SortedPairs }}
+          > {{ .Name }}: `{{ .Value }}`
+          {{- end }}
+          {{- end }}
+          ## Alerts
+          {{- range .Alerts }}
+            {{- if ne .Annotations.description "" }}
+          - **{{ .Annotations.description }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- else if ne .Annotations.summary "" }}
+          - **{{ .Annotations.summary }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- else if ne .Annotations.message "" }}
+          - **{{ .Annotations.message }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- else }}
+          - **Alert description not available** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- end }}
+            {{- $uniq := ( ( .Labels.Remove $root.GroupLabels.Names ).Remove $root.CommonLabels.Names ) }}
+            {{- if gt (len $uniq.SortedPairs) 0 }}
+              {{- range $uniq.SortedPairs }}
+          > {{ .Name }}: `{{ .Value }}`
+              {{- end }}
+            {{- end }}
+          {{- end }}
+
