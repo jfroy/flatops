@@ -42,6 +42,7 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
+      enabled: false  # Using VictoriaMetrics Alertmanager
       alertmanagerSpec:
         replicas: 1
         alertmanagerConfiguration:
@@ -55,6 +56,7 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
+
     grafana:
       enabled: false
       forceDeployDashboards: true
@@ -144,6 +146,7 @@ spec:
       fullnameOverride: node-exporter
 
     prometheusOperator:
+      enabled: false  # Using VictoriaMetrics Operator
       fullnameOverride: prometheus-operator
       admissionWebhooks:
         certManager:
@@ -156,6 +159,7 @@ spec:
             group: cert-manager.io
 
     prometheus:
+      enabled: false  # Using VictoriaMetrics
       prometheusSpec:
         # Must match grafana datasources.datasources.yaml.datasources.Prometheus.jsonData.timeInterval
         scrapeInterval: 30s
