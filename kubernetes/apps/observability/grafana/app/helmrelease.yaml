@@ -327,8 +327,6 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
-      auth.anonymous:
-        enabled: true
       news:
         news_feed_enabled: false
       plugins:
