@@ -42,7 +42,6 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      enabled: false  # Using VictoriaMetrics Alertmanager
       alertmanagerSpec:
         replicas: 1
         alertmanagerConfiguration:
@@ -146,7 +145,6 @@ spec:
       fullnameOverride: node-exporter
 
     prometheusOperator:
-      enabled: false  # Using VictoriaMetrics Operator
       fullnameOverride: prometheus-operator
       admissionWebhooks:
         certManager:
