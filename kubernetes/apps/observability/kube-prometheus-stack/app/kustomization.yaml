@@ -5,11 +5,10 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./alertmanagerconfig.yaml
   - ./scrapeconfig.yaml
   - ./prometheusrule.yaml
 configMapGenerator:
-  - name: alertmanager-config-tpl
-    files: [./resources/alertmanager.yaml]
   - name: kube-state-metrics-config
     files: [./resources/kube-state-metrics-config.yaml]
 generatorOptions:

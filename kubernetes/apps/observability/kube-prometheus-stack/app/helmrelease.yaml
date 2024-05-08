@@ -43,9 +43,11 @@ spec:
 
     alertmanager:
       alertmanagerSpec:
-        useExistingSecret: true
-        configSecret: alertmanager-config
         replicas: 1
+        alertmanagerConfiguration:
+          name: cluster
+          global:
+            resolveTimeout: 5m
         storage:
           volumeClaimTemplate:
             spec:
@@ -53,7 +55,6 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-
     grafana:
       enabled: false
       forceDeployDashboards: true

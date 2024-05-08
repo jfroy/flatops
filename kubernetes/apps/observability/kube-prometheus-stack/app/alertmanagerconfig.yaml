@@ -1,45 +1,39 @@
 ---
-global:
-  resolve_timeout: 5m
-inhibit_rules:
-  - source_matchers: ["severity = critical"]
-    target_matchers: ["severity =~ warning|info"]
-    equal: ["namespace", "alertname"]
-  - source_matchers: ["severity = warning"]
-    target_matchers: ["severity = info"]
-    equal: ["namespace", "alertname"]
-  - source_matchers: ["alertname = InfoInhibitor"]
-    target_matchers: ["severity = info"]
-    equal: ["namespace"]
-  - target_matchers: ["alertname = InfoInhibitor"]
-route:
-  group_by: ["alertname", "job"]
-  group_interval: 10m
-  group_wait: 1m
-  receiver: discord
-  repeat_interval: 1h
-  routes:
-    - receiver: "null"
-      matchers: ["alertname = InfoInhibitor"]
-    - receiver: heartbeat
-      group_interval: 5m
-      group_wait: 0s
-      matchers: ["alertname = Watchdog"]
-      repeat_interval: 5m
-    - receiver: discord
-      continue: true
-      matchers:
-        - severity = "critical"
-        - severity = "warning" # gotta try it out to know what's what
-receivers:
-  - name: heartbeat
-    webhook_configs:
-      - url: "{{ .ALERTMANAGER_HEALTHCHECKS_IO_URL }}"
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/alertmanagerconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: cluster
+spec:
+  route:
+    groupBy: ["alertname", "job"]
+    groupInterval: 10m
+    groupWait: 1m
+    receiver: "null"
+    repeatInterval: 1h
+    routes:
+      - receiver: "null"
+        matchers: [{name: alertname, value: InfoInhibitor, matchType: =}]
+      - receiver: heartbeat
+        groupInterval: 5m
+        groupWait: 0s
+        repeatInterval: 5m
+        matchers: [{name: alertname, value: Watchdog, matchType: =}]
+      - receiver: discord
+        matchers: [{name: severity, value: critical|warning, matchType: =~}]
+  receivers:
   - name: "null"
+  - name: heartbeat
+    webhookConfigs:
+      - urlSecret:
+          name: alertmanager-secrets
+          key: healthchecks-io-url
   - name: discord
-    discord_configs:
-      - send_resolved: true
-        webhook_url: "{{ .DISCORD_WEBHOOK_URL }}"
+    discordConfigs:
+      - sendResolved: true
+        apiURL:
+          name: alertmanager-secrets
+          key: discord-webhook-url
         # yoinked below from onedr0p, blame him if something doesn't work
         title: >-
           {{ .GroupLabels.alertname }} - {{ .GroupLabels.namespace }}
@@ -74,4 +68,14 @@ receivers:
               {{- end }}
             {{- end }}
           {{- end }}
-
+  inhibitRules:
+    - sourceMatch: [{name: severity, value: critical, matchType: =}]
+      targetMatch: [{ name: severity, value: warning|info, matchType: =~ }]
+      equal: ["namespace", "alertname"]
+    - sourceMatch: [{name: severity, value: warning, matchType: =}]
+      targetMatch: [{ name: severity, value: info, matchType: = }]
+      equal: ["namespace", "alertname"]
+    - sourceMatch: [{name: alertname, value: InfoInhibitor, matchType: =}]
+      targetMatch: [{ name: severity, value: info, matchType: = }]
+      equal: ["namespace"]
+    - targetMatch: [{ name: alertname, value: InfoInhibitor, matchType: = }]
