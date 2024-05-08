@@ -12,7 +12,7 @@ spec:
   externalLabels:
     cluster: talos-dev
   notifiers:
-    - url: http://vmalertmanager-stack.observability.svc:9093
+    - url: http://alertmanager-operated.observability.svc:9093
   remoteRead:
     url: http://vmsingle-stack.observability.svc:8429
   remoteWrite:

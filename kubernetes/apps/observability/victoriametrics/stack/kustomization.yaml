@@ -2,9 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources: []
-  # - vmagent.yaml
-  # - vmalert.yaml
-  # - vmalertmanager.yaml
-  # - vmservicescrape.yaml
-  # - vmsingle.yaml
+resources:
+  - vmagent.yaml
+  - vmalert.yaml
+  - vmservicescrape.yaml
+  - vmsingle.yaml
