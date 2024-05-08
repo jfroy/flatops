@@ -59,28 +59,41 @@ spec:
           - { name: Prometheus, orgId: 1 }
           - { name: Loki, orgId: 1 }
         datasources:
+          # - name: Prometheus
+          #   type: prometheus
+          #   uid: prometheus
+          #   access: proxy
+          #   url: http://kube-prometheus-stack-prometheus.observability:9090
+          #   isDefault: true
+          #   jsonData:
+          #     prometheusType: Prometheus
+          #     # Must match prometheus prometheus.prometheusSpec.scrapeInterval
+          #     timeInterval: 30s
           - name: Prometheus
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://kube-prometheus-stack-prometheus.observability:9090
+            url: http://vmsingle-stack.observability.svc:8429
             isDefault: true
             jsonData:
               prometheusType: Prometheus
-              # Must match prometheus prometheus.prometheusSpec.scrapeInterval
-              timeInterval: 30s
+              timeInterval: 60s
           - name: Loki
             type: loki
             uid: loki
             access: proxy
-            url: http://loki-gateway.observability
+            url: http://loki-gateway.observability.svc
             jsonData:
               timeout: 60
               maxLines: 1000
-          - name: VictoriaLogs
-            type: victorialogs-datasource
+          - name: VictoriaMetrics
+            type: victoriametrics-datasource
             access: proxy
-            url: http://victoria-logs-victoria-logs-single-server.observability:9428
+            url: http://vmsingle-stack.observability.svc:8429
+          # - name: VictoriaLogs
+          #   type: victorialogs-datasource
+          #   access: proxy
+          #   url: http://victoria-logs-victoria-logs-single-server.observability:9428
 
     dashboardProviders:
       dashboardproviders.yaml:
