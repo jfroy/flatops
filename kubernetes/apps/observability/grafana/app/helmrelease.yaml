@@ -139,14 +139,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/nginx-folder
-          - name: prometheus
+          - name: observability
             orgId: 1
-            folder: Prometheus
+            folder: Observability
             type: file
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/prometheus-folder
+              path: /var/lib/grafana/dashboards/observability-folder
           - name: unifi
             orgId: 1
             folder: Unifi
@@ -290,11 +290,16 @@ spec:
         nginx-request-handling-performance:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
           datasource: Prometheus
-      prometheus:
+      observability:
         prometheus:
           # renovate: depName="Prometheus"
           gnetId: 19105
           revision: 3
+          datasource: Prometheus
+        victoria-operator:
+          # renovate: depName="VictoriaMetrics - operator"
+          gnetId: 17869
+          revision: 2
           datasource: Prometheus
       unifi:
         unifi-insights:
