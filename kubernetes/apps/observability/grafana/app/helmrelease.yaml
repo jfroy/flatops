@@ -296,10 +296,25 @@ spec:
           gnetId: 19105
           revision: 3
           datasource: Prometheus
+        victoria-agent:
+          # renovate: depName="VictoriaMetrics - vmagent"
+          gnetId: 12683
+          revision: 17
+          datasource: Prometheus
+        victoria-alert:
+          # renovate: depName="VictoriaMetrics - vmalert"
+          gnetId: 14950
+          revision: 10
+          datasource: Prometheus
         victoria-operator:
           # renovate: depName="VictoriaMetrics - operator"
           gnetId: 17869
           revision: 2
+          datasource: Prometheus
+        victoria-single:
+          # renovate: depName="VictoriaMetrics - single-node"
+          gnetId: 10229
+          revision: 35
           datasource: Prometheus
       unifi:
         unifi-insights:
