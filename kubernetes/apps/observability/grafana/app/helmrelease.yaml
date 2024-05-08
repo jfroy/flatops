@@ -22,7 +22,7 @@ spec:
     remediation:
       retries: 3
   dependsOn:
-    - name: kube-prometheus-stack
+    - name: kps
       namespace: observability
     - name: loki
       namespace: observability

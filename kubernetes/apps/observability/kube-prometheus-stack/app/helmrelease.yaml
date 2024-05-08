@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: kube-prometheus-stack
+  name: &app kps
 spec:
   interval: 5m
   timeout: 15m
@@ -39,6 +39,7 @@ spec:
       name: kube-state-metrics-config
       valuesKey: kube-state-metrics-config.yaml
   values:
+    nameOverride: *app
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
@@ -208,7 +209,7 @@ spec:
               group: monitoring.coreos.com
               version: v1
               kind: ServiceMonitor
-              name: kube-prometheus-stack-kubelet
+              name: kps-kubelet
             patch: |
               - op: add
                 path: /spec/endpoints/0/trackTimestampsStaleness
