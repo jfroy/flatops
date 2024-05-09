@@ -30,5 +30,7 @@ spec:
       valuesKey: operator-token
       targetPath: operator.token.value
   values:
+    connect:
+      serviceType: ClusterIP
     operator:
       create: true
