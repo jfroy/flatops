@@ -22,7 +22,7 @@ spec:
       memory: 256Mi
     limits:
       cpu: 1
-      memory: 2Gi
+      memory: 1Gi
   scrapeInterval: 60s
   selectAllByDefault: true
   # topologySpreadConstraints:

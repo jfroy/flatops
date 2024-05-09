@@ -34,7 +34,7 @@ spec:
         memory: "64Mi"
         cpu: "500m"
       limits:
-        memory: "1024Mi"
+        memory: 1Gi
         cpu: "6000m"
     service:
       ports:
