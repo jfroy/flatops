@@ -42,6 +42,9 @@ spec:
                   secretKeyRef:
                     name: cnpg-cluster-app
                     key: uri
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
             probes:
               liveness: &probes
                 enabled: true
