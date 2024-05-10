@@ -33,3 +33,10 @@ spec:
         tag: v5.0.14-34-gf1c3de23
         pullPolicy: IfNotPresent
       replicaCount: 1
+      resources:
+        requests:
+          memory: 128Mi
+    console:
+      resources:
+        requests:
+          memory: 128Mi

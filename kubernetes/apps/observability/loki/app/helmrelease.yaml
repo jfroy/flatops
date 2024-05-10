@@ -100,6 +100,13 @@ spec:
       extraEnvFrom: *extraEnvFrom
       persistence: *persistence
 
+    resultsCache:
+      # -- Amount of memory allocated to results-cache for object storage (in MB).
+      allocatedMemory: 128
+    chunksCache:
+      # -- Amount of memory allocated to chunks-cache for object storage (in MB).
+      allocatedMemory: 1024
+
     sidecar:
       image:
         repository: ghcr.io/kiwigrid/k8s-sidecar

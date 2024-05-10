@@ -16,10 +16,10 @@ spec:
   remoteWrite:
     - url: http://vmsingle-stack.observability.svc:8429/api/v1/write
   replicaCount: 1
-  resources: # TODO: refine
+  resources:
     requests:
       cpu: 300m
-      memory: 256Mi
+      memory: 128Mi
     limits:
       cpu: 1
       memory: 1Gi
