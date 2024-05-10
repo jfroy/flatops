@@ -23,6 +23,12 @@ kube-state-metrics:
           - imagepolicies
           - imageupdateautomations
         verbs: [ "list", "watch" ]
+  prometheus:
+    monitor:
+      metricRelabelings:
+        # Drop high-cardinality labels.
+        - action: labeldrop
+          regex: (uid|id|name|pod_uid|interface)
   customResourceState:
     enabled: true
     config:
