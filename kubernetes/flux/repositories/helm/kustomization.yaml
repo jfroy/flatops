@@ -21,6 +21,7 @@ resources:
   - ./metrics-server.yaml
   - ./minio.yaml
   - ./node-feature-discovery.yaml
+  - ./nvidia.yaml
   - ./openebs.yaml
   - ./piraeus.yaml
   - ./postfinance.yaml
