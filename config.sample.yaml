@@ -18,7 +18,7 @@ bootstrap_talos:
   # (Optional: Talos) Go to https://factory.talos.dev/ and choose any System Extensions, and/or add kernel arguments you need.
   #   Copy the generated schematic id and paste it below.
   #   IMPORTANT: The default ID given here means no System Extensions or Kernel args will be used.
-  schematic_id: "376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba"
+  schematic_id: "326218882c02f5e864925707eee1821207b2a3689024df0579cc7dfd3cf2187f"
   # (Optional: Talos) Add vlan tag to network master device, this is not needed if you tag ports on your switch with the VLAN
   #   See: https://www.talos.dev/latest/advanced/advanced-networking/#vlans
   vlan: ""
