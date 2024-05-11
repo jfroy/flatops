@@ -5,4 +5,6 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./serviceaccount.yaml
+  - ./policybinding.yaml
   - ./miniojob.sops.yaml
