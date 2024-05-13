@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: ghcr.io/siderolabs/omni
-              tag: v0.34.0@sha256:444e06fa9d56048bcbe599e560362c43763074d0a65820a51886a8f7ce47e0b7
+              tag: v0.35.0@sha256:2b6a5746920a2fb8eb22c1e2459670307c73662aba25274e040887427a649cc6
             args:
               - --account-id=${OMNI_ACCOUNT_UUID}
               - --name=*app
