@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
+  - ./homepage/ks.yaml
   - ./qbittorrent/ks.yaml

@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./helmrelease.yaml
+  - ./externalsecrets.yaml
+  - ./rbac.yaml
+  - ../../../../templates/gatus/guarded
+configMapGenerator:
+  - name: homepage-config
+    files:
+      - ./resources/bookmarks.yaml
+      - ./resources/custom.css
+      - ./resources/custom.js
+      - ./resources/docker.yaml
+      - ./resources/kubernetes.yaml
+      - ./resources/services.yaml
+      - ./resources/settings.yaml
+      - ./resources/widgets.yaml
+generatorOptions:
+  disableNameSuffixHash: true
