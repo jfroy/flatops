@@ -24,18 +24,31 @@ transforms:
 
 sinks:
   loki:
-    inputs: ["kubernetes_remap"]
     type: loki
+    inputs: [kubernetes_remap]
     endpoint: http://loki-gateway.observability
     encoding: { codec: json }
     out_of_order_action: accept
     remove_label_fields: true
     remove_timestamp: true
     labels:
-      app: '{{ custom_app_name }}'
-      namespace: '{{ kubernetes.pod_namespace }}'
-      node: '{{ kubernetes.pod_node_name }}'
+      app: "{{ custom_app_name }}"
+      namespace: "{{ kubernetes.pod_namespace }}"
+      node: "{{ kubernetes.pod_node_name }}"
   prom_exporter:
     type: prometheus_exporter
     inputs: [internal_metrics]
     address: 0.0.0.0:9090
+  victorialogs:
+    type: elasticsearch
+    inputs: [kubernetes_remap]
+    endpoints: [http://victoria-logs-victoria-logs-single-server.observability:9428/insert/elasticsearch/]
+    mode: bulk
+    api_version: v8
+    healthcheck:
+      enabled: false
+    query:
+      _msg_field: message
+      _stream_fields: host,container_name
+      _time_field: timestamp
+      X-Powered-By: Vector
