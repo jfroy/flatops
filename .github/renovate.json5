@@ -5,7 +5,7 @@
     "docker:enableMajor",
     "replacements:k8s-registry-move",
     "schedule:automergeWeekends",
-    "schedule:daily",
+    "schedule:nonOfficeHours",
     ":dependencyDashboard",
     ":disableRateLimiting",
     ":semanticCommits",
