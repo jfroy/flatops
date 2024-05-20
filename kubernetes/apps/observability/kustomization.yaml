@@ -10,6 +10,6 @@ resources:
   - ./loki/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./unpoller/ks.yaml
-  - ./vector/ks.yaml
+  - ./vector-aggregator/ks.yaml
   - ./victorialogs/ks.yaml
   - ./victoriametrics/ks.yaml
