@@ -31,5 +31,3 @@ spec:
         storageClass: openebs-hostpath
       serviceMonitor:
         enabled: true
-    fluent-bit:
-      enabled: true
