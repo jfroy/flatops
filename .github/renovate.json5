@@ -4,7 +4,6 @@
     "config:recommended",
     "docker:enableMajor",
     "replacements:k8s-registry-move",
-    "schedule:automergeWeekends",
     "schedule:nonOfficeHours",
     ":dependencyDashboard",
     ":disableRateLimiting",
