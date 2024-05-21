@@ -3,8 +3,6 @@
 version: "3"
 
 vars:
-  # renovate: datasource=github-releases depName=prometheus-operator/prometheus-operator
-  PROMETHEUS_OPERATOR_VERSION: v0.74.0
   CLUSTER_SECRET_SOPS_FILE: "{{.KUBERNETES_DIR}}/flux/vars/cluster-secrets.sops.yaml"
   CLUSTER_SETTINGS_FILE: "{{.KUBERNETES_DIR}}/flux/vars/cluster-settings.yaml"
   GITHUB_DEPLOY_KEY_FILE: "{{.KUBERNETES_DIR}}/bootstrap/flux/github-deploy-key.sops.yaml"
@@ -14,6 +12,7 @@ tasks:
   bootstrap:
     desc: Bootstrap Flux into a Kubernetes cluster
     cmds:
+      # FIXME: Installing the prom manifests has been removed from upstream, but they're needed for bootstrap?
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/{{.PROMETHEUS_OPERATOR_VERSION}}/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
@@ -25,8 +24,10 @@ tasks:
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename {{.CLUSTER_SETTINGS_FILE}}
       - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --kustomize {{.KUBERNETES_DIR}}/flux/config
     preconditions:
-      - { msg: "Missing kubeconfig", sh: "test -f {{.KUBECONFIG_FILE}}" }
-      - { msg: "Missing Sops Age key file", sh: "test -f {{.AGE_FILE}}" }
+      - msg: Missing kubeconfig
+        sh: test -f {{.KUBECONFIG_FILE}}
+      - msg: Missing Sops Age key file
+        sh: test -f {{.AGE_FILE}}
 
   apply:
     desc: Apply a Flux Kustomization resource for a cluster
@@ -50,20 +51,26 @@ tasks:
       ks:
         sh: flux --kubeconfig {{.KUBECONFIG_FILE}} --namespace {{.ns}} get kustomizations $(basename {{.path}}) 2>&1
     preconditions:
-      - { msg: "Missing kubeconfig", sh: "test -f {{.KUBECONFIG_FILE}}" }
-      - { msg: "Missing Flux Kustomization for app {{.path}}", sh: "test -f {{.KUBERNETES_DIR}}/apps/{{.path}}/ks.yaml" }
+      - msg: Missing kubeconfig
+        sh: test -f {{.KUBECONFIG_FILE}}
+      - msg: Missing Flux Kustomization for app {{.path}}
+        sh: test -f {{.KUBERNETES_DIR}}/apps/{{.path}}/ks.yaml
 
   reconcile:
     desc: Force update Flux to pull in changes from your Git repository
     cmd: flux --kubeconfig {{.KUBECONFIG_FILE}} reconcile --namespace flux-system kustomization cluster --with-source
     preconditions:
-      - { msg: "Missing kubeconfig", sh: "test -f {{.KUBECONFIG_FILE}}" }
+      - msg: Missing kubeconfig
+        sh: test -f {{.KUBECONFIG_FILE}}
 
   github-deploy-key:
     cmds:
       - kubectl create namespace flux-system --dry-run=client -o yaml | kubectl --kubeconfig {{.KUBECONFIG_FILE}} apply --filename -
       - sops --decrypt {{.GITHUB_DEPLOY_KEY_FILE}} | kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename -
     preconditions:
-      - { msg: "Missing kubeconfig", sh: "test -f {{.KUBECONFIG_FILE}}" }
-      - { msg: "Missing Sops Age key file", sh: "test -f {{.AGE_FILE}}" }
-      - { msg: "Missing Github deploy key file", sh: "test -f {{.GITHUB_DEPLOY_KEY_FILE}}" }
+      - msg: Missing kubeconfig
+        sh: test -f {{.KUBECONFIG_FILE}}
+      - msg: Missing Sops Age key file
+        sh: test -f {{.AGE_FILE}}
+      - msg: Missing Github deploy key file
+        sh: test -f {{.GITHUB_DEPLOY_KEY_FILE}}

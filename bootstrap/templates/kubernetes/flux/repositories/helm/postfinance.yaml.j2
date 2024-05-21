@@ -1,4 +1,3 @@
-#% if bootstrap_distribution in ["talos"] %#
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
@@ -8,4 +7,3 @@ metadata:
 spec:
   interval: 1h
   url: https://postfinance.github.io/kubelet-csr-approver
-#% endif %#
