@@ -4,8 +4,6 @@ kind: VMSingle
 metadata:
   name: stack
 spec:
-  image:
-    tag: v1.100.1
   extraArgs:
     dedup.minScrapeInterval: 10s
     maxLabelsPerTimeseries: "40"

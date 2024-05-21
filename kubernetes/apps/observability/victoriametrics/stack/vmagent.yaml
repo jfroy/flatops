@@ -4,8 +4,6 @@ kind: VMAgent
 metadata:
   name: stack
 spec:
-  image:
-    tag: v1.100.1
   externalLabels:
     cluster: talos-dev
   extraArgs:

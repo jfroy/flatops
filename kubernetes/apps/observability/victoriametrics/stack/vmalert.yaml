@@ -4,8 +4,6 @@ kind: VMAlert
 metadata:
   name: stack
 spec:
-  image:
-    tag: v1.100.1
   datasource:
     url: http://vmsingle-stack.observability.svc:8429
   evaluationInterval: 1m
