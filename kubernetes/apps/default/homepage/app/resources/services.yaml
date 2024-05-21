@@ -1,11 +1,13 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
 - Media:
-  - qbittorrent:
-    icon: qbittorrent.png
-    href: http://qb
-    namespace: default
-    app: qbittorrent
-    widget:
-      type: qbittorrent
-      url: http://qb
-      username: {{HOMEPAGE_VAR_QBT_USERNAME}}
-      password: {{HOMEPAGE_VAR_QBT_PASSWORD}}
+    - qbittorrent:
+        icon: qbittorrent.png
+        href: https://qbit.${SECRET_DOMAIN}/
+        namespace: default
+        app: qbittorrent
+        widget:
+          type: qbittorrent
+          url: http://qbittorrent-app.default.svc:80
