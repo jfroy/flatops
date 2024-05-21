@@ -29,6 +29,7 @@ spec:
         - name: PROMETHEUS_NAMESPACE
           value: observability
       image:
+        // FIXME: Switch back to upstream when job support is released
         repository: registry.unusmundus.network/minio/operator
         tag: v5.0.14-34-gf1c3de23
         pullPolicy: IfNotPresent
