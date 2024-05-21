@@ -156,8 +156,9 @@ spec:
     kubeProxy:
       enabled: false  # KubeProxy is disabled in the cluster, see Cilium/Talos configs
 
-    prometheus-node-exporter:
-      fullnameOverride: node-exporter
+    nodeExporter:
+      enabled: false  # node-exporter must be in observability-agents
+      forceDeployDashboards: true
 
     prometheusOperator:
       fullnameOverride: prometheus-operator
