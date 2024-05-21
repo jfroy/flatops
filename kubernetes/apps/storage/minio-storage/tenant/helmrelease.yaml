@@ -14,6 +14,9 @@ spec:
         kind: HelmRepository
         name: minio
         namespace: flux-system
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
   install:
     remediation:
       retries: 3

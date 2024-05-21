@@ -24,9 +24,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: kps
-      namespace: observability
   values:
     fullnameOverride: vm-operator
     rbac:

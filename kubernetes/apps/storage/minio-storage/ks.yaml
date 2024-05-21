@@ -7,11 +7,14 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: storage
+  dependsOn:
+    - name: minio-operator
   path: ./kubernetes/apps/storage/minio-storage/tenant
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
+  wait: true
   interval: 5m
   retryInterval: 1m
   timeout: 5m
