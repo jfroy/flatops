@@ -21,11 +21,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  dependsOn:
-    - name: kps
-      namespace: observability
-    - name: loki
-      namespace: observability
   values:
     testFramework:
       enabled: false
@@ -49,7 +44,9 @@ spec:
     persistence:
       enabled: false
     plugins:
+      # renovate: datasource=github-releases depName=VictoriaMetrics/victorialogs-datasource
       - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.2.1/victorialogs-datasource-v0.2.1.zip;victorialogs-datasource
+      # renovate: datasource=github-releases depName=VictoriaMetrics/grafana-datasource
       - https://github.com/VictoriaMetrics/grafana-datasource/releases/download/v0.8.1/victoriametrics-datasource-v0.8.1.zip;victoriametrics-datasource
 
     datasources:
@@ -69,6 +66,14 @@ spec:
           #     prometheusType: Prometheus
           #     # Must match prometheus prometheus.prometheusSpec.scrapeInterval
           #     timeInterval: 30s
+          # - name: Loki
+          #   type: loki
+          #   uid: loki
+          #   access: proxy
+          #   url: http://loki-gateway.observability.svc
+          #   jsonData:
+          #     timeout: 60
+          #     maxLines: 1000
           - name: Prometheus
             type: prometheus
             uid: prometheus
@@ -78,22 +83,14 @@ spec:
             jsonData:
               prometheusType: Prometheus
               timeInterval: 60s
-          - name: Loki
-            type: loki
-            uid: loki
-            access: proxy
-            url: http://loki-gateway.observability.svc
-            jsonData:
-              timeout: 60
-              maxLines: 1000
           - name: VictoriaMetrics
             type: victoriametrics-datasource
             access: proxy
             url: http://vmsingle-stack.observability.svc:8429
-          # - name: VictoriaLogs
-          #   type: victorialogs-datasource
-          #   access: proxy
-          #   url: http://victoria-logs-victoria-logs-single-server.observability:9428
+          - name: VictoriaLogs
+            type: victorialogs-datasource
+            access: proxy
+            url: http://victoria-logs-victoria-logs-single-server.observability:9428
 
     dashboardProviders:
       dashboardproviders.yaml:
