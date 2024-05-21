@@ -10,12 +10,14 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: minio-storage
   path: ./kubernetes/apps/volsync-system/volsync/app
   prune: true
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+  wait: true
   interval: 5m
   retryInterval: 1m
   timeout: 5m
