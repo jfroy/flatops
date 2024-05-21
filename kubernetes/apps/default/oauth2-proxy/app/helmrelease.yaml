@@ -1,0 +1,132 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app oauth2-proxy
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      oauth2-proxy:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: quay.io/oauth2-proxy/oauth2-proxy
+              tag: 7.6.0@sha256:dcb6ff8dd21bf3058f6a22c6fa385fa5b897a9cd3914c88a2cc2bb0a85f8065d
+            envFrom:
+              - secretRef:
+                  name: oauth2-proxy-secret
+            env:
+              OAUTH2_PROXY_COOKIE_DOMAINS: unusmundus.dev
+              OAUTH2_PROXY_COOKIE_SECURE: true
+              OAUTH2_PROXY_EMAIL_DOMAINS: "*"
+              OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
+              OAUTH2_PROXY_METRICS_ADDRESS: 0.0.0.0:44180
+              OAUTH2_PROXY_PASS_ACCESS_TOKEN: true
+              OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: true
+              OAUTH2_PROXY_PASS_USER_HEADERS: true
+              OAUTH2_PROXY_PREFER_EMAIL_TO_USER: true
+              OAUTH2_PROXY_PROVIDER: github
+              OAUTH2_PROXY_REVERSE_PROXY: true
+              OAUTH2_PROXY_SESSION_STORE_TYPE: cookie
+              OAUTH2_PROXY_SET_AUTHORIZATION-HEADER: true
+              OAUTH2_PROXY_SET_XAUTHREQUEST: true
+              OAUTH2_PROXY_WHITELIST_DOMAINS: .unusmundus.dev
+            resources:
+              requests:
+                cpu: 15m
+                memory: 16Mi
+              limits:
+                cpu: 20m
+                memory: 64Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &port 4180
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ready
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 2000
+        runAsGroup: 2000
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: *app
+    service:
+      app:
+        controller: oauth2-proxy
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+          metrics:
+            port: 44180
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: oauth2-proxy.${SECRET_DOMAIN}
+            paths:
+              - path: /oauth2
+                service:
+                  identifier: app
+                  port: http
+    serviceMonitor:
+      app:
+        enabled: true
+        serviceName: *app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s

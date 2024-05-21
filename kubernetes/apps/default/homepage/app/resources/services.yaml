@@ -10,4 +10,4 @@
         app: qbittorrent
         widget:
           type: qbittorrent
-          url: http://qbittorrent-app.default.svc:80
+          url: http://qbittorrent.default.svc:80
