@@ -34,34 +34,32 @@ spec:
               tag: 4.6.4@sha256:f2681ae6901748c2124f14a6f1c1cdb0e936f1bdf1c60fb6fc6cd2a965b93f3d
             env:
               TZ: America/Los_Angeles
-              # QBITTORRENT__PORT: &port 80
-              # QBITTORRENT__BT_PORT: &bittorrentPort 50413
-              # QBT_Application__MemoryWorkingSetLimit: 10000
+              QBITTORRENT__PORT: &port 80
+              QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBT_Application__MemoryWorkingSetLimit: 10000
+              QBT_BitTorrent__Session__Interface: eth0
+              QBT_BitTorrent__Session__InterfaceAddress:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
+              QBT_BitTorrent__Session__InterfaceName: eth0
               QBT_Preferences__WebUI__AlternativeUIEnabled: true
               QBT_Preferences__WebUI__RootFolder: /share/vuetorrent
-              # QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
-              # QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
-              #   10.42.0.0/16, 192.168.42.0/24
-              # QBT_Preferences__WebUI__LocalHostAuth: false
-              # QBT_BitTorrent__Session__Interface: eth0
-              # QBT_BitTorrent__Session__InterfaceAddress:
-              #   valueFrom:
-              #     fieldRef:
-              #       fieldPath: status.podIP
-              # QBT_BitTorrent__Session__InterfaceName: eth0
-            # probes:
-            #   liveness: &probes
-            #     enabled: true
-            #     custom: true
-            #     spec:
-            #       httpGet:
-            #         path: /api/v2/app/version
-            #         port: *port
-            #       initialDelaySeconds: 0
-            #       periodSeconds: 10
-            #       timeoutSeconds: 1
-            #       failureThreshold: 3
-            #   readiness: *probes
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: 0.0.0.0/0
+              QBT_Preferences__WebUI__LocalHostAuth: false
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -93,6 +91,25 @@ spec:
                   periodSeconds: 1
             securityContext: *securityContext
             restartPolicy: Always
+          oauth2-proxy:
+            image:
+              repository: quay.io/oauth2-proxy/oauth2-proxy
+              tag: 7.6.0@sha256:dcb6ff8dd21bf3058f6a22c6fa385fa5b897a9cd3914c88a2cc2bb0a85f8065d
+            args:
+              - --provider=github
+              - --email-domain=*
+              - --upstream=file:///dev/null
+              - --http-address=0.0.0.0:4180
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-oauth2-secret
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 64Mi
+            securityContext: *securityContext
+            restartPolicy: Always
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -110,20 +127,38 @@ spec:
         #   io.cilium/lb-ipam-ips: 192.168.42.122
         ports:
           http:
-            port: 8080
-          # bittorrent:
-          #   enabled: true
-          #   port: *bittorrentPort
-          #   protocol: TCP
+            port: *port
+          bittorrent:
+            enabled: true
+            port: *bittorrentPort
+            protocol: TCP
+      oauth2-proxy:
+        controller: qbittorrent
+        type: ClusterIP
+        ports:
+          http:
+            port: &proxyPort 4180
     ingress:
       app:
         className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: https://${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}/oauth2/start?rd=$escaped_request_uri
         hosts:
           - host: ${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}
             paths:
               - path: /
                 service:
                   identifier: app
+                  port: http
+      oauth2-proxy:
+        className: internal
+        hosts:
+          - host: ${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}
+            paths:
+              - path: /oauth2
+                service:
+                  identifier: oauth2-proxy
                   port: http
     persistence:
       config:
