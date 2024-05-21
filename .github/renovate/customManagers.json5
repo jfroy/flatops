@@ -5,6 +5,7 @@
       "customType": "regex",
       "description": ["Process custom dependencies"],
       "fileMatch": [
+        // FIXME: taskfiles regex removed by upstream
         "(^|/).taskfiles/.+\\.ya?ml$",
         "(^|/)kubernetes/.+\\.ya?ml$"
       ],
@@ -12,6 +13,7 @@
         // # renovate: datasource=helm depName=cilium repository=https://helm.cilium.io
         // version: 1.15.1
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+: (&\\S+\\s)?(?<currentValue>\\S+)",
+        // FIXME: system-upgrade-controller removed by upstream
         // # renovate: datasource=github-releases depName=rancher/system-upgrade-controller
         // https://github.com/rancher/system-upgrade-controller/releases/download/v0.13.2/crd.yaml
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)"

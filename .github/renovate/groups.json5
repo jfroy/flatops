@@ -45,6 +45,7 @@
       },
       "separateMinorPatch": true
     },
+    // FIXME: system-upgrade-controller removed by upstream
     {
       "description": ["System Upgrade Controller Group"],
       "groupName": "System Upgrade Controller",

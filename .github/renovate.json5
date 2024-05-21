@@ -23,36 +23,27 @@
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
   "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
   "rebaseWhen": "conflicted",
-  "ignorePaths": ["**/*.sops.*", "**/.archive/**", "**/resources/**"],
+  "ignorePaths": ["**/*.sops.*"],
   "flux": {
-    "fileMatch": [
-      "(^|/)kubernetes/.+\\.ya?ml$"
-    ]
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
   },
   "helm-values": {
-    "fileMatch": [
-      "(^|/)kubernetes/.+\\.ya?ml$"
-    ]
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
   },
   "helmfile": {
-    "fileMatch": [
-      "(^|/)helmfile\\.ya?ml$"
-    ]
+    "fileMatch": ["(^|/)helmfile\\.ya?ml$"]
   },
   "kubernetes": {
     "fileMatch": [
+      // FIXME: taskfiles regex removed by upstream
       "(^|/)\\.taskfiles/.+\\.ya?ml$",
       "(^|/)kubernetes/.+\\.ya?ml$"
     ]
   },
   "kustomize": {
-    "fileMatch": [
-      "(^|/)kustomization\\.ya?ml$"
-    ]
+    "fileMatch": ["(^|/)kustomization\\.ya?ml$"]
   },
   "pip_requirements": {
-    "fileMatch": [
-      "(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)$"
-    ]
+    "fileMatch": ["(^|/)[\\w-]*requirements(-\\w+)?\\.(txt|pip)$"]
   }
 }
