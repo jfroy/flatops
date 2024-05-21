@@ -28,9 +28,6 @@ spec:
     - name: kps
       namespace: observability
   values:
-    # temp fix https://github.com/VictoriaMetrics/operator/issues/942
-    image:
-      tag: d8c64d1@sha256:231cc3e509415c810e8cf8b083bfc694090628c2ea0cf57cbaded4805f5c88bf
     fullnameOverride: vm-operator
     rbac:
       pspEnabled: false
