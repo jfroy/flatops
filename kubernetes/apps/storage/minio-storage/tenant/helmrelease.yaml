@@ -25,23 +25,26 @@ spec:
     remediation:
       retries: 3
   values:
-    secrets:
-      existingSecret: minio-conf-secret
+    secrets: null
     tenant:
       name: minio-dev
       configuration:
         name: minio-conf-secret
+      configSecret:
+        existingSecret: true
       pools:
         - servers: 1
+          name: pool-0
           volumesPerServer: 1
+          size: 10Gi
           storageClassName: openebs-hostpath
       metrics:
         enabled: true
       buckets:
-        - name: loki
+        # - name: loki
         - name: volsync
       users:
-        - name: loki-user-secret
+        # - name: loki-user-secret
         - name: volsync-user-secret
       liveness:
         httpGet:
