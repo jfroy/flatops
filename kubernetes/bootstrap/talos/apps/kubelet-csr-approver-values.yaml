@@ -1,3 +1,0 @@
----
-providerRegex: ^(talosvm-1)$
-bypassDnsResolution: true
