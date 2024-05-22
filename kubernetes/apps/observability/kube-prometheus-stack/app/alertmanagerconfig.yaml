@@ -52,19 +52,21 @@ spec:
           {{- end }}
           ## Alerts
           {{- range .Alerts }}
+            {{- $msg := "Alert description not available" }}
             {{- if ne .Annotations.description "" }}
-          - **{{ .Annotations.description }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- $msg = .Annotations.description }}
             {{- else if ne .Annotations.summary "" }}
-          - **{{ .Annotations.summary }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- $msg = .Annotations.summary }}
             {{- else if ne .Annotations.message "" }}
-          - **{{ .Annotations.message }}** [{{ .Fingerprint }}]({{ .GeneratorURL }})
-            {{- else }}
-          - **Alert description not available** [{{ .Fingerprint }}]({{ .GeneratorURL }})
+            {{- $msg = .Annotations.message }}
             {{- end }}
+          - {{ reReplaceAll "([^\n])\n([^\n])" "$1 $2" $msg | reReplaceAll "\n" "\n    " }}
+              > [Source]({{ .GeneratorURL }})
+              > [Runbook]({{ .Annotations.runbook_url }})
             {{- $uniq := ( ( .Labels.Remove $root.GroupLabels.Names ).Remove $root.CommonLabels.Names ) }}
             {{- if gt (len $uniq.SortedPairs) 0 }}
               {{- range $uniq.SortedPairs }}
-          > {{ .Name }}: `{{ .Value }}`
+              > {{ .Name }}: `{{ .Value }}`
               {{- end }}
             {{- end }}
           {{- end }}
