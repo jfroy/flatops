@@ -30,6 +30,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "52:54:00:2a:9e:4a"
         dhcp: true
+        mtu: 1500
         vip:
           ip: "192.168.6.8"
   - hostname: "talosvm-2"
@@ -43,6 +44,7 @@ nodes:
       - deviceSelector:
           hardwareAddr: "52:54:00:0e:a2:1a"
         dhcp: true
+        mtu: 1500
 
 patches:
   # Configure containerd
