@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - vmagent.yaml
   - vmalert.yaml
+  - vmauth.yaml
   - vmrule.yaml
   - vmservicescrape.yaml
   - vmsingle.yaml

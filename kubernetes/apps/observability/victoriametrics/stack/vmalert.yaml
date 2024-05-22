@@ -9,6 +9,8 @@ spec:
   evaluationInterval: 1m
   externalLabels:
     cluster: talos-dev
+  extraArgs:
+    external.url: https://vam.${SECRET_DOMAIN}
   notifiers:
     - url: http://alertmanager-operated.observability.svc:9093
   remoteRead:

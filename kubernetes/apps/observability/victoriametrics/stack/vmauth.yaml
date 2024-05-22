@@ -1,0 +1,35 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAuth
+metadata:
+  name: stack
+spec:
+  selectAllByDefault: true
+  ingress:
+    annotations:
+      nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/auth
+      nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+      nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-email
+    class_name: internal
+    host: vam.${SECRET_DOMAIN}
+  replicaCount: 1
+  resources:
+    requests:
+      memory: 64Mi
+      cpu: 250m
+    limits:
+      memory: 128Mi
+      cpu: 500m
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: stack
+          app.kubernetes.io/name: vmauth
+  unauthorizedAccessConfig:
+    - src_paths: [".*"]
+      url_prefix:
+        - http://vmsingle-stack.observability.svc:8429
+  useStrictSecurity: true
