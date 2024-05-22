@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/cilium/cilium/main/install/kubernetes/cilium/values.schema.json
 autoDirectNodeRoutes: true
 bgpControlPlane:
   enabled: true
@@ -12,63 +11,16 @@ cgroup:
 cluster:
   id: 1
   name: talos-dev
+cni:
+  exclusive: false
 containerRuntime:
   integration: containerd
-ingressController:
-  enabled: true
-  loadbalancerMode: shared
-  defaultSecretNamespace: cilium-secrets
-  defaultSecretName: "${SECRET_DOMAIN/./-}-production-tls"
-  service:
-    annotations:
-      io.cilium/lb-ipam-ips: "10.100.0.4"
-gatewayAPI:
-  enabled: true
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
 # devices: eno+ eth+
 endpointRoutes:
   enabled: true
 hubble:
-  enabled: true
-  metrics:
-    enabled:
-      - dns:query
-      - drop
-      - tcp
-      - flow
-      - port-distribution
-      - icmp
-      - http
-    serviceMonitor:
-      enabled: true
-    dashboards:
-      enabled: true
-      annotations:
-        grafana_folder: Cilium
-  tls:
-    auto:
-      method: certmanager
-      certManagerIssuerRef:
-        name: cluster-ca
-        kind: ClusterIssuer
-        group: cert-manager.io
-  relay:
-    enabled: true
-    rollOutPods: true
-    tls:
-      server:
-        enabled: true
-    prometheus:
-      serviceMonitor:
-        enabled: true
-  ui:
-    enabled: true
-    rollOutPods: true
-    ingress:
-      enabled: true
-      className: internal
-      hosts:
-        - "hubble.${SECRET_DOMAIN}"
+  enabled: false
 ipam:
   mode: kubernetes
 ipv4NativeRoutingCIDR: "${CLUSTER_CIDR}"
@@ -77,40 +29,14 @@ k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
-  enabled: true
+  enabled: false # https://github.com/cilium/cilium/issues/28985
 loadBalancer:
   algorithm: maglev
   mode: dsr
-  l7:
-    backend: envoy
 localRedirectPolicy: true
 operator:
   replicas: 1
   rollOutPods: true
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
-      metricRelabelings:
-        - action: drop
-          sourceLabels: ["__name__"]
-          regex: workqueue_(work|queue)_duration_seconds_bucket
-        - action: drop
-          sourceLabels: ["__name__"]
-          regex: controller_runtime_reconcile_time_seconds_bucket
-  dashboards:
-    enabled: true
-    annotations:
-      grafana_folder: Cilium
-prometheus:
-  enabled: true
-  serviceMonitor:
-    enabled: true
-    trustCRDsExist: true
-dashboards:
-  enabled: true
-  annotations:
-    grafana_folder: Cilium
 rollOutCiliumPods: true
 routingMode: native
 securityContext:

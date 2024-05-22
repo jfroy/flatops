@@ -7,6 +7,7 @@ resources:
   # --
   - ./grafana/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
+  - ./prometheus-operator-crds/ks.yaml
   - ./unpoller/ks.yaml
   - ./vector-aggregator/ks.yaml
   - ./victorialogs/ks.yaml

@@ -20,7 +20,7 @@ cniConfig:
 
 nodes:
   - hostname: "talosvm-1"
-    ipAddress: "192.168.6.245"
+    ipAddress: ""
     installDisk: "/dev/vda"
     machineSpec:
       secureboot: true
@@ -33,7 +33,7 @@ nodes:
         vip:
           ip: "192.168.6.8"
   - hostname: "talosvm-2"
-    ipAddress: "192.168.6.193"
+    ipAddress: ""
     installDisk: "/dev/vda"
     machineSpec:
       secureboot: true
@@ -84,20 +84,6 @@ patches:
           rotate-server-certificates: true
         nodeIP:
           validSubnets: ["192.168.6.0/24"]
-
-  # Force nameserver
-  - |-
-    machine:
-      network:
-        nameservers:
-          - 192.168.6.1
-
-  # Configure NTP
-  - |-
-    machine:
-      time:
-        disabled: false
-        servers: ["time.cloudflare.com"]
 
   # Custom sysctl settings
   - |-
@@ -151,6 +137,8 @@ controlPlane:
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
+        coreDNS:
+          disabled: true
         proxy:
           disabled: true
         scheduler:

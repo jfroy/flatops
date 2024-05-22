@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -19,12 +18,91 @@ spec:
       retries: 3
   upgrade:
     cleanupOnFail: true
-    force: true
     remediation:
       retries: 3
   valuesFrom:
     - kind: ConfigMap
-      name: cilium-helmvalues
+      name: cilium-helm-values
+  values:
+    ingressController:
+      enabled: true
+      loadbalancerMode: shared
+      defaultSecretNamespace: cilium-secrets
+      defaultSecretName: "${SECRET_DOMAIN/./-}-production-tls"
+      service:
+        annotations:
+          io.cilium/lb-ipam-ips: "10.100.0.4"
+    gatewayAPI:
+      enabled: true
+    hubble:
+      enabled: true
+      metrics:
+        enabled:
+          - dns:query
+          - drop
+          - tcp
+          - flow
+          - port-distribution
+          - icmp
+          - http
+        serviceMonitor:
+          enabled: true
+        dashboards:
+          enabled: true
+          annotations:
+            grafana_folder: Cilium
+      tls:
+        auto:
+          method: certmanager
+          certManagerIssuerRef:
+            name: cluster-ca
+            kind: ClusterIssuer
+            group: cert-manager.io
+      relay:
+        enabled: true
+        rollOutPods: true
+        tls:
+          server:
+            enabled: true
+        prometheus:
+          serviceMonitor:
+            enabled: true
+      ui:
+        enabled: true
+        rollOutPods: true
+        ingress:
+          enabled: true
+          className: internal
+          hosts:
+            - "hubble.${SECRET_DOMAIN}"
+    loadBalancer:
+      l7:
+        backend: envoy
+    operator:
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          metricRelabelings:
+            - action: drop
+              sourceLabels: ["__name__"]
+              regex: workqueue_(work|queue)_duration_seconds_bucket
+            - action: drop
+              sourceLabels: ["__name__"]
+              regex: controller_runtime_reconcile_time_seconds_bucket
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: Cilium
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
+    dashboards:
+      enabled: true
+      annotations:
+        grafana_folder: Cilium
   postRenderers:
     - kustomize:
         patches:

@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: kubelet-csr-approver-helm-values
+  - name: coredns-helm-values
     files:
       - values.yaml=./helm-values.yaml
 configurations:
