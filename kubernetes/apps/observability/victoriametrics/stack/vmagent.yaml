@@ -23,14 +23,6 @@ spec:
       memory: 1Gi
   scrapeInterval: 60s
   selectAllByDefault: true
-  # topologySpreadConstraints:
-  #   - maxSkew: 1
-  #     topologyKey: kubernetes.io/hostname
-  #     whenUnsatisfiable: DoNotSchedule
-  #     labelSelector:
-  #       matchLabels:
-  #         app.kubernetes.io/name: vmagent
-  #         app.kubernetes.io/instance: victoria
   statefulMode: true
   statefulStorage:
     volumeClaimTemplate:
@@ -39,4 +31,13 @@ spec:
         resources:
           requests:
             storage: 1Gi
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: stack
+          app.kubernetes.io/name: vmagent
+  useStrictSecurity: true
   vmAgentExternalLabelName: prometheus
