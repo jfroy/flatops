@@ -20,7 +20,7 @@ cniConfig:
 
 nodes:
   - hostname: "talosvm-1"
-    ipAddress: ""
+    ipAddress: "192.168.6.245"
     installDisk: "/dev/vda"
     machineSpec:
       secureboot: true
@@ -34,7 +34,7 @@ nodes:
         vip:
           ip: "192.168.6.8"
   - hostname: "talosvm-2"
-    ipAddress: ""
+    ipAddress: "192.168.6.193"
     installDisk: "/dev/vda"
     machineSpec:
       secureboot: true
