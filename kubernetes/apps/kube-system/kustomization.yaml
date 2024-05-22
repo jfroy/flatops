@@ -5,6 +5,7 @@ resources:
   - ./namespace.yaml
   # --
   - ./cilium/ks.yaml
+  - ./descheduler/ks.yaml
   - ./gateway-crd/ks.yaml
   - ./kubelet-csr-approver/ks.yaml
   - ./metrics-server/ks.yaml
