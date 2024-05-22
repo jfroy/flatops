@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: cert-manager-issuers
   path: ./kubernetes/apps/observability/victoriametrics/operator
   prune: true
   sourceRef:

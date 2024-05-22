@@ -26,9 +26,6 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: cert-manager
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
