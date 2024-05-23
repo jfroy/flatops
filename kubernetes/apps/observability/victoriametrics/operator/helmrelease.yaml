@@ -30,7 +30,6 @@ spec:
       pspEnabled: false
     operator:
       enable_converter_ownership: true
-      useCustomConfigReloader: true
     resources:
       limits:
         cpu: 200m
