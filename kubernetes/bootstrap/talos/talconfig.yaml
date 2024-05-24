@@ -5,7 +5,7 @@ talosVersion: v1.7.2
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.30.1
 
-clusterName: &cluster talos-dev
+clusterName: "talos-dev"
 endpoint: https://192.168.6.8:6443
 clusterPodNets:
   - "10.69.0.0/16"
@@ -15,6 +15,8 @@ additionalApiServerCertSans: &sans
   - "192.168.6.8"
   - 127.0.0.1 # KubePrism
 additionalMachineCertSans: *sans
+
+# Disable built-in Flannel to use Cilium
 cniConfig:
   name: none
 
@@ -85,7 +87,8 @@ patches:
         extraArgs:
           rotate-server-certificates: true
         nodeIP:
-          validSubnets: ["192.168.6.0/24"]
+          validSubnets:
+            - 192.168.6.0/24
 
   # Custom sysctl settings
   - |-
@@ -105,7 +108,10 @@ patches:
           - destination: /var/openebs/local
             type: bind
             source: /var/openebs/local
-            options: ["bind", "rshared", "rw"]
+            options:
+              - bind
+              - rshared
+              - rw
 
   # Encrypt system disk with TPM
   - |-
@@ -154,7 +160,7 @@ controlPlane:
           extraArgs:
             listen-metrics-urls: http://0.0.0.0:2381
           advertisedSubnets:
-            - "192.168.6.0/24"
+            - 192.168.6.0/24
 
     # Enable K8s Talos API Access
     - |-
@@ -162,5 +168,7 @@ controlPlane:
         features:
           kubernetesTalosAPIAccess:
             enabled: true
-            allowedRoles: ["os:admin"]
-            allowedKubernetesNamespaces: ["system-upgrade"]
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
