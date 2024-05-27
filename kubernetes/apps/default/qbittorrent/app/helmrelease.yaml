@@ -14,6 +14,9 @@ spec:
         kind: HelmRepository
         name: bjw-s
         namespace: flux-system
+  dependsOn:
+    - name: openebs
+      namespace: openebs-system
   install:
     remediation:
       retries: 3
@@ -35,14 +38,11 @@ spec:
             env:
               TZ: America/Los_Angeles
               QBITTORRENT__PORT: &port 80
-              QBITTORRENT__BT_PORT: &bittorrentPort 50413
+              QBITTORRENT__BT_PORT: &bittorrentPort 13919
               QBT_Application__MemoryWorkingSetLimit: 10000
-              QBT_BitTorrent__Session__Interface: eth0
-              QBT_BitTorrent__Session__InterfaceAddress:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: status.podIP
-              QBT_BitTorrent__Session__InterfaceName: eth0
+              QBT_BitTorrent__Session__Interface: vxlan0
+              QBT_BitTorrent__Session__InterfaceAddress:  0.0.0.0
+              QBT_BitTorrent__Session__InterfaceName: vxlan0
               QBT_Preferences__WebUI__AlternativeUIEnabled: true
               QBT_Preferences__WebUI__RootFolder: /share/vuetorrent
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
@@ -91,6 +91,12 @@ spec:
                   periodSeconds: 1
             securityContext: *securityContext
             restartPolicy: Always
+        pod:
+          annotations:
+            stealth-gateway: "true"
+          labels:
+            stealth-gateway: "true"
+          hostname: qbittorrent
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -130,6 +136,11 @@ spec:
     persistence:
       config:
         existingClaim: qbittorrent
+      downloads:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 10Gi
       share:
         type: emptyDir
   postRenderers:
