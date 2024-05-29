@@ -8,7 +8,10 @@ spec:
   targetNamespace: stealth-gateway
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: pod-gateway
+      app.kubernetes.io/instance: *app
+  dependsOn:
+    - name: cert-manager-issuers
   path: ./kubernetes/apps/stealth-gateway/stealth-gateway/app
   prune: true
   sourceRef:

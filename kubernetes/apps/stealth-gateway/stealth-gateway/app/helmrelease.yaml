@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -7,11 +8,11 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: pod-gateway
-      version: 6.5.1
+      chart: app-template
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
-        name: angelnu
+        name: bjw-s
         namespace: flux-system
   install:
     remediation:
@@ -22,83 +23,161 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    image:
-      repository: ghcr.io/angelnu/pod-gateway
-      tag: v1.10.0@sha256:d728eac85f750b37c96a0dafd038561ea4b8035857802be1128ea9b19c61e181
-
-    DNS: 172.16.1.1
-
-    routed_namespaces:
-      - default
-
-    settings:
-      NOT_ROUTED_TO_GATEWAY_CIDRS: 10.0.0.0/8 192.168.0.0/16
-      VPN_BLOCK_OTHER_TRAFFIC: true
-      VPN_INTERFACE: wg0
-      VPN_LOCAL_CIDRS: 10.0.0.0/8 192.168.0.0/16
-      VPN_TRAFFIC_PORT: "1637"
-      VXLAN_ID: 43
-      VXLAN_IP_NETWORK: 172.16.1
-
-    publicPorts:
-      - IP: 10
-        hostname: qbittorrent
+    controllers:
+      pod-gateway:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          routes:
+            image:
+              repository: ghcr.io/angelnu/pod-gateway
+              tag: v1.10.0@sha256:d728eac85f750b37c96a0dafd038561ea4b8035857802be1128ea9b19c61e181
+            command:
+              - /bin/gateway_init.sh
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+        containers:
+          pod-gateway:
+            image:
+              repository: ghcr.io/angelnu/pod-gateway
+              tag: v1.10.0
+            command:
+              - /bin/gateway_sidecar.sh
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+            ports:
+              - name: vxlan
+                containerPort: 4789
+                protocol: UDP
+          netshoot:
+            image:
+              repository: ghcr.io/nicolaka/netshoot
+              tag: v0.13@sha256:a20c2531bf35436ed3766cd6cfe89d352b050ccc4d7005ce6400adf97503da1b
+            command:
+              - /bin/sh
+              - -c
+              - sleep infinity
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.38.0@sha256:5522794f5cce6d84bc7f06b1e3a3b836ede9100c64aec94543cb503bb2ecb72f
+            env:
+              DOT: "off"
+              FIREWALL: "off"
+              HEALTH_VPN_DURATION_INITIAL: 30s
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: stealth-gateway-gluetun-secret
+            resources:
+              requests:
+                cpu: 15m
+                memory: 64Mi
+              limits:
+                memory: 128Mi
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+      pod-gateway-webhook:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          webhook:
+            image:
+              repository: ghcr.io/jfroy/gateway-admision-controller
+              tag: v3.11.0@sha256:3170179e8eb91ad04656a24f80908a969ef47416890eaa0d38b86bef712e8d3e
+            args:
+              - --webhook-listen-address=:8080
+              - --gateway=stealth-gateway-pod-gateway.stealth-gateway.svc.cluster.local
+              - --DNS=172.16.0.1
+              - --secretName=stealth-gateway-secret
+              - --setGatewayLabel=stealth-gateway
+              - --setGatewayAnnotation=stealth-gateway
+              # Static
+              - --tls-cert-file-path=/tls/tls.crt
+              - --tls-key-file-path=/tls/tls.key
+              - --DNSPolicy=None
+              # Init container
+              - --initImage=ghcr.io/angelnu/pod-gateway:v1.10.0@sha256:d728eac85f750b37c96a0dafd038561ea4b8035857802be1128ea9b19c61e181
+              - --initImagePullPol=IfNotPresent
+              - --initCmd=/bin/client_init.sh
+              - --initMountPoint=/config
+              # Sidecar container
+              - --sidecarImage=ghcr.io/angelnu/pod-gateway:v1.10.0@sha256:d728eac85f750b37c96a0dafd038561ea4b8035857802be1128ea9b19c61e181
+              - --sidecarImagePullPol=IfNotPresent
+              - --sidecarCmd=/bin/client_sidecar.sh
+              - --sidecarMountPoint=/config
+            ports:
+              - name: http
+                containerPort: 8080
+                protocol: TCP
+            probes:
+              readiness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /wh/health
+                    port: 8080
+                    scheme: HTTPS
+                  initialDelaySeconds: 1
+                  timeoutSeconds: 10
+                  periodSeconds: 10
+                  successThreshold: 1
+                  failureThreshold: 5
+              liveness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /wh/health
+                    port: 8080
+                    scheme: HTTPS
+                  timeoutSeconds: 1
+                  periodSeconds: 1
+                  successThreshold: 1
+                  failureThreshold: 30
+    service:
+      pod-gateway:
+        controller: pod-gateway
+        type: ClusterIP
+        clusterIP: None
         ports:
-          - port: 13919
-            type: udp
-          - port: 13919
-            type: tcp
-
-    addons:
-      vpn:
-        enabled: true
-        type: gluetun
-        gluetun:
-          image:
-            repository: ghcr.io/qdm12/gluetun
-            tag: v3.38.0@sha256:5522794f5cce6d84bc7f06b1e3a3b836ede9100c64aec94543cb503bb2ecb72f
-        env:
-          - name: VPN_SERVICE_PROVIDER
-            value: airvpn
-          - name: VPN_TYPE
-            value: wireguard
-          - name: VPN_INTERFACE
-            value: wg0
-          - name: FIREWALL
-            value: "off"
-          - name: DOT
-            value: "off"
-          - name: HEALTH_VPN_DURATION_INITIAL
-            value: 30s
-          - name: SERVER_COUNTRIES
-            value: United States
-          - name: FIREWALL_VPN_INPUT_PORTS
-            value: 1637,13919
-        envFrom:
-        - secretRef:
-            name: stealth-gateway
-        securityContext:
-          capabilities:
-            add:
-              - NET_ADMIN
-        networkPolicy:
-          enabled: false
-      netshoot:
-        enabled: true
-
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: *app
-      secret.reloader.stakater.com/reload: *app
-
-    webhook:
-      image:
-        repository: ghcr.io/angelnu/gateway-admision-controller
-        tag: v3.10.0@sha256:a8ed630613de277244dfe203cd11d05905d7eeba8d8c41e399b02ee9a847b2f5
-      namespaceSelector:
-        label: stealth-gateway
-      gatewayDefault: false
-      gatewayAnnotation: stealth-gateway
-      gatewayLabel: stealth-gateway
-      podAnnotations:
-        configmap.reloader.stakater.com/reload: stealth-gateway-pod-gateway,stealth-gateway-pod-gateway-addon-vpn
-        secret.reloader.stakater.com/reload: stealth-gateway
+          vxlan:
+            protocol: UDP
+            port: 4789
+            targetPort: vxlan
+      pod-gateway-webhook:
+        controller: pod-gateway-webhook
+        ports:
+          http:
+            protocol: TCP
+            port: 8080
+            targetPort: http
+    persistence:
+      config:
+        type: secret
+        name: stealth-gateway-secret
+        advancedMounts:
+          pod-gateway:
+            routes:
+              - path: /config
+            pod-gateway:
+              - path: /config
+      certificates:
+        type: secret
+        name: stealth-gateway-pod-gateway-webhook-tls
+        advancedMounts:
+          pod-gateway-webhook:
+            webhook:
+              - path: /tls
