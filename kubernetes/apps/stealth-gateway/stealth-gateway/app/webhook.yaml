@@ -9,7 +9,7 @@ webhooks:
   - name: stealth-gateway-pod-gateway.svc.cluster.local
     namespaceSelector:
       matchLabels:
-        routed-gateway: "true"
+        stealth-gateway: "true"
     rules:
       - apiGroups: [""]
         apiVersions: ["v1"]
