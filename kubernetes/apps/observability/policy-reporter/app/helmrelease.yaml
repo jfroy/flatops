@@ -1,0 +1,33 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app policy-reporter
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: policy-reporter
+      version: 2.23.1
+      sourceRef:
+        kind: HelmRepository
+        name: policy-reporter
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    kyvernoPlugin:
+      enabled: true
+    ui:
+      enabled: true
+    global:
+      plugins:
+        kyverno: true
