@@ -46,6 +46,15 @@ releases:
       - observability/prometheus-operator-crds
       - kube-system/cilium
       - kube-system/coredns
+  - name: kyverno
+    namespace: kyverno
+    chart: oci://ghcr.io/kyverno/charts/kyverno
+    version: 3.2.3
+    values:
+      - ../apps/kyverno/kyverno/app/helm-values.yaml
+    needs:
+      - observability/prometheus-operator-crds
+      - kube-system/kubelet-csr-approver
   - name: spegel
     namespace: kube-system
     chart: oci://ghcr.io/spegel-org/helm-charts/spegel

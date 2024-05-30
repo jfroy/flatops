@@ -1,0 +1,7 @@
+# IMPORTANT: This file is not tracked by flux and should never be. Its
+# purpose is to install the Kyverno policies into the cluster.
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../apps/kyverno/kyverno-policies/app

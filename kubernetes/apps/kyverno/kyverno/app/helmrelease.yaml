@@ -19,7 +19,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  values:
-    features:
-      backgroundScan:
-        skipResourceFilters: false
+  valuesFrom:
+    - kind: ConfigMap
+      name: kyverno-helm-values

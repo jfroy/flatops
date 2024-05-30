@@ -26,6 +26,7 @@ tasks:
       - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
       - task: fetch-kubeconfig
       - task: install-helm-apps
+      - task: apply-kustomizations
       - talosctl health --server=false
     preconditions:
       - msg: Missing talhelper config file
@@ -53,6 +54,14 @@ tasks:
         sh: test -f {{.KUBECONFIG_FILE}}
       - msg: Missing helmfile
         sh: test -f {{.HELMFILE_FILE}}
+
+  apply-kustomizations:
+    desc: Apply kustomizations needed for the cluster
+    cmds:
+      - kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --kustomize {{.KUBERNETES_DIR}}/bootstrap
+    preconditions:
+      - msg: Missing kubeconfig
+        sh: test -f {{.KUBECONFIG_FILE}}
 
   upgrade-talos:
     desc: Upgrade talos on a node
