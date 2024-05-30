@@ -34,7 +34,7 @@ spec:
       annotations:
         nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/auth
         nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/start?rd=$scheme://$best_http_host$request_uri
-        nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
+        nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email, x-auth-request-user"
       ingressClassName: internal
       hosts:
         - &host "grafana.${SECRET_DOMAIN}"
@@ -348,13 +348,20 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
-      auth.anonymous:
+      auth.proxy:
         enabled: true
-        org_role: Admin
+        header_name: X-AUTH-REQUEST-USER
+        header_property: username
+        auto_sign_up: true
+        enable_login_token: false
       news:
         news_feed_enabled: false
       plugins:
         allow_loading_unsigned_plugins: "victorialogs-datasource,victoriametrics-datasource"
+      users:
+        allow_sign_up: false
+        auto_assign_org: true
+        auto_assign_org_role: Admin
 
     sidecar:
       dashboards:
