@@ -15,8 +15,8 @@ spec:
         name: bjw-s
         namespace: flux-system
   dependsOn:
-    - name: openebs
-      namespace: openebs-system
+    - name: kaidame-nvmeof
+      namespace: democratic-csi
   install:
     remediation:
       retries: 3
@@ -142,9 +142,9 @@ spec:
         existingClaim: qbittorrent
       downloads:
         type: persistentVolumeClaim
-        storageClass: openebs-hostpath
+        storageClass: kaidame-nvmeof
         accessMode: ReadWriteOnce
-        size: 10Gi
+        size: 50Gi
       share:
         type: emptyDir
   postRenderers:
