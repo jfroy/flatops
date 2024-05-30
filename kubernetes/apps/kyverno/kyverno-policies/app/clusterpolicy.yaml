@@ -19,7 +19,7 @@ metadata:
       version of the Pod Security Standards cluster wide.
 spec:
   background: true
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:
     - name: baseline
       match:
@@ -67,7 +67,7 @@ metadata:
       and NET_RAW capabilities.
 spec:
   background: true
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:
     - name: baseline
       match:
