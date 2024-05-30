@@ -5,18 +5,16 @@ metadata:
   name: psa-baseline
   annotations:
     policies.kyverno.io/title: Baseline Pod Security Standards
-    policies.kyverno.io/category: Pod Security, EKS Best Practices
+    policies.kyverno.io/category: Pod Security
     policies.kyverno.io/severity: high
     kyverno.io/kyverno-version: 1.8.0
     policies.kyverno.io/minversion: 1.8.0
     kyverno.io/kubernetes-version: "1.24"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      The baseline profile of the Pod Security Standards is a collection of the
-      most basic and important steps that can be taken to secure Pods. Beginning
-      with Kyverno 1.8, an entire profile may be assigned to the cluster through a
-      single rule. This policy configures the baseline profile through the latest
-      version of the Pod Security Standards cluster wide.
+      This policy enforces the latest version of the Pod Security Standards baseline profile by
+      default cluster wide. This policy allows NET_ADMIN NET_RAW capabilities for stealth-gateway
+      clients.
 spec:
   background: true
   validationFailureAction: Enforce
@@ -43,33 +41,7 @@ spec:
         podSecurity:
           level: baseline
           version: latest
----
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: psa-baseline-stealth-gateway-client
-  annotations:
-    policies.kyverno.io/title: Baseline Pod Security Standards for stealth-gateway clients
-    policies.kyverno.io/category: Pod Security
-    policies.kyverno.io/severity: high
-    kyverno.io/kyverno-version: 1.8.0
-    policies.kyverno.io/minversion: 1.8.0
-    kyverno.io/kubernetes-version: "1.24"
-    policies.kyverno.io/subject: Pod
-    policies.kyverno.io/description: >-
-      The baseline profile of the Pod Security Standards is a collection of the
-      most basic and important steps that can be taken to secure Pods. Beginning
-      with Kyverno 1.8, an entire profile may be assigned to the cluster through a
-      single rule. This policy configures the baseline profile through the latest
-      version of the Pod Security Standards cluster wide.
-
-      This policy is specifically for stealth-gateway clients and allows NET_ADMIN
-      and NET_RAW capabilities.
-spec:
-  background: true
-  validationFailureAction: Enforce
-  rules:
-    - name: baseline
+    - name: baseline-stealth-gateway
       match:
         any:
           - resources:
@@ -96,3 +68,36 @@ spec:
               values:
                 - NET_ADMIN
                 - NET_RAW
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: psa-restricted
+  annotations:
+    policies.kyverno.io/title: Restricted Pod Security Standards
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.8.0
+    policies.kyverno.io/minversion: 1.8.0
+    kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      This policy enforces the latest version of the Pod Security Standards restricted profile on
+      pods in annotated namespaces.
+spec:
+  background: true
+  validationFailureAction: audit
+  rules:
+    - name: restricted
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaceSelector:
+                matchLabels:
+                  pod-security.kubernetes.io/enforce: restricted
+      validate:
+        podSecurity:
+          level: restricted
+          version: latest
