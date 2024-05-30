@@ -35,3 +35,8 @@ spec:
     reportsController:
       serviceMonitor:
         enabled: true
+    grafana:
+      enabled: true
+      namespace: observability
+      annotations:
+        grafana_folder: Kyverno
