@@ -48,7 +48,7 @@ spec:
               QBT_BitTorrent__Session__TempPath: /downloads/temp
               QBT_BitTorrent__Session__TempPathEnabled: "true"
               QBT_BitTorrent__Session__TorrentExportDirectory: /downloads/torrents
-              QBT_Preferences__Network__PortForwardingEnabled: "false"
+              QBT_Network__PortForwardingEnabled: "false"
               QBT_Preferences__WebUI__AlternativeUIEnabled: "true"
               QBT_Preferences__WebUI__AuthSubnetWhitelist: 0.0.0.0/0
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: "true"
