@@ -92,8 +92,6 @@ spec:
             securityContext: *securityContext
             restartPolicy: Always
         pod:
-          annotations:
-            stealth-gateway: "true"
           labels:
             stealth-gateway: "true"
           hostname: qbittorrent
