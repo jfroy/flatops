@@ -67,9 +67,3 @@ spec:
         successThreshold: 1
         failureThreshold: 3
       prometheusOperator: true
-    ingress:
-      api:
-        enabled: true
-        ingressClassName: internal
-        host: minio.${SECRET_DOMAIN}
-        path: /
