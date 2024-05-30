@@ -38,16 +38,18 @@ spec:
             env:
               TZ: America/Los_Angeles
               QBITTORRENT__PORT: &port 80
-              QBITTORRENT__BT_PORT: &bittorrentPort 13919
-              QBT_Application__MemoryWorkingSetLimit: 10000
+              QBT_Application__MemoryWorkingSetLimit: "10000"
               QBT_BitTorrent__Session__Interface: vxlan0
               QBT_BitTorrent__Session__InterfaceAddress:  0.0.0.0
               QBT_BitTorrent__Session__InterfaceName: vxlan0
-              QBT_Preferences__WebUI__AlternativeUIEnabled: true
+              QBT_Preferences__WebUI__AlternativeUIEnabled: "true"
               QBT_Preferences__WebUI__RootFolder: /share/vuetorrent
-              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: "true"
               QBT_Preferences__WebUI__AuthSubnetWhitelist: 0.0.0.0/0
-              QBT_Preferences__WebUI__LocalHostAuth: false
+              QBT_Preferences__WebUI__LocalHostAuth: "false"
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
             probes:
               liveness:
                 enabled: true
@@ -113,10 +115,6 @@ spec:
         ports:
           http:
             port: *port
-          bittorrent:
-            enabled: true
-            port: *bittorrentPort
-            protocol: TCP
     ingress:
       app:
         className: internal
