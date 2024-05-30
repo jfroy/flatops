@@ -38,6 +38,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               QBITTORRENT__PORT: &port 80
+              QBT_BitTorrent__Session__AsyncIOThreadsCount: "4"
               QBT_BitTorrent__Session__DefaultSavePath: /downloads
               QBT_BitTorrent__Session__DisableAutoTMMByDefault: "false"
               QBT_BitTorrent__Session__Interface: vxlan0
@@ -48,6 +49,7 @@ spec:
               QBT_BitTorrent__Session__TempPathEnabled: "true"
               QBT_BitTorrent__Session__TorrentExportDirectory: /downloads/torrents
               QBT_Network__PortForwardingEnabled: "false"
+              QBT_Preferences__General__Locale: en
               QBT_Preferences__WebUI__AlternativeUIEnabled: "true"
               QBT_Preferences__WebUI__AuthSubnetWhitelist: 0.0.0.0/0
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: "true"
