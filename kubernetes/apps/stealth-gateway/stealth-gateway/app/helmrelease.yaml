@@ -94,7 +94,7 @@ spec:
           webhook:
             image:
               repository: ghcr.io/jfroy/gateway-admision-controller
-              tag: v3.11.0@sha256:3170179e8eb91ad04656a24f80908a969ef47416890eaa0d38b86bef712e8d3e
+              tag: v3.11.1@sha256:9c8153eb36165624505773661d2212b4540bec3ab2f8e48d5056b46647a954a4
             args:
               - --webhook-listen-address=:8080
               - --gateway=stealth-gateway-pod-gateway.stealth-gateway.svc.cluster.local
