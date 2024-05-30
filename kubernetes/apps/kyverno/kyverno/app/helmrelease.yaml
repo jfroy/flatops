@@ -26,6 +26,10 @@ spec:
     admissionController:
       serviceMonitor:
         enabled: true
+        metricRelabelings:
+          - action: drop
+            regex: kyverno_admission_review_duration_seconds_bucket
+            sourceLabels: ["__name__"]
     backgroundController:
       serviceMonitor:
         enabled: true

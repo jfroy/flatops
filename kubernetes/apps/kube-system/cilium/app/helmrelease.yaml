@@ -84,11 +84,14 @@ spec:
           enabled: true
           metricRelabelings:
             - action: drop
-              sourceLabels: ["__name__"]
               regex: workqueue_(work|queue)_duration_seconds_bucket
-            - action: drop
               sourceLabels: ["__name__"]
+            - action: drop
               regex: controller_runtime_reconcile_time_seconds_bucket
+              sourceLabels: ["__name__"]
+            - action: drop
+              regex: cilium_k8s_client_(rate_limiter_duration|api_latency_time)_seconds_bucket
+              sourceLabels: ["__name__"]
       dashboards:
         enabled: true
         annotations:
