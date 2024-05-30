@@ -28,7 +28,7 @@ spec:
       enabled: true
       loadbalancerMode: shared
       defaultSecretNamespace: cilium-secrets
-      defaultSecretName: "${SECRET_DOMAIN/./-}-staging-tls"
+      defaultSecretName: "${SECRET_DOMAIN/./-}-production-tls"
       service:
         annotations:
           io.cilium/lb-ipam-ips: "10.100.0.4"
