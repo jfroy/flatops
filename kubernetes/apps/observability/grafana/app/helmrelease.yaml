@@ -31,6 +31,10 @@ spec:
           regex: (pod)
     ingress:
       enabled: true
+      annotations:
+        nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/auth
+        nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+        nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
       ingressClassName: internal
       hosts:
         - &host "grafana.${SECRET_DOMAIN}"
@@ -344,6 +348,9 @@ spec:
         check_for_updates: false
         check_for_plugin_updates: false
         reporting_enabled: false
+      auth.anonymous:
+        enabled: true
+        org_role: Admin
       news:
         news_feed_enabled: false
       plugins:
