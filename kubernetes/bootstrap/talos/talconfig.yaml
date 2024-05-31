@@ -135,6 +135,7 @@ patches:
         hostDNS:
           enabled: true
           resolveMemberNames: true
+          forwardKubeDNSToHost: false
 
 controlPlane:
   patches:
