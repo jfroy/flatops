@@ -49,7 +49,7 @@ releases:
   - name: kyverno
     namespace: kyverno
     chart: oci://ghcr.io/kyverno/charts/kyverno
-    version: 3.2.3
+    version: 3.2.4
     values:
       - ../apps/kyverno/kyverno/app/helm-values.yaml
     needs:
