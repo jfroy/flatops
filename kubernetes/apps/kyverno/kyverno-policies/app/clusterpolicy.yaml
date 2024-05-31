@@ -86,7 +86,7 @@ metadata:
       pods in annotated namespaces.
 spec:
   background: true
-  validationFailureAction: audit
+  validationFailureAction: Enforce
   rules:
     - name: restricted
       match:
