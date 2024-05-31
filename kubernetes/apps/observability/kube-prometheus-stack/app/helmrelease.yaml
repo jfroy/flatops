@@ -43,6 +43,17 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+        hosts:
+          - alm.${SECRET_DOMAIN}
+        paths:
+          - /
+        pathType: Prefix
       alertmanagerSpec:
         replicas: 1
         alertmanagerConfiguration:
