@@ -10,7 +10,7 @@ spec:
     name: cluster-ca
     kind: ClusterIssuer
     group: cert-manager.io
+  commonName: minio.storage.svc.cluster.local
   dnsNames:
-    - "*.storage.svc.cluster.local"
-    - "*.minio.storage.svc.cluster.local"
-    - "*.minio-hl.storage.svc.cluster.local"
+    - minio.storage.svc.cluster.local
+    - minio-hl.storage.svc.cluster.local
