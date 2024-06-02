@@ -5,7 +5,7 @@ metadata:
 spec:
     serviceAccountName: mc-job-sa
     tenant:
-        name: minio-dev
+        name: minio
         namespace: storage
     commands:
         - name: add-user-volsync
@@ -55,8 +55,8 @@ sops:
             cHE1WFhqbzBhSjNHbGdvQWNNUGZ6bE0KwkWuWq0RET24obJzzI2MR/iTNGq7wb0t
             weCAmsPBQYYVA+iVooT2QKR53T9ahGCAsjybzrxsWDeelNyM4p3rAg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-05-11T04:45:30Z"
-    mac: ENC[AES256_GCM,data:lyI1hwcZnK2fl3vwh1TtxVu7OCbrwcuKQMUAmxlql2zSH3wgom7LE0oZL93hY0gIwvcxOCG5MHbV1mSUVA5UE2jKRwLFp6IE0pCXX1SQWj7AO+FqVzpCYBzUn8CemWmW+K5l/P3LPvyvT84q+T5z9xk2sz3oNp6Om2sfKedrkI8=,iv:Gm0RqrEBqR2DNvFkE45vbWkSqK3K0uXoJyxNWYRhrZE=,tag:PySHYbeZZSawEjdMVwy4cQ==,type:str]
+    lastmodified: "2024-06-02T21:53:58Z"
+    mac: ENC[AES256_GCM,data:4BDMC4oaQVwsAsf2WO8/nxZqnpcBitWLl60w09tan9p1+idThK+jjVQooQTmGciTDhaEEEK7DwQZ3ydt/xWmEvMMIvVLKCkHBgnmHd4yAVEDMi+oZkAMmCXe1sY+QD+nUVgc1TJdRdRw2d6zpJKb3WxpWG5OerZwUj7niP1/Yx4=,iv:7B5AfkIOPoaPQ50ks6UGqEgjoXREdkMea2yVUJKNDjY=,tag:cOmHKp70GL1ay2hYghtftQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData|password)$
     version: 3.8.1

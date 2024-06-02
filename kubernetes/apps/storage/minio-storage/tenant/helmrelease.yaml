@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: minio-dev-tenant
+  name: minio-tenant
 spec:
   interval: 5m
   chart:
@@ -27,7 +27,7 @@ spec:
   values:
     secrets: null
     tenant:
-      name: minio-dev
+      name: minio
       configuration:
         name: minio-conf-secret
       configSecret:
@@ -40,6 +40,11 @@ spec:
           storageClassName: openebs-hostpath
       metrics:
         enabled: true
+      certificate:
+        externalCertSecret:
+          - name: minio-tls
+            type: cert-manager.io/v1
+        requestAutoCert: false
       buckets:
         # - name: loki
         - name: volsync

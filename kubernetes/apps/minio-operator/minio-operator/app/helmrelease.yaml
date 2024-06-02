@@ -36,3 +36,15 @@ spec:
       resources:
         requests:
           memory: 128Mi
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: minio-operator
+            patch: |
+              - op: add
+                path: /metadata/annotations/secret.reloader.stakater.com~1reload
+                value: operator-ca-tls-cluster-ca
