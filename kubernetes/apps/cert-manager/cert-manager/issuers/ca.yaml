@@ -13,6 +13,7 @@ metadata:
 spec:
   isCA: true
   commonName: cluster.local
+  duration: 8760h # 1y
   secretName: cluster-ca
   privateKey:
     algorithm: ECDSA
