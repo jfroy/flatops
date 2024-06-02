@@ -5,7 +5,7 @@ metadata:
   name: stealth-gateway-pod-gateway-webhook-tls
 spec:
   secretName: stealth-gateway-pod-gateway-webhook-tls
-  duration: 8760h # 1y
+  duration: 2160h  # 90d
   issuerRef:
     name: cluster-ca
     kind: ClusterIssuer
