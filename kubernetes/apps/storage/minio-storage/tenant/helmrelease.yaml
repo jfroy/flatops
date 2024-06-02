@@ -71,4 +71,5 @@ spec:
         timeoutSeconds: 10
         successThreshold: 1
         failureThreshold: 3
-      prometheusOperator: true
+      # FIXME(jfroy): minio-operator looks up Prometheus CRD objects, so not going to work with victoria-metrics.
+      # prometheusOperator: true
