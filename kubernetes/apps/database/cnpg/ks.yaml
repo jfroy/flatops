@@ -10,6 +10,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+      app.kubernetes.io/instance: postgres16
   dependsOn:
     - name: cloudnative-pg
   path: ./kubernetes/apps/database/cnpg/postgres16

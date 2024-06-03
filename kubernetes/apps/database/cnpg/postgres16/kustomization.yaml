@@ -7,4 +7,5 @@ resources:
   - ./cluster16.yaml
   - ./externalsecret.yaml
   - ./gatus.yaml
+  - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
