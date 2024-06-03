@@ -5,14 +5,13 @@ metadata:
   name: &app gatus
   namespace: flux-system
 spec:
-  targetNamespace: gatus
+  targetNamespace: observability
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-    - name: gatus-cnpg
-  path: ./kubernetes/apps/gatus/gatus/app
+  path: ./kubernetes/apps/observability/gatus/app
   prune: true
   sourceRef:
     kind: GitRepository
