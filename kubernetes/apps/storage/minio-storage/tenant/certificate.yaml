@@ -12,5 +12,7 @@ spec:
     group: cert-manager.io
   commonName: minio.storage.svc.cluster.local
   dnsNames:
+    - minio.storage.svc
     - minio.storage.svc.cluster.local
+    - minio-hl.storage.svc
     - minio-hl.storage.svc.cluster.local

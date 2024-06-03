@@ -1,7 +1,7 @@
 apiVersion: job.min.io/v1alpha1
 kind: MinIOJob
 metadata:
-    name: create-sa-volsync
+    name: init-tenant
 spec:
     serviceAccountName: mc-job-sa
     tenant:
@@ -40,37 +40,6 @@ spec:
           args:
             policy: volsync-access
             user: volsync
-sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0ZzdLWlZKTFBqRDBwS3Ro
-            OEZBR2pjRFkzZmNvZDZtMTBTNDErTnVKVTNFClNPVWRqV29mOHJmYWFEMm1ieGVa
-            MWRmbzRQWnFJNldsTG1ScVZaemo2OUUKLS0tIHZZOUZDeHBaZU1RUzBDMHpuSldK
-            cHE1WFhqbzBhSjNHbGdvQWNNUGZ6bE0KwkWuWq0RET24obJzzI2MR/iTNGq7wb0t
-            weCAmsPBQYYVA+iVooT2QKR53T9ahGCAsjybzrxsWDeelNyM4p3rAg==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-03T03:15:06Z"
-    mac: ENC[AES256_GCM,data:epZvacJ8kKOwVJYqVmXz/zxNEzQitGOvauBIJGZQAhc8vd6VotSbr8nY8skMYMx7VJrFVD90XHyIJBnkfckXCObgQ7dYFGODqX8f+jitZbYg+yXW+1xa7oP5rMB7SStAp0526tXoiyBCJH9ixXojKeOdFlV9FgkDLgz9vfRq/RE=,iv:juYSTxzDBUY9zhqwl41FWY5TBVLE+P3ZSi50Vot/j/k=,tag:xblDc8xsoB8vH5bjwA2iYw==,type:str]
-    pgp: []
-    encrypted_regex: ^(data|stringData|password)$
-    version: 3.8.1
----
-apiVersion: job.min.io/v1alpha1
-kind: MinIOJob
-metadata:
-    name: create-sa-postgres16
-spec:
-    serviceAccountName: mc-job-sa
-    tenant:
-        name: minio
-        namespace: storage
-    commands:
         - name: add-user-postgres16
           op: admin/user/add
           args:
@@ -103,6 +72,7 @@ spec:
           args:
             policy: postgres16-access
             user: postgres16
+    execution: sequential
 sops:
     kms: []
     gcp_kms: []
@@ -118,8 +88,8 @@ sops:
             cHE1WFhqbzBhSjNHbGdvQWNNUGZ6bE0KwkWuWq0RET24obJzzI2MR/iTNGq7wb0t
             weCAmsPBQYYVA+iVooT2QKR53T9ahGCAsjybzrxsWDeelNyM4p3rAg==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-03T03:15:06Z"
-    mac: ENC[AES256_GCM,data:epZvacJ8kKOwVJYqVmXz/zxNEzQitGOvauBIJGZQAhc8vd6VotSbr8nY8skMYMx7VJrFVD90XHyIJBnkfckXCObgQ7dYFGODqX8f+jitZbYg+yXW+1xa7oP5rMB7SStAp0526tXoiyBCJH9ixXojKeOdFlV9FgkDLgz9vfRq/RE=,iv:juYSTxzDBUY9zhqwl41FWY5TBVLE+P3ZSi50Vot/j/k=,tag:xblDc8xsoB8vH5bjwA2iYw==,type:str]
+    lastmodified: "2024-06-03T07:33:52Z"
+    mac: ENC[AES256_GCM,data:4m76Bk14IPkJJl8PDREV6YMNU7aMyqtyKJveAPqMdD9lKzTPhuLHtS4Cse3efgnAy+eRipma62jeSOpXxqFkmD1yw7u/FdOLhITY+TmJnTfTQLt6RThzb/7l+FzMiInUXwOXuTaB6mOpGGxpRogfpTZNeSb3LeFxsDqbz/R3DgU=,iv:fNlDsX5DV98MA+rvlluX4xKuPMu8Kb/7I6fms3vBJjE=,tag:8c8d+0jGdWA1PgSntPc+VQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData|password)$
     version: 3.8.1

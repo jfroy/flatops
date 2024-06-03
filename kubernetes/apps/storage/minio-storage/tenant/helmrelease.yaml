@@ -46,11 +46,8 @@ spec:
             type: cert-manager.io/v1
         requestAutoCert: false
       buckets:
-        # - name: loki
+        - name: postgres16
         - name: volsync
-      users:
-        # - name: loki-user-secret
-        - name: volsync-user-secret
       liveness:
         httpGet:
           path: /minio/health/live

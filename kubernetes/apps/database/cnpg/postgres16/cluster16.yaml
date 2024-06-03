@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres16
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:16.3-1
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+    storageClass: openebs-hostpath
+  superuserSecret:
+    name: postgres16-superuser-secret
+  enableSuperuserAccess: true
+  postgresql:
+    parameters:
+      max_connections: "100"
+      shared_buffers: 64MB
+  nodeMaintenanceWindow:
+    inProgress: false
+    reusePVC: true
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      memory: 1Gi
+  monitoring:
+    enablePodMonitor: true
+    # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
+    podMonitorMetricRelabelings:
+      - { sourceLabels: ["cluster"], targetLabel: cnpg_cluster, action: replace }
+      - { regex: cluster, action: labeldrop }
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore: &barmanObjectStore
+      data:
+        compression: bzip2
+      wal:
+        compression: bzip2
+        maxParallel: 2
+      destinationPath: s3://postgres16/
+      endpointURL: https://minio.storage.svc.cluster.local
+      endpointCA:
+        name: minio.cluster-ca.crt
+        key: ca.crt
+      # NOTE: serverName version needs to be incremented when recovering from an existing cluster.
+      serverName: &currentCluster postgres16-v1
+      s3Credentials:
+        accessKeyId:
+          name: postgres16-s3-secret
+          key: username
+        secretAccessKey:
+          name: postgres16-s3-secret
+          key: password
+  bootstrap:
+    initdb: {}
+  # NOTE: previousCluster needs to be set to the name of the previous cluster when recovering from
+  # an existing cluster.
+  #   recovery:
+  #     source: &previousCluster postgres16-v0
+  # NOTE: externalClusters is needed when recovering from an existing cluster.
+  # externalClusters:
+  #   - name: *previousCluster
+  #     barmanObjectStore:
+  #       <<: *barmanObjectStore
+  #       serverName: *previousCluster
