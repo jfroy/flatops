@@ -28,7 +28,7 @@ spec:
     monitoring:
       podMonitorEnabled: true
       grafanaDashboard:
-        create: true
+        create: false  # Install custom version that uses cnpg_cluster label.
   postRenderers:
     - kustomize:
         patches:
