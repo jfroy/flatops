@@ -9,7 +9,7 @@ spec:
   targetNamespace: database
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
+      app.kubernetes.io/name: cnpg
       app.kubernetes.io/instance: postgres16
   dependsOn:
     - name: cloudnative-pg
