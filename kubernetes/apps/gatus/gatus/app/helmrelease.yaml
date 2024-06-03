@@ -27,21 +27,54 @@ spec:
       gatus:
         annotations:
           reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/jfroy/postgres-init
+              tag: 16
+            env: &env
+              INIT_POSTGRES_DBNAME: gatus
+              INIT_POSTGRES_HOST: postgres16-rw.database.svc.cluster.local
+              INIT_POSTGRES_USER: gatus
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
+              - secretRef:
+                  name: gatus-initdb-secret
+            securityContext: &securityContext
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+          config-sync:
+            dependsOn: init-db
+            image:
+              repository: ghcr.io/kiwigrid/k8s-sidecar
+              tag: 1.27.2@sha256:e3280f62096bee918a605658505baa8878223b483053396f769bd9f15a2876c0
+            env:
+              FOLDER: /config
+              LABEL: gatus.io/enabled
+              NAMESPACE: ALL
+              RESOURCE: both
+              UNIQUE_FILENAMES: true
+              METHOD: WATCH
+            securityContext: *securityContext
+            resources: &resources
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+            restartPolicy: Always
         containers:
           app:
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.11.0@sha256:eb0374eb55e3ff84ec8f9ea10342ddb623cfba23e5836138896cde01f11cf23d
             env:
+              <<: *env
               TZ: America/Los_Angeles
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               WEB_PORT: &port 80
-              POSTGRES_URI:
-                valueFrom:
-                  secretKeyRef:
-                    name: cnpg-cluster-app
-                    key: uri
             envFrom:
               - secretRef:
                   name: gatus-secret
@@ -58,30 +91,8 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext: &securityContext
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources: &resources
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
-        initContainers:
-          config-sync:
-            image:
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.27.2@sha256:e3280f62096bee918a605658505baa8878223b483053396f769bd9f15a2876c0
-            env:
-              FOLDER: /config
-              LABEL: gatus.io/enabled
-              NAMESPACE: ALL
-              RESOURCE: both
-              UNIQUE_FILENAMES: true
-              METHOD: WATCH
             securityContext: *securityContext
             resources: *resources
-            restartPolicy: Always
     defaultPodOptions:
       dnsConfig:
         options:

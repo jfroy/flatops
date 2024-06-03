@@ -4,7 +4,7 @@ web:
   port: $${WEB_PORT}
 storage:
   type: postgres
-  path: $${POSTGRES_URI}
+  path: postgres://$${INIT_POSTGRES_USER}:$${INIT_POSTGRES_PASS}@$${INIT_POSTGRES_HOST}:5432/$${INIT_POSTGRES_DBNAME}
   caching: true
 metrics: true
 debug: false
