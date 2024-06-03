@@ -24,6 +24,7 @@ spec:
     secretTargets:
       enabled: true
       authorizedSecrets:
+        - minio.cluster-ca.crt
         - operator-ca-tls-cluster-ca
     topologySpreadConstraints:
       - maxSkew: 1
