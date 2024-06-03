@@ -198,12 +198,6 @@ spec:
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        trivy:
-          # renovate: depName="Trivy Operator Dashboard"
-          gnetId: 17813
-          revision: 2
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
         zfs:
           # renovate: depName="ZFS"
           gnetId: 7845
