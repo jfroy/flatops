@@ -144,7 +144,7 @@ spec:
       config:
         existingClaim: qbittorrent
       downloads:
-        existingClaim: qbittorrent-smb
+        existingClaim: qbittorrent-kaidame-media
       share:
         type: emptyDir
   postRenderers:

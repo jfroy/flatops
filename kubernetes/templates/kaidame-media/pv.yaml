@@ -4,10 +4,10 @@ kind: PersistentVolume
 metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
-  name: qbittorrent-smb
+  name: "${APP}-kaidame-media"
 spec:
   capacity:
-    storage: 100Gi
+    storage: 1Ti
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
@@ -27,5 +27,5 @@ spec:
     volumeAttributes:
       source: "//kaidame/talosdev"
     nodeStageSecretRef:
-      name: qbittorrent-smb-secret
+      name: "${APP}-kaidame-media-secret"
       namespace: default
