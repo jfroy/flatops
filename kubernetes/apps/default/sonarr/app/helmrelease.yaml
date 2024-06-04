@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sonarr
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      sonarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/jfroy/postgres-init
+              tag: 16
+            envFrom:
+              - secretRef:
+                  name: sonarr-secret
+              - secretRef:
+                  name: sonarr-initdb-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/jfroy/sonarr-develop
+              tag: 4.0.5.1719@sha256:895e05d6f1c2dcdded821daf133570d2f0ba942ea66e2990a0b3302c4704774c
+            env:
+              SONARR__ANALYTICS_ENABLED: "False"
+              SONARR__AUTHENTICATION_METHOD: External
+              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              SONARR__BRANCH: develop
+              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__LOG_LEVEL: info
+              SONARR__PORT: &port 80
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: sonarr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: sonarr
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
+        hosts:
+          - host: "${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: sonarr
+      downloads:
+        existingClaim: qbittorrent-kaidame-media
+      pushover-notify:
+        type: configMap
+        name: sonarr-configmap
+        defaultMode: 0775
+        globalMounts:
+          - path: /scripts/pushover-notify.sh
+            subPath: pushover-notify.sh
+            readOnly: true
+      tmp:
+        type: emptyDir

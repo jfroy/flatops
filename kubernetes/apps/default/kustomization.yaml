@@ -8,3 +8,4 @@ resources:
   - ./homepage/ks.yaml
   - ./oauth2-proxy/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./sonarr/ks.yaml
