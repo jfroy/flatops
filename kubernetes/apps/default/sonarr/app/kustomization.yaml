@@ -6,7 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ../../../../templates/gatus/guarded
-  - ../../../../templates/kaidame-media
   - ../../../../templates/volsync
 configMapGenerator:
   - name: sonarr-configmap

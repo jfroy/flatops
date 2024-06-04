@@ -109,7 +109,7 @@ spec:
       config:
         existingClaim: sonarr
       downloads:
-        existingClaim: qbittorrent-kaidame-media
+        existingClaim: kaidame-media
       pushover-notify:
         type: configMap
         name: sonarr-configmap

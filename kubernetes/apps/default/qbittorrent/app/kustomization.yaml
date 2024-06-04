@@ -6,5 +6,4 @@ resources:
   - ./helmrelease.yaml
   - ./secret.sops.yaml
   - ../../../../templates/gatus/guarded
-  - ../../../../templates/kaidame-media
   - ../../../../templates/volsync

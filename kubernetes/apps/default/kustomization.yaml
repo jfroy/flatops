@@ -6,6 +6,7 @@ resources:
   - ./namespace.yaml
   # --
   - ./homepage/ks.yaml
+  - ./kaidame-media/ks.yaml
   - ./oauth2-proxy/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml

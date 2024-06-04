@@ -13,6 +13,7 @@ spec:
   dependsOn:
     - name: cnpg-postgres16
     - name: external-secrets-stores
+    - name: kaidame-media
     - name: volsync
   path: ./kubernetes/apps/default/sonarr/app
   prune: true
