@@ -1,0 +1,114 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: whisparr
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      whisparr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/jfroy/postgres-init
+              tag: 16
+            envFrom:
+              - secretRef:
+                  name: whisparr-secret
+              - secretRef:
+                  name: whisparr-initdb-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/jfroy/whisparr-nightly
+              tag: 2.0.0.548@sha256:462c13284a455f195260ba0b66f1cc5631b04b59a6023a466d9b686769baee39
+            env:
+              WHISPARR__ANALYTICS_ENABLED: "False"
+              WHISPARR__AUTHENTICATION_METHOD: External
+              WHISPARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              WHISPARR__BRANCH: develop
+              WHISPARR__INSTANCE_NAME: Whisparr
+              WHISPARR__LOG_LEVEL: info
+              WHISPARR__PORT: &port 80
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: whisparr-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [10000]
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: whisparr
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: internal
+        annotations:
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+          nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
+        hosts:
+          - host: "${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: whisparr
+      downloads:
+        existingClaim: kaidame-media
+      tmp:
+        type: emptyDir
