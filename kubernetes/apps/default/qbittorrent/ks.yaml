@@ -11,6 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
+    - name: external-secrets-stores
     - name: stealth-gateway
     - name: volsync
   path: ./kubernetes/apps/default/qbittorrent/app

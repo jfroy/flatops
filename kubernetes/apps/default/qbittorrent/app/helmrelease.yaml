@@ -144,10 +144,7 @@ spec:
       config:
         existingClaim: qbittorrent
       downloads:
-        type: persistentVolumeClaim
-        storageClass: kaidame-nvmeof
-        accessMode: ReadWriteOnce
-        size: 50Gi
+        existingClaim: qbittorrent-smb
       share:
         type: emptyDir
   postRenderers:
