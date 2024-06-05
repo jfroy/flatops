@@ -10,5 +10,6 @@ resources:
   - ./oauth2-proxy/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
   - ./whisparr/ks.yaml
