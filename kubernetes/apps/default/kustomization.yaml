@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
+  - ./autobrr/ks.yaml
   - ./homepage/ks.yaml
   - ./kaidame-media/ks.yaml
   - ./oauth2-proxy/ks.yaml
