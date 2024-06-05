@@ -39,6 +39,8 @@ spec:
               UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
               UN_SONARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/sonarr
               UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
+              UN_WHISPARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/whisparr
+              UN_WHISPARR_0_URL: http://whisparr.default.svc.cluster.local
               UN_WEBSERVER_LOG_FILE: /logs/webserver.log
               UN_WEBSERVER_METRICS: true
             envFrom:
