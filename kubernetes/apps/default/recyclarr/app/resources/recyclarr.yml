@@ -23,6 +23,8 @@ sonarr:
       - template: sonarr-quality-definition-series
       - template: sonarr-v4-quality-profile-web-2160p
       - template: sonarr-v4-custom-formats-web-2160p
+      - template: sonarr-v4-quality-profile-anime
+      - template: sonarr-v4-custom-formats-anime
 
 # Custom Formats: https://recyclarr.dev/wiki/yaml/config-reference/custom-formats/
     custom_formats:
@@ -49,12 +51,12 @@ sonarr:
 
       - trash_ids:
           # Uncomment the next six lines to allow x265 HD releases with HDR/DV
-          # - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD)
-        # quality_profiles:
-          # - name: WEB-2160p
-            # score: 0
-      # - trash_ids:
-          # - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV)
+          - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD)
+        quality_profiles:
+          - name: WEB-2160p
+            score: 0
+      - trash_ids:
+          - 9b64dff695c2115facf1b6ea59c9bd07 # x265 (no HDR/DV)
         quality_profiles:
           - name: WEB-2160p
 
@@ -67,6 +69,25 @@ sonarr:
           # - 83304f261cf516bb208c18c54c0adf97 # SDR (no WEBDL)
         quality_profiles:
           - name: WEB-2160p
+
+      # Recyclarr Configuration Template: Anime Sonarr
+      - trash_ids:
+          - 026d5aadd1a6b4e550b134cb6c72b3ca # Uncensored
+        quality_profiles:
+          - name: Remux-1080p - Anime
+            score: 0 # Adjust scoring as desired
+
+      - trash_ids:
+          - b2550eb333d27b75833e25b8c2557b38 # 10bit
+        quality_profiles:
+          - name: Remux-1080p - Anime
+            score: 0 # Adjust scoring as desired
+
+      - trash_ids:
+          - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
+        quality_profiles:
+          - name: Remux-1080p - Anime
+            score: 0 # Adjust scoring as desired
 
 ###################################################################################################
 # Recyclarr Configuration Template: UHD Bluray + WEB                                              #
