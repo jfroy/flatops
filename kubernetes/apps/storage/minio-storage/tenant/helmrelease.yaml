@@ -17,6 +17,8 @@ spec:
   dependsOn:
     - name: openebs
       namespace: openebs-system
+  driftDetection:
+    mode: enabled
   install:
     remediation:
       retries: 3

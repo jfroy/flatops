@@ -18,6 +18,8 @@ spec:
   dependsOn:
     - name: openebs
       namespace: openebs-system
+  driftDetection:
+    mode: enabled
   install:
     crds: Skip
     remediation:
