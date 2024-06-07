@@ -110,7 +110,7 @@ spec:
     persistence:
       config:
         existingClaim: radarr
-      downloads:
+      media:
         existingClaim: kaidame-media
       pushover-notify:
         type: configMap

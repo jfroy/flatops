@@ -105,8 +105,11 @@ spec:
     persistence:
       config:
         existingClaim: sabnzbd
-      downloads:
+      media:
         existingClaim: kaidame-media
+        globalMounts:
+          - path: /media/sabnzbd
+            subPath: sabnzbd
       logs:
         type: emptyDir
         globalMounts:

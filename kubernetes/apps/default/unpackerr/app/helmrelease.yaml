@@ -37,11 +37,11 @@ spec:
             env:
               TZ: America/Los_Angeles
               UN_ACTIVITY: true
-              UN_RADARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/radarr
+              UN_RADARR_0_PATHS_0: /media/qbittorrent/complete/radarr
               UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
-              UN_SONARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/sonarr
+              UN_SONARR_0_PATHS_0: /media/qbittorrent/complete/sonarr
               UN_SONARR_0_URL: http://sonarr.default.svc.cluster.local
-              UN_WHISPARR_0_PATHS_0: /media/Downloads/qbittorrent/complete/whisparr
+              UN_WHISPARR_0_PATHS_0: /media/qbittorrent/complete/whisparr
               UN_WHISPARR_0_URL: http://whisparr.default.svc.cluster.local
               UN_WEBSERVER_LOG_FILE: /logs/webserver.log
               UN_WEBSERVER_METRICS: true
@@ -89,8 +89,8 @@ spec:
     persistence:
       logs:
         type: emptyDir
-      downloads:
+      media:
         existingClaim: kaidame-media
         globalMounts:
-          - path: /media/Downloads/qbittorrent
-            subPath: Downloads/qbittorrent
+          - path: /media/qbittorrent
+            subPath: qbittorrent

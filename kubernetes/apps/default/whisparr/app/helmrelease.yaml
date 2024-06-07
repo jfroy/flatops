@@ -110,7 +110,7 @@ spec:
     persistence:
       config:
         existingClaim: whisparr
-      downloads:
+      media:
         existingClaim: kaidame-media
       tmp:
         type: emptyDir

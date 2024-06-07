@@ -38,15 +38,15 @@ spec:
               TZ: America/Los_Angeles
               QBITTORRENT__PORT: &port 80
               QBT_BitTorrent__Session__AsyncIOThreadsCount: "1"
-              QBT_BitTorrent__Session__DefaultSavePath: /downloads
+              QBT_BitTorrent__Session__DefaultSavePath: /media/qbittorrent/complete/default
               QBT_BitTorrent__Session__DisableAutoTMMByDefault: "false"
               QBT_BitTorrent__Session__Interface: vxlan0
               QBT_BitTorrent__Session__InterfaceAddress:  0.0.0.0
               QBT_BitTorrent__Session__InterfaceName: vxlan0
               QBT_BitTorrent__Session__LSDEnabled: "false"
-              QBT_BitTorrent__Session__TempPath: /downloads/temp
+              QBT_BitTorrent__Session__TempPath: /media/qbittorrent/incomplete
               QBT_BitTorrent__Session__TempPathEnabled: "true"
-              QBT_BitTorrent__Session__TorrentExportDirectory: /downloads/torrents
+              QBT_BitTorrent__Session__TorrentExportDirectory: /media/qbittorrent/torrents
               QBT_Network__PortForwardingEnabled: "false"
               QBT_Preferences__General__Locale: en
               QBT_Preferences__WebUI__AlternativeUIEnabled: "true"
@@ -142,8 +142,11 @@ spec:
     persistence:
       config:
         existingClaim: qbittorrent
-      downloads:
+      media:
         existingClaim: kaidame-media
+        globalMounts:
+          - path: /media/qbittorrent
+            subPath: qbittorrent
       share:
         type: emptyDir
   postRenderers:
