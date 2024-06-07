@@ -43,15 +43,16 @@ spec:
           app:
             image:
               repository: ghcr.io/jfroy/radarr-develop
-              tag: 5.6.0.8846@sha256:f2e785335d7a88d0f57f36f15cd2c9163ada5d5c9f3bec944691dd6a1e94cf8c
+              tag: 5.6.0.8846@sha256:543564918874c755eeeefd6888fb9f4d8d86d60c078b523cf04526fd8354c434
             env:
-              RADARR__ANALYTICS_ENABLED: "False"
-              RADARR__AUTHENTICATION_METHOD: External
-              RADARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
-              RADARR__BRANCH: develop
-              RADARR__INSTANCE_NAME: Radarr
-              RADARR__LOG_LEVEL: info
-              RADARR__PORT: &port 80
+              RADARR__APP__INSTANCENAME: Radarr
+              RADARR__APP__THEME: auto
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__DBENABLED: "False"
+              RADARR__LOG__LEVEL: info
+              RADARR__SERVER__PORT: &port 80
+              RADARR__UPDATE__BRANCH: develop
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
