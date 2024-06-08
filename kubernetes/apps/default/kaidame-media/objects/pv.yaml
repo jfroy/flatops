@@ -7,7 +7,7 @@ metadata:
   name: kaidame-media
 spec:
   capacity:
-    storage: 1Ti
+    storage: 10Ti
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
