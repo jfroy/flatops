@@ -89,7 +89,7 @@ spec:
             command:
             - "/bin/sh"
             - "-c"
-            - "ln -s /proc/$$$$$$/root/vuetorrent /share/vuetorrent; touch /share/startup; sleep infinity"
+            - "ln -sf /proc/$$$$$$/root/vuetorrent /share/vuetorrent; touch /share/startup; sleep infinity"
             probes:
               startup:
                 custom: true
