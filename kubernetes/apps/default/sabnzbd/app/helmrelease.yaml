@@ -68,7 +68,8 @@ spec:
               requests:
                 cpu: 100m
               limits:
-                memory: 1Gi
+                cpu: 2
+                memory: 4Gi
         pod:
           labels:
             stealth-gateway: "true"
