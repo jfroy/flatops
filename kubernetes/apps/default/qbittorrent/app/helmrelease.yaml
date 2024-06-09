@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/jfroy/qbittorrent
-              tag: 4.6.5@sha256:4d67d4386095e3065a533c52560a7a0c987b2c66fd835a59d9d3da725f200ef7
+              tag: 4.6.5@sha256:7bce2bba352c5a30cf3bf319ded4d70c3b1822f4dc535faf5f657a8468825cfc
             env:
               TZ: America/Los_Angeles
               QBITTORRENT__PORT: &port 80
