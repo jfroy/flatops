@@ -37,7 +37,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               QBITTORRENT__PORT: &port 80
-              QBT_BitTorrent__Session__AsyncIOThreadsCount: "1"
+              QBT_BitTorrent__Session__AsyncIOThreadsCount: "4"
               QBT_BitTorrent__Session__DefaultSavePath: /media/qbittorrent/complete/default
               QBT_BitTorrent__Session__DisableAutoTMMByDefault: "false"
               QBT_BitTorrent__Session__Interface: vxlan0
@@ -79,8 +79,8 @@ spec:
                 cpu: 1
                 memory: 600Mi
               limits:
-                cpu: 2
-                memory: 8Gi
+                cpu: 3
+                memory: 10Gi
         initContainers:
           vuetorrent:
             image:
