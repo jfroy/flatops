@@ -135,7 +135,7 @@ patches:
         hostDNS:
           enabled: true
           resolveMemberNames: true
-          forwardKubeDNSToHost: false
+          forwardKubeDNSToHost: true # Requires Cilium `bpf.masquerade: false`
 
 controlPlane:
   patches:
