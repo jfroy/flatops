@@ -12,4 +12,3 @@ spec:
   url: oci://ghcr.io/stakater/charts/reloader
   ref:
     tag: 1.0.107
-    digest: sha256:20eb5010550bc855c5bc036dcfa4c6926198e2d61453fffb36468e643cba33ad

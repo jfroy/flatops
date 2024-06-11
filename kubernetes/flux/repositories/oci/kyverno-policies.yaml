@@ -12,4 +12,3 @@ spec:
   url: oci://ghcr.io/kyverno/charts/kyverno-policies
   ref:
     tag: 3.2.2
-    digest: sha256:a761eb9fce0adc3152e6a07869bba677d1266a48bfb04303ab3a87bcae5df75d

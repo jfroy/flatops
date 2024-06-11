@@ -12,4 +12,3 @@ spec:
   url: oci://ghcr.io/kyverno/charts/kyverno
   ref:
     tag: 3.2.3
-    digest: sha256:d363081e45627aa396d6c8cb2d4ee59fcb7a79c223a967ae601c8c8ba4e7b7f3
