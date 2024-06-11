@@ -35,7 +35,8 @@ jobs:
           path: default
 
       - name: Diff resources
-        uses: docker://ghcr.io/allenporter/flux-local:main
+        # FIXME(jfroy): Switch back to upstream after allenporter/flux-local#709 is merged
+        uses: docker://ghcr.io/jfroy/flux-local:latest
         with:
           args: >-
             diff ${{ matrix.resources }}
