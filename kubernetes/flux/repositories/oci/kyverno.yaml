@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/kyverno/charts/kyverno
   ref:
-    tag: 3.2.3
+    tag: 3.2.4
