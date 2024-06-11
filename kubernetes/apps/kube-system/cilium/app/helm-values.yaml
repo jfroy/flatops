@@ -4,6 +4,7 @@ bgpControlPlane:
   enabled: true
 bpf:
   masquerade: true # Incompatible with Cilium bpf masquerade. siderolabs/talos/#8836
+  tproxy: true
 cgroup:
   automount:
     enabled: false
