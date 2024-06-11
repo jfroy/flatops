@@ -107,7 +107,9 @@ spec:
       config:
         existingClaim: sabnzbd
       media:
-        existingClaim: kaidame-media
+        type: nfs
+        server: kaidame.flat
+        path: /mnt/citerne/talosdev
         globalMounts:
           - path: /media/sabnzbd
             subPath: sabnzbd
