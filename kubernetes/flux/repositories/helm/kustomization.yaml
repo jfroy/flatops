@@ -33,7 +33,6 @@ resources:
   - ./prometheus-community.yaml
   - ./rook-ceph.yaml
   - ./spegel.yaml
-  - ./stakater.yaml
   - ./tailscale.yaml
   - ./vector.yaml
   - ./victoriametrics.yaml
