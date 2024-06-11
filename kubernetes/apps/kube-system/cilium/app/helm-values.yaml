@@ -3,7 +3,7 @@ autoDirectNodeRoutes: true
 bgpControlPlane:
   enabled: true
 bpf:
-  masquerade: false # Required for Talos `.machine.features.hostDNS.forwardKubeDNSToHost`
+  masquerade: true # Incompatible with Cilium bpf masquerade. siderolabs/talos/#8836
 cgroup:
   automount:
     enabled: false
@@ -27,7 +27,7 @@ k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
-  enabled: false # https://github.com/cilium/cilium/issues/28985
+  enabled: false
 loadBalancer:
   algorithm: maglev
   mode: dsr
