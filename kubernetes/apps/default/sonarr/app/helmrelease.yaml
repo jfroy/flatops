@@ -112,7 +112,9 @@ spec:
       config:
         existingClaim: sonarr
       media:
-        existingClaim: kaidame-media
+        type: nfs
+        server: kaidame.flat
+        path: /mnt/citerne/talosdev
       pushover-notify:
         type: configMap
         name: sonarr-configmap

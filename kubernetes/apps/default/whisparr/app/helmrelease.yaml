@@ -111,6 +111,8 @@ spec:
       config:
         existingClaim: whisparr
       media:
-        existingClaim: kaidame-media
+        type: nfs
+        server: kaidame.flat
+        path: /mnt/citerne/talosdev
       tmp:
         type: emptyDir

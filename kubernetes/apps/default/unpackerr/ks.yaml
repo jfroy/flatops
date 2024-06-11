@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-    - name: kaidame-media
   path: ./kubernetes/apps/default/unpackerr/app
   prune: true
   sourceRef:

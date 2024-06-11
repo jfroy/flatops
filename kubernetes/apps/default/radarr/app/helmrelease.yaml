@@ -112,7 +112,9 @@ spec:
       config:
         existingClaim: radarr
       media:
-        existingClaim: kaidame-media
+        type: nfs
+        server: kaidame.flat
+        path: /mnt/citerne/talosdev
       pushover-notify:
         type: configMap
         name: radarr-configmap

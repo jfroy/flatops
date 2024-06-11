@@ -90,7 +90,9 @@ spec:
       logs:
         type: emptyDir
       media:
-        existingClaim: kaidame-media
+        type: nfs
+        server: kaidame.flat
+        path: /mnt/citerne/talosdev
         globalMounts:
           - path: /media/qbittorrent
             subPath: qbittorrent
