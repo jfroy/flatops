@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/kyverno/charts/kyverno-policies
   ref:
-    tag: 3.2.2
+    tag: 3.2.3
