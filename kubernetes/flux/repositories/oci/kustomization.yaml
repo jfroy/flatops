@@ -5,4 +5,3 @@ resources:
   - ./capacitor.yaml
   - ./kyverno.yaml
   - ./kyverno-policies.yaml
-  - ./stakater.yaml

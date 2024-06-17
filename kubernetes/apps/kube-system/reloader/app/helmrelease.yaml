@@ -5,10 +5,14 @@ metadata:
   name: reloader
 spec:
   interval: 5m
-  chartRef:
-    kind: OCIRepository
-    name: stakater
-    namespace: flux-system
+  chart:
+    spec:
+      chart: reloader
+      version: 1.0.105
+      sourceRef:
+        kind: HelmRepository
+        name: stakater
+        namespace: flux-system
   driftDetection:
     mode: enabled
   install:
@@ -24,4 +28,4 @@ spec:
       readOnlyRootFileSystem: true
       podMonitor:
         enabled: true
-        namespace: kube-system
+        namespace: "{{ .Release.Namespace }}"
