@@ -5,15 +5,17 @@ talosVersion: v1.7.4
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.30.2
 
-clusterName: "talos-dev"
-endpoint: https://192.168.6.8:6443
+clusterName: "kantai"
+endpoint: https://192.168.1.8:6443
 clusterPodNets:
-  - "10.69.0.0/16"
+  - "10.11.0.0/16"
+  - "${CLUSTER_POD_V6_CIDR}"
 clusterSvcNets:
-  - "10.96.0.0/16"
+  - "10.12.0.0/16"
+  - "${CLUSTER_SVC_V6_CIDR}"
 additionalApiServerCertSans: &sans
-  - "192.168.6.8"
-  - 127.0.0.1 # KubePrism
+  - "192.168.1.8"
+  - "127.0.0.1" # KubePrism
 additionalMachineCertSans: *sans
 
 # Disable built-in Flannel to use Cilium
@@ -21,32 +23,42 @@ cniConfig:
   name: none
 
 nodes:
-  - hostname: "talosvm-1"
-    ipAddress: "192.168.6.245"
-    installDisk: "/dev/vda"
+  - hostname: "kantai1"
+    ipAddress: "192.168.1.13"
+    installDiskSelector:
+      wwid: eui.e8238fa6bf530001001b448b4a49b465
     machineSpec:
       secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/3f1cbe5a363ac51d500918881b830355b866f0fbb5a66a5e0cbce85c39e964f9
+    talosImageURL: factory.talos.dev/installer-secureboot/9ff8e0ec01e54111396cb2b5a1f492f0ba121ab1a4135a65dfe1a1ec5759e23a
     controlPlane: true
+    kernelModules:
+      - name: nvidia
+        parameters:
+          - NVreg_OpenRmEnableUnsupportedGpus=1
+      - name: nvidia_uvm
+      - name: nvidia_drm
+      - name: nvidia_modeset
     networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "52:54:00:2a:9e:4a"
+      - interface: bond0
         dhcp: true
         mtu: 1500
         vip:
-          ip: "192.168.6.8"
-  - hostname: "talosvm-2"
-    ipAddress: "192.168.6.193"
-    installDisk: "/dev/vda"
-    machineSpec:
-      secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/3f1cbe5a363ac51d500918881b830355b866f0fbb5a66a5e0cbce85c39e964f9
-    controlPlane: false
-    networkInterfaces:
-      - deviceSelector:
-          hardwareAddr: "52:54:00:0e:a2:1a"
-        dhcp: true
-        mtu: 1500
+          ip: "192.168.1.8"
+        bond:
+          deviceSelectors:
+              - hardwareAddr: "b8:59:9f:40:0e:*"
+          mode: 802.3ad
+          lacpRate: fast
+          xmitHashPolicy: layer3+4
+          miimon: 100
+          updelay: 200
+          downdelay: 200
+    patches:
+      - |-
+        machine:
+          sysctls:
+            net.core.bpf_jit_harden: 1
+            net.ipv6.conf.bond0.accept_ra: '2'
 
 patches:
   # Configure containerd
@@ -86,9 +98,11 @@ patches:
       kubelet:
         extraArgs:
           rotate-server-certificates: true
+        extraConfig:
+          maxPods: 200
         nodeIP:
           validSubnets:
-            - 192.168.6.0/24
+            - 192.168.1.0/27
 
   # Custom sysctl settings
   - |-
@@ -139,6 +153,15 @@ patches:
           # Replaced by a Cilium redirect policy.
           forwardKubeDNSToHost: false
 
+  # udev rules
+  # - set all disks to no scheduler (optimal setting for Ceph and ZFS)
+  - |-
+    machine:
+      udev:
+        rules:
+          # set all disks to `none` scheduler (optimal setting for Ceph and ZFS)
+          - SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ATTR{queue/scheduler}="none"
+
 controlPlane:
   patches:
     # Cluster configuration
@@ -148,6 +171,7 @@ controlPlane:
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
+            node-cidr-mask-size-ipv6: "118"
         coreDNS:
           disabled: true
         proxy:
@@ -163,7 +187,7 @@ controlPlane:
           extraArgs:
             listen-metrics-urls: http://0.0.0.0:2381
           advertisedSubnets:
-            - 192.168.6.0/24
+            - 192.168.1.0/27
 
     # Disable default API server admission plugins.
     - |-
@@ -180,3 +204,24 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - system-upgrade
+
+    # Default scheduler topology spread constraints
+    - |-
+      cluster:
+        scheduler:
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: "kubernetes.io/hostname"
+                          whenUnsatisfiable: ScheduleAnyway
+                        - maxSkew: 3
+                          topologyKey: "topology.kubernetes.io/zone"
+                          whenUnsatisfiable: ScheduleAnyway

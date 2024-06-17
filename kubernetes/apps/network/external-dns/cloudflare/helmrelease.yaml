@@ -45,7 +45,7 @@ spec:
     policy: sync
     sources: ["crd", "ingress"]
     txtPrefix: edns.
-    txtOwnerId: talos-dev
+    txtOwnerId: kantai
     domainFilters: ["${SECRET_DOMAIN}"]
     serviceMonitor:
       enabled: true

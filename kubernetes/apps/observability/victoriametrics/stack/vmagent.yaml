@@ -5,7 +5,7 @@ metadata:
   name: stack
 spec:
   externalLabels:
-    cluster: talos-dev
+    cluster: kantai
   extraArgs:
     promscrape.streamParse: "true"
     # Do not store original labels in vmagent's memory by default. This reduces the amount of memory used by vmagent

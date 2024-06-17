@@ -4,8 +4,9 @@ version: "3"
 
 vars:
   TALHELPER_CLUSTER_DIR: "{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig"
-  TALHELPER_SECRET_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml"
   TALHELPER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml"
+  TALHELPER_ENV_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talenv.sops.yaml"
+  TALHELPER_SECRET_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml"
   HELMFILE_FILE: "{{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml"
   TALOSCONFIG_FILE: "{{.TALHELPER_CLUSTER_DIR}}/talosconfig"
 
@@ -23,7 +24,11 @@ tasks:
             talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
             sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
         fi
-      - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+        if [ ! -f "{{.TALHELPER_ENV_FILE}}" ]; then
+            echo "" > {{.TALHELPER_ENV_FILE}}
+            sops --encrypt --in-place {{.TALHELPER_ENV_FILE}}
+        fi
+      - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --env-file {{.TALHELPER_ENV_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
       - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
       - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
       - task: fetch-kubeconfig
@@ -107,4 +112,4 @@ tasks:
 
   .reset:
     internal: true
-    cmd: rm -rf {{.TALHELPER_CLUSTER_DIR}} {{.TALHELPER_SECRET_FILE}} {{.TALHELPER_CONFIG_FILE}}
+    cmd: rm -rf {{.TALHELPER_CLUSTER_DIR}} {{.TALHELPER_ENV_FILE}} {{.TALHELPER_SECRET_FILE}} {{.TALHELPER_CONFIG_FILE}}

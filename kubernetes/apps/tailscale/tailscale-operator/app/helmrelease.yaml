@@ -24,19 +24,19 @@ spec:
       retries: 3
   valuesFrom:
     - kind: Secret
-      name: k8s-operator-talos-dev-oathsecret
+      name: k8s-operator-oathsecret
       valuesKey: username
       targetPath: oauth.clientId
     - kind: Secret
-      name: k8s-operator-talos-dev-oathsecret
+      name: k8s-operator-oathsecret
       valuesKey: credential
       targetPath: oauth.clientSecret
   values:
     operatorConfig:
       defaultTags:
-        - "tag:k8s-operator-talos-dev"
-      hostname: talos-dev
+        - "tag:k8s-operator-kantai"
+      hostname: kantai
     proxyConfig:
-      defaultTags: "tag:k8s-talos-dev"
+      defaultTags: "tag:k8s-kantai"
     apiServerProxyConfig:
       mode: "true"

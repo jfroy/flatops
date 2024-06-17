@@ -11,7 +11,7 @@ spec:
   virtualRouters:
     - localASN: 65000
       neighbors:
-        - peerAddress: "192.168.6.1/32"
+        - peerAddress: "192.168.1.1/32"
           peerASN: 65001
       serviceSelector:
         matchExpressions:
@@ -24,4 +24,5 @@ metadata:
 spec:
   allowFirstLastIPs: "Yes"
   blocks:
-    - cidr: "10.100.0.0/16"
+    - cidr: "10.10.0.0/16"
+    - cidr: "${CLUSTER_LBA_V6_CIDR}"

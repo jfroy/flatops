@@ -57,7 +57,7 @@ spec:
               - --k8s-proxy-bind-addr=0.0.0.0:8100
               - --advertised-api-url=https://omni.${SECRET_DOMAIN}/
               - --siderolink-api-advertised-url=https://omni-grpc.${SECRET_DOMAIN}/
-              - --siderolink-wireguard-advertised-addr=10.100.0.30:50180
+              - --siderolink-wireguard-advertised-addr=10.10.0.30:50180
               - --advertised-kubernetes-proxy-url=https://omni-proxy.${SECRET_DOMAIN}/
               - --auth-auth0-enabled=true
               - --auth-auth0-domain=${OMNI_AUTH0_DOMAIN}
@@ -114,7 +114,7 @@ spec:
         primary: false
         type: LoadBalancer
         annotations:
-          io.cilium/lb-ipam-ips: "10.100.0.30"
+          io.cilium/lb-ipam-ips: "10.10.0.30"
         ports:
           wireguard:
             port: 50180

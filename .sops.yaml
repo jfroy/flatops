@@ -1,7 +1,7 @@
 ---
 creation_rules:
   - # IMPORTANT: This rule MUST be above the others
-    path_regex: talos/.*\.sops\.ya?ml
+    path_regex: bootstrap/.*\.sops\.ya?ml
     key_groups:
       - age:
           - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"

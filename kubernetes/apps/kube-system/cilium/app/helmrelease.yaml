@@ -26,16 +26,6 @@ spec:
     - kind: ConfigMap
       name: cilium-helm-values
   values:
-    ingressController:
-      enabled: true
-      loadbalancerMode: shared
-      defaultSecretNamespace: cilium-secrets
-      defaultSecretName: "${SECRET_DOMAIN/./-}-production-tls"
-      service:
-        annotations:
-          io.cilium/lb-ipam-ips: "10.100.0.4"
-    gatewayAPI:
-      enabled: true
     hubble:
       enabled: true
       metrics:

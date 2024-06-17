@@ -3,7 +3,7 @@ autoDirectNodeRoutes: true
 bgpControlPlane:
   enabled: true
 bpf:
-  masquerade: true # Incompatible with Cilium bpf masquerade. siderolabs/talos/#8836
+  masquerade: true # Incompatible with Talos forwardKubeDNSToHost. siderolabs/talos/#8836
   tproxy: true
 cgroup:
   automount:
@@ -11,18 +11,22 @@ cgroup:
   hostRoot: /sys/fs/cgroup
 cluster:
   id: 1
-  name: talos-dev
+  name: kantai
 cni:
   exclusive: false
 # NOTE: devices might need to be set if you have more than one active NIC on your hosts
 # devices: eno+ eth+
+# Pod, service, and load-balancer IPs are allocated from a routable CIDR.
+enableIPv6Masquerade: false
 endpointRoutes:
   enabled: true
 hubble:
   enabled: false
 ipam:
   mode: kubernetes
-ipv4NativeRoutingCIDR: 10.69.0.0/16
+ipv4NativeRoutingCIDR: 10.11.0.0/16
+ipv6:
+  enabled: true
 k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true

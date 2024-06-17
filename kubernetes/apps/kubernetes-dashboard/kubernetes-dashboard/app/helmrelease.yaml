@@ -27,7 +27,7 @@ spec:
     app:
       settings:
         global:
-          clusterName: talos-dev
+          clusterName: kantai
     extras:
       serviceMonitor:
         enabled: true

@@ -61,7 +61,7 @@ spec:
       - --ignore-ingress-tls-spec
     policy: sync
     sources: ["ingress", "service"]
-    txtOwnerId: talos-dev
+    txtOwnerId: kantai
     txtPrefix: edns.
     domainFilters: ["${SECRET_DOMAIN}"]
     serviceMonitor:
