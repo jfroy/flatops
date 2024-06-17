@@ -1,0 +1,38 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rook-ceph-operator
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: rook-ceph
+      version: 1.14.6
+      sourceRef:
+        kind: HelmRepository
+        name: rook-ceph
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    csi:
+      cephFSKernelMountOptions: ms_mode=prefer-crc
+      clusterName: kantai
+      enableLiveness: true
+      serviceMonitor:
+        enabled: true
+    monitoring:
+      enabled: true
+    resources:
+      requests:
+        memory: 128Mi
+        cpu: 100m
+      limits: {}
