@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app oauth2-proxy
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: app-template

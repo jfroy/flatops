@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app node-exporter
 spec:
-  interval: 5m
+  interval: 30m
   timeout: 15m
   chart:
     spec:

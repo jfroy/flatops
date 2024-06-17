@@ -5,7 +5,7 @@ metadata:
   name: kyverno
   namespace: flux-system
 spec:
-  interval: 1h
+  interval: 2h
   layerSelector:
     mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
     operation: copy

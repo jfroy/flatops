@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: prometheus-operator-crds
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: prometheus-operator-crds

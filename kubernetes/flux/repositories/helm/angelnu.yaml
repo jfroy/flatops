@@ -5,5 +5,5 @@ metadata:
   name: angelnu
   namespace: flux-system
 spec:
-  interval: 1h
+  interval: 2h
   url: https://angelnu.github.io/helm-charts

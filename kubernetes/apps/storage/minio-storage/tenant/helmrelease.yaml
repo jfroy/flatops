@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: minio-tenant
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: tenant

@@ -4,7 +4,7 @@ kind: HelmRelease
 metadata:
   name: &app policy-reporter
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: policy-reporter

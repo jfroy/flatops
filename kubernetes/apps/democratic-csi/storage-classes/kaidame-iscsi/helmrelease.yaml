@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app kaidame-iscsi
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: democratic-csi

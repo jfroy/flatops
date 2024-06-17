@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: victoria-logs
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: victoria-logs-single

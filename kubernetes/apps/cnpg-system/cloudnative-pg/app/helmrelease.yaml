@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: cloudnative-pg
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: cloudnative-pg

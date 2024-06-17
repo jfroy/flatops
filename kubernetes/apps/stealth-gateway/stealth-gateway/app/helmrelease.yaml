@@ -5,7 +5,7 @@ kind: HelmRelease
 metadata:
   name: &app stealth-gateway
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: app-template
