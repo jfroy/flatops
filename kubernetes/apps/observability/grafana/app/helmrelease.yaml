@@ -150,6 +150,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/observability-folder
+          - name: rook-ceph
+            orgId: 1
+            folder: Rook-Ceph
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/rook-ceph-folder
           - name: unifi
             orgId: 1
             folder: Unifi
@@ -312,6 +320,22 @@ spec:
           # renovate: depName="VictoriaMetrics - single-node"
           gnetId: 10229
           revision: 35
+          datasource: Prometheus
+      rook-ceph:
+        rook-ceph-cluster:
+          # renovate: depName="Ceph Cluster"
+          gnetId: 2842
+          revision: 17
+          datasource: Prometheus
+        rook-ceph-osd-single:
+          # renovate: depName="Ceph - OSD (Single)"
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        rook-ceph-pools:
+          # renovate: depName="Ceph - Pools"
+          gnetId: 5342
+          revision: 9
           datasource: Prometheus
       unifi:
         unifi-insights:
