@@ -57,8 +57,9 @@ nodes:
       - |-
         machine:
           sysctls:
-            net.core.bpf_jit_harden: 1
-            net.ipv6.conf.bond0.accept_ra: '2'
+            net.core.bpf_jit_harden: "1"
+            net.ipv6.conf.bond0.accept_ra: "2"
+            vm.nr_hugepages: "1024"
 
 patches:
   # Configure containerd
