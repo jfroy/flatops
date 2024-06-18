@@ -59,6 +59,7 @@ nodes:
           sysctls:
             net.core.bpf_jit_harden: "1"
             net.ipv6.conf.bond0.accept_ra: "2"
+            net.ipv6.conf.bond0.forwarding: "1"
             vm.nr_hugepages: "1024"
 
 patches:
