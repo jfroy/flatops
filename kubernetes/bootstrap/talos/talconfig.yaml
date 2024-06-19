@@ -54,6 +54,12 @@ nodes:
           miimon: 100
           updelay: 200
           downdelay: 200
+      - deviceSelector:
+          busPath: "0000:42:00.0"
+        ignore: true
+      - deviceSelector:
+          busPath: "0000:42:00.1"
+        ignore: true
     patches:
       - |-
         machine:
