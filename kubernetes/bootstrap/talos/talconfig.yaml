@@ -28,8 +28,25 @@ nodes:
     installDiskSelector:
       wwid: eui.e8238fa6bf530001001b448b4a49b465
     machineSpec:
+      mode: metal
+      arch: amd64
       secureboot: true
-    talosImageURL: factory.talos.dev/installer-secureboot/9ff8e0ec01e54111396cb2b5a1f492f0ba121ab1a4135a65dfe1a1ec5759e23a
+      useUKI: true
+    schematic:
+      customization:
+        extraKernelArgs:
+          - amd_pstate=active
+          - console=tty0
+          - console=ttyS0
+          - talos.network.interface.ignore=enp66s0f0
+          - talos.network.interface.ignore=enp66s0f1
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/amd-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/nvidia-container-toolkit
+            - siderolabs/nvidia-open-gpu-kernel-modules
+            - siderolabs/util-linux-tools
     controlPlane: true
     kernelModules:
       - name: nvidia
@@ -54,12 +71,6 @@ nodes:
           miimon: 100
           updelay: 200
           downdelay: 200
-      - deviceSelector:
-          busPath: "0000:42:00.0"
-        ignore: true
-      - deviceSelector:
-          busPath: "0000:42:00.1"
-        ignore: true
     patches:
       - |-
         machine:
