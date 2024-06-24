@@ -54,7 +54,6 @@ spec:
           compression:
             enabled: true
           requireMsgr2: true
-        provider: host
         ipFamily: IPv4
         dualStack: true
       annotations:
