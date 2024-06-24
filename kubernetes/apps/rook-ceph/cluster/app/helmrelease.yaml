@@ -61,7 +61,7 @@ spec:
         # Avoid duplicate metrics from the ServiceMonitor and scrape annotations.
         # "If no mgr annotations are set, prometheus scrape annotations will be set by default."
         mgr:
-          dummy: true
+          dummy: "true"
       resources:
         mgr:
           requests:
