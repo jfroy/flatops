@@ -5,6 +5,11 @@ creation_rules:
     key_groups:
       - age:
           - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"
+  - path_regex: kubernetes/apps/kube-system/cilium/config/.*\.sops\.ya?ml
+    encrypted_regex: "^(data|stringData|peerAddress)$"
+    key_groups:
+      - age:
+          - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"
   - path_regex: kubernetes/.*\.sops\.ya?ml
     encrypted_regex: "^(data|stringData|password)$"
     key_groups:

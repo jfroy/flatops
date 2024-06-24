@@ -1,0 +1,42 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeeringPolicy
+metadata:
+    name: default
+spec:
+    nodeSelector:
+        matchLabels:
+            kubernetes.io/os: linux
+    virtualRouters:
+        - localASN: 64600
+          neighbors:
+            - peerAddress: ENC[AES256_GCM,data:Bj6aDKEQZeHYtA0BSN8=,iv:pxtJOcUQWkiGDkwPuBJET5f3Eo2QtGbMDjDyFeUonw8=,tag:9uI7jIhqpnT5spc5/lLPcg==,type:str]
+              peerASN: 64700
+            - peerAddress: ENC[AES256_GCM,data:/W4jeYU9mnXB+WtSSF4pyScnjU/0kQrDJg==,iv:IrIXBTRlbf/oMRBb6VEFN/dkYUnRnHHJr5476j9cIME=,tag:6BAucO/FJC/cZna6r9x2UQ==,type:str]
+              peerASN: 64700
+          serviceSelector:
+            matchExpressions:
+                - key: somekey
+                  operator: NotIn
+                  values:
+                    - never-used-value
+          exportPodCIDR: true
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA5M3FnOWdOanplSmNNMlJs
+            MEJsVGpuRmYxcGR3Q3BObXpUemNDbExGc2tBCmtwVFNzL00xVWlWdVlJMlpabWM4
+            MGdHdHNOVHJGbEVERnZPRW1XZWdoVU0KLS0tIHhYU1NlclRwTGN4S25YUWN3ZEln
+            SWFyTTcvSnpJYnNMWjNOQjhrTFI4a2cKX9aCroqlanpJiE00n+f6uSmHgOLMWQ+4
+            eKrTHjNIIZaiW4IBgOI0K86EUq5VZdBaC0x3zmFTINdnq4EfWXLM3Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2024-06-24T16:23:05Z"
+    mac: ENC[AES256_GCM,data:j1wgdNiSBIOdfLBXabutp7ayb4AJyvt7yK0naKa0Bbmo7T3AIutu19k4a7Vp6th6+aA5iDabAYfNq4Vks4HWIC2sraiX52uTShGxnFpugDPYciJvpP+P6NFoTJ6tkmP5UTJksmTkDc8pJif4o4QL0OQpHzqTkdtze/I8J1R5A+U=,iv:hpK4/5J8cRhe7ucIgcDISrHcKI+23+nNojGmO+tMdDk=,tag:577hMhRgKF7ztUMPfkgTbw==,type:str]
+    pgp: []
+    encrypted_regex: ^(data|stringData|peerAddress)$
+    version: 3.8.1

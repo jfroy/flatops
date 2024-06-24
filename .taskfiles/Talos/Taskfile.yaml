@@ -34,6 +34,7 @@ tasks:
       - task: fetch-kubeconfig
       - task: install-helm-apps
       - task: apply-kustomizations
+      - task: apply-manifests
       - talosctl health --server=false
     preconditions:
       - msg: Missing talhelper config file
@@ -71,6 +72,11 @@ tasks:
     preconditions:
       - msg: Missing kubeconfig
         sh: test -f {{.KUBECONFIG_FILE}}
+
+  apply-manifests:
+    desc: Apply manifests needed for the cluster
+    cmds:
+      - sops --decrypt "{{.KUBERNETES_DIR}}/apps/kube-system/cilium/config/bgppeeringpolicy.sops.yaml" | kubectl apply --kubeconfig {{.KUBECONFIG_FILE}} --server-side --filename -
 
   upgrade:
     desc: Upgrade Talos on a node
