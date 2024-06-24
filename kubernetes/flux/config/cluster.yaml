@@ -8,7 +8,7 @@ spec:
   interval: 30m
   url: "https://github.com/jfroy/flatops"
   ref:
-    branch: "dev"
+    branch: "main"
   ignore: |
     # exclude all
     /*
