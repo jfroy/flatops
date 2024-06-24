@@ -24,6 +24,8 @@ spec:
     remediation:
       retries: 3
   values:
+    deploymentStrategy:
+      type: RollingUpdate
     testFramework:
       enabled: false
     serviceMonitor:
@@ -59,8 +61,9 @@ spec:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
-          - { name: Prometheus, orgId: 1 }
+          - { name: Alertmanager, orgId: 1 }
           - { name: Loki, orgId: 1 }
+          - { name: Prometheus, orgId: 1 }
         datasources:
           # - name: Prometheus
           #   type: prometheus
@@ -97,6 +100,13 @@ spec:
             type: victorialogs-datasource
             access: proxy
             url: http://victoria-logs-victoria-logs-single-server.observability:9428
+          - name: Alertmanager
+            type: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://alertmanager-operated.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
 
     dashboardProviders:
       dashboardproviders.yaml:
@@ -190,12 +200,6 @@ spec:
           gnetId: 1860
           revision: 37
           datasource: Prometheus
-        redis:
-          # renovate: depName="Redis Dashboard for Prometheus Redis Exporter 1.x"
-          gnetId: 763
-          revision: 6
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
         smart:
           # renovate: depName="Dashboard for smartctl_exporter"
           gnetId: 20204
@@ -208,6 +212,13 @@ spec:
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
+        volsync:
+          # removate: depNmae="VolSync Dashboard"
+          gnetId: 21356
+          revision: 1
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+            - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
         zfs:
           # renovate: depName="ZFS"
           gnetId: 7845
