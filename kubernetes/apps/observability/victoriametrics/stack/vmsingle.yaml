@@ -10,7 +10,7 @@ spec:
     search.minStalenessInterval: 5m
     vmalert.proxyURL: http://vmalert-stack.observability.svc:8080
   replicaCount: 1
-  resources: # TODO: refine
+  resources:
     requests:
       cpu: 200m
       memory: 1Gi

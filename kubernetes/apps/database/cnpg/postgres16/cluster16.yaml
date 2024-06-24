@@ -9,7 +9,7 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3-1
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 10Gi
+    size: 20Gi
     storageClass: openebs-hostpath
   superuserSecret:
     name: postgres16-superuser-secret
@@ -41,7 +41,7 @@ spec:
         compression: bzip2
         maxParallel: 2
       destinationPath: s3://postgres16/
-      endpointURL: https://minio.storage.svc.cluster.local
+      endpointURL: https://ceph-objectstore.rook-ceph.svc.cluster.local
       endpointCA:
         name: minio.cluster-ca.crt
         key: ca.crt

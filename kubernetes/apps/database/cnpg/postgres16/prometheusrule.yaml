@@ -8,7 +8,7 @@ spec:
   groups:
     - name: cloudnative-pg/postgres16
       rules:
-        # NOTE: dev cluster is not HA
+        # NOTE: cluster is not HA
         # - alert: CNPGClusterHACritical
         #   annotations:
         #     summary: CNPG Cluster has no standby replicas!

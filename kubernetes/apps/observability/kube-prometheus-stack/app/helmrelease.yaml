@@ -215,7 +215,7 @@ spec:
               storageClassName: openebs-hostpath
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 100Gi
         # topologySpreadConstraints:
         #   - maxSkew: 1
         #     topologyKey: "kubernetes.io/hostname"

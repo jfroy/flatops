@@ -34,5 +34,6 @@ spec:
       persistentVolume:
         enabled: true
         storageClass: openebs-hostpath
+        size: 10Gi
       serviceMonitor:
         enabled: true
