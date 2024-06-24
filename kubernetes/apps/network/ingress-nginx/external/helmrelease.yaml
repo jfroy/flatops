@@ -91,4 +91,4 @@ spec:
         requests:
           cpu: 100m
         limits:
-          memory: 500Mi
+          memory: 1Gi
