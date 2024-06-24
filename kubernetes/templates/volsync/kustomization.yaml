@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./claim.yaml
   - ./minio.yaml
-  # r2 not included for dev cluster
+  # TODO: Setup r2 backups
+  # - ./r2.yaml
