@@ -10,7 +10,7 @@ spec:
     name: cluster-ca
     kind: ClusterIssuer
     group: cert-manager.io
-  commonName: ceph-objectstore.rook-ceph.svc.cluster.local
+  commonName: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
   dnsNames:
-    - ceph-objectstore.rook-ceph.svc
-    - ceph-objectstore.rook-ceph.svc.cluster.local
+    - rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
+    - rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local

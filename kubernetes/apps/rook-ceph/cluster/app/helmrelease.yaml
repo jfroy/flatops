@@ -116,6 +116,19 @@ spec:
             path: /
         ingressClassName: internal
     cephBlockPools:
+      # https://github.com/rook/rook/blob/master/deploy/examples/pool-builtin-mgr.yaml
+      - name: builtin-mgr
+        spec:
+          name: .mgr
+          failureDomain: osd
+          replicated:
+            size: 3
+          parameters:
+            compression_mode: none
+        storageClass:
+          enabled: false
+        mirroring:
+          enabled: false
       - name: ceph-blockpool
         spec:
           failureDomain: osd
@@ -222,6 +235,7 @@ spec:
           volumeBindingMode: Immediate
           parameters:
             region: us-west-1
+            # endpoint: <hostname including port>
         ingress:
           enabled: true
           annotations:
