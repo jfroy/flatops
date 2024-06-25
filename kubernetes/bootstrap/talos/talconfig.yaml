@@ -63,8 +63,8 @@ nodes:
           ip: "192.168.1.8"
         bond:
           deviceSelectors:
-              - busPath: "0000:81:00.0"
-              - busPath: "0000:81:00.1"
+            - busPath: "0000:81:00.0"
+            - busPath: "0000:81:00.1"
           mode: 802.3ad
           lacpRate: fast
           xmitHashPolicy: layer3+4
