@@ -24,11 +24,11 @@ spec:
       retries: 3
   valuesFrom:
     - kind: Secret
-      name: k8s-operator-oathsecret
+      name: k8s-operator-oauth-secret
       valuesKey: username
       targetPath: oauth.clientId
     - kind: Secret
-      name: k8s-operator-oathsecret
+      name: k8s-operator-oauth-secret
       valuesKey: credential
       targetPath: oauth.clientSecret
   values:
