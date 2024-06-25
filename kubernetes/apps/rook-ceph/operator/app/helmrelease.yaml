@@ -25,7 +25,6 @@ spec:
   values:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
-      clusterName: kantai
       enableLiveness: true
       serviceMonitor:
         enabled: true
