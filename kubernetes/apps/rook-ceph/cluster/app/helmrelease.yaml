@@ -15,7 +15,7 @@ spec:
         name: rook-ceph
         namespace: flux-system
   driftDetection:
-    mode: enabled
+    mode: disabled
   install:
     remediation:
       retries: 3
