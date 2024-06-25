@@ -37,10 +37,10 @@ spec:
       createPrometheusRules: true
     cephClusterSpec:
       mon:
-        count: 3
+        count: 1
         allowMultiplePerNode: true
       mgr:
-        count: 2
+        count: 1
         allowMultiplePerNode: true
         modules:
           - name: pg_autoscaler
@@ -48,17 +48,18 @@ spec:
       dashboard:
         enabled: true
         urlPrefix: /
+        port: 8080
         ssl: false
         prometheusEndpoint: http://vmsingle-stack.observability.svc:8429
       network:
         connections:
-          encryption:
-            enabled: true
-          compression:
-            enabled: true
+          # encryption:
+          #   enabled: true
+          # compression:
+          #   enabled: true
           requireMsgr2: true
         ipFamily: IPv4
-        dualStack: true
+        # dualStack: true
       annotations:
         # Avoid duplicate metrics from the ServiceMonitor and scrape annotations.
         # "If no mgr annotations are set, prometheus scrape annotations will be set by default."
@@ -69,20 +70,22 @@ spec:
           requests:
             cpu: 100m
             memory: 512Mi
+          limits: {}
         mon:
           requests:
             cpu: 100m
             memory: 1Gi
+          limits: {}
         osd:
           requests:
             cpu: 500m
             memory: 2Gi
+          limits: {}
         mgr-sidecar:
           requests:
             cpu: 100m
             memory: 128Mi
-          limits:
-            memory: 256Mi
+          limits: {}
       storage:
         useAllNodes: false
         useAllDevices: false
