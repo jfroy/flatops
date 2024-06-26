@@ -70,6 +70,7 @@ spec:
         proxy-buffer-size: 16k
         ssl-protocols: TLSv1.3 TLSv1.2
         use-forwarded-headers: "true"
+        worker-processes: 1
       metrics:
         enabled: true
         serviceMonitor:
@@ -78,6 +79,7 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: "network/${SECRET_DOMAIN/./-}-staging-tls"
+        sync-rate-limit: "0.008"
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
