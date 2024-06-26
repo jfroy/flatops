@@ -43,7 +43,7 @@ spec:
       destinationPath: s3://postgres16/
       endpointURL: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
       endpointCA:
-        name: minio.cluster-ca.crt
+        name: cluster-ca.crt
         key: ca.crt
       # NOTE: serverName version needs to be incremented when recovering from an existing cluster.
       serverName: &currentCluster postgres16-v1
