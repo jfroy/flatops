@@ -37,10 +37,10 @@ spec:
       createPrometheusRules: true
     cephClusterSpec:
       mon:
-        count: 1
+        count: 3
         allowMultiplePerNode: true
       mgr:
-        count: 1
+        count: 2
         allowMultiplePerNode: true
         modules:
           - name: pg_autoscaler
