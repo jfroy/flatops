@@ -1,5 +1,4 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -25,13 +24,30 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    nfd:
+      enabled: false
     cdi:
       default: true
       enabled: true
+    validator:
+      repository: ghcr.io/nvidia/gpu-operator
+      image: gpu-operator-validator
+      version: c16678fa-ubi8
+    operator:
+      repository: ghcr.io/nvidia
+      image: gpu-operator
+      version: c16678fa-ubi8
     driver:
       # driver is not supported on Talos. https://github.com/NVIDIA/gpu-operator/issues/647
       enabled: false
-    nfd:
-      enabled: false
     toolkit:
+      # toolkit is not provided by Talos.
       enabled: false
+    devicePlugin:
+      repository: jfroy
+      image: k8s-device-plugin
+      version: devel@sha256:bdf9c0ba4a155c495dbcb0fe842d9a2655dfc87c11edb6f700f63720c6142cb1
+    gfd:
+      repository: jfroy
+      image: k8s-device-plugin
+      version: devel@sha256:bdf9c0ba4a155c495dbcb0fe842d9a2655dfc87c11edb6f700f63720c6142cb1
