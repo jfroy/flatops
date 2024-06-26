@@ -70,22 +70,26 @@ spec:
           requests:
             cpu: 100m
             memory: 512Mi
-          limits: {}
+          limits:
+            memory: 1Gi
         mon:
           requests:
-            cpu: 100m
+            cpu: 500m
             memory: 1Gi
-          limits: {}
+          limits:
+            memory: 2Gi
         osd:
           requests:
             cpu: 500m
             memory: 2Gi
-          limits: {}
+          limits:
+            memory: 4Gi
         mgr-sidecar:
           requests:
             cpu: 100m
             memory: 128Mi
-          limits: {}
+          limits:
+            memory: 256Mi
       storage:
         useAllNodes: false
         useAllDevices: false
