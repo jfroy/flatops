@@ -41,7 +41,7 @@ spec:
         compression: bzip2
         maxParallel: 2
       destinationPath: s3://postgres16/
-      endpointURL: https://ceph-objectstore.rook-ceph.svc.cluster.local
+      endpointURL: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
       endpointCA:
         name: minio.cluster-ca.crt
         key: ca.crt
