@@ -31,9 +31,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    config:
-      devices:
-        - /dev/vda
     serviceMonitor:
       enabled: true
     prometheusRules:
