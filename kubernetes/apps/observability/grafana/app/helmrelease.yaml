@@ -198,12 +198,6 @@ spec:
           revision: 1
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
-        spegel:
-          # renovate: depName="Spegel"
-          gnetId: 18089
-          revision: 1
-          datasource:
-            - { name: DS_PROMETHEUS, value: Prometheus }
         volsync:
           # removate: depNmae="VolSync Dashboard"
           gnetId: 21356
