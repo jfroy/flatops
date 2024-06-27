@@ -119,7 +119,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/default-folder
+              path: /var/lib/grafana/dashboards/default
           - name: flux
             orgId: 1
             folder: Flux
@@ -127,7 +127,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/flux-folder
+              path: /var/lib/grafana/dashboards/flux
           - name: kubernetes
             orgId: 1
             folder: Kubernetes
@@ -135,15 +135,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/kubernetes-folder
-          - name: 'kubernetes-dotdc'
-            orgId: 1
-            folder: 'Kubernetes (dotdc)'
-            type: file
-            disableDeletion: true
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/kubernetes-dotdc-folder
+              path: /var/lib/grafana/dashboards/kubernetes
           - name: nginx
             orgId: 1
             folder: Nginx
@@ -151,7 +143,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/nginx-folder
+              path: /var/lib/grafana/dashboards/nginx
           - name: observability
             orgId: 1
             folder: Observability
@@ -159,7 +151,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/observability-folder
+              path: /var/lib/grafana/dashboards/observability
           - name: rook-ceph
             orgId: 1
             folder: Rook-Ceph
@@ -167,7 +159,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/rook-ceph-folder
+              path: /var/lib/grafana/dashboards/rook-ceph
           - name: unifi
             orgId: 1
             folder: Unifi
@@ -175,7 +167,7 @@ spec:
             disableDeletion: false
             editable: true
             options:
-              path: /var/lib/grafana/dashboards/unifi-folder
+              path: /var/lib/grafana/dashboards/unifi
     dashboards:
       default:
         cloudflared:
@@ -245,42 +237,41 @@ spec:
           datasource:
             - { name: DS_LOKI, value: Loki }
       kubernetes:
-        kubernetes-api-server:
-          # renovate: depName="Kubernetes / System / API Server"
-          gnetId: 15761
-          revision: 17
-          datasource: Prometheus
-        kubernetes-coredns:
-          # renovate: depName="Kubernetes / System / CoreDNS"
-          gnetId: 15762
-          revision: 18
-          datasource: Prometheus
-        kubernetes-global:
-          # renovate: depName="Kubernetes / Views / Global"
-          gnetId: 15757
-          revision: 37
-          datasource: Prometheus
-        kubernetes-namespaces:
-          # renovate: depName="Kubernetes / Views / Namespaces"
-          gnetId: 15758
-          revision: 34
-          datasource: Prometheus
-        kubernetes-nodes:
-          # renovate: depName="Kubernetes / Views / Nodes"
-          gnetId: 15759
-          revision: 29
-          datasource: Prometheus
-        kubernetes-pods:
-          # renovate: depName="Kubernetes / Views / Pods"
-          gnetId: 15760
-          revision: 28
-          datasource: Prometheus
-        kubernetes-volumes:
-          # renovate: depName="K8s / Storage / Volumes / Cluster"
-          gnetId: 11454
-          revision: 14
-          datasource: Prometheus
-      kubernetes-dotdc:
+      #   kubernetes-api-server:
+      #     # renovate: depName="Kubernetes / System / API Server"
+      #     gnetId: 15761
+      #     revision: 17
+      #     datasource: Prometheus
+      #   kubernetes-coredns:
+      #     # renovate: depName="Kubernetes / System / CoreDNS"
+      #     gnetId: 15762
+      #     revision: 18
+      #     datasource: Prometheus
+      #   kubernetes-global:
+      #     # renovate: depName="Kubernetes / Views / Global"
+      #     gnetId: 15757
+      #     revision: 37
+      #     datasource: Prometheus
+      #   kubernetes-namespaces:
+      #     # renovate: depName="Kubernetes / Views / Namespaces"
+      #     gnetId: 15758
+      #     revision: 34
+      #     datasource: Prometheus
+      #   kubernetes-nodes:
+      #     # renovate: depName="Kubernetes / Views / Nodes"
+      #     gnetId: 15759
+      #     revision: 29
+      #     datasource: Prometheus
+      #   kubernetes-pods:
+      #     # renovate: depName="Kubernetes / Views / Pods"
+      #     gnetId: 15760
+      #     revision: 28
+      #     datasource: Prometheus
+      #   kubernetes-volumes:
+      #     # renovate: depName="K8s / Storage / Volumes / Cluster"
+      #     gnetId: 11454
+      #     revision: 14
+      #     datasource: Prometheus
         k8s-system-api-server:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
           token: ''
