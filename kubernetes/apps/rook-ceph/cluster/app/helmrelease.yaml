@@ -25,11 +25,6 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    configOverride: |
-      [global]
-      bdev_enable_discard = true
-      bdev_async_discard = true
-      osd_class_update_on_start = false
     toolbox:
       enabled: true
     monitoring:
@@ -111,6 +106,9 @@ spec:
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a0750123435a6b
       cephConfig:
         global:
+          bdev_async_discard: "true"
+          bdev_enable_discard: "true"
+          osd_class_update_on_start: "false"
           rgw_dns_name: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
     ingress:
       dashboard:
