@@ -78,7 +78,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: "network/${SECRET_DOMAIN/./-}-staging-tls"
+        default-ssl-certificate: "network/${SECRET_DOMAIN/./-}-production-tls"
         sync-rate-limit: "0.008"
       topologySpreadConstraints:
         - maxSkew: 1
