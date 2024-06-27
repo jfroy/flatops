@@ -15,7 +15,7 @@ spec:
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
-  name: cluster-ca.crt
+  name: cluster-ca-secret
 spec:
   sources:
   - secret:
