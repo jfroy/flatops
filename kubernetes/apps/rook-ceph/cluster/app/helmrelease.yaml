@@ -30,7 +30,6 @@ spec:
       bdev_enable_discard = true
       bdev_async_discard = true
       osd_class_update_on_start = false
-      rgw_dns_name = rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
     toolbox:
       enabled: true
     monitoring:
@@ -233,8 +232,7 @@ spec:
                 cpu: 100m
                 memory: 1Gi
             priorityClassName: system-cluster-critical
-            securePort: 443
-            sslCertificateRef: ceph-objectstore-tls
+            port: 80
         storageClass:
           enabled: true
           name: ceph-bucket
