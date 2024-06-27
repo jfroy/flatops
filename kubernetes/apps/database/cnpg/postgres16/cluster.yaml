@@ -41,19 +41,19 @@ spec:
         compression: bzip2
         maxParallel: 2
       destinationPath: s3://postgres16/
-      endpointURL: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
-      endpointCA:
-        name: cluster-ca-secret
-        key: ca.crt
+      endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
+      # endpointCA:
+      #   name: cluster-ca-secret
+      #   key: ca.crt
       # NOTE: serverName version needs to be incremented when recovering from an existing cluster.
       serverName: &currentCluster postgres16-v1
       s3Credentials:
         accessKeyId:
-          name: postgres16-s3-secret
-          key: username
+          name: postgres16-obc
+          key: AWS_ACCESS_KEY_ID
         secretAccessKey:
-          name: postgres16-s3-secret
-          key: password
+          name: postgres16-obc
+          key: AWS_SECRET_ACCESS_KEY
   bootstrap:
     initdb: {}
   # NOTE: previousCluster needs to be set to the name of the previous cluster when recovering from
