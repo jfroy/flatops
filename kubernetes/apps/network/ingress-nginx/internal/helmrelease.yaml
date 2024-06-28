@@ -27,8 +27,7 @@ spec:
     controller:
       replicaCount: 1
       service:
-        annotations:
-          io.cilium/lb-ipam-ips: "10.10.0.7"
+        ipFamilyPolicy: PreferDualStack
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal
