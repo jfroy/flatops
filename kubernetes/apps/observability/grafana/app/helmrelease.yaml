@@ -55,9 +55,7 @@ spec:
       enabled: false
     plugins:
       # renovate: datasource=github-releases depName=VictoriaMetrics/victorialogs-datasource
-      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.2.2/victorialogs-datasource-v0.2.2.zip;victorialogs-datasource
-
-      # renovate: datasource=github-releases depName=VictoriaMetrics/grafana-datasource
+      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.2.2/v0.2.3/grafana-datasource
       - https://github.com/VictoriaMetrics/grafana-datasource/releases/download/v0.8.1/victoriametrics-datasource-v0.8.1.zip;victoriametrics-datasource
 
     datasources:
