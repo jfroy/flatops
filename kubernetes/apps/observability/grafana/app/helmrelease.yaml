@@ -54,6 +54,8 @@ spec:
     persistence:
       enabled: false
     plugins:
+      - grafana-clock-panel
+
       # renovate: datasource=github-releases depName=VictoriaMetrics/victorialogs-datasource
       - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.2.2/v0.2.3/grafana-datasource
       - https://github.com/VictoriaMetrics/grafana-datasource/releases/download/v0.8.1/victoriametrics-datasource-v0.8.1.zip;victoriametrics-datasource
@@ -66,24 +68,6 @@ spec:
           - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
         datasources:
-          # - name: Prometheus
-          #   type: prometheus
-          #   uid: prometheus
-          #   access: proxy
-          #   url: http://kube-prometheus-stack-prometheus.observability:9090
-          #   isDefault: true
-          #   jsonData:
-          #     prometheusType: Prometheus
-          #     # Must match prometheus prometheus.prometheusSpec.scrapeInterval
-          #     timeInterval: 30s
-          # - name: Loki
-          #   type: loki
-          #   uid: loki
-          #   access: proxy
-          #   url: http://loki-gateway.observability.svc
-          #   jsonData:
-          #     timeout: 60
-          #     maxLines: 1000
           - name: Prometheus
             type: prometheus
             uid: prometheus
@@ -206,11 +190,6 @@ spec:
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
             - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
-        zfs:
-          # renovate: depName="ZFS"
-          gnetId: 7845
-          revision: 4
-          datasource: Prometheus
         cert-manager:
           url: https://gitlab.com/uneeq-oss/cert-manager-mixin/-/raw/master/dashboards/cert-manager.json?ref_type=heads
           datasource: Prometheus
@@ -232,41 +211,6 @@ spec:
           datasource:
             - { name: DS_LOKI, value: Loki }
       kubernetes:
-      #   kubernetes-api-server:
-      #     # renovate: depName="Kubernetes / System / API Server"
-      #     gnetId: 15761
-      #     revision: 17
-      #     datasource: Prometheus
-      #   kubernetes-coredns:
-      #     # renovate: depName="Kubernetes / System / CoreDNS"
-      #     gnetId: 15762
-      #     revision: 18
-      #     datasource: Prometheus
-      #   kubernetes-global:
-      #     # renovate: depName="Kubernetes / Views / Global"
-      #     gnetId: 15757
-      #     revision: 37
-      #     datasource: Prometheus
-      #   kubernetes-namespaces:
-      #     # renovate: depName="Kubernetes / Views / Namespaces"
-      #     gnetId: 15758
-      #     revision: 34
-      #     datasource: Prometheus
-      #   kubernetes-nodes:
-      #     # renovate: depName="Kubernetes / Views / Nodes"
-      #     gnetId: 15759
-      #     revision: 29
-      #     datasource: Prometheus
-      #   kubernetes-pods:
-      #     # renovate: depName="Kubernetes / Views / Pods"
-      #     gnetId: 15760
-      #     revision: 28
-      #     datasource: Prometheus
-      #   kubernetes-volumes:
-      #     # renovate: depName="K8s / Storage / Volumes / Cluster"
-      #     gnetId: 11454
-      #     revision: 14
-      #     datasource: Prometheus
         k8s-system-api-server:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
           token: ''
