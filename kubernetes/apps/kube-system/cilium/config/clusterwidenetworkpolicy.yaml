@@ -1,0 +1,12 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: cluster-ingress-allow
+  annotations:
+    future-me-why: "allow ingress from cluster for all endpoints, which also puts them in deny-by-default mode for ingress"
+spec:
+  endpointSelector: {}
+  ingress:
+  - fromEntities:
+    - "cluster"
