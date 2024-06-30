@@ -1,4 +1,7 @@
 ---
+stores:
+  yaml:
+    indent: 2
 creation_rules:
   - # IMPORTANT: This rule MUST be above the others
     path_regex: bootstrap/.*\.sops\.ya?ml
