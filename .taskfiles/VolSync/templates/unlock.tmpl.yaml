@@ -12,7 +12,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: minio
-          image: docker.io/restic/restic:0.16.4
+          image: docker.io/restic/restic:0.16.5
           args: ["unlock", "--remove-all"]
           envFrom:
             - secretRef:
@@ -23,7 +23,7 @@ spec:
               mountPath: /etc/ssl/certs/ca-certificates.crt
               subPath: ca.crt
         - name: r2
-          image: docker.io/restic/restic:0.16.4
+          image: docker.io/restic/restic:0.16.5
           args: ["unlock", "--remove-all"]
           envFrom:
             - secretRef:
