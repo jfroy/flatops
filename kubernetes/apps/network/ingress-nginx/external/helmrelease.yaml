@@ -32,8 +32,11 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
-        ipFamilyPolicy: PreferDualStack
         externalTrafficPolicy: Cluster
+        ipFamilyPolicy: PreferDualStack
+        ipFamilies:
+          - IPv4
+          - IPv6
       ingressClassResource:
         name: external
         default: false
