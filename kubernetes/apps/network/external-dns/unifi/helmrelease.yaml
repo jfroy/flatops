@@ -27,7 +27,7 @@ spec:
   values:
     fullnameOverride: *app
     service:
-      ipFamilyPolicy: SingleStack
+      ipFamilyPolicy: PreferDualStack
     provider:
       name: webhook
       webhook:

@@ -76,7 +76,7 @@ spec:
     service:
       app:
         controller: echo-server
-        ipFamilyPolicy: SingleStack
+        ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: *port
