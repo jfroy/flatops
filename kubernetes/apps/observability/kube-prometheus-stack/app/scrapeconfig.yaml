@@ -7,8 +7,9 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-      - "pikvm.flat:9100"
       - "homeassistant.flat:9100"
+      - "kaidame.flat:9100"
+      - "pikvm.flat:9100"
   metricsPath: /metrics
   relabelings:
     - action: replace
