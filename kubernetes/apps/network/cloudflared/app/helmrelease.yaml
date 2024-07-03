@@ -97,7 +97,7 @@ spec:
     service:
       app:
         controller: cloudflared
-        ipFamilyPolicy: PreferDualStack
+        ipFamilyPolicy: SingleStack
         ports:
           http:
             port: *port

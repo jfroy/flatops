@@ -27,7 +27,7 @@ spec:
     controller:
       replicaCount: 1
       service:
-        ipFamilyPolicy: PreferDualStack
+        ipFamilyPolicy: SingleStack
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: internal

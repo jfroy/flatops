@@ -7,7 +7,7 @@ serviceAccount:
 service:
   name: kube-dns
   clusterIP: "10.12.0.10"
-  ipFamilyPolicy: PreferDualStack
+  ipFamilyPolicy: SingleStack
 servers:
   - zones:
       - zone: .

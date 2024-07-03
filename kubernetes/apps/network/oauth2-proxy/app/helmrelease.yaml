@@ -107,7 +107,7 @@ spec:
       app:
         controller: oauth2-proxy
         type: ClusterIP
-        ipFamilyPolicy: PreferDualStack
+        ipFamilyPolicy: SingleStack
         ports:
           http:
             port: *port

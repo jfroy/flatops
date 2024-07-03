@@ -28,7 +28,7 @@ spec:
   values:
     fullnameOverride: *app
     service:
-      ipFamilyPolicy: PreferDualStack
+      ipFamilyPolicy: SingleStack
     provider: cloudflare
     env:
       - name: CF_API_TOKEN

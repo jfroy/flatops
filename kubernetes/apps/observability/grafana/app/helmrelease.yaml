@@ -29,7 +29,7 @@ spec:
     testFramework:
       enabled: false
     service:
-      ipFamilyPolicy: PreferDualStack
+      ipFamilyPolicy: SingleStack
     serviceMonitor:
       enabled: true
       metricRelabelings:
