@@ -9,6 +9,7 @@ spec:
     - targets:
       - "homeassistant.flat:9100"
       - "kaidame.flat:9100"
+      - "kaidame.flat:9134"
       - "pikvm.flat:9100"
   metricsPath: /metrics
   relabelings:
