@@ -109,7 +109,7 @@ spec:
       media:
         type: nfs
         server: kaidame.flat
-        path: /mnt/citerne/talosdev
+        path: /mnt/citerne/media
         globalMounts:
           - path: /media/sabnzbd
             subPath: sabnzbd

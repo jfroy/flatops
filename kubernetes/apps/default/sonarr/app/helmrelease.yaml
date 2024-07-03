@@ -114,7 +114,7 @@ spec:
       media:
         type: nfs
         server: kaidame.flat
-        path: /mnt/citerne/talosdev
+        path: /mnt/citerne/media
       pushover-notify:
         type: configMap
         name: sonarr-configmap

@@ -23,9 +23,9 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: kaidame/talosdev##
+    volumeHandle: kaidame/media##
     volumeAttributes:
-      source: "//kaidame/talosdev"
+      source: "//kaidame/media"
     nodeStageSecretRef:
       name: kaidame-media-secret
       namespace: default

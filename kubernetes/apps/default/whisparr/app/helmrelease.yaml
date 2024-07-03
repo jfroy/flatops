@@ -113,6 +113,6 @@ spec:
       media:
         type: nfs
         server: kaidame.flat
-        path: /mnt/citerne/talosdev
+        path: /mnt/citerne/media
       tmp:
         type: emptyDir
