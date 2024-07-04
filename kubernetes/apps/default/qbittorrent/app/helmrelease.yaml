@@ -77,10 +77,10 @@ spec:
             resources:
               requests:
                 cpu: 1
-                memory: 600Mi
+                memory: 1Gi
               limits:
-                cpu: 3
-                memory: 10Gi
+                cpu: 4
+                memory: 50Gi
         initContainers:
           vuetorrent:
             image:
@@ -120,8 +120,6 @@ spec:
       app:
         controller: qbittorrent
         type: ClusterIP
-        # annotations:
-        #   io.cilium/lb-ipam-ips: 192.168.42.122
         ports:
           http:
             port: *port
