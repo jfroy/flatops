@@ -94,7 +94,7 @@ spec:
         runAsGroup: 2000
         fsGroup: 2000
         fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [10000]
+        supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
       topologySpreadConstraints:
         - maxSkew: 1
