@@ -23,11 +23,16 @@ spec:
     remediation:
       retries: 3
   values:
+    openebs-crds:
+      csi:
+        volumeSnapshots:
+          enabled: false  # snapshot-controller manages those CRDs
+
+    # https://github.com/openebs/dynamic-localpv-provisioner/blob/HEAD/deploy/helm/charts/values.yaml
     localpv-provisioner:
       localpv:
         image:
           registry: quay.io/
-          repository: openebs/provisioner-localpv
         basePath: /var/openebs/local
         resources:
           requests:
@@ -42,16 +47,19 @@ spec:
           registry: quay.io/
       analytics:
         enabled: false
-    openebs-crds:
-      csi:
-        volumeSnapshots:
-          enabled: false  # snapshot-controller manages those CRDs
+
+    # https://github.com/openebs/zfs-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     zfs-localpv:
       enabled: false
+
+    # https://github.com/openebs/lvm-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     lvm-localpv:
       enabled: false
+
+    # https://github.com/openebs/mayastor-extensions/blob/v2.7.0/chart/values.yaml
     mayastor:
       enabled: false
+
     engines:
       local:
         lvm:
