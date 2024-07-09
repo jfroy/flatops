@@ -1,0 +1,125 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: plex
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.2.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      plex:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/jfroy/plex
+              tag: 1.40.3.8555-fef15d30c@sha256:35168e6317342134ee42a74e57cd9026f680693ff59fd1894877e830a3ba094a
+            env:
+              TZ: America/Los_Angeles
+              PLEX_ADVERTISE_URL: "https://${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}:443,http://10.10.1.0:32400"
+              PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /identity
+                    port: 32400
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 16Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 4000]
+        seccompProfile: { type: RuntimeDefault }
+      # nodeSelector:
+      #   intel.feature.node.kubernetes.io/gpu: "true"
+    service:
+      app:
+        controller: plex
+        type: LoadBalancer
+        annotations:
+          io.cilium/lb-ipam-ips: 10.10.1.0
+        ports:
+          http:
+            port: 32400
+    ingress:
+      app:
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        className: external
+        hosts:
+          - host: "${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: plex
+        # TODO: If setting up Plex for the first time, you'll want to add the globalMounts section
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server
+      # Separate PVC for cache to avoid backing up cache files
+      cache:
+        existingClaim: plex-cache
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Cache
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/Library/Application Support/Plex Media Server/Logs
+      tmp:
+        type: emptyDir
+      transcode:
+        type: emptyDir
+      media:
+        type: nfs
+        server: kaidame.flat
+        path: /mnt/citerne/media
+        globalMounts:
+          - path: /media/library
+            subPath: library
+            readOnly: true
