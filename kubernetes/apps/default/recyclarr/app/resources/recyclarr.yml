@@ -160,12 +160,6 @@ sonarr:
           - name: Remux-1080p - Anime
             score: 0 # Adjust scoring as desired
 
-      - trash_ids:
-        - 851bd64e04c9374c51102be3dd9ae4cc # FLAC
-        quality_profiles:
-          - name: Remux-1080p - Anime
-            score: -10000
-
       # Recyclarr Configuration Template: UHD Bluray + WEB
       #
 
