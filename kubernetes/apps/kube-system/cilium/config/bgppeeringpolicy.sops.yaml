@@ -11,7 +11,7 @@ spec:
           neighbors:
             - peerAddress: ENC[AES256_GCM,data:Bj6aDKEQZeHYtA0BSN8=,iv:pxtJOcUQWkiGDkwPuBJET5f3Eo2QtGbMDjDyFeUonw8=,tag:9uI7jIhqpnT5spc5/lLPcg==,type:str]
               peerASN: 64700
-            - peerAddress: ENC[AES256_GCM,data:/W4jeYU9mnXB+WtSSF4pyScnjU/0kQrDJg==,iv:IrIXBTRlbf/oMRBb6VEFN/dkYUnRnHHJr5476j9cIME=,tag:6BAucO/FJC/cZna6r9x2UQ==,type:str]
+            - peerAddress: ENC[AES256_GCM,data:UP4PB0lR7gJdZrt8pv2CSC8/DAYFkyPqoQ==,iv:Yzh5F3aq107CwoLNFuaw8psffNd82/s3jrWdd5oC8hk=,tag:HmW8BmOh3W4n5AhNYvg77Q==,type:str]
               peerASN: 64700
           serviceSelector:
             matchExpressions:
@@ -35,8 +35,8 @@ sops:
             SWFyTTcvSnpJYnNMWjNOQjhrTFI4a2cKX9aCroqlanpJiE00n+f6uSmHgOLMWQ+4
             eKrTHjNIIZaiW4IBgOI0K86EUq5VZdBaC0x3zmFTINdnq4EfWXLM3Q==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-06-24T16:23:05Z"
-    mac: ENC[AES256_GCM,data:j1wgdNiSBIOdfLBXabutp7ayb4AJyvt7yK0naKa0Bbmo7T3AIutu19k4a7Vp6th6+aA5iDabAYfNq4Vks4HWIC2sraiX52uTShGxnFpugDPYciJvpP+P6NFoTJ6tkmP5UTJksmTkDc8pJif4o4QL0OQpHzqTkdtze/I8J1R5A+U=,iv:hpK4/5J8cRhe7ucIgcDISrHcKI+23+nNojGmO+tMdDk=,tag:577hMhRgKF7ztUMPfkgTbw==,type:str]
+    lastmodified: "2024-07-10T17:25:41Z"
+    mac: ENC[AES256_GCM,data:cOSb8FAEnH6Ix5Y0P7vQrJc3i/w48QzXetd53Njw6tUBX1y5cZou/GY2vIFwmcdm5K7GTxeLHEUwa9y0KLQqEtPe0ShuNORNUe8oJExHT2rJ86j4m05ft1B9eBE3Ea1hRtJl4r1e8dWALTq3VnGZFB3Hd0P9nRKWSEizktl2ols=,iv:CNtevjhhCfWfcH/4X1KeYFXONMRMvWY4KwCcMfcpZsU=,tag:AMYz/bvcFRw/kPPFTLz7HQ==,type:str]
     pgp: []
     encrypted_regex: ^(data|stringData|peerAddress)$
     version: 3.8.1
