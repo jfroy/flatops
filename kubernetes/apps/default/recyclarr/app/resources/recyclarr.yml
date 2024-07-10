@@ -68,6 +68,22 @@ sonarr:
               - WEBRip-1080p
           - name: Bluray-720p
 
+      - name: DVD + WEB
+        reset_unmatched_scores:
+          enabled: true
+        upgrade:
+          allowed: true
+          until_quality: WEB 720p
+        min_format_score: 0
+        quality_sort: top
+        qualities:
+          - name: WEB 720p
+            qualities:
+              - WEBDL-720p
+              - WEBRip-720p
+          - name: HDTV-720p
+          - name: DVD
+
     # Custom Formats: https://recyclarr.dev/wiki/yaml/config-reference/custom-formats/
     custom_formats:
       # Recyclarr Configuration Template: WEB-2160p (V4)
