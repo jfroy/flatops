@@ -68,6 +68,7 @@ spec:
                 cpu: 500m
               limits:
                 memory: 4Gi
+            workingDir: /config
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
