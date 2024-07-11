@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/jfroy/stash-cuda
-              tag: 0.26.2@sha256:e16999f95500453f442e0bb8b083dce30e16715d3f1742872117e44278d48ce3
+              tag: 0.26.2@sha256:beaf73c6b3e6150df235d0ad42f6c5746db61889008436ea38af0b1d573b664b
             env:
               HOME: /config
               STASH_BLOBS_PATH: /blobs
