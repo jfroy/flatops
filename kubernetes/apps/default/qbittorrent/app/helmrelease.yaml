@@ -77,10 +77,10 @@ spec:
             resources:
               requests:
                 cpu: 1
-                memory: 1Gi
+                memory: 2Gi
               limits:
                 cpu: 4
-                memory: 20Gi
+                memory: 50Gi
         initContainers:
           vuetorrent:
             image:

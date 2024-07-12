@@ -66,10 +66,11 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
+                cpu: 1
+                memory: 2Gi
               limits:
-                cpu: 2
-                memory: 20Gi
+                cpu: 4
+                memory: 50Gi
         pod:
           labels:
             stealth-gateway: "true"
