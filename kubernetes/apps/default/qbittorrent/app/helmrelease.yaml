@@ -80,7 +80,7 @@ spec:
                 memory: 1Gi
               limits:
                 cpu: 4
-                memory: 50Gi
+                memory: 20Gi
         initContainers:
           vuetorrent:
             image:
