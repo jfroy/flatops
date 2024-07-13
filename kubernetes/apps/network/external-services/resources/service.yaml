@@ -1,0 +1,8 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: homeassistant
+spec:
+  type: ExternalName
+  externalName: homeassistant.flat

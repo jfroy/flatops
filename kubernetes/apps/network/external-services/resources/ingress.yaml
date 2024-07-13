@@ -1,0 +1,27 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homeassistant
+spec:
+  rules:
+  - host: hass.${PUBLIC_DOMAIN1}
+    http:
+      paths:
+      - backend:
+          service:
+            name: homeassistant
+            port:
+              number: 8123
+        path: /
+        pathType: Prefix
+  - host: hass.${PUBLIC_DOMAIN2}
+    http:
+      paths:
+      - backend:
+          service:
+            name: homeassistant
+            port:
+              number: 8123
+        path: /
+        pathType: Prefix
