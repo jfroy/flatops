@@ -18,6 +18,8 @@ spec:
         selector:
           dnsZones:
             - "${PUBLIC_DOMAIN0}"
+            - "${PUBLIC_DOMAIN1}"
+            - "${PUBLIC_DOMAIN2}"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -38,3 +40,5 @@ spec:
         selector:
           dnsZones:
             - "${PUBLIC_DOMAIN0}"
+            - "${PUBLIC_DOMAIN1}"
+            - "${PUBLIC_DOMAIN2}"
