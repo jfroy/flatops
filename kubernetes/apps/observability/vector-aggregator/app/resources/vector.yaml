@@ -23,18 +23,6 @@ transforms:
       del(.pod_labels)
 
 sinks:
-  loki:
-    type: loki
-    inputs: [kubernetes_remap]
-    endpoint: http://loki-gateway.observability
-    encoding: { codec: json }
-    out_of_order_action: accept
-    remove_label_fields: true
-    remove_timestamp: true
-    labels:
-      app: "{{ custom_app_name }}"
-      namespace: "{{ kubernetes.pod_namespace }}"
-      node: "{{ kubernetes.pod_node_name }}"
   prom_exporter:
     type: prometheus_exporter
     inputs: [internal_metrics]
