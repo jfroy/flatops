@@ -36,7 +36,8 @@ spec:
               tag: 0.14.0@sha256:92e76f59dffc11379c1cb900bc4a4dd10bcb1ad15a8a34797fdf07e4d28f22f8
             env:
               TZ: America/Los_Angeles
-              UN_ACTIVITY: true
+              UN_ACTIVITY: false
+              UN_DEBUG: true
               UN_WEBSERVER_LOG_FILE: /logs/webserver.log
               UN_WEBSERVER_METRICS: true
               UN_RADARR_0_URL: http://radarr.default.svc.cluster.local
