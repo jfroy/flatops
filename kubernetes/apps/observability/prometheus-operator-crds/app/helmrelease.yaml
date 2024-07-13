@@ -14,7 +14,7 @@ spec:
         name: prometheus-community
         namespace: flux-system
   driftDetection:
-    mode: enabled
+    mode: disabled
   install:
     crds: CreateReplace
     remediation:
