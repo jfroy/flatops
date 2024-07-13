@@ -97,11 +97,11 @@ spec:
       app:
         className: internal
         annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${SECRET_DOMAIN}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/start?rd=$scheme://$best_http_host$request_uri
           nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
         hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}"
+          - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:

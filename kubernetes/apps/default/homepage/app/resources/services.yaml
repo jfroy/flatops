@@ -5,7 +5,7 @@
 - Media:
     - qbittorrent:
         icon: qbittorrent.png
-        href: https://qbit.${SECRET_DOMAIN}/
+        href: https://qbit.${PUBLIC_DOMAIN0}/
         namespace: default
         app: qbittorrent
         widget:

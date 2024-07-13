@@ -34,7 +34,7 @@ spec:
               tag: 1.40.4.8679-424562606@sha256:b8e0cbdc80503501a16775c7dfe099c17f9c5f3b871d2b67fd5c5786f1ff5295
             env:
               TZ: America/Los_Angeles
-              PLEX_ADVERTISE_URL: "https://${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}:443,http://10.10.1.0:32400"
+              PLEX_ADVERTISE_URL: "https://${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}:443,http://10.10.1.0:32400"
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
             probes:
               liveness: &probes
@@ -86,11 +86,11 @@ spec:
     ingress:
       app:
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${PUBLIC_DOMAIN0}
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
         className: external
         hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}"
+          - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:

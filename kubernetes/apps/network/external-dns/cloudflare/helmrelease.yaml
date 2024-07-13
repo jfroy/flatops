@@ -48,7 +48,7 @@ spec:
     sources: ["crd", "ingress"]
     txtPrefix: edns.
     txtOwnerId: kantai
-    domainFilters: ["${SECRET_DOMAIN}", "${PUBLIC_DOMAIN1}", "${PUBLIC_DOMAIN2}"]
+    domainFilters: ["${PUBLIC_DOMAIN0}", "${PUBLIC_DOMAIN1}", "${PUBLIC_DOMAIN2}"]
     serviceMonitor:
       enabled: true
     podAnnotations:

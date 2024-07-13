@@ -125,9 +125,9 @@ spec:
       app:
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: external.${SECRET_DOMAIN}
+          external-dns.alpha.kubernetes.io/target: external.${PUBLIC_DOMAIN0}
         hosts:
-          - host: status.${SECRET_DOMAIN}
+          - host: status.${PUBLIC_DOMAIN0}
             paths:
               - path: /
                 service:

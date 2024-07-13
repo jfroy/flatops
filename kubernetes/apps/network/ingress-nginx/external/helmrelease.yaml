@@ -31,7 +31,7 @@ spec:
       replicaCount: 1
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/hostname: "external.${PUBLIC_DOMAIN0}"
         externalTrafficPolicy: Cluster
         ipFamilyPolicy: PreferDualStack
         ipFamilies:
@@ -81,7 +81,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: "network/${SECRET_DOMAIN/./-}-production-tls"
+        default-ssl-certificate: "network/${PUBLIC_DOMAIN0/./-}-production-tls"
         sync-rate-limit: "0.008"
       topologySpreadConstraints:
         - maxSkew: 1

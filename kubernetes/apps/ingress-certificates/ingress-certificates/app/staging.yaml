@@ -2,17 +2,17 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${SECRET_DOMAIN/./-}-staging"
+  name: "${PUBLIC_DOMAIN0/./-}-staging"
 spec:
-  secretName: "${SECRET_DOMAIN/./-}-staging-tls"
+  secretName: "${PUBLIC_DOMAIN0/./-}-staging-tls"
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
     group: cert-manager.io
-  commonName: "${SECRET_DOMAIN}"
+  commonName: "${PUBLIC_DOMAIN0}"
   dnsNames:
-    - "${SECRET_DOMAIN}"
-    - "*.${SECRET_DOMAIN}"
+    - "${PUBLIC_DOMAIN0}"
+    - "*.${PUBLIC_DOMAIN0}"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"

@@ -65,7 +65,7 @@ spec:
         ingress:
           enabled: true
           className: internal
-          hosts: ["hubble.${SECRET_DOMAIN}"]
+          hosts: ["hubble.${PUBLIC_DOMAIN0}"]
     loadBalancer:
       l7:
         backend: envoy

@@ -4,11 +4,11 @@ kind: Ingress
 metadata:
   name: webhook-receiver
   annotations:
-    external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+    external-dns.alpha.kubernetes.io/target: "external.${PUBLIC_DOMAIN0}"
 spec:
   ingressClassName: external
   rules:
-    - host: &host "flux-webhook.${SECRET_DOMAIN}"
+    - host: &host "flux-webhook.${PUBLIC_DOMAIN0}"
       http:
         paths:
           - path: /hook/

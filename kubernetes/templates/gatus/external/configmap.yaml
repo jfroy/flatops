@@ -10,7 +10,7 @@ data:
     endpoints:
       - name: "${APP}"
         group: external
-        url: "https://${APP_SUBDOMAIN:-${APP}}.${SECRET_DOMAIN}${GATUS_PATH:-/}"
+        url: "https://${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}${GATUS_PATH:-/}"
         interval: 1m
         client:
           dns-resolver: tcp://1.1.1.1:53

@@ -10,7 +10,7 @@ spec:
   externalLabels:
     cluster: kantai
   extraArgs:
-    external.url: https://vam.${SECRET_DOMAIN}
+    external.url: https://vam.${PUBLIC_DOMAIN0}
   notifiers:
     - url: http://alertmanager-operated.observability.svc:9093
   remoteRead:

@@ -55,10 +55,10 @@ spec:
               - --bind-addr=0.0.0.0:80
               - --machine-api-bind-addr=0.0.0.0:8090
               - --k8s-proxy-bind-addr=0.0.0.0:8100
-              - --advertised-api-url=https://omni.${SECRET_DOMAIN}/
-              - --siderolink-api-advertised-url=https://omni-grpc.${SECRET_DOMAIN}/
+              - --advertised-api-url=https://omni.${PUBLIC_DOMAIN0}/
+              - --siderolink-api-advertised-url=https://omni-grpc.${PUBLIC_DOMAIN0}/
               - --siderolink-wireguard-advertised-addr=10.10.0.30:50180
-              - --advertised-kubernetes-proxy-url=https://omni-proxy.${SECRET_DOMAIN}/
+              - --advertised-kubernetes-proxy-url=https://omni-proxy.${PUBLIC_DOMAIN0}/
               - --auth-auth0-enabled=true
               - --auth-auth0-domain=${OMNI_AUTH0_DOMAIN}
               - --auth-auth0-client-id=${OMNI_AUTH0_CLIENT_ID}
@@ -123,9 +123,9 @@ spec:
       omni:
         className: external
         annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${PUBLIC_DOMAIN0}"
         hosts:
-          - host: "omni.${SECRET_DOMAIN}"
+          - host: "omni.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:
@@ -136,7 +136,7 @@ spec:
           nginx.ingress.kubernetes.io/ssl-redirect: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
         hosts:
-          - host: "omni-grpc.${SECRET_DOMAIN}"
+          - host: "omni-grpc.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:
@@ -144,7 +144,7 @@ spec:
       proxy:
         className: internal
         hosts:
-          - host: "omni-proxy.${SECRET_DOMAIN}"
+          - host: "omni-proxy.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:
