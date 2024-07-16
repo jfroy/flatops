@@ -38,11 +38,12 @@ spec:
       image: gpu-operator
       version: c16678fa-ubi8
     driver:
-      # driver is not supported on Talos. https://github.com/NVIDIA/gpu-operator/issues/647
+      # driver is not supported on Talos: https://github.com/NVIDIA/gpu-operator/issues/647
       enabled: false
     toolkit:
-      # toolkit is not provided by Talos.
+      # toolkit is provided by Talos with patches
       enabled: false
+    # patched device plugin with support for Talos
     devicePlugin:
       repository: jfroy
       image: k8s-device-plugin
