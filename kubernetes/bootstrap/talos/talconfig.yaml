@@ -27,26 +27,6 @@ nodes:
     ipAddress: "192.168.1.13"
     installDiskSelector:
       wwid: eui.e8238fa6bf530001001b448b4a49b465
-    machineSpec:
-      mode: metal
-      arch: amd64
-      secureboot: true
-      useUKI: true
-    schematic:
-      customization:
-        extraKernelArgs:
-          - amd_pstate=active
-          - console=tty0
-          - console=ttyS0
-          - talos.network.interface.ignore=enp66s0f0
-          - talos.network.interface.ignore=enp66s0f1
-        systemExtensions:
-          officialExtensions:
-            - siderolabs/amd-ucode
-            - siderolabs/iscsi-tools
-            - siderolabs/nvidia-container-toolkit
-            - siderolabs/nvidia-open-gpu-kernel-modules
-            - siderolabs/util-linux-tools
     controlPlane: true
     kernelModules:
       - name: nvidia
