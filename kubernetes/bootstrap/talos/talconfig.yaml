@@ -28,6 +28,7 @@ nodes:
     installDiskSelector:
       wwid: eui.e8238fa6bf530001001b448b4a49b465
     controlPlane: true
+    talosImageURL: ghcr.io/jfroy/talos/installer
     kernelModules:
       - name: nvidia
         parameters:
