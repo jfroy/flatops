@@ -29,9 +29,6 @@ spec:
     remediation:
       strategy: rollback
       retries: 3
-  dependsOn:
-    - name: snapshot-controller
-      namespace: kube-system
   values:
     manageCRDs: true
     metrics:

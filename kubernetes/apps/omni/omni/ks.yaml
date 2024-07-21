@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: openebs
   path: ./kubernetes/apps/omni/omni/app
   prune: true
   sourceRef:

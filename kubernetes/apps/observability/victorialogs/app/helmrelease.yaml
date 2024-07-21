@@ -14,9 +14,6 @@ spec:
         kind: HelmRepository
         name: victoriametrics
         namespace: flux-system
-  dependsOn:
-    - name: openebs
-      namespace: openebs-system
   driftDetection:
     mode: enabled
   install:
