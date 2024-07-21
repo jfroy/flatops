@@ -114,13 +114,5 @@ spec:
         type: nfs
         server: kaidame.flat
         path: /mnt/citerne/media
-      pushover-notify:
-        type: configMap
-        name: sonarr-configmap
-        defaultMode: 0775
-        globalMounts:
-          - path: /scripts/pushover-notify.sh
-            subPath: pushover-notify.sh
-            readOnly: true
       tmp:
         type: emptyDir
