@@ -2,7 +2,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN0/./-}-staging"
+  name: "${PUBLIC_DOMAIN0/./-}-0-staging"
 spec:
   secretName: "${PUBLIC_DOMAIN0/./-}-staging-tls"
   issuerRef:
@@ -22,7 +22,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN1/./-}-staging"
+  name: "${PUBLIC_DOMAIN1/./-}-1-staging"
 spec:
   secretName: "${PUBLIC_DOMAIN1/./-}-staging-tls"
   issuerRef:
@@ -42,7 +42,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN2/./-}-staging"
+  name: "${PUBLIC_DOMAIN2/./-}-2-staging"
 spec:
   secretName: "${PUBLIC_DOMAIN2/./-}-staging-tls"
   issuerRef:

@@ -2,7 +2,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN0/./-}-production"
+  name: "${PUBLIC_DOMAIN0/./-}-0-production"
 spec:
   secretName: "${PUBLIC_DOMAIN0/./-}-production-tls"
   issuerRef:
@@ -22,7 +22,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN1/./-}-production"
+  name: "${PUBLIC_DOMAIN1/./-}-1-production"
 spec:
   secretName: "${PUBLIC_DOMAIN1/./-}-production-tls"
   issuerRef:
@@ -42,7 +42,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN2/./-}-production"
+  name: "${PUBLIC_DOMAIN2/./-}-2-production"
 spec:
   secretName: "${PUBLIC_DOMAIN2/./-}-production-tls"
   issuerRef:
