@@ -41,6 +41,12 @@ spec:
     persistence:
       storageClass: ceph-block
       size: 50Gi
+    volumes:
+      - name: tmp
+        emptyDir: {}
+    mountPoints:
+      - name: tmp
+        mountPath: /tmp
     ingress:
       enabled: true
       className: internal
