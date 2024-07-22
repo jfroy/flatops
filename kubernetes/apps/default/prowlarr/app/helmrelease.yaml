@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: ghcr.io/jfroy/prowlarr-develop
-              tag: 1.20.1.4603@sha256:6f900bad1720e9f6299f0b8a9f398c15cefdd5afb174bd137f135aa2a1e44c07
+              tag: 1.21.1.4631@sha256:ceb9657f5642736d43b52174083d92f7d3a5572d22540b4dc1d822eefc05e88e
             env:
               PROWLARR__APP__INSTANCENAME: Prowlarr
               PROWLARR__APP__THEME: auto
