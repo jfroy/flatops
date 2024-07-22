@@ -1,0 +1,19 @@
+---
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: kantai1-failed-nvmes
+spec:
+  matchers:
+    - name: alertname
+      value: SmartDeviceMediaErrors
+      isRegex: false
+    - name: instance
+      value: "192.168.1.13:9633"
+      isRegex: false
+    - name: job
+      value: smartctl-exporter
+      isRegex: false
+    - name: device
+      value: nvme0|nvme8
+      isRegex: true
