@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: system-upgrade
+  name: talos-admin
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
     volsync.backube/privileged-movers: "true"
@@ -14,7 +14,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
   name: alert-manager
-  namespace: system-upgrade
+  namespace: talos-admin
 spec:
   type: alertmanager
   address: http://alertmanager-operated.observability.svc.cluster.local:9093/api/v2/alerts/
@@ -24,7 +24,7 @@ apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
   name: alert-manager
-  namespace: system-upgrade
+  namespace: talos-admin
 spec:
   providerRef:
     name: alert-manager

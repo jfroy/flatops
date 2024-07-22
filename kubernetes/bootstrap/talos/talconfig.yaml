@@ -204,7 +204,7 @@ controlPlane:
             allowedRoles:
               - os:admin
             allowedKubernetesNamespaces:
-              - system-upgrade
+              - talos-admin
 
     # Default scheduler topology spread constraints
     - |-

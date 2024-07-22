@@ -6,13 +6,13 @@ metadata:
   name: &app system-upgrade-controller
   namespace: flux-system
 spec:
-  targetNamespace: system-upgrade
+  targetNamespace: talos-admin
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: node-feature-discovery-rules
-  path: ./kubernetes/apps/system-upgrade/system-upgrade-controller/app
+  path: ./kubernetes/apps/talos-admin/system-upgrade-controller/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -29,13 +29,13 @@ metadata:
   name: &app system-upgrade-controller-plans
   namespace: flux-system
 spec:
-  targetNamespace: system-upgrade
+  targetNamespace: talos-admin
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: system-upgrade-controller
-  path: ./kubernetes/apps/system-upgrade/system-upgrade-controller/plans
+  path: ./kubernetes/apps/talos-admin/system-upgrade-controller/plans
   prune: true
   sourceRef:
     kind: GitRepository
