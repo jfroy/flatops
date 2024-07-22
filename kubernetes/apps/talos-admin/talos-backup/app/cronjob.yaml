@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   name: talos-backup
 spec:
-  schedule: "0/10 * * * *"
+  schedule: "0 1 * * *"
   jobTemplate:
     spec:
       template:
