@@ -47,4 +47,4 @@ spec:
               name: tmp
             - name: talos-secrets
               secret:
-                secretName: talos-backup-secrets
+                secretName: talos-backup-serviceaccount
