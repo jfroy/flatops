@@ -8,7 +8,7 @@ spec:
   chart:
     spec:
       chart: policy-reporter
-      version: 2.24.0
+      version: 2.24.1
       sourceRef:
         kind: HelmRepository
         name: policy-reporter
