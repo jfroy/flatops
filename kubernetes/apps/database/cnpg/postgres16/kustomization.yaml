@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./certificate.yaml
   - ./cluster.yaml
+  - ./cronjob.yaml
   - ./externalsecret.yaml
   - ./gatus.yaml
   - ./objectbucketclaim.yaml

@@ -1,0 +1,78 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: postgres16-backup
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 2 * * *" # Run every day at 02:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: rclone
+              image: docker.io/rclone/rclone:1.67.0@sha256:ec0f519fefc0d157b95ef30e230c0e945715e0235e4a868432622527f1d578f9
+              imagePullPolicy: IfNotPresent
+              workingDir: /data
+              args:
+                - copy
+                - "src:postgres16"
+                - "dst:kantai-postgres16"
+              env:
+                - name: RCLONE_VERBOSE
+                  value: "1"
+                - name: RCLONE_CONFIG_DST_TYPE
+                  value: "s3"
+                - name: RCLONE_CONFIG_DST_PROVIDER
+                  value: "Cloudflare"
+                - name: RCLONE_CONFIG_DST_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres16-backup-secret
+                      key: ACCESS_KEY_ID
+                - name: RCLONE_CONFIG_DST_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres16-backup-secret
+                      key: SECRET_ACCESS_KEY
+                - name: RCLONE_CONFIG_DST_REGION
+                  value: "auto"
+                - name: RCLONE_CONFIG_DST_ENDPOINT
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres16-backup-secret
+                      key: ENDPOINT
+                - name: RCLONE_CONFIG_DST_ACL
+                  value: "private"
+                - name: RCLONE_CONFIG_DST_NO_CHECK_BUCKET
+                  value: "true"
+                - name: RCLONE_CONFIG_SRC_TYPE
+                  value: "s3"
+                - name: RCLONE_CONFIG_SRC_PROVIDER
+                  value: "Ceph"
+                - name: RCLONE_CONFIG_SRC_ENV_AUTH
+                  value: "false"
+                - name: RCLONE_CONFIG_SRC_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres16-obc
+                      key: AWS_ACCESS_KEY_ID
+                - name: RCLONE_CONFIG_SRC_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: postgres16-obc
+                      key: AWS_SECRET_ACCESS_KEY
+                - name: RCLONE_CONFIG_SRC_ENDPOINT
+                  value: "http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80"
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities: { drop: ["ALL"] }
+                fsGroup: 1000
+                fsGroupChangePolicy: OnRootMismatch
+                readOnlyRootFilesystem: true
+                runAsNonRoot: true
+                runAsUser: 1000
+                runAsGroup: 1000
+                seccompProfile: { type: RuntimeDefault }
+          restartPolicy: OnFailure
