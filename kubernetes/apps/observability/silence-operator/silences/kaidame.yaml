@@ -11,3 +11,16 @@ spec:
     - name: instance
       value: "kaidame.flat:9100"
       isRegex: false
+---
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: kaidame-high-mem-usage
+spec:
+  matchers:
+    - name: alertname
+      value: NodeMemoryHighUtilization
+      isRegex: false
+    - name: instance
+      value: "kaidame.flat:9100"
+      isRegex: false
