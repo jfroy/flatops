@@ -115,9 +115,17 @@ spec:
           - path: /generated
             subPath: generated
       plugins:
-        type: emptyDir
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        retain: true
+        size: 100Mi
       scrapers:
-        type: emptyDir
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        retain: true
+        size: 100Mi
       sss:
         type: nfs
         server: kaidame.flat
