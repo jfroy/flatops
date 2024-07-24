@@ -68,11 +68,13 @@ spec:
               securityContext:
                 allowPrivilegeEscalation: false
                 capabilities: { drop: ["ALL"] }
-                fsGroup: 1000
-                fsGroupChangePolicy: OnRootMismatch
                 readOnlyRootFilesystem: true
-                runAsNonRoot: true
-                runAsUser: 1000
-                runAsGroup: 1000
-                seccompProfile: { type: RuntimeDefault }
           restartPolicy: OnFailure
+          securityContext:
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
