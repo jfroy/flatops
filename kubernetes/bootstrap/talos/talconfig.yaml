@@ -163,6 +163,19 @@ patches:
           # set all disks to `none` scheduler (optimal setting for Ceph and ZFS)
           - SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ATTR{queue/scheduler}="none"
 
+  # NFS mount options
+  - &nfsPatch |
+    machine:
+      files:
+        - op: overwrite
+          path: /etc/nfsmount.conf
+          permissions: 0o644
+          content: |
+            [ NFSMount_Global_Options ]
+            hard=True
+            noatime=True
+            nodiratime=True
+
 controlPlane:
   patches:
     # Cluster configuration
