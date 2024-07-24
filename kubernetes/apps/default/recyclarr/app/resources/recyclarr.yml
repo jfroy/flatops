@@ -387,7 +387,7 @@ sonarr:
             # score: 101
 
 ###################################################################################################
-# Recyclarr Configuration Template: UHD Bluray + WEB                                              #
+# Recyclarr Configuration Template: Remux + WEB 2160p                                             #
 # Updated: 2024-05-21                                                                             #
 # Documentation: https://recyclarr.dev                                                            #
 # Note: If you are using multiple profiles in a single instance, please read the following        #
@@ -405,8 +405,8 @@ radarr:
     include:
       # Comment out any of the following includes to disable them
       - template: radarr-quality-definition-movie
-      - template: radarr-quality-profile-uhd-bluray-web
-      - template: radarr-custom-formats-uhd-bluray-web
+      - template: radarr-quality-profile-remux-web-2160p
+      - template: radarr-custom-formats-remux-web-2160p
 
     # Custom Formats: https://recyclarr.dev/wiki/yaml/config-reference/custom-formats/
     custom_formats:
@@ -428,13 +428,13 @@ radarr:
           - 240770601cc226190c367ef59aba7463 # AAC
           - c2998bd0d90ed5621d8df281e839436e # DD
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: Remux + WEB 2160p
 
       # Movie Versions
       - trash_ids:
           - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: Remux + WEB 2160p
             # score: 0 # Uncomment this line to disable prioritised IMAX Enhanced releases
 
       # Optional
@@ -446,28 +446,28 @@ radarr:
           # - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
           # - f537cf427b64c38c8e36298f657e4828 # Scene
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: Remux + WEB 2160p
 
       - trash_ids:
           # Uncomment the next six lines to allow x265 HD releases with HDR/DV
           - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: Remux + WEB 2160p
             score: 0
       - trash_ids:
           - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV)
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: Remux + WEB 2160p
 
       - trash_ids:
           # Comment out the next line if you and all of your users' setups are fully DV compatible
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
 
-          # HDR10+ Boost - Uncomment the next line if any of your devices DO support HDR10+
+          # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
           # - b17886cb4158d9fea189859409975758 # HDR10Plus Boost
           # - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: Remux + WEB 2160p
 
       # Optional SDR
       # Only ever use ONE of the following custom formats:
@@ -477,4 +477,4 @@ radarr:
           - 9c38ebb7384dada637be8899efa68e6f # SDR
           # - 25c12f78430a3a23413652cbd1d48d77 # SDR (no WEBDL)
         quality_profiles:
-          - name: UHD Bluray + WEB
+          - name: Remux + WEB 2160p
