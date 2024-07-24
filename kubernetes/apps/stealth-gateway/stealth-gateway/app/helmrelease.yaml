@@ -32,8 +32,8 @@ spec:
         initContainers:
           routes:
             image:
-              repository: ghcr.io/angelnu/pod-gateway
-              tag: v1.10.0@sha256:d728eac85f750b37c96a0dafd038561ea4b8035857802be1128ea9b19c61e181
+              repository: ghcr.io/jfroy/pod-gateway
+              tag: v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
             command:
               - /bin/gateway_init.sh
             securityContext:
@@ -43,8 +43,8 @@ spec:
         containers:
           pod-gateway:
             image:
-              repository: ghcr.io/angelnu/pod-gateway
-              tag: v1.10.0
+              repository: ghcr.io/jfroy/pod-gateway
+              tag: v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
             command:
               - /bin/gateway_sidecar.sh
             securityContext:
@@ -109,12 +109,12 @@ spec:
               - --tls-key-file-path=/tls/tls.key
               - --DNSPolicy=None
               # Init container
-              - --initImage=ghcr.io/angelnu/pod-gateway:v1.10.0@sha256:d728eac85f750b37c96a0dafd038561ea4b8035857802be1128ea9b19c61e181
+              - --initImage=ghcr.io/jfroy/pod-gateway:v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
               - --initImagePullPol=IfNotPresent
               - --initCmd=/bin/client_init.sh
               - --initMountPoint=/config
               # Sidecar container
-              - --sidecarImage=ghcr.io/angelnu/pod-gateway:v1.10.0@sha256:d728eac85f750b37c96a0dafd038561ea4b8035857802be1128ea9b19c61e181
+              - --sidecarImage=ghcr.io/jfroy/pod-gateway:v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
               - --sidecarImagePullPol=IfNotPresent
               - --sidecarCmd=/bin/client_sidecar.sh
               - --sidecarMountPoint=/config
