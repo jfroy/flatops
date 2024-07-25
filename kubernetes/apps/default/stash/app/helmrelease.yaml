@@ -67,7 +67,7 @@ spec:
               requests:
                 cpu: 500m
               limits:
-                memory: 8Gi
+                memory: 50Gi
             workingDir: /config
     defaultPodOptions:
       securityContext:
