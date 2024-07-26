@@ -48,6 +48,9 @@ spec:
       repository: jfroy
       image: k8s-device-plugin
       version: devel@sha256:bdf9c0ba4a155c495dbcb0fe842d9a2655dfc87c11edb6f700f63720c6142cb1
+      config:
+        name: time-slicing-config-all
+        default: any
     gfd:
       repository: jfroy
       image: k8s-device-plugin
