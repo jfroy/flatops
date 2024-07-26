@@ -33,6 +33,7 @@ spec:
               repository: ghcr.io/jfroy/plex
               tag: 1.40.4.8679-424562606@sha256:5613627f43c33bde007fec28121d99aabc805127aa4bae7bbc09acae9f46362a
             env:
+              NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
               TZ: America/Los_Angeles
               PLEX_ADVERTISE_URL: "https://${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}:443,http://10.10.1.0:32400"
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
@@ -63,6 +64,7 @@ spec:
                 cpu: 100m
               limits:
                 memory: 16Gi
+                nvidia.com/gpu: 1
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -72,8 +74,10 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 4000]
         seccompProfile: { type: RuntimeDefault }
-      # nodeSelector:
-      #   intel.feature.node.kubernetes.io/gpu: "true"
+      tolerations:
+        - key: nvidia.com/gpu
+          operator: Exists
+          effect: NoSchedule
     service:
       app:
         controller: plex
