@@ -27,8 +27,8 @@ spec:
     nfd:
       enabled: false
     cdi:
-      default: true
-      enabled: true
+      default: false
+      enabled: false
     validator:
       repository: ghcr.io/nvidia/gpu-operator
       image: gpu-operator-validator
