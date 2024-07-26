@@ -65,6 +65,12 @@ spec:
               limits:
                 memory: 16Gi
                 nvidia.com/gpu: 1
+        pod:
+          runtimeClassName: nvidia
+          tolerations:
+            - key: nvidia.com/gpu
+              operator: Exists
+              effect: NoSchedule
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -74,10 +80,6 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 4000]
         seccompProfile: { type: RuntimeDefault }
-      tolerations:
-        - key: nvidia.com/gpu
-          operator: Exists
-          effect: NoSchedule
     service:
       app:
         controller: plex
