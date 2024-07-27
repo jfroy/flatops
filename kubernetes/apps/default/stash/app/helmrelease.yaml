@@ -36,6 +36,7 @@ spec:
               tag: 0.26.2@sha256:6a416b1e889161cffe854cb6f45fc1084630ea3a17cbcf11394534118fd144c4
             env:
               HOME: /config
+              NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
               STASH_BLOBS_PATH: /blobs
               STASH_BLOBS_STORAGE: FILESYSTEM
               STASH_CACHE: /cache
@@ -68,7 +69,14 @@ spec:
                 cpu: 500m
               limits:
                 memory: 50Gi
+                nvidia.com/gpu: 1
             workingDir: /config
+        pod:
+          runtimeClassName: nvidia
+          tolerations:
+            - key: nvidia.com/gpu
+              operator: Exists
+              effect: NoSchedule
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
