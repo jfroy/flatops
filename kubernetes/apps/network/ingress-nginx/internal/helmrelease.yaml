@@ -47,6 +47,7 @@ spec:
         client-body-buffer-size: 100M
         client-body-timeout: 120
         client-header-timeout: 120
+        compute-full-forwarded-for: "true"
         enable-brotli: "true"
         enable-ocsp: "true"
         enable-real-ip: "true"
