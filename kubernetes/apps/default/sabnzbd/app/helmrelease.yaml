@@ -104,6 +104,18 @@ spec:
                 service:
                   identifier: app
                   port: http
+      tailscale:
+        className: tailscale
+        hosts:
+          - host: "${APP_SUBDOMAIN:-${APP}}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - "${APP_SUBDOMAIN:-${APP}}"
     persistence:
       config:
         existingClaim: sabnzbd

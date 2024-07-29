@@ -88,7 +88,7 @@ spec:
         annotations:
           io.cilium/lb-ipam-ips: 10.10.1.0
         ports:
-          http:
+          https:
             port: 32400
     ingress:
       app:
@@ -102,7 +102,19 @@ spec:
               - path: /
                 service:
                   identifier: app
-                  port: http
+                  port: https
+      tailscale:
+        className: tailscale
+        hosts:
+          - host: "${APP_SUBDOMAIN:-${APP}}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: https
+        tls:
+          - hosts:
+              - "${APP_SUBDOMAIN:-${APP}}"
     persistence:
       config:
         existingClaim: plex
