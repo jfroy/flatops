@@ -50,8 +50,8 @@ sonarr:
               - WEBDL-2160p
               - WEBRip-2160p
 
-      # Recyclarr Configuration Template: HD Bluray + WEB
-      - name: HD Bluray + WEB
+      # Inspired by Radarr HD Bluray + WEB, plus DVD for older media
+      - name: HD Bluray + WEB + DVD
         reset_unmatched_scores:
           enabled: true
         upgrade:
@@ -67,27 +67,6 @@ sonarr:
               - WEBDL-1080p
               - WEBRip-1080p
           - name: Bluray-720p
-
-      - name: Bluray + WEB
-        reset_unmatched_scores:
-          enabled: true
-        upgrade:
-          allowed: true
-          until_quality: Bluray-1080p
-        min_format_score: 0
-        quality_sort: top
-        qualities:
-          - name: Bluray-1080p
-          - name: WEB 1080p
-            qualities:
-              - WEBDL-1080p
-              - WEBRip-1080p
-          - name: Bluray-720p
-          - name: WEB 720p
-            qualities:
-              - WEBDL-720p
-              - WEBRip-720p
-          - name: HDTV-720p
           - name: DVD
 
     # Custom Formats: https://recyclarr.dev/wiki/yaml/config-reference/custom-formats/
@@ -235,7 +214,7 @@ sonarr:
           - c67a75ae4a1715f2bb4d492755ba4195 # PMTP
         quality_profiles:
           - name: UHD Bluray + WEB
-          - name: HD Bluray + WEB
+          - name: HD Bluray + WEB + DVD
 
       # Audio
       - trash_ids:
@@ -254,7 +233,7 @@ sonarr:
           - dbe00161b08a25ac6154c55f95e6318d # DD
         quality_profiles:
           - name: UHD Bluray + WEB
-          - name: HD Bluray + WEB
+          - name: HD Bluray + WEB + DVD
 
       # Optional
 
@@ -269,7 +248,7 @@ sonarr:
         quality_profiles:
           - name: UHD Bluray + WEB
 
-      # Recyclarr Configuration Template: HD Bluray + WEB
+      # HD Bluray + WEB + DVD
       #
       - trash_ids:
           # Series Versions
@@ -296,7 +275,7 @@ sonarr:
           - 23297a736ca77c0fc8e70f8edd7ee56c # Upscaled
           - fbcb31d8dabd2a319072b84fc0b7249c # Extras
         quality_profiles:
-          - name: HD Bluray + WEB
+          - name: HD Bluray + WEB + DVD
 
       # Recyclarr Configuration Template: FR MULTi WEB-1080p (V4)
       #
