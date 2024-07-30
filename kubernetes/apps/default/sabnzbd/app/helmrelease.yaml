@@ -41,7 +41,8 @@ spec:
                 sabnzbd.default.svc,
                 sabnzbd.default.svc.cluster,
                 sabnzbd.default.svc.cluster.local,
-                ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
+                ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0},
+                ${APP_SUBDOMAIN:-${APP}}.${TAILNET_DOMAIN}
               SABNZBD__PORT: &port 80
               TZ: America/Los_Angeles
             envFrom:
