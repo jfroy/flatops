@@ -373,6 +373,22 @@ sonarr:
 # documentation about file merging:                                                               #
 # https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
 ###################################################################################################
+###################################################################################################
+# Recyclarr Configuration Template: UHD Bluray + WEB                                              #
+# Updated: 2024-05-21                                                                             #
+# Documentation: https://recyclarr.dev                                                            #
+# Note: If you are using multiple profiles in a single instance, please read the following        #
+# documentation about file merging:                                                               #
+# https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
+###################################################################################################
+###################################################################################################
+# Recyclarr Configuration Template: Remux + WEB 1080p                                             #
+# Updated: 2023-12-30                                                                             #
+# Documentation: https://recyclarr.dev                                                            #
+# Note: If you are using multiple profiles in a single instance, please read the following        #
+# documentation about file merging:                                                               #
+# https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
+###################################################################################################
 
 # Instance Definition: https://recyclarr.dev/wiki/yaml/config-reference/basic/
 radarr:
@@ -383,11 +399,13 @@ radarr:
 
     include:
       # Comment out any of the following includes to disable them
-      - template: radarr-quality-definition-movie
-      - template: radarr-quality-profile-remux-web-2160p
-      - template: radarr-custom-formats-remux-web-2160p
-      - template: radarr-quality-profile-remux-web-1080p
       - template: radarr-custom-formats-remux-web-1080p
+      - template: radarr-custom-formats-remux-web-2160p
+      - template: radarr-custom-formats-uhd-bluray-web
+      - template: radarr-quality-definition-movie
+      - template: radarr-quality-profile-remux-web-1080p
+      - template: radarr-quality-profile-remux-web-2160p
+      - template: radarr-quality-profile-uhd-bluray-web
 
     # Custom Formats: https://recyclarr.dev/wiki/yaml/config-reference/custom-formats/
     custom_formats:
@@ -411,6 +429,7 @@ radarr:
         quality_profiles:
           - name: Remux + WEB 2160p
           - name: Remux + WEB 1080p
+          - name: UHD Bluray + WEB
 
       # Movie Versions
       - trash_ids:
@@ -418,6 +437,7 @@ radarr:
         quality_profiles:
           - name: Remux + WEB 2160p
           - name: Remux + WEB 1080p
+          - name: UHD Bluray + WEB
             # score: 0 # Uncomment this line to disable prioritised IMAX Enhanced releases
 
       # Optional
@@ -431,6 +451,7 @@ radarr:
         quality_profiles:
           - name: Remux + WEB 2160p
           - name: Remux + WEB 1080p
+          - name: UHD Bluray + WEB
 
       - trash_ids:
           # Uncomment the next six lines to allow x265 HD releases with HDR/DV
@@ -440,11 +461,14 @@ radarr:
             score: 0
           - name: Remux + WEB 1080p
             score: 0
+          - name: UHD Bluray + WEB
+            score: 0
       - trash_ids:
           - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV)
         quality_profiles:
           - name: Remux + WEB 2160p
           - name: Remux + WEB 1080p
+          - name: UHD Bluray + WEB
 
       - trash_ids:
           # Comment out the next line if you and all of your users' setups are fully DV compatible
@@ -455,6 +479,7 @@ radarr:
           # - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
         quality_profiles:
           - name: Remux + WEB 2160p
+          - name: UHD Bluray + WEB
 
       # Optional SDR
       # Only ever use ONE of the following custom formats:
@@ -465,3 +490,4 @@ radarr:
           # - 25c12f78430a3a23413652cbd1d48d77 # SDR (no WEBDL)
         quality_profiles:
           - name: Remux + WEB 2160p
+          - name: UHD Bluray + WEB
