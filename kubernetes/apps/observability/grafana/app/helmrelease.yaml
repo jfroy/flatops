@@ -243,7 +243,7 @@ spec:
         victoria-agent:
           # renovate: depName="VictoriaMetrics - vmagent"
           gnetId: 12683
-          revision: 18
+          revision: 19
           datasource: Prometheus
         victoria-alert:
           # renovate: depName="VictoriaMetrics - vmalert"
