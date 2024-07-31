@@ -35,7 +35,7 @@ spec:
             env:
               NVIDIA_DRIVER_CAPABILITIES: all
               TZ: America/Los_Angeles
-              PLEX_ADVERTISE_URL: "https://${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}:443,http://10.10.1.0:32400"
+              PLEX_ADVERTISE_URL: "http://10.10.1.0:32400"
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
             probes:
               liveness: &probes
@@ -90,31 +90,6 @@ spec:
         ports:
           https:
             port: 32400
-    ingress:
-      app:
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.${PUBLIC_DOMAIN0}
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-        className: external
-        hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: https
-      tailscale:
-        className: tailscale
-        hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: https
-        tls:
-          - hosts:
-              - "${APP_SUBDOMAIN:-${APP}}"
     persistence:
       config:
         existingClaim: plex
