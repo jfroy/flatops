@@ -6,7 +6,6 @@ resources:
   - ./cloudflared/ks.yaml
   - ./echo-server/ks.yaml
   - ./external-dns/ks.yaml
-  - ./external-services/ks.yaml
   - ./ingress-nginx/ks.yaml
   - ./oauth2-proxy/ks.yaml
   - ./openspeedtest/ks.yaml
