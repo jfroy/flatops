@@ -62,7 +62,9 @@ spec:
 
     ingress:
       app:
-        className: internal
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: "external.${PUBLIC_DOMAIN0}"
         hosts:
           - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
             paths:
