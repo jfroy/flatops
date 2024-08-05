@@ -2,9 +2,10 @@
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
-  name: service-router
+  name: connector
 spec:
-  hostname: kantai-service-router
+  hostname: kantai-connector
+  exitNode: true
   subnetRouter:
     advertiseRoutes:
       - "10.10.0.0/16"
