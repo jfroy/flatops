@@ -7,4 +7,5 @@ spec:
   hostname: kantai-service-router
   subnetRouter:
     advertiseRoutes:
+      - "10.10.0.0/16"
       - "10.12.0.0/16"
