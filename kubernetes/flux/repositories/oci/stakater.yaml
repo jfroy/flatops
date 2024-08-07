@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/stakater/charts/reloader
   ref:
-    tag: 1.0.119
+    tag: 1.0.121
