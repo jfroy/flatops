@@ -108,12 +108,12 @@ spec:
               - --tls-cert-file-path=/tls/tls.crt
               - --tls-key-file-path=/tls/tls.key
               - --DNSPolicy=None
-              # Init container
+              # renovate: datasource=docker depName=ghcr.io/jfroy/pod-gateway
               - --initImage=ghcr.io/jfroy/pod-gateway:v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
               - --initImagePullPol=IfNotPresent
               - --initCmd=/bin/client_init.sh
               - --initMountPoint=/config
-              # Sidecar container
+              # renovate: datasource=docker depName=ghcr.io/jfroy/pod-gateway
               - --sidecarImage=ghcr.io/jfroy/pod-gateway:v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
               - --sidecarImagePullPol=IfNotPresent
               - --sidecarCmd=/bin/client_sidecar.sh
