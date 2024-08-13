@@ -33,7 +33,7 @@ spec:
           routes:
             image:
               repository: ghcr.io/jfroy/pod-gateway
-              tag: v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
+              tag: v1.11.1@sha256:b90b6db742a8e9b2c42a1766d3e22a07d82dd385758ef8c7414b97bc51892262
             command:
               - /bin/gateway_init.sh
             securityContext:
@@ -44,7 +44,7 @@ spec:
           pod-gateway:
             image:
               repository: ghcr.io/jfroy/pod-gateway
-              tag: v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
+              tag: v1.11.1@sha256:b90b6db742a8e9b2c42a1766d3e22a07d82dd385758ef8c7414b97bc51892262
             command:
               - /bin/gateway_sidecar.sh
             securityContext:
@@ -109,12 +109,12 @@ spec:
               - --tls-key-file-path=/tls/tls.key
               - --DNSPolicy=None
               # renovate: datasource=docker depName=ghcr.io/jfroy/pod-gateway
-              - --initImage=ghcr.io/jfroy/pod-gateway:v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
+              - --initImage=ghcr.io/jfroy/pod-gateway:v1.11.1@sha256:b90b6db742a8e9b2c42a1766d3e22a07d82dd385758ef8c7414b97bc51892262
               - --initImagePullPol=IfNotPresent
               - --initCmd=/bin/client_init.sh
               - --initMountPoint=/config
               # renovate: datasource=docker depName=ghcr.io/jfroy/pod-gateway
-              - --sidecarImage=ghcr.io/jfroy/pod-gateway:v1.11.0@sha256:5c347b729a2638c35a88461ff7476a525ec9d8ad183927e48a28d7eedb96c870
+              - --sidecarImage=ghcr.io/jfroy/pod-gateway:v1.11.1@sha256:b90b6db742a8e9b2c42a1766d3e22a07d82dd385758ef8c7414b97bc51892262
               - --sidecarImagePullPol=IfNotPresent
               - --sidecarCmd=/bin/client_sidecar.sh
               - --sidecarMountPoint=/config
