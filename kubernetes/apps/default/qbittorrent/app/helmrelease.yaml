@@ -40,9 +40,9 @@ spec:
               QBT_BitTorrent__Session__AsyncIOThreadsCount: "4"
               QBT_BitTorrent__Session__DefaultSavePath: /media/qbittorrent/complete/default
               QBT_BitTorrent__Session__DisableAutoTMMByDefault: "false"
-              QBT_BitTorrent__Session__Interface: vxlan0
-              QBT_BitTorrent__Session__InterfaceAddress:  0.0.0.0
-              QBT_BitTorrent__Session__InterfaceName: vxlan0
+              QBT_BitTorrent__Session__Interface: wg0
+              QBT_BitTorrent__Session__InterfaceAddress: 0.0.0.0
+              QBT_BitTorrent__Session__InterfaceName: wg0
               QBT_BitTorrent__Session__LSDEnabled: "false"
               QBT_BitTorrent__Session__TempPath: /media/qbittorrent/incomplete
               QBT_BitTorrent__Session__TempPathEnabled: "true"
@@ -82,16 +82,68 @@ spec:
                 cpu: 4
                 memory: 50Gi
         initContainers:
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.39.0@sha256:2f011a9aca767af62008d879eefcbc80a8645bd4fd4466ab312cc941cb658ad1
+            env:
+              BLOCK_MALICIOUS: "off"  # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
+              DOT_IPV6: "on"
+              FIREWALL_DEBUG: on
+              FIREWALL_INPUT_PORTS: "80,9999"
+              HEALTH_SERVER_ADDRESS: ":9999"
+              HEALTH_VPN_DURATION_INITIAL: 60s
+              LOG_LEVEL: debug
+              VPN_INTERFACE: wg0
+              VPN_TYPE: wireguard
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-gluetun-secret
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 5
+            resources:
+              requests:
+                memory: 48Mi
+              limits:
+                memory: 96Mi
+            restartPolicy: Always
+            securityContext:
+              <<: *securityContext
+              readOnlyRootFilesystem: false
+              runAsNonRoot: false
+              runAsUser: 0
+              capabilities: { add: ["NET_ADMIN"] }
           vuetorrent:
             image:
               repository: ghcr.io/jfroy/vuetorrent
               tag: 2.11.2@sha256:511bf724a11d5e515035992ff9bc9bed237feca08069f336edd12da143939513
             command:
-            - "/bin/sh"
-            - "-c"
-            - "ln -sf /proc/$$$$$$/root/vuetorrent /share/vuetorrent; touch /share/startup; sleep infinity"
+              - "/bin/sh"
+              - "-c"
+              - "ln -sf /proc/$$$$$$/root/vuetorrent /share/vuetorrent; touch /share/startup; sleep infinity"
             probes:
               startup:
+                enabled: true
                 custom: true
                 spec:
                   exec:
@@ -140,6 +192,16 @@ spec:
     persistence:
       config:
         existingClaim: qbittorrent
+      empty:
+        type: emptyDir
+        sizeLimit: 20Mi
+        globalMounts:
+          - path: /gluetun
+            subPath: gluetun
+          - path: /share
+            subPath: share
+          - path: /tmp
+            subPath: tmp
       media:
         type: nfs
         server: kaidame.flat
@@ -147,8 +209,13 @@ spec:
         globalMounts:
           - path: /media/qbittorrent
             subPath: qbittorrent
-      share:
+      run:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /run
+          - path: /var/run
   postRenderers:
     - kustomize:
         patches:
