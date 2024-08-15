@@ -61,7 +61,7 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -72,6 +72,58 @@ spec:
               limits:
                 cpu: 4
                 memory: 50Gi
+        initContainers:
+          gluetun:
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.39.0@sha256:2f011a9aca767af62008d879eefcbc80a8645bd4fd4466ab312cc941cb658ad1
+            env:
+              BLOCK_MALICIOUS: "off"  # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
+              DOT_IPV6: "on"
+              FIREWALL_DEBUG: on
+              FIREWALL_INPUT_PORTS: "80,9999"
+              HEALTH_SERVER_ADDRESS: ":9999"
+              HEALTH_VPN_DURATION_INITIAL: 60s
+              LOG_LEVEL: debug
+              VPN_INTERFACE: wg0
+              VPN_TYPE: wireguard
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-gluetun-secret
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  failureThreshold: 3
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 5
+            resources:
+              requests:
+                memory: 48Mi
+              limits:
+                memory: 96Mi
+            restartPolicy: Always
+            securityContext:
+              <<: *securityContext
+              readOnlyRootFilesystem: false
+              runAsNonRoot: false
+              runAsUser: 0
+              capabilities: { add: ["NET_ADMIN"] }
         pod:
           labels:
             stealth-gateway: "true"
@@ -108,6 +160,14 @@ spec:
     persistence:
       config:
         existingClaim: sabnzbd
+      empty:
+        type: emptyDir
+        sizeLimit: 20Mi
+        globalMounts:
+          - path: /gluetun
+            subPath: gluetun
+          - path: /tmp
+            subPath: tmp
       media:
         type: nfs
         server: kaidame.flat
@@ -119,5 +179,10 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /config/logs
-      tmp:
+      run:
         type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /run
+          - path: /var/run

@@ -1,0 +1,46 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: sabnzbd-allow-gluetun
+  annotations:
+    future-me-why: allow ingress and egress to gluetun endpoints; also puts pod in deny-by-default mode for egress
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: sabnzbd
+  egress:
+    - toCIDR:
+        - ENC[AES256_GCM,data:mNT5z8Y3xn/7/jR5QxZtzw==,iv:wzNXRlt1epGSxlXJYUFhjhVglqXiDFLCEpl5byu8bAM=,tag:kIvGjcyyGpvrSRQlW+GPxA==,type:str]
+        - ENC[AES256_GCM,data:U6hf+lZE4/t8vtaK0O0ZLw==,iv:bqmORY2mWxGr9GDwsDTaw7eKTx4YJPmVHEZfuGWs+SQ=,tag:ej5CbkEj1+8r5nemp8lWNg==,type:str]
+        - ENC[AES256_GCM,data:1mq8eRXb/OxcbalLu55d7Jga,iv:PYsxTu140h1dN+D8x6thkW3HCfoNMe0+tzdFuB9EHfo=,tag:5JaXUTvTej5NKvMKgB5qUw==,type:str]
+        - ENC[AES256_GCM,data:amSC52gm3vbBWGqSlWtJF0p2tftSU3aRjTHKxGo1rNzMevgnqQ3q5Cs=,iv:w+UnCBLuZYCC5UAAuHscCpl5KIB9FTDDK+0FjGaauQQ=,tag:2QxF7NFOz3JVcN8NHTuL7Q==,type:str]
+        - ENC[AES256_GCM,data:DCxTc0I4Q5iufNtLw4HGSU/53gWkqnhAGTIZapgDjxLZOXMTXoU=,iv:xjjGzGubdluqvkWMgCu+iPZnVPTZwc3/R018fTidYcA=,tag:oktvHzFR06EYWQZOo4m11A==,type:str]
+        - ENC[AES256_GCM,data:OEvllsPoeuf993p8f8Vy9TtQYmTgfYAI24D5JmKRNfI8XT+FPZg=,iv:J70BhAUVkvUVYCzNVfutVb4VqKJB0o8oDCYr3oEGpWI=,tag:UmfIFBemDmhiCUBtn/zQHg==,type:str]
+  ingress:
+    - fromCIDR:
+        - ENC[AES256_GCM,data:Kg7ijWY9UqkiaSaxX2PFZw==,iv:359xnjjwZ3LF7IRRikFnlTTGQ3gib76j2pNkfmu1tDw=,tag:uqtE4ce7fg6ye9gc9uFzrA==,type:str]
+        - ENC[AES256_GCM,data:aCwlwwTe5CbLGIW0/vXQ/w==,iv:w754jDfiQjVX+TUPZFPXelZ6J4CqIth8PR6fRz/z53g=,tag:Xj8XCkjc7H6NiIMkjL+D5A==,type:str]
+        - ENC[AES256_GCM,data:9aOU2DDj0msdTXUdQpBPf8Rh,iv:62/j5DLwms1Beq+fxZ8VJuXs45D8XVkJ+8h4A/V444I=,tag:hDtIoOqho5Ht0FLGr72Fwg==,type:str]
+        - ENC[AES256_GCM,data:Oqp9pdPslT5tf6MrRWVofCmARQjQMSy3ZGs/u3juU+DBKQjhXoGO6IU=,iv:sKUIAghUZJ9E8KSVetYN5widrQmX8bOy1iGrgIA5vkU=,tag:7kZ7KzKjZbINAV6F8qXZ1w==,type:str]
+        - ENC[AES256_GCM,data:tJ4rsaw55a3KRd0E0NYMiHMBdE0ayf0xoUS8q177tlFp7VIFd+Q=,iv:RFY1WLLHQb5XLgI6+BSU6HKIMxsQzVnHm9EZmIk7jMU=,tag:FuLZzWAJUyyRS1lmDZdqeg==,type:str]
+        - ENC[AES256_GCM,data:4jF0dxldQtZK3BSnzC28r3L84EzE9gWzW3cRQBPaJ2EUVzsmyFQ=,iv:BRixMhRZRiIguSJmjC0n2pZXf3xMP/pOG2hud2ZRiqY=,tag:DPPJgU0mPMBEHshaqod51Q==,type:str]
+sops:
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSByWWE2VDVVN0FDRnN6WTRq
+        WlkrMmxuTUI5Y0lQNkRSQUJ6VDlvR0ZPMERFCkhyLzFOQXE1OFBUNVBHN296S0U0
+        Nm93dlNOWDg2Yk5qUHljN1FNdVZOdlkKLS0tIDlYNENJZURSbDYxSlZFWDNBaVBE
+        YXJ0N2FYU1BRREt3WUJ2Qm9jTEtTcEEKdDfqzQpKbtl9eiDgL4TFUvaCFklhfy3s
+        twR7fq2hW1E1uXWFxLQiuZz7Ut/8U+A4yTKsWSbTaI2JWg7gShU1CA==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2024-08-15T16:00:57Z"
+  mac: ENC[AES256_GCM,data:EFc1B2yZxVgqfy08G9gJ+RxQdU9NbNpO31V3bwOMrjV1ykJJCTTKJel1EM8GNFCnDfg5jw+d8Nz9GeAKUqFcWkLHIDaL90BoT+EvFE7378HwJKDqQl9Q3wnnz5S29tHxNx85ZZ/0AKVrjCEQyHSqppGU05ErKZzoNtgnMfDVNdQ=,iv:g26tViBC+Z9cItN/KOCgC535IR0zYKMMGcBBQSw3RmU=,tag:JLeL7sTa8H758c6c7DmFmw==,type:str]
+  pgp: []
+  encrypted_regex: ^(egress|ingress)$
+  version: 3.9.0

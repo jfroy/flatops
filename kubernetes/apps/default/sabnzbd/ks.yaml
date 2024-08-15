@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-    - name: stealth-gateway
     - name: volsync
   path: ./kubernetes/apps/default/sabnzbd/app
   prune: true
