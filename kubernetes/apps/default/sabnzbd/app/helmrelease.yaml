@@ -75,8 +75,8 @@ spec:
         initContainers:
           gluetun:
             image:
-              repository: ghcr.io/qdm12/gluetun
-              tag: v3.39.0@sha256:2f011a9aca767af62008d879eefcbc80a8645bd4fd4466ab312cc941cb658ad1
+              repository: ghcr.io/jfroy/gluetun
+              tag: v3.39.0-jfroy1@sha256:b66cdcea54d64e3bcabaec39aabbeaa387f3c40874766fad5df173db2d8d1d6e
             env:
               BLOCK_MALICIOUS: "off"  # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DOT_IPV6: "on"
@@ -85,6 +85,7 @@ spec:
               HEALTH_SERVER_ADDRESS: ":9999"
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
+              STORAGE_FILEPATH: ""  # prevent memory spike and avoid I/O
               VPN_INTERFACE: wg0
               VPN_TYPE: wireguard
               TZ: America/Los_Angeles
