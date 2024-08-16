@@ -104,6 +104,7 @@ patches:
         nodeIP:
           validSubnets:
             - 192.168.1.0/27
+            - ${CLUSTER_NODE_V6_CIDR}
 
   # Custom sysctl settings
   - |-
