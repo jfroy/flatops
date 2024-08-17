@@ -46,8 +46,7 @@ spec:
   timeout: 5m
   postBuild:
     substitute:
-      TALOS_SCHEMATIC_ID: e18f69f8e8b58878e0857213b222bc1a86ad35a96b6d917a53fe662b7ff5eed8
-      # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+      # renovate: datasource=docker depName=ghcr.io/jfroy/talos/secureboot-installer
       TALOS_VERSION: v1.7.5
       # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
       KUBERNETES_VERSION: v1.30.2
