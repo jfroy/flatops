@@ -86,6 +86,7 @@ spec:
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
               STORAGE_FILEPATH: ""  # prevent memory spike and avoid I/O
+              VERSION_INFORMATION: off
               VPN_INTERFACE: wg0
               VPN_TYPE: wireguard
               TZ: America/Los_Angeles
