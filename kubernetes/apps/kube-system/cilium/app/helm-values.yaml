@@ -2,7 +2,11 @@
 autoDirectNodeRoutes: true
 bgpControlPlane:
   enabled: true
+bandwidthManager:
+  enabled: true
+  bbr: true
 bpf:
+  datapathMode: netkit
   masquerade: true # Incompatible with Talos forwardKubeDNSToHost. siderolabs/talos/#8836
   tproxy: true
 cgroup:
@@ -14,8 +18,8 @@ cluster:
   name: kantai
 cni:
   exclusive: false
-# NOTE: devices might need to be set if you have more than one active NIC on your hosts
-# devices: eno+ eth+
+enableIPv4BIGTCP: true
+enableIPv6BIGTCP: true
 # Pod, service, and load-balancer IPs are allocated from a publicly routable CIDR.
 enableIPv6Masquerade: false
 endpointRoutes:
@@ -24,6 +28,8 @@ hubble:
   enabled: false
 ipam:
   mode: kubernetes
+ipv4:
+  enabled: true
 ipv4NativeRoutingCIDR: 10.11.0.0/16
 ipv6:
   enabled: true
@@ -34,6 +40,7 @@ kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: false
 loadBalancer:
+  acceleration: native
   algorithm: maglev
   mode: dsr
 localRedirectPolicy: true
