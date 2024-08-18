@@ -85,7 +85,7 @@ spec:
           gluetun:
             image:
               repository: ghcr.io/jfroy/gluetun
-              tag: v3.39.0-jfroy1@sha256:b66cdcea54d64e3bcabaec39aabbeaa387f3c40874766fad5df173db2d8d1d6e
+              tag: v3.39.0-jfroy2@sha256:fb8bd6d9ba832bc355628a53bda1817bd3216fe4ed983b0f31a45bc68f1d930d
             env:
               BLOCK_MALICIOUS: "off"  # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DOT_IPV6: "on"
