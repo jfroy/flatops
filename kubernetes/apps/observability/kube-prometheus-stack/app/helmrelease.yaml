@@ -185,44 +185,6 @@ spec:
 
     prometheus:
       enabled: false  # Using VictoriaMetrics
-      prometheusSpec:
-        # Must match grafana datasources.datasources.yaml.datasources.Prometheus.jsonData.timeInterval
-        scrapeInterval: 30s
-        enableFeatures:
-          - auto-gomaxprocs
-          - memory-snapshot-on-shutdown
-          - new-service-discovery-manager
-        externalLabels:
-          cluster: kantai
-        replicaExternalLabelName: __replica__
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
-        scrapeConfigSelectorNilUsesHelmValues: false
-        retention: 2d
-        retentionSize: 5GB
-        resources:
-          requests:
-            cpu: 250m
-            memory: 2Gi
-          limits:
-            cpu: 1000m
-            memory: 8Gi
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: openebs-hostpath
-              resources:
-                requests:
-                  storage: 100Gi
-        # topologySpreadConstraints:
-        #   - maxSkew: 1
-        #     topologyKey: "kubernetes.io/hostname"
-        #     whenUnsatisfiable: "DoNotSchedule"
-        #     labelSelector:
-        #       matchLabels:
-        #         prometheus: "kps"
 
   postRenderers:
     - kustomize:
