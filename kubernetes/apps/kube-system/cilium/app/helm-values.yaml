@@ -14,8 +14,7 @@ cluster:
   name: kantai
 cni:
   exclusive: false
-# NOTE: devices might need to be set if you have more than one active NIC on your hosts
-# devices: eno+ eth+
+devices: bond0
 # Pod, service, and load-balancer IPs are allocated from a publicly routable CIDR.
 enableIPv6Masquerade: false
 endpointRoutes:
