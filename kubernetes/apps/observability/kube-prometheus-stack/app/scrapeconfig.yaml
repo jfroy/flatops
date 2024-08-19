@@ -15,30 +15,31 @@ spec:
     - action: replace
       targetLabel: job
       replacement: *name
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
-  name: &name pikvm
-spec:
-  staticConfigs:
-    - targets: ["pikvm.flat"]
-  metricsPath: /api/export/prometheus/metrics
-  relabelings:
-    - action: replace
-      targetLabel: job
-      replacement: *name
-  scheme: HTTPS
-  basicAuth:
-    username:
-      key: username
-      name: pikvm-mini1-http-secret
-    password:
-      key: password
-      name: pikvm-mini1-http-secret
-  tlsConfig:
-    insecureSkipVerify: true
+# ---
+# Disabled because VM operator does not translate metricsPath. https://github.com/VictoriaMetrics/operator/issues/1073
+# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+# apiVersion: monitoring.coreos.com/v1alpha1
+# kind: ScrapeConfig
+# metadata:
+#   name: &name pikvm
+# spec:
+#   staticConfigs:
+#     - targets: ["pikvm.flat"]
+#   metricsPath: /api/export/prometheus/metrics
+#   relabelings:
+#     - action: replace
+#       targetLabel: job
+#       replacement: *name
+#   scheme: HTTPS
+#   basicAuth:
+#     username:
+#       key: username
+#       name: pikvm-mini1-http-secret
+#     password:
+#       key: password
+#       name: pikvm-mini1-http-secret
+#   tlsConfig:
+#     insecureSkipVerify: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
 apiVersion: monitoring.coreos.com/v1alpha1
