@@ -7,5 +7,6 @@ resources:
   - vmalert.yaml
   - vmauth.yaml
   - vmrule.yaml
+  - vmscrapeconfig.yaml
   - vmservicescrape.yaml
   - vmsingle.yaml

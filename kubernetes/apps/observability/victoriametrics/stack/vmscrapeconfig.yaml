@@ -1,0 +1,23 @@
+---
+apiVersion:	operator.victoriametrics.com/v1beta1
+kind: VMScrapeConfig
+metadata:
+  name: &name pikvm
+spec:
+  staticConfigs:
+    - targets: ["pikvm.flat"]
+  path: /api/export/prometheus/metrics
+  relabelConfigs:
+    - action: replace
+      targetLabel: job
+      replacement: *name
+  scheme: https
+  basicAuth:
+    username:
+      key: username
+      name: pikvm-mini1-http-secret
+    password:
+      key: password
+      name: pikvm-mini1-http-secret
+  tlsConfig:
+    insecureSkipVerify: true
