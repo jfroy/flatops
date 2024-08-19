@@ -3,6 +3,7 @@ autoDirectNodeRoutes: true
 bgpControlPlane:
   enabled: true
 bpf:
+  datapathMode: netkit
   masquerade: true # Incompatible with Talos forwardKubeDNSToHost. siderolabs/talos/#8836
   tproxy: true
 cgroup:
