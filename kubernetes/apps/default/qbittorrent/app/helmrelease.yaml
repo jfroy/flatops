@@ -85,7 +85,6 @@ spec:
           gluetun:
             image:
               repository: ghcr.io/jfroy/gluetun
-              # renovate: datasource=docker depName=ghcr.io/jfroy/gluetun versioning=semver
               tag: v3.39.0-jfroy.1@sha256:9077b8fe1f065b97bcb8d1af27765d29444f51598c294f0e8a99a0ac4a1d0dff
             env:
               BLOCK_MALICIOUS: "off"  # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
