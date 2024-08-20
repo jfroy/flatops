@@ -10,6 +10,7 @@
     ":semanticCommits",
     ":skipStatusChecks",
     ":timezone(America/Los_Angeles)",
+    "github>jfroy/flatops//.github/renovate/allowedVersions.json5",
     "github>jfroy/flatops//.github/renovate/autoMerge.json5",
     "github>jfroy/flatops//.github/renovate/commitMessage.json5",
     "github>jfroy/flatops//.github/renovate/customManagers.json5",
