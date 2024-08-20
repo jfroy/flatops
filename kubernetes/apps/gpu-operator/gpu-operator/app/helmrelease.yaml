@@ -16,10 +16,14 @@ spec:
   driftDetection:
     mode: enabled
   install:
+    crds: CreateReplace
+    disableOpenAPIValidation: true
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
+    disableOpenAPIValidation: true
     remediation:
       strategy: rollback
       retries: 3
