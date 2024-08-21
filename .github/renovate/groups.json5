@@ -2,7 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": ["1Password Connect Group"],
       "groupName": "1Password Connnect",
       "matchPackagePatterns": ["1password/connect"],
       "matchDatasources": ["docker"],
@@ -12,7 +11,6 @@
       "separateMinorPatch": true
     },
     {
-      "description": ["Actions Runner Controller Group"],
       "groupName": "Actions Runner Controller",
       "matchPackagePatterns": ["gha-runner-scale-set"],
       "matchDatasources": ["docker", "helm"],
@@ -22,7 +20,6 @@
       "separateMinorPatch": true
     },
     {
-      "description": ["Dragonfly Operator Group"],
       "groupName": "Dragonfly Operator",
       "matchPackagePatterns": ["dragonfly(?:db)?.operator"],
       "matchDatasources": ["docker", "github-releases"],
@@ -32,7 +29,6 @@
       "separateMinorPatch": true
     },
     {
-      "description": ["Flux Group"],
       "groupName": "Flux",
       "matchPackagePatterns": ["fluxcd"],
       "matchDatasources": ["docker", "github-tags"],
@@ -43,7 +39,15 @@
       "separateMinorPatch": true
     },
     {
-      "description": ["Rook-Ceph Group"],
+      "groupName": "Kubernetes",
+      "matchPackagePatterns": ["kubectl", "kubelet"],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
       "groupName": "Rook-Ceph",
       "matchPackagePatterns": ["rook.ceph"],
       "matchDatasources": ["helm"],
@@ -53,7 +57,6 @@
       "separateMinorPatch": true
     },
     {
-      "description": ["Talos Group"],
       "groupName": "Talos",
       "matchPackagePatterns": ["siderolabs/talosctl", "siderolabs/installer", "jfroy/talos/secureboot-installer"],
       "matchDatasources": ["docker"],
