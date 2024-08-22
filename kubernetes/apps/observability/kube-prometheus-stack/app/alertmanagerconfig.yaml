@@ -20,7 +20,7 @@ spec:
         repeatInterval: 5m
         matchers: [{name: alertname, value: Watchdog, matchType: =}]
       - receiver: discord
-        matchers: [{name: severity, value: critical|warning, matchType: =~}]
+        matchers: [{name: severity, value: critical|error|warning, matchType: =~}]
   receivers:
   - name: "null"
   - name: heartbeat
@@ -72,9 +72,9 @@ spec:
           {{- end }}
   inhibitRules:
     - sourceMatch: [{name: severity, value: critical, matchType: =}]
-      targetMatch: [{ name: severity, value: warning|info, matchType: =~ }]
+      targetMatch: [{ name: severity, value: error|warning|info, matchType: =~ }]
       equal: ["namespace", "alertname"]
-    - sourceMatch: [{name: severity, value: warning, matchType: =}]
+    - sourceMatch: [{name: severity, value: error|warning, matchType: =}]
       targetMatch: [{ name: severity, value: info, matchType: = }]
       equal: ["namespace", "alertname"]
     - sourceMatch: [{name: alertname, value: InfoInhibitor, matchType: =}]
