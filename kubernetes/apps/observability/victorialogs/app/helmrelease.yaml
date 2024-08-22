@@ -52,5 +52,7 @@ spec:
             path: /
             port: http
         ingressClassName: internal
+      service:
+        ipFamilyPolicy: PreferDualStack
       serviceMonitor:
         enabled: true
