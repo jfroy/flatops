@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -33,6 +34,9 @@ spec:
               tag: v1.10@sha256:1474027c316661cdec87df2623e13a41e7e1ce0ba99c24917631de8f300b5420
             env:
               WHOAMI_NAME: *app
+            ports:
+              - name: http
+                containerPort: 80
             probes:
               liveness: &probes
                 enabled: true
