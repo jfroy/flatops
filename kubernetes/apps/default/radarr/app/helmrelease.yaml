@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: ghcr.io/jfroy/radarr-develop
-              tag: 5.9.0.9058@sha256:fb00c8a2edf4e41a020185fd4c3a8b54a769f9f74efc0e7c5871482e78be2b8f
+              tag: 5.9.1.9070@sha256:098d67e4b068728e2bdb7a2330efaab93414bb1f80886711bd6b851ce4b802b6
             env:
               RADARR__APP__INSTANCENAME: Radarr
               RADARR__APP__THEME: auto
