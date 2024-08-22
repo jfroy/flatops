@@ -24,26 +24,22 @@ spec:
       retries: 3
   values:
     controllers:
-      echo-server:
+      app:
         strategy: RollingUpdate
         containers:
           app:
             image:
-              repository: ghcr.io/mendhak/http-https-echo
-              tag: 34
+              repository: traefik/whoami
+              tag: v1.10@sha256:1474027c316661cdec87df2623e13a41e7e1ce0ba99c24917631de8f300b5420
             env:
-              HTTP_PORT: &port 8080
-              LOG_WITHOUT_NEWLINE: true
-              LOG_IGNORE_PATH: /healthz
-              PROMETHEUS_ENABLED: true
+              WHOAMI_NAME: *app
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /healthz
-                    port: *port
+                    path: /health
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -53,42 +49,24 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-              seccompProfile:
-                type: RuntimeDefault
             resources:
               requests:
-                cpu: 10m
+                cpu: 1m
               limits:
-                memory: 64Mi
+                memory: 32Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
         runAsUser: 65534
         runAsGroup: 65534
         seccompProfile: { type: RuntimeDefault }
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
     service:
       app:
-        controller: echo-server
+        controller: app
         ipFamilyPolicy: PreferDualStack
         ports:
           http:
-            port: *port
-    serviceMonitor:
-      app:
-        serviceName: echo-server
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
+            port: 80
     ingress:
       app:
         className: external
