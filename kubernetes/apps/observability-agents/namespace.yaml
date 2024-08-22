@@ -12,28 +12,28 @@ metadata:
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
-  name: alert-manager
+  name: alertmanager
   namespace: observability-agents
 spec:
   type: alertmanager
-  address: http://alertmanager-operated.observability-agents.svc.cluster.local:9093/api/v2/alerts/
+  address: http://alertmanager-operated.observability.svc.cluster.local:9093/api/v2/alerts/
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/alert_v1beta3.json
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: alert-manager
+  name: alertmanager
   namespace: observability-agents
 spec:
   providerRef:
-    name: alert-manager
+    name: alertmanager
   eventSeverity: error
   eventSources:
-    - kind: HelmRelease
-      name: "*"
-  exclusionList:
-    - "error.*lookup github\\.com"
-    - "error.*lookup raw\\.githubusercontent\\.com"
-    - "dial.*tcp.*timeout"
-    - "waiting.*socket"
-  suspend: false
+  - kind: HelmRelease
+    name: '*'
+  - kind: HelmChart
+    name: '*'
+  - kind: HelmRepository
+    name: '*'
+  - kind: Kustomization
+    name: '*'

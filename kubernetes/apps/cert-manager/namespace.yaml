@@ -12,7 +12,7 @@ metadata:
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Provider
 metadata:
-  name: alert-manager
+  name: alertmanager
   namespace: cert-manager
 spec:
   type: alertmanager
@@ -22,18 +22,18 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta3
 kind: Alert
 metadata:
-  name: alert-manager
+  name: alertmanager
   namespace: cert-manager
 spec:
   providerRef:
-    name: alert-manager
+    name: alertmanager
   eventSeverity: error
   eventSources:
-    - kind: HelmRelease
-      name: "*"
-  exclusionList:
-    - "error.*lookup github\\.com"
-    - "error.*lookup raw\\.githubusercontent\\.com"
-    - "dial.*tcp.*timeout"
-    - "waiting.*socket"
-  suspend: false
+  - kind: HelmRelease
+    name: '*'
+  - kind: HelmChart
+    name: '*'
+  - kind: HelmRepository
+    name: '*'
+  - kind: Kustomization
+    name: '*'
