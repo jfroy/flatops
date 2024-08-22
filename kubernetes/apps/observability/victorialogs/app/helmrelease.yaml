@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: victoria-logs-single
-      version: 0.5.4
+      version: 0.6.0
       sourceRef:
         kind: HelmRepository
         name: victoriametrics
@@ -27,11 +27,19 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    global:
+      victoriaLogs:
+        server:
+          fullnameOverride: victoria-logs
     server:
       persistentVolume:
         enabled: true
         storageClass: openebs-hostpath
         size: 10Gi
+      resources:
+        limits:
+          cpu: 200m
+          memory: 300Mi
       ingress:
         enabled: true
         annotations:
