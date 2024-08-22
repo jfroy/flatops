@@ -49,4 +49,4 @@ spec:
       # renovate: datasource=docker depName=ghcr.io/jfroy/talos/secureboot-installer
       TALOS_VERSION: v1.7.6
       # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-      KUBERNETES_VERSION: v1.30.2
+      KUBERNETES_VERSION: v1.30.4
