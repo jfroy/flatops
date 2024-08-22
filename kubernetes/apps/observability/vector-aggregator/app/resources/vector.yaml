@@ -30,7 +30,7 @@ sinks:
   victorialogs:
     type: elasticsearch
     inputs: [kubernetes_remap]
-    endpoints: [http://victoria-logs-victoria-logs-single-server.observability:9428/insert/elasticsearch/]
+    endpoints: [http://victoria-logs.observability:9428/insert/elasticsearch/]
     mode: bulk
     api_version: v8
     healthcheck:
