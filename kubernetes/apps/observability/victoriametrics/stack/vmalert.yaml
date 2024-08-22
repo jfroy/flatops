@@ -20,11 +20,9 @@ spec:
   replicaCount: 1
   resources:
     requests:
-      cpu: 20m
-      memory: 64Mi
+      cpu: 3m
     limits:
-      cpu: 1
-      memory: 1Gi
+      memory: 128Mi
   selectAllByDefault: true
   topologySpreadConstraints:
     - maxSkew: 1

@@ -60,11 +60,6 @@ spec:
               UNIQUE_FILENAMES: true
               METHOD: WATCH
             securityContext: *securityContext
-            resources: &resources
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
             restartPolicy: Always
         containers:
           app:
@@ -93,8 +88,12 @@ spec:
                   timeoutSeconds: 1
                   failureThreshold: 3
               readiness: *probes
+            resources:
+              requests:
+                cpu: 1m
+              limits:
+                memory: 128Mi
             securityContext: *securityContext
-            resources: *resources
     defaultPodOptions:
       dnsConfig:
         options:

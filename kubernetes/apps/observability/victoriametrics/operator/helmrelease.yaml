@@ -32,13 +32,6 @@ spec:
       pspEnabled: false
     operator:
       enable_converter_ownership: true
-    resources:
-      limits:
-        cpu: 200m
-        memory: 128Mi
-      requests:
-        cpu: 5m
-        memory: 50M
     admissionWebhooks:
       enabled: true
       certManager:

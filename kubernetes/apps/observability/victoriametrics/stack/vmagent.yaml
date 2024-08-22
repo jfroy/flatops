@@ -16,11 +16,9 @@ spec:
   replicaCount: 1
   resources:
     requests:
-      cpu: 300m
-      memory: 128Mi
+      cpu: 3m
     limits:
-      cpu: 1
-      memory: 1Gi
+      memory: 128Mi
   scrapeInterval: 60s
   selectAllByDefault: true
   statefulMode: true

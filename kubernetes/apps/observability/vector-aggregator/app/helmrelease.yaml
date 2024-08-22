@@ -34,6 +34,11 @@ spec:
         containerPort: 6000
       - name: prom-exporter
         containerPort: 9090
+    resources:
+      requests:
+        cpu: 3m
+      limits:
+        memory: 512Mi
     service:
       ports:
       - name: vector

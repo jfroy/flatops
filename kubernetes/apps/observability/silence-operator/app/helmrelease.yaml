@@ -82,15 +82,12 @@ spec:
                 enabled: false
             resources:
               requests:
-                cpu: 10m
-                memory: 128Mi
+                cpu: 1m
               limits:
-                memory: 256Mi
+                memory: 30Mi
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - "ALL"
+              capabilities: { drop: ["ALL"] }
               seccompProfile:
                 type: RuntimeDefault
     persistence:

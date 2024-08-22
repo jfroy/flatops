@@ -67,6 +67,11 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
+        resources:
+          requests:
+            cpu: 1m
+          limits:
+            memory: 50Mi
 
     grafana:
       enabled: false
