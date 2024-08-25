@@ -1,0 +1,75 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app yugabyte-db
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: yugabyte
+      version: 2.21.1
+      sourceRef:
+        kind: HelmRepository
+        name: yugabytedb
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: yugabyte-db
+    storage:
+      master:
+        count: 1
+        storageClass: ceph-block
+      tserver:
+        count: 1
+        storageClass: ceph-block
+    replicas:
+      master: 1
+      tserver: 1
+      totalMasters: 1
+    tls:
+      enabled: true
+      certManager:
+        enabled: true
+    serviceEndpoints:
+      - name: "yb-master-ui"
+        type: ClusterIP
+        annotations: {}
+        clusterIP: ""
+        externalTrafficPolicy: Local
+        app: "yb-master"
+        loadBalancerIP: ""
+        ports:
+          http-ui: "7000"
+      - name: "yb-tserver-service"
+        type: ClusterIP
+        annotations: {}
+        clusterIP: ""
+        externalTrafficPolicy: Local
+        app: "yb-tserver"
+        loadBalancerIP: ""
+        ports:
+          tcp-yql-port: "9042"
+          tcp-yedis-port: "6379"
+          tcp-ysql-port: "5433"
+      - name: "yugabyted-ui-service"
+        type: ClusterIP
+        annotations: {}
+        clusterIP: ""
+        externalTrafficPolicy: Local
+        app: "yb-master"
+        loadBalancerIP: ""
+        sessionAffinity: ClientIP
+        ports:
+          yugabyted-ui: "15433"
+    serviceMonitor:
+      enabled: true
