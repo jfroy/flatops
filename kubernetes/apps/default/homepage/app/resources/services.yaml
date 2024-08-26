@@ -11,3 +11,12 @@
         widget:
           type: qbittorrent
           url: http://qbittorrent.default.svc:80
+    - sabnzbd:
+        icon: sabnzbd.png
+        href: https://sab.${PUBLIC_DOMAIN0}/
+        namespace: default
+        app: sabnzbd
+        widget:
+          type: sabnzbd
+          url: http://sabnzbd.default.svc:80
+          key: {{HOMEPAGE_VAR_SAB_API_KEY}}

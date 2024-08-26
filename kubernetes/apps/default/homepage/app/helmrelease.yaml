@@ -44,9 +44,9 @@ spec:
               tag: v0.9.6@sha256:e5b2616d17db8961a53c0b7d389d812d31c265d35696d475732f53278c9276f7
             env:
               TZ: America/Los_Angeles
-            # envFrom:
-            #   - secretRef:
-            #       name: homepage-secret
+            envFrom:
+              - secretRef:
+                  name: homepage-secret
             probes:
               liveness:
                 enabled: true
@@ -65,24 +65,18 @@ spec:
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 100m
-                memory: 128Mi
+                cpu: 1m
               limits:
-                memory: 256Mi
+                memory: 200Mi
         initContainers:
           copy-nextjs:
             image: *image
             command:
-            - "/bin/cp"
-            - "-r"
-            - "/app/.next/server/pages"
-            - "/pages"
+              - "/bin/cp"
+              - "-r"
+              - "/app/.next/server/pages"
+              - "/pages"
             securityContext: *securityContext
-            resources:
-              requests:
-                cpu: 100m
-              limits:
-                memory: 32Mi
     serviceAccount:
       create: true
       name: homepage
