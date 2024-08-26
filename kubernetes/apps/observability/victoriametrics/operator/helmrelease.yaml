@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: victoria-metrics-operator
-      version: 0.34.0
+      version: 0.34.4
       sourceRef:
         kind: HelmRepository
         name: victoriametrics
@@ -28,10 +28,15 @@ spec:
       retries: 3
   values:
     fullnameOverride: vm-operator
-    rbac:
-      pspEnabled: false
     operator:
       enable_converter_ownership: true
+    service:
+      ipFamilyPolicy: PreferDualStack
+    resources:
+      requests:
+        cpu: 50m
+      limits:
+        memory: 200Mi
     admissionWebhooks:
       enabled: true
       certManager:
