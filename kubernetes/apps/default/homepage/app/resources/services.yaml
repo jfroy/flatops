@@ -34,7 +34,7 @@
           enableQueue: true
     - sonarr:
         icon: sonarr.png
-        href: https://radarr.${PUBLIC_DOMAIN0}/
+        href: https://sonarr.${PUBLIC_DOMAIN0}/
         namespace: default
         app: sonarr
         widget:
@@ -44,7 +44,7 @@
           enableQueue: true
     - prowlarr:
         icon: prowlarr.png
-        href: https://radarr.${PUBLIC_DOMAIN0}/
+        href: https://prowlarr.${PUBLIC_DOMAIN0}/
         namespace: default
         app: prowlarr
         widget:
