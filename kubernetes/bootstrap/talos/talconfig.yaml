@@ -100,7 +100,7 @@ patches:
         extraArgs:
           rotate-server-certificates: true
         extraConfig:
-          maxPods: 200
+          maxPods: 400
         nodeIP:
           validSubnets:
             - 192.168.1.0/27
