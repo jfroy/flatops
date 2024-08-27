@@ -44,6 +44,28 @@ tasks:
       - msg: Missing Sops Age key file
         sh: test -f {{.AGE_FILE}}
 
+  gen-mc:
+    desc: Generate machineconfigs
+    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
+    cmd: talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --env-file {{.TALHELPER_ENV_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing talsecret config file
+        sh: test -f {{.TALHELPER_SECRET_FILE}}
+      - msg: Missing talenv config file
+        sh: test -f {{.TALHELPER_ENV_FILE}}
+
+  apply-mc:
+    desc: Apply machineconfigs
+    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
+    cmd: talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing talosconfig
+        sh: test -f {{.TALOSCONFIG_FILE}}
+
   fetch-kubeconfig:
     desc: Fetch kubeconfig
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
