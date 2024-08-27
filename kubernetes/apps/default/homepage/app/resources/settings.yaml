@@ -5,3 +5,7 @@
 title: 🏠
 providers:
   finnhub: {{HOMEPAGE_VAR_FINHUB_API_KEY}}
+layout:
+  Media:
+    style: row
+    columns: 2
