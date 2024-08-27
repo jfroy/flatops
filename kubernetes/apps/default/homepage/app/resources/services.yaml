@@ -12,6 +12,16 @@
           type: plex
           url: http://plex.default.svc:32400
           key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
+    - stash:
+        icon: stash.png
+        href: https://stash.${PUBLIC_DOMAIN0}/
+        namespace: default
+        app: stash
+        widget:
+          type: stash
+          url: http://stash.default.svc:9999
+          key: {{HOMEPAGE_VAR_STASH_API_KEY}}
+- Arr:
     - radarr:
         icon: radarr.png
         href: https://radarr.${PUBLIC_DOMAIN0}/

@@ -10,3 +10,6 @@ layout:
   Media:
     style: row
     columns: 2
+  Arr:
+    style: row
+    columns: 3
