@@ -3,6 +3,45 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Media:
+    - plex:
+        icon: plex.png
+        href: https://app.plex.tv/
+        namespace: default
+        app: plex
+        widget:
+          type: plex
+          url: http://plex.default.svc:32400
+          key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
+    - radarr:
+        icon: radarr.png
+        href: https://radarr.${PUBLIC_DOMAIN0}/
+        namespace: default
+        app: radarr
+        widget:
+          type: radarr
+          url: http://radarr.default.svc:80
+          key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
+          enableQueue: true
+    - sonarr:
+        icon: sonarr.png
+        href: https://radarr.${PUBLIC_DOMAIN0}/
+        namespace: default
+        app: sonarr
+        widget:
+          type: sonarr
+          url: http://sonarr.default.svc:80
+          key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
+          enableQueue: true
+    - prowlarr:
+        icon: prowlarr.png
+        href: https://radarr.${PUBLIC_DOMAIN0}/
+        namespace: default
+        app: prowlarr
+        widget:
+          type: prowlarr
+          url: http://prowlarr.default.svc:80
+          key: {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
+          enableQueue: true
     - qbittorrent:
         icon: qbittorrent.png
         href: https://qbit.${PUBLIC_DOMAIN0}/
