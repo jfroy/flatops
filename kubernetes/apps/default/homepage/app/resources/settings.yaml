@@ -3,3 +3,5 @@
 # https://gethomepage.dev/latest/configs/settings
 
 title: 🏠
+providers:
+  finnhub: {{HOMEPAGE_VAR_FINHUB_API_KEY}}

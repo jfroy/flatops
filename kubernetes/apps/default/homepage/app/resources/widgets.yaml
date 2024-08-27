@@ -10,3 +10,16 @@
 - search:
     provider: duckduckgo
     target: _blank
+
+- stocks:
+    provider: finnhub
+    color: true
+    cache: 1
+    watchlist:
+      - AAPL
+      - AMD
+      - GOOG
+      - MSFT
+      - NVDA
+      - TSM
+      - UI
