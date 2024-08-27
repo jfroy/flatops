@@ -5,7 +5,7 @@
 title: 🏠
 headerStyle: clean
 providers:
-  finnhub: {{HOMEPAGE_VAR_FINHUB_API_KEY}}
+  finnhub: {{HOMEPAGE_VAR_FINNHUB_API_KEY}}
 layout:
   Media:
     style: row
