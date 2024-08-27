@@ -36,6 +36,7 @@ nodes:
       - name: nvidia_uvm
       - name: nvidia_drm
       - name: nvidia_modeset
+      - name: nvme-tcp
     networkInterfaces:
       - interface: bond0
         dhcp: true
