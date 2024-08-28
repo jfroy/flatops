@@ -48,6 +48,8 @@ spec:
     mountPoints:
       - name: tmp
         mountPath: /tmp
+    service:
+      port: 8086
     ingress:
       enabled: true
       className: internal
