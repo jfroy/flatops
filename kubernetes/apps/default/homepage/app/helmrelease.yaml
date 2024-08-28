@@ -56,9 +56,6 @@ spec:
                     path: /api/healthcheck
                     port: &port 3000
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

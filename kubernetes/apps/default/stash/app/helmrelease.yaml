@@ -48,7 +48,7 @@ spec:
               STASH_SCRAPERS_PATH: /scrapers
               TZ: America/Los_Angeles
             probes:
-              liveness: &probes
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
@@ -56,10 +56,7 @@ spec:
                     path: /healthz
                     port: *port
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -110,7 +107,7 @@ spec:
       cache:
         type: emptyDir
       config:
-        existingClaim: stash
+        existingClaim: ${APP}
       data:
         type: persistentVolumeClaim
         storageClass: ceph-block

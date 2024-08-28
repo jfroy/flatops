@@ -76,7 +76,7 @@ spec:
               - secretRef:
                   name: gatus-secret
             probes:
-              liveness: &probes
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
@@ -84,10 +84,7 @@ spec:
                     path: /health
                     port: *port
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+              readiness: *probe
             resources:
               requests:
                 cpu: 1m

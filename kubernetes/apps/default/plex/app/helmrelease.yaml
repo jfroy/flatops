@@ -38,7 +38,7 @@ spec:
               PLEX_ADVERTISE_URL: "http://10.10.1.0:32400"
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
             probes:
-              liveness: &probes
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
@@ -47,10 +47,7 @@ spec:
                     port: 32400
                     scheme: HTTPS
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+              readiness: *probe
               startup:
                 enabled: true
                 spec:
@@ -92,7 +89,7 @@ spec:
             port: 32400
     persistence:
       config:
-        existingClaim: plex
+        existingClaim: ${APP}
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server
       cache:

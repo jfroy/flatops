@@ -63,7 +63,7 @@ spec:
             env:
               TZ: America/Los_Angeles
             probes:
-              liveness: &probes
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
@@ -71,10 +71,7 @@ spec:
                     path: /healthz
                     port: 80
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+              readiness: *probe
             resources:
               limits:
                 cpu: 200m

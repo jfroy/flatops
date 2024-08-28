@@ -65,7 +65,7 @@ spec:
         seccompProfile: { type: RuntimeDefault }
     persistence:
       config:
-        existingClaim: recyclarr
+        existingClaim: ${APP}
       config-file:
         type: configMap
         name: recyclarr-configmap

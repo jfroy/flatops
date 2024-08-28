@@ -73,9 +73,6 @@ spec:
                     path: /ping
                     port: &port 4180
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
               readiness:
                 enabled: true
                 custom: true
@@ -84,9 +81,6 @@ spec:
                     path: /ready
                     port: *port
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

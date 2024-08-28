@@ -67,9 +67,6 @@ spec:
                     path: /api/v2/app/version
                     port: *port
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -111,8 +108,6 @@ spec:
                     path: /
                     port: 9999
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  failureThreshold: 3
               startup:
                 enabled: true
                 custom: true
@@ -193,7 +188,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: qbittorrent
+        existingClaim: ${APP}
       empty:
         type: emptyDir
         sizeLimit: 20Mi

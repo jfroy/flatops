@@ -57,7 +57,7 @@ spec:
               - secretRef:
                   name: sonarr-secret
             probes:
-              liveness: &probes
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
@@ -65,10 +65,7 @@ spec:
                     path: /ping
                     port: *port
                   initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -109,7 +106,7 @@ spec:
                   port: http
     persistence:
       config:
-        existingClaim: sonarr
+        existingClaim: ${APP}
       media:
         type: nfs
         server: kaidame.flat
