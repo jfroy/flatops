@@ -37,13 +37,18 @@ spec:
               tag: v0.8.1-collector@sha256:5f6536d68be2d7424627647cdd658e6b4c1f69751a21622fb97b999a3155ba86
             env:
               COLLECTOR_API_ENDPOINT: http://scrutiny.observability.svc.cluster.local:8080
+              COLLECTOR_CRON_SCHEDULE: "30 * * * *" # every hour on the half hour
               COLLECTOR_HOST_ID:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
               TZ: America/Los_Angeles
             securityContext:
-              privileged: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+                add: ["RAWIO"]
             resources:
               requests:
                 cpu: 100m
@@ -64,6 +69,7 @@ spec:
         hostPath: /run/udev
         globalMounts:
           - path: /run/udev
+            readOnly: true
       nvme0n1:
         type: hostPath
         hostPath: /dev/nvme0n1
