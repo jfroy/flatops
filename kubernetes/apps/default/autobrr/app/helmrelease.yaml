@@ -61,7 +61,6 @@ spec:
                   httpGet:
                     path: /api/healthz/liveness
                     port: *port
-                  initialDelaySeconds: 0
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false

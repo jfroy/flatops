@@ -55,7 +55,6 @@ spec:
                   httpGet:
                     path: /healthz
                     port: *port
-                  initialDelaySeconds: 0
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false

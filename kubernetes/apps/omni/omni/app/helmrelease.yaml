@@ -70,7 +70,6 @@ spec:
                   httpGet:
                     path: /healthz
                     port: 80
-                  initialDelaySeconds: 0
               readiness: *probe
             resources:
               limits:

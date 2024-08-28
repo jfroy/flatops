@@ -56,7 +56,6 @@ spec:
                   httpGet:
                     path: /api?mode=version
                     port: *port
-                  initialDelaySeconds: 0
               readiness: *probe
             securityContext: &securityContext
               allowPrivilegeEscalation: false
@@ -98,7 +97,6 @@ spec:
                   httpGet:
                     path: /
                     port: 9999
-                  initialDelaySeconds: 0
               startup:
                 enabled: true
                 custom: true

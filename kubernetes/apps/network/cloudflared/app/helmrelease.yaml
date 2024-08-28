@@ -65,7 +65,6 @@ spec:
                   httpGet:
                     path: /ready
                     port: &port 8080
-                  initialDelaySeconds: 0
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false

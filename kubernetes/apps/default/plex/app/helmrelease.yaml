@@ -46,7 +46,6 @@ spec:
                     path: /identity
                     port: 32400
                     scheme: HTTPS
-                  initialDelaySeconds: 0
               readiness: *probe
               startup:
                 enabled: true

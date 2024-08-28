@@ -39,7 +39,6 @@ spec:
                   httpGet:
                     path: /
                     port: 3000
-                  initialDelaySeconds: 0
               readiness: *probe
               startup:
                 enabled: false

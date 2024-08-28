@@ -83,7 +83,6 @@ spec:
                   httpGet:
                     path: /health
                     port: *port
-                  initialDelaySeconds: 0
               readiness: *probe
             resources:
               requests:

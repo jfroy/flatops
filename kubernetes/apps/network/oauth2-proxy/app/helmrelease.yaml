@@ -72,7 +72,6 @@ spec:
                   httpGet:
                     path: /ping
                     port: &port 4180
-                  initialDelaySeconds: 0
               readiness:
                 enabled: true
                 custom: true
@@ -80,7 +79,6 @@ spec:
                   httpGet:
                     path: /ready
                     port: *port
-                  initialDelaySeconds: 0
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

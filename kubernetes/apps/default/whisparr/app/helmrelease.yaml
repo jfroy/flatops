@@ -64,7 +64,6 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
-                  initialDelaySeconds: 0
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
