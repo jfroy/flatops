@@ -39,6 +39,9 @@ spec:
       runAsUser: 1000
       runAsGroup: 1000
       seccompProfile: { type: RuntimeDefault }
+    env:
+      - name: INFLUXD_REPORTING_DISABLED
+        value: "true"
     persistence:
       storageClass: ceph-block
       size: 50Gi
@@ -53,7 +56,7 @@ spec:
     ingress:
       enabled: true
       className: internal
-      hostname: "influxdb.${PUBLIC_DOMAIN0}"
+      hostname: "influxdb2.${PUBLIC_DOMAIN0}"
       annotations:
         nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
         nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/start?rd=$scheme://$best_http_host$request_uri
