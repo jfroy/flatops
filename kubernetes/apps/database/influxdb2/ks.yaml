@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app influxdb
+  name: &app influxdb2
   namespace: flux-system
 spec:
   targetNamespace: database
@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: rook-ceph-cluster
-  path: ./kubernetes/apps/database/influxdb/app
+  path: ./kubernetes/apps/database/influxdb2/app
   prune: true
   sourceRef:
     kind: GitRepository
