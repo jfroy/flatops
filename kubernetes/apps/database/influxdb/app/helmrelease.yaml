@@ -23,6 +23,7 @@ spec:
     remediation:
       retries: 3
   values:
+    fullnameOverride: influxdb2
     resources:
       requests:
         cpu: 100m
