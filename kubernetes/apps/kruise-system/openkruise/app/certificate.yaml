@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kruise-webhook-certs
+spec:
+  secretName: kruise-webhook-certs
+  duration: 2160h  # 90d
+  dnsNames:
+    - kruise-webhook-service.kruise-system.svc
+    - localhost
+  issuerRef:
+    name: cluster-ca
+    kind: ClusterIssuer
+    group: cert-manager.io

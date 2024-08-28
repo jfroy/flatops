@@ -29,6 +29,7 @@ resources:
   - ./node-feature-discovery.yaml
   - ./nvidia.yaml
   - ./openebs.yaml
+  - ./openkruise.yaml
   - ./piraeus.yaml
   - ./policy-reporter.yaml
   - ./postfinance.yaml
