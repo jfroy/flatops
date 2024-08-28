@@ -57,6 +57,15 @@
       "separateMinorPatch": true
     },
     {
+      "groupName": "Scrutiny",
+      "matchPackagePatterns": ["scrutiny"],
+      "matchDatasources": ["helm"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      },
+      "separateMinorPatch": true
+    },
+    {
       "groupName": "Talos",
       "matchPackagePatterns": ["siderolabs/talosctl", "siderolabs/installer", "jfroy/talos/secureboot-installer"],
       "matchDatasources": ["docker"],

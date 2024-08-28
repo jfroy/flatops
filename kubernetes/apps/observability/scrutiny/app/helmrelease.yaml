@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: scrutiny
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      app:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/analogj/scrutiny
+              tag: v0.8.1-web@sha256:dbb6b56e5d3dfa9256fea8ef9b9fd8fb302c555ddd0554b8ad958ec050a14994
+            env:
+              SCRUTINY_WEB_INFLUXDB_HOST: influxdb2.database.svc.cluster.local
+              TZ: America/Los_Angeles
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 128Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    service:
+      app:
+        controller: app
+        ports:
+          http:
+            port: &port 8080
+    ingress:
+      app:
+        className: internal
+        hosts:
+          - host: "{{ .Release.Name }}.${PUBLIC_DOMAIN0}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    probes:
+      liveness: &probe
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api/health
+            port: *port
+      readiness: *probe
+      startup:
+        enabled: false
+    persistence:
+      config:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /opt/scrutiny/config
+      # udev:
+      #   type: hostPath
+      #   hostPath: /run/udev
+      #   globalMounts:
+      #     - path: /run/udev
