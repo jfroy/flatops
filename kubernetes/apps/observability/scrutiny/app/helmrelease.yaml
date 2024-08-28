@@ -35,8 +35,13 @@ spec:
               repository: ghcr.io/analogj/scrutiny
               tag: v0.8.1-web@sha256:dbb6b56e5d3dfa9256fea8ef9b9fd8fb302c555ddd0554b8ad958ec050a14994
             env:
+              SCRUTINY_WEB_INFLUXDB_BUCKET: scrutiny
               SCRUTINY_WEB_INFLUXDB_HOST: influxdb2.database.svc.cluster.local
+              SCRUTINY_WEB_INFLUXDB_ORG: scrutiny
               TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: scrutiny-secret
             resources:
               requests:
                 cpu: 100m
