@@ -92,8 +92,3 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /opt/scrutiny/config
-      # udev:
-      #   type: hostPath
-      #   hostPath: /run/udev
-      #   globalMounts:
-      #     - path: /run/udev
