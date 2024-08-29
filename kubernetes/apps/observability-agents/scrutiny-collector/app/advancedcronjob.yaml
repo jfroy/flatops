@@ -50,6 +50,3 @@ spec:
               - name: dev
                 hostPath:
                   path: /dev
-        completionPolicy:
-          type: Always
-          ttlSecondsAfterFinished: 30
