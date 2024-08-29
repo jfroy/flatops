@@ -7,6 +7,7 @@ spec:
   externalLabels:
     cluster: kantai
   extraArgs:
+    promscrape.maxScrapeSize: "33554432" # 32MiB
     promscrape.streamParse: "true"
     # Do not store original labels in vmagent's memory by default. This reduces the amount of memory used by vmagent
     # but makes vmagent debugging UI less informative. See: https://docs.victoriametrics.com/vmagent/#relabel-debug
