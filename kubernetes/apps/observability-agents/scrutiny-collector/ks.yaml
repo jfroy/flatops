@@ -10,6 +10,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  dependsOn:
+    - name: openkruise
   path: ./kubernetes/apps/observability-agents/scrutiny-collector/app
   prune: true
   sourceRef:
