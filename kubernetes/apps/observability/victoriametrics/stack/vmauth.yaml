@@ -27,6 +27,9 @@ spec:
           app.kubernetes.io/instance: stack
           app.kubernetes.io/name: vmauth
   unauthorizedAccessConfig:
+    - src_paths: ["/targets"]
+      url_prefix:
+        - http://vmagent-stack.observability.svc:8429
     - src_paths: [".*"]
       url_prefix:
         - http://vmsingle-stack.observability.svc:8429
