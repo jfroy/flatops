@@ -29,6 +29,7 @@ spec:
     installation:
       createNamespace: false
     manager:
+      replicas: 1
       loggingFormat: json
     daemon:
       socketLocation: /run/containerd
