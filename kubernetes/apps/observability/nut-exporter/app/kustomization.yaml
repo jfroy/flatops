@@ -7,3 +7,12 @@ resources:
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
   - ./servicemonitor.yaml
+configMapGenerator:
+  - name: nut-grafana-dashboard
+    files:
+      - ./resources/ups-aggregate.json
+    options:
+      labels:
+        grafana_dashboard: "true"
+generatorOptions:
+  disableNameSuffixHash: true
