@@ -1,0 +1,62 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nut-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.4.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      nut-exporter:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          nut-exporter:
+            image:
+              repository: ghcr.io/druggeri/nut_exporter
+              tag: 3.1.1
+            args:
+              # the first time I set this, the first and last entries were ignored, so I have doubled them.
+              - --nut.vars_enable="battery.charge,battery.charge,battery.runtime,battery.voltage,battery.voltage.nominal,input.voltage,input.voltage.nominal,output.voltage,output.voltage.nominal,ups.realpower,ups.load,ups.status,ups.status"
+            env:
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: nut-exporter-secret
+            resources:
+              requests:
+                cpu: 1m
+              limits:
+                memory: 100Mi
+    service:
+      app:
+        controller: nut-exporter
+        ports:
+          metrics:
+            protocol: TCP
+            port: 9199
+        ipFamilyPolicy: PreferDualStack
+    serviceMonitor:
+      app:
+        serviceName: nut-exporter
+        endpoints:
+          - name: metrics

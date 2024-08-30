@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: nut-exporter
+    app.kubernetes.io/instance: homeassistant
+    app.kubernetes.io/name: nut-exporter
+  name: nut-exporter-homeassistant
+spec:
+  endpoints:
+    - interval: 30s
+      metricRelabelings:
+        - action: replace
+          replacement: homeassistant
+          sourceLabels:
+            - instance
+          targetLabel: instance
+        - action: replace
+          replacement: homeassistant.flat
+          sourceLabels:
+            - server
+          targetLabel: server
+        - action: labeldrop
+          regex: (pod)
+      params:
+        server:
+          - homeassistant.flat
+      path: /ups_metrics
+      port: metrics
+      scheme: http
+      scrapeTimeout: 30s
+  jobLabel: app.kubernetes.io/instance
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: nut-exporter
+      app.kubernetes.io/name: nut-exporter
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: nut-exporter
+    app.kubernetes.io/instance: pikvm
+    app.kubernetes.io/name: nut-exporter
+  name: nut-exporter-pikvm
+spec:
+  endpoints:
+    - interval: 30s
+      metricRelabelings:
+        - action: replace
+          replacement: pikvm
+          sourceLabels:
+            - instance
+          targetLabel: instance
+        - action: replace
+          replacement: pikvm.flat
+          sourceLabels:
+            - server
+          targetLabel: server
+        - action: labeldrop
+          regex: (pod)
+      params:
+        server:
+          - pikvm.flat
+      path: /ups_metrics
+      port: metrics
+      scheme: http
+      scrapeTimeout: 30s
+  jobLabel: app.kubernetes.io/instance
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: nut-exporter
+      app.kubernetes.io/name: nut-exporter
