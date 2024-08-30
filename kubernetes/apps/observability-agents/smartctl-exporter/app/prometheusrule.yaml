@@ -37,14 +37,11 @@ spec:
           for: 15m
           labels:
             severity: critical
-        #
-        # Ref: https://github.com/prometheus-community/helm-charts/blob/main/charts/prometheus-smartctl-exporter/rules/rules.txt
-        #
         - alert: SmartDeviceMediaErrors
           annotations:
             summary: Mounted drive {{ $labels.device }} on device {{ $labels.instance }}
               has media errors.
-          expr: smartctl_device_media_errors != 0
+          expr: smartctl_device_media_errors{device!~"^nvme.+"} != 0
           for: 15m
           labels:
             severity: critical
