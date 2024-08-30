@@ -175,6 +175,12 @@ spec:
           gnetId: 1860
           revision: 37
           datasource: Prometheus
+        nut-exporter:
+          # renovate: depName="Prometheus NUT Exporter for DRuggeri"
+          gnetId: 19308
+          revision: 2
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         smart:
           # renovate: depName="Dashboard for smartctl_exporter"
           gnetId: 20204
