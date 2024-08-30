@@ -10,7 +10,7 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./policy-reporter/ks.yaml
   - ./prometheus-operator-crds/ks.yaml
-  - ./scrutiny/ks.yaml
+  # - ./scrutiny/ks.yaml
   - ./silence-operator/ks.yaml
   - ./unpoller/ks.yaml
   - ./vector-aggregator/ks.yaml
