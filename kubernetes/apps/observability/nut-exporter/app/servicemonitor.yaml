@@ -14,14 +14,10 @@ spec:
       metricRelabelings:
         - action: replace
           replacement: homeassistant
-          sourceLabels:
-            - instance
           targetLabel: instance
         - action: replace
-          replacement: homeassistant.flat
-          sourceLabels:
-            - server
-          targetLabel: server
+          replacement: ofe
+          targetLabel: ups
         - action: labeldrop
           regex: (pod)
       params:
@@ -55,14 +51,10 @@ spec:
       metricRelabelings:
         - action: replace
           replacement: pikvm
-          sourceLabels:
-            - instance
           targetLabel: instance
         - action: replace
-          replacement: pikvm.flat
-          sourceLabels:
-            - server
-          targetLabel: server
+          replacement: rak
+          targetLabel: ups
         - action: labeldrop
           regex: (pod)
       params:
