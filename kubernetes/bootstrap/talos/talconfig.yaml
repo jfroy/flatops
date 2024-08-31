@@ -34,7 +34,6 @@ nodes:
         parameters:
           - NVreg_OpenRmEnableUnsupportedGpus=1
       - name: nvidia_uvm
-      - name: nvidia_drm
       - name: nvidia_modeset
       - name: nvme-tcp
     networkInterfaces:
