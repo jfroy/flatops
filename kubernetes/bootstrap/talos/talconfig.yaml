@@ -30,11 +30,6 @@ nodes:
     controlPlane: true
     talosImageURL: ghcr.io/jfroy/talos/secureboot-installer
     kernelModules:
-      - name: nvidia
-        parameters:
-          - NVreg_OpenRmEnableUnsupportedGpus=1
-      - name: nvidia_uvm
-      - name: nvidia_modeset
       - name: nvme-tcp
     networkInterfaces:
       - interface: bond0
