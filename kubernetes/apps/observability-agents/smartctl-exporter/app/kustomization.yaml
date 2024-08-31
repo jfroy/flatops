@@ -5,3 +5,12 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
+configMapGenerator:
+  - name: smartctl-exporter-dashboard
+    files:
+      - ./resources/smartctl_exporter.json
+    options:
+      labels:
+        grafana_dashboard: "true"
+generatorOptions:
+  disableNameSuffixHash: true
