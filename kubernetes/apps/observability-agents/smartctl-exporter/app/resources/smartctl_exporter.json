@@ -2647,7 +2647,9 @@
   ],
   "refresh": "",
   "schemaVersion": 39,
-  "tags": [],
+  "tags": [
+    "smartctl"
+  ],
   "templating": {
     "list": [
       {

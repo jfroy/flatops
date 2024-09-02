@@ -8,6 +8,7 @@ resources:
 configMapGenerator:
   - name: smartctl-exporter-dashboard
     files:
+      - ./resources/blesswinsamuel_smartctl.json
       - ./resources/smartctl_exporter.json
     options:
       labels:
