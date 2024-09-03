@@ -31,8 +31,8 @@ spec:
     nfd:
       enabled: false
     cdi:
+      enabled: true
       default: false
-      enabled: false
     operator:
       upgradeCRD: true
     driver:
@@ -44,6 +44,9 @@ spec:
       usePrecompiled: true
       version: 550
     toolkit:
+      env:
+        - name: CONTAINERD_CONFIG
+          value: /var/nvidia/etc/containerd.toml
       installDir: "/var/nvidia"
     devicePlugin:
       config:
