@@ -43,6 +43,8 @@ spec:
       useOpenKernelModules: true
       usePrecompiled: true
       version: 550
+    toolkit:
+      installDir: "/var/nvidia"
     devicePlugin:
       config:
         name: time-slicing-config-all
