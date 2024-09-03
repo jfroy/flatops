@@ -31,34 +31,31 @@ spec:
     nfd:
       enabled: false
     cdi:
-      default: false
-      enabled: false
-    # patched validator with support for Talos
-    validator:
-      repository: ghcr.io/jfroy
-      image: gpu-operator-validator
-      version: v24.6.0-ubi8@sha256:d3e85a6e9e89e2a17a39977a83a86cdd290540850627143e0b65c54905301f8f
-      driver:
-        env:
-          - name: VALIDATOR_HOST_NVIDIA_SMI_PATH
-            value: "/usr/local/bin/nvidia-smi"
+      enabled: true
+      default: true
     operator:
       upgradeCRD: true
     driver:
-      # driver is not supported on Talos: https://github.com/NVIDIA/gpu-operator/issues/647
-      enabled: false
+      enabled: true
+      nvidiaDriverCRD:
+        enabled: true
+        deployDefaultCR: false
+      useOpenKernelModules: true
+      usePrecompiled: true
+      version: 550
     toolkit:
-      # toolkit is provided by Talos with patches
-      enabled: false
-    # patched device plugin with support for Talos
+      repository: registry.${PUBLIC_DOMAIN0}/nvidia
+      image: container-toolkit
+      version: v1.16.1-ubuntu20.04
+      env:
+        - name: CONTAINERD_CONFIG
+          value: /var/nvidia/etc/containerd.toml
+        # talos does not recover if containerd is restarted with SIGHUP
+        # https://github.com/siderolabs/talos/issues/9271
+        - name: CONTAINERD_RESTART_MODE
+          value: none
+      installDir: "/var/nvidia"
     devicePlugin:
-      repository: ghcr.io/jfroy
-      image: k8s-device-plugin
-      version: v0.16.1-ubi8@sha256:a084f7e775c69871c9d7d5e0d3e7d88e0ad944b92eb673529fa29d5c7080df21
       config:
         name: time-slicing-config-all
         default: any
-    gfd:
-      repository: ghcr.io/jfroy
-      image: k8s-device-plugin
-      version: v0.16.1-ubi8@sha256:a084f7e775c69871c9d7d5e0d3e7d88e0ad944b92eb673529fa29d5c7080df21
