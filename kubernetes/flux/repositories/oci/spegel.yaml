@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/spegel-org/helm-charts/spegel
   ref:
-    tag: v0.0.23
+    tag: v0.0.24
