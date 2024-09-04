@@ -99,3 +99,12 @@ spec:
           memory: 96Mi
         limits:
           memory: 2Gi
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              kind: ClusterRole
+              name: ingress-nginx-external
+            patch: |
+              - op: remove
+                path: /rules/0/resources/4
