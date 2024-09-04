@@ -51,6 +51,8 @@ spec:
         # https://github.com/siderolabs/talos/issues/9271
         - name: CONTAINERD_RESTART_MODE
           value: none
+        - name: NO_DAEMON
+          value: "true"
       installDir: "/var/nvidia"
     devicePlugin:
       config:
