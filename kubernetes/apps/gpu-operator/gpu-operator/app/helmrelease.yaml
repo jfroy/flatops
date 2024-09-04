@@ -47,6 +47,10 @@ spec:
       env:
         - name: CONTAINERD_CONFIG
           value: /var/nvidia/etc/containerd.toml
+        # talos does not recover if containerd is restarted with SIGHUP
+        # https://github.com/siderolabs/talos/issues/9271
+        - name: CONTAINERD_RESTART_MODE
+          value: none
       installDir: "/var/nvidia"
     devicePlugin:
       config:
