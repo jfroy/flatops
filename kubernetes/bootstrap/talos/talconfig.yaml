@@ -71,6 +71,30 @@ patches:
               discard_unpacked_layers = false
             [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
               discard_unpacked_layers = false
+            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia]
+              container_annotations = ["nvidia.cdi.k8s.io/*"]
+              privileged_without_host_devices = false
+              runtime_engine = ""
+              runtime_root = ""
+              runtime_type = "io.containerd.runc.v2"
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia.options]
+                BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime"
+            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia-cdi]
+              container_annotations = ["nvidia.cdi.k8s.io/*", "nvidia.cdi.k8s.io/*"]
+              privileged_without_host_devices = false
+              runtime_engine = ""
+              runtime_root = ""
+              runtime_type = "io.containerd.runc.v2"
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia-cdi.options]
+                BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.cdi"
+            [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia-legacy]
+              container_annotations = ["nvidia.cdi.k8s.io/*", "nvidia.cdi.k8s.io/*"]
+              privileged_without_host_devices = false
+              runtime_engine = ""
+              runtime_root = ""
+              runtime_type = "io.containerd.runc.v2"
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.nvidia-legacy.options]
+                BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.legacy"
 
   # Disable search domain everywhere
   - |-
