@@ -59,3 +59,6 @@ spec:
       config:
         name: time-slicing-config-all
         default: any
+    dcgmExporter:
+      serviceMonitor:
+        enabled: true
