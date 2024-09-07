@@ -33,7 +33,7 @@ spec:
               repository: ghcr.io/jfroy/plex
               tag: 1.40.5.8854-f36c552fd@sha256:d9b9dcb8e2418ac1e4ba1945c02e9a7d6d252d27603d3a851a4743b6e0753979
             env:
-              NVIDIA_DRIVER_CAPABILITIES: all
+              NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
               TZ: America/Los_Angeles
               PLEX_ADVERTISE_URL: "http://10.10.1.0:32400"
               PLEX_NO_AUTH_NETWORKS: 192.168.1.0/24
