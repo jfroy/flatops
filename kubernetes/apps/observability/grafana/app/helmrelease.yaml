@@ -55,8 +55,8 @@ spec:
       enabled: false
     plugins:
       - grafana-clock-panel
-      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.2.3/victorialogs-datasource-v0.2.3.zip;victorialogs-datasource
-      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.8.3/victoriametrics-datasource-v0.8.3.zip;victoriametrics-datasource
+      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.4.0/victorialogs-datasource-v0.4.0.zip;victorialogs-datasource
+      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.9.0/victoriametrics-datasource-v0.9.0.zip;victoriametrics-datasource
 
     datasources:
       datasources.yaml:
