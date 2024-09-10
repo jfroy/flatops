@@ -127,6 +127,8 @@ spec:
               readOnlyRootFilesystem: false
               runAsNonRoot: false
               runAsUser: 0
+              appArmorProfile:
+                type: Unconfined
               capabilities: { add: ["NET_ADMIN"] }
           vuetorrent:
             image:
@@ -151,7 +153,7 @@ spec:
             restartPolicy: Always
         pod:
           labels:
-            stealth-gateway: "true"
+            gluetun: "true"
           hostname: qbittorrent
     defaultPodOptions:
       securityContext:

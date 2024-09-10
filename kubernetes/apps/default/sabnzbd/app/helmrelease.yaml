@@ -118,10 +118,12 @@ spec:
               readOnlyRootFilesystem: false
               runAsNonRoot: false
               runAsUser: 0
+              appArmorProfile:
+                type: Unconfined
               capabilities: { add: ["NET_ADMIN"] }
         pod:
           labels:
-            stealth-gateway: "true"
+            gluetun: "true"
           hostname: sabnzbd
     defaultPodOptions:
       securityContext:
