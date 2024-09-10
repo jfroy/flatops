@@ -9,6 +9,7 @@ resources:
   - ./exportarr/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
+  - ./headlamp/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./nut-exporter/ks.yaml
   - ./policy-reporter/ks.yaml
