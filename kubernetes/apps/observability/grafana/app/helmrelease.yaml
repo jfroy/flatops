@@ -178,7 +178,7 @@ spec:
         nut-exporter:
           # renovate: depName="Prometheus NUT Exporter for DRuggeri"
           gnetId: 19308
-          revision: 2
+          revision: 3
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         smart:
