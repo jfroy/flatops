@@ -121,6 +121,7 @@ spec:
                 memory: 48Mi
               limits:
                 memory: 96Mi
+                kernel.org/tun: 1
             restartPolicy: Always
             securityContext:
               <<: *securityContext
