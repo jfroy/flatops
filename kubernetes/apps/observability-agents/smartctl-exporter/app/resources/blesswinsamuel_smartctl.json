@@ -1,47 +1,153 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.2.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Dashboard for smartctl",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
+  "id": null,
   "links": [],
   "panels": [
     {
-      "type": "row",
-      "title": "Overview",
-      "panels": [],
       "collapsed": false,
       "gridPos": {
-        "x": 0,
-        "y": 0,
+        "h": 1,
         "w": 24,
-        "h": 1
-      }
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
     },
     {
-      "links": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum(smartctl_devices{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "Devices count",
-      "gridPos": {
-        "x": 0,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -52,6 +158,10 @@
               {
                 "color": "green",
                 "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
               }
             ]
           },
@@ -59,50 +169,55 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 3,
+        "y": 1
+      },
+      "id": 3,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "orientation": "auto",
-        "textMode": "auto",
         "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum(smartctl_devices{instance=~\"$instance\", job=\"$job\"}) - sum(smartctl_device{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "Missing devices",
-      "gridPos": {
-        "x": 3,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -124,50 +239,55 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 6,
+        "y": 1
+      },
+      "id": 4,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "orientation": "auto",
-        "textMode": "auto",
         "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "max(smartctl_device_smartctl_exit_status{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "Exit status",
-      "gridPos": {
-        "x": 6,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -189,50 +309,55 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 9,
+        "y": 1
+      },
+      "id": 5,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "orientation": "auto",
-        "textMode": "auto",
         "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum(smartctl_device_num_err_log_entries{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "Error log entries",
-      "gridPos": {
-        "x": 9,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -254,50 +379,55 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 12,
+        "y": 1
+      },
+      "id": 6,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "orientation": "auto",
-        "textMode": "auto",
         "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum(smartctl_device_media_errors{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "Media errors",
-      "gridPos": {
-        "x": 12,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -319,50 +449,55 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 15,
+        "y": 1
+      },
+      "id": 7,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "orientation": "auto",
-        "textMode": "auto",
         "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum(smartctl_device_error_log_count{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "SMART error log count",
-      "gridPos": {
-        "x": 15,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -384,50 +519,55 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 18,
+        "y": 1
+      },
+      "id": 8,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "orientation": "auto",
-        "textMode": "auto",
         "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum(smartctl_device_critical_warning{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "Critical warnings",
-      "gridPos": {
-        "x": 18,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -449,53 +589,65 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 21,
+        "y": 1
+      },
+      "id": 9,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "orientation": "auto",
-        "textMode": "auto",
         "colorMode": "background",
         "graphMode": "area",
         "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum(1 - smartctl_device_smart_status{instance=~\"$instance\", job=\"$job\"})",
-          "range": true,
-          "instant": false,
           "format": "time_series",
-          "refId": "A"
+          "instant": false,
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "stat",
       "title": "SMART failed",
-      "gridPos": {
-        "x": 21,
-        "y": 1,
-        "w": 3,
-        "h": 3
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -506,264 +658,122 @@
               },
               {
                 "color": "red",
-                "value": 1
+                "value": 80
               }
             ]
-          },
-          "unit": "short"
+          }
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 10,
       "options": {
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
           ],
-          "fields": ""
+          "show": false
         },
-        "orientation": "auto",
-        "textMode": "auto",
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "showPercentChange": false,
-        "wideLayout": true,
-        "text": {}
-      }
-    },
-    {
-      "links": [],
+        "frameIndex": -1,
+        "showHeader": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "smartctl_device{instance=~\"$instance\", job=\"$job\"}",
-          "range": false,
-          "instant": true,
           "format": "table",
-          "refId": "A"
+          "instant": true,
+          "range": false,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
+      "title": "Device Info",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "__name__": true,
               "Time": true,
               "Value": true,
+              "__name__": true,
               "instance": true,
               "job": true
             },
             "indexByName": {
-              "device": 0,
-              "model_name": 1,
-              "form_factor": 2,
-              "serial_number": 3,
-              "protocol": 4,
-              "ata_version": 5,
-              "firmware_version": 6,
               "ata_additional_product_id": 7,
+              "ata_version": 5,
+              "device": 0,
+              "firmware_version": 6,
+              "form_factor": 2,
               "interface": 8,
               "model_family": 9,
-              "sata_version": 10
+              "model_name": 1,
+              "protocol": 4,
+              "sata_version": 10,
+              "serial_number": 3
             },
             "renameByName": {
-              "device": "Device",
-              "model_name": "Model name",
-              "form_factor": "Form factor",
-              "serial_number": "Serial number",
-              "protocol": "Protocol",
-              "ata_version": "ATA version",
-              "firmware_version": "Firmware version",
               "ata_additional_product_id": "ATA additional product ID",
+              "ata_version": "ATA version",
+              "device": "Device",
+              "firmware_version": "Firmware version",
+              "form_factor": "Form factor",
               "interface": "Interface",
               "model_family": "Model family",
-              "sata_version": "SATA version"
+              "model_name": "Model name",
+              "protocol": "Protocol",
+              "sata_version": "SATA version",
+              "serial_number": "Serial number"
             }
           }
         }
       ],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "table",
-      "title": "Device Info",
-      "gridPos": {
-        "x": 0,
-        "y": 4,
-        "w": 24,
-        "h": 8
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "md",
-        "frameIndex": -1,
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
-      "links": [],
-      "repeatDirection": "h",
-      "tags": [],
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device{instance=~\"$instance\", job=\"$job\"}) by (instance, device, model_name)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "DEVICE"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_temperature{instance=~\"$instance\", job=\"$job\", temperature_type=\"current\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "TEMP"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_smartctl_exit_status{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "EXIT"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_smart_status{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "PASSED"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_power_on_seconds{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "POWON"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_power_cycle_count{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "PCC"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_interface_speed{instance=~\"$instance\", job=\"$job\", speed_type=\"current\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "INTSPEED"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_capacity_bytes{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "CAPBYTES"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_capacity_blocks{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "CAPBLOCKS"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_block_size{blocks_type=\"logical\", instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "BLKSIZELOG"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_block_size{blocks_type=\"physical\", instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "BLKSIZEPHY"
-        },
-        {
-          "editorMode": "code",
-          "expr": "sum(smartctl_device_error_log_count{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
-          "range": false,
-          "instant": true,
-          "format": "table",
-          "refId": "ERRLOGCNT"
-        }
-      ],
-      "transformations": [
-        {
-          "id": "merge",
-          "options": {}
-        },
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "pattern": "(device|model_name|instance|Value\\s.*)"
-            }
-          }
-        },
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "Value #DEVICE": true
-            },
-            "indexByName": {},
-            "renameByName": {
-              "instance": "Instance",
-              "device": "Device",
-              "model_name": "Model name",
-              "Value #TEMP": "Temperature",
-              "Value #EXIT": "Exit status",
-              "Value #PASSED": "Passed",
-              "Value #POWON": "Power on seconds",
-              "Value #PCC": "Power Cycle Count",
-              "Value #INTSPEED": "Device interface speed",
-              "Value #CAPBYTES": "Capacity Bytes",
-              "Value #CAPBLOCKS": "Capacity Blocks",
-              "Value #BLKSIZELOG": "Block size (logical)",
-              "Value #BLKSIZEPHY": "Block size (physical)",
-              "Value #ERRLOGCNT": "Error log count"
-            }
-          }
-        }
-      ],
-      "transparent": false,
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "type": "table",
-      "title": "SMART overview",
-      "gridPos": {
-        "x": 0,
-        "y": 12,
-        "w": 24,
-        "h": 8
-      },
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
         "overrides": [
           {
             "matcher": {
@@ -887,52 +897,313 @@
           }
         ]
       },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 12
+      },
+      "id": 11,
       "options": {
         "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
         "frameIndex": -1,
         "showHeader": true
-      }
+      },
+      "pluginVersion": "11.2.0",
+      "repeatDirection": "h",
+      "tags": [],
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device{instance=~\"$instance\", job=\"$job\"}) by (instance, device, model_name)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "DEVICE",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_temperature{instance=~\"$instance\", job=\"$job\", temperature_type=\"current\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "TEMP",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_smartctl_exit_status{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "EXIT",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_smart_status{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "PASSED",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_power_on_seconds{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "POWON",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_power_cycle_count{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "PCC",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_interface_speed{instance=~\"$instance\", job=\"$job\", speed_type=\"current\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "INTSPEED",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_capacity_bytes{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "CAPBYTES",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_capacity_blocks{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "CAPBLOCKS",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_block_size{blocks_type=\"logical\", instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "BLKSIZELOG",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_block_size{blocks_type=\"physical\", instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "BLKSIZEPHY",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        },
+        {
+          "editorMode": "code",
+          "expr": "sum(smartctl_device_error_log_count{instance=~\"$instance\", job=\"$job\"}) by (instance, device)",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "refId": "ERRLOGCNT",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        }
+      ],
+      "title": "SMART overview",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "pattern": "(device|model_name|instance|Value\\s.*)"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value #DEVICE": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Value #BLKSIZELOG": "Block size (logical)",
+              "Value #BLKSIZEPHY": "Block size (physical)",
+              "Value #CAPBLOCKS": "Capacity Blocks",
+              "Value #CAPBYTES": "Capacity Bytes",
+              "Value #ERRLOGCNT": "Error log count",
+              "Value #EXIT": "Exit status",
+              "Value #INTSPEED": "Device interface speed",
+              "Value #PASSED": "Passed",
+              "Value #PCC": "Power Cycle Count",
+              "Value #POWON": "Power on seconds",
+              "Value #TEMP": "Temperature",
+              "device": "Device",
+              "instance": "Instance",
+              "model_name": "Model name"
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
-      "links": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": -1,
+        "showHeader": true
+      },
+      "pluginVersion": "11.2.0",
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "smartctl_device_attribute{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\", job=\"$job\"}",
-          "range": false,
-          "instant": true,
           "format": "table",
-          "refId": "A"
+          "instant": true,
+          "range": false,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
+      "title": "SMART attributes",
       "transformations": [
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "__name__": true,
               "Time": true,
+              "__name__": true,
               "job": true
             },
             "indexByName": {
-              "device": 0,
-              "model_name": 1,
+              "Value": 7,
+              "attribute_flags_long": 5,
+              "attribute_flags_short": 6,
               "attribute_id": 2,
               "attribute_name": 3,
               "attribute_value_type": 4,
-              "attribute_flags_long": 5,
-              "attribute_flags_short": 6,
-              "Value": 7
+              "device": 0,
+              "model_name": 1
             },
             "renameByName": {
-              "device": "Device",
               "attribute_flags_long": "Attribute flags (long)",
               "attribute_flags_short": "Attribute flags (short)",
               "attribute_id": "Attribute ID",
               "attribute_name": "Attribute name",
               "attribute_value_type": "Attribute value type",
+              "device": "Device",
               "model_name": "Model Name"
             }
           }
@@ -941,23 +1212,7 @@
           "id": "groupBy",
           "options": {
             "fields": {
-              "Instance": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Device": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Model Name": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
               "Attribute ID": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "Attribute name": {
                 "aggregations": [],
                 "operation": "groupby"
               },
@@ -969,11 +1224,27 @@
                 "aggregations": [],
                 "operation": "groupby"
               },
+              "Attribute name": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
               "Attribute value type": {
                 "aggregations": [
                   "allValues"
                 ],
                 "operation": "aggregate"
+              },
+              "Device": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Instance": {
+                "aggregations": [],
+                "operation": "groupby"
+              },
+              "Model Name": {
+                "aggregations": [],
+                "operation": "groupby"
               },
               "Value": {
                 "aggregations": [
@@ -985,68 +1256,25 @@
           }
         }
       ],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "table",
-      "title": "SMART attributes",
-      "gridPos": {
-        "x": 0,
-        "y": 20,
-        "w": 24,
-        "h": 8
-      },
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "options": {
-        "cellHeight": "md",
-        "frameIndex": -1,
-        "showHeader": true
-      }
+      "type": "table"
     },
     {
-      "type": "row",
-      "title": "Metrics",
-      "panels": [],
       "collapsed": false,
       "gridPos": {
-        "x": 0,
-        "y": 28,
+        "h": 1,
         "w": 24,
-        "h": 1
-      }
+        "x": 0,
+        "y": 28
+      },
+      "id": 13,
+      "panels": [],
+      "title": "Metrics",
+      "type": "row"
     },
     {
-      "links": [],
-      "repeatDirection": "h",
-      "tags": [],
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "sum by (model_name) (smartctl_device_temperature{instance=~\"$instance\", job=\"$job\",temperature_type=\"current\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
-          "legendFormat": "{{ model_name }}",
-          "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
-        }
-      ],
-      "transformations": [],
-      "transparent": false,
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
-      "title": "Temperature",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 29,
-        "w": 6,
-        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -1054,12 +1282,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1068,6 +1298,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1084,10 +1315,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "celsius"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 29
+      },
+      "id": 14,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1102,36 +1355,136 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
+      },
+      "repeatDirection": "h",
+      "tags": [],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "avg by (model_name) (smartctl_device_temperature{instance=~\"$instance\", job=\"$job\",temperature_type=\"current\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{ model_name }}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Temperature",
+      "type": "timeseries"
     },
     {
-      "links": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 29
+      },
+      "id": 15,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_smartctl_exit_status{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Smartctl exit status",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 6,
-        "y": 29,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1139,12 +1492,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1153,6 +1508,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1169,10 +1525,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 29
+      },
+      "id": 16,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1187,122 +1565,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_smart_status{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "SMART passed",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 12,
-        "y": 29,
-        "w": 6,
-        "h": 8
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      }
+      "type": "timeseries"
     },
     {
-      "links": [],
-      "repeatDirection": "h",
-      "tags": [],
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "sum by (model_name) (increase(smartctl_device_power_on_seconds{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"}))",
-          "legendFormat": "{{ model_name }}",
-          "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
-        }
-      ],
-      "transformations": [],
-      "transparent": false,
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
-      "title": "Power on duration",
-      "interval": "1h",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 18,
-        "y": 29,
-        "w": 6,
-        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -1310,12 +1597,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 100,
             "gradientMode": "none",
@@ -1324,6 +1613,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "stepAfter",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1340,10 +1630,33 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "s"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 29
+      },
+      "id": 17,
+      "interval": "1h",
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1357,36 +1670,136 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
+      },
+      "repeatDirection": "h",
+      "tags": [],
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (model_name) (increase(smartctl_device_power_on_seconds{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"}))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{ model_name }}",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        }
+      ],
+      "title": "Power on duration",
+      "type": "timeseries"
     },
     {
-      "links": [],
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisGridShow": true,
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 37
+      },
+      "id": 18,
+      "maxDataPoints": 100,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_power_cycle_count{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Power cycle count",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 37,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1394,12 +1807,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1408,6 +1823,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1424,10 +1840,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 37
+      },
+      "id": 19,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1442,36 +1880,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_percentage_used{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Write percentage used",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 6,
-        "y": 37,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1479,12 +1912,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1493,6 +1928,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1509,10 +1945,32 @@
               "mode": "off"
             }
           },
-          "unit": "short"
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 37
+      },
+      "id": 20,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1527,49 +1985,47 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_nvme_capacity_bytes{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
+      "title": "NVMe capacity bytes",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "type": "timeseries",
-      "title": "NVMe capacity bytes",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 12,
-        "y": 37,
-        "w": 6,
-        "h": 8
-      },
+      "description": "Contains the number of Error Information log entries over the life of the controller",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1578,6 +2034,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1594,10 +2051,32 @@
               "mode": "off"
             }
           },
-          "unit": "bytes"
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 37
+      },
+      "id": 21,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1612,50 +2091,47 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_num_err_log_entries{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
+      "title": "Number of error log entries",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "type": "timeseries",
-      "title": "Number of error log entries",
-      "description": "Contains the number of Error Information log entries over the life of the controller",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 18,
-        "y": 37,
-        "w": 6,
-        "h": 8
-      },
+      "description": "Contains the number of occurrences where the controller detected an unrecovered data integrity error. Errors such as uncorrectable ECC, CRC checksum failure, or LBA tag mismatch are included in this field",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1664,6 +2140,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1680,10 +2157,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 45
+      },
+      "id": 22,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1698,37 +2197,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_media_errors{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Number of media errors",
-      "description": "Contains the number of occurrences where the controller detected an unrecovered data integrity error. Errors such as uncorrectable ECC, CRC checksum failure, or LBA tag mismatch are included in this field",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 45,
-        "w": 8,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1736,12 +2229,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1750,6 +2245,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1766,10 +2262,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 45
+      },
+      "id": 23,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1784,36 +2302,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_error_log_count{instance=~\"$instance\", job=\"$job\",error_log_type=\"summary\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "SMART error log count",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 8,
-        "y": 45,
-        "w": 8,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1821,12 +2334,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1835,6 +2350,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1851,10 +2367,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 45
+      },
+      "id": 24,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1869,36 +2407,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_critical_warning{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Critical warnings for state of controller",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 16,
-        "y": 45,
-        "w": 8,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1906,12 +2439,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1920,6 +2455,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1936,10 +2472,32 @@
               "mode": "off"
             }
           },
-          "unit": "short"
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bps"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 53
+      },
+      "id": 25,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -1954,36 +2512,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_interface_speed{instance=~\"$instance\", job=\"$job\",speed_type=\"current\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Interface speed (current)",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 53,
-        "w": 12,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1991,12 +2544,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2005,6 +2560,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2021,10 +2577,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "bps"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 53
+      },
+      "id": 26,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2039,36 +2617,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_interface_speed{instance=~\"$instance\", job=\"$job\",speed_type=\"max\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Interface speed (max)",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 12,
-        "y": 53,
-        "w": 12,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2076,12 +2649,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2090,6 +2665,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2106,10 +2682,32 @@
               "mode": "off"
             }
           },
-          "unit": "bps"
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 61
+      },
+      "id": 27,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2124,36 +2722,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_capacity_bytes{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Capacity Bytes",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 61,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2161,12 +2754,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2175,6 +2770,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2191,10 +2787,32 @@
               "mode": "off"
             }
           },
-          "unit": "bytes"
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 61
+      },
+      "id": 28,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2209,36 +2827,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_capacity_blocks{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Capacity Blocks",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 6,
-        "y": 61,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2246,12 +2859,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2260,6 +2875,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2276,10 +2892,32 @@
               "mode": "off"
             }
           },
-          "unit": "short"
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 61
+      },
+      "id": 29,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2294,36 +2932,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_bytes_written{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Bytes written",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 12,
-        "y": 61,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2331,12 +2964,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2345,6 +2980,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2361,10 +2997,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "bytes"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 61
+      },
+      "id": 30,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2379,36 +3037,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_bytes_read{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Bytes read",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 18,
-        "y": 61,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2416,12 +3069,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2430,6 +3085,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2446,10 +3102,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "bytes"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 69
+      },
+      "id": 31,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2464,36 +3142,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_block_size{instance=~\"$instance\", job=\"$job\",blocks_type=\"logical\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Block size (logical)",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 69,
-        "w": 6,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2501,12 +3174,14 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2515,6 +3190,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2531,10 +3207,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "bytes"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 69
+      },
+      "id": 32,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2549,49 +3247,47 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_block_size{instance=~\"$instance\", job=\"$job\",blocks_type=\"physical\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
+      "title": "Block size (physical)",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "type": "timeseries",
-      "title": "Block size (physical)",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 6,
-        "y": 69,
-        "w": 6,
-        "h": 8
-      },
+      "description": "When the Available Spare falls below the threshold indicated in this field, an asynchronous event completion may occur. The value is indicated as a normalized percentage (0 to 100%)",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2600,6 +3296,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2616,10 +3313,32 @@
               "mode": "off"
             }
           },
-          "unit": "bytes"
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 69
+      },
+      "id": 33,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2634,50 +3353,47 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_available_spare_threshold{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
+      "title": "Available spare threshold",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
-      "type": "timeseries",
-      "title": "Available spare threshold",
-      "description": "When the Available Spare falls below the threshold indicated in this field, an asynchronous event completion may occur. The value is indicated as a normalized percentage (0 to 100%)",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 12,
-        "y": 69,
-        "w": 6,
-        "h": 8
-      },
+      "description": "Normalized percentage (0 to 100%) of the remaining spare capacity available",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisGridShow": true,
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2686,6 +3402,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2702,10 +3419,32 @@
               "mode": "off"
             }
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
           "unit": "percent"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 69
+      },
+      "id": 34,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2720,37 +3459,44 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (model_name) (smartctl_device_available_spare{instance=~\"$instance\", job=\"$job\"} * on(device, instance) group_left(model_name) smartctl_device{instance=~\"$instance\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ model_name }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Available spare",
-      "description": "Normalized percentage (0 to 100%) of the remaining spare capacity available",
-      "maxDataPoints": 100,
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
       "gridPos": {
-        "x": 18,
-        "y": 69,
-        "w": 6,
-        "h": 8
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 77
+      },
+      "id": 35,
+      "panels": [],
+      "title": "Go Runtime Metrics",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2788,10 +3534,18 @@
               "mode": "off"
             }
           },
-          "unit": "percent"
+          "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 78
+      },
+      "id": 36,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2806,48 +3560,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "type": "row",
-      "title": "Go Runtime Metrics",
-      "panels": [],
-      "collapsed": false,
-      "gridPos": {
-        "x": 0,
-        "y": 77,
-        "w": 24,
-        "h": 1
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (pod) (process_open_fds{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "File Descriptors",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 78,
-        "w": 4,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2889,6 +3626,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 4,
+        "y": 78
+      },
+      "id": 37,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2903,36 +3648,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (pod) (rate(process_cpu_seconds_total{instance=~\"$instance\", job=\"$job\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "CPU Usage",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 4,
-        "y": 78,
-        "w": 4,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2970,10 +3710,18 @@
               "mode": "off"
             }
           },
-          "unit": "short"
+          "unit": "decbytes"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 8,
+        "y": 78
+      },
+      "id": 38,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -2988,36 +3736,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (pod) (process_resident_memory_bytes{instance=~\"$instance\", job=\"$job\"}[$__rate_interval])",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Memory Usage",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 8,
-        "y": 78,
-        "w": 4,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3059,6 +3802,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 78
+      },
+      "id": 39,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3073,45 +3824,44 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_stack_sys_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "sys",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         },
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_stack_inuse_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "inuse",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "B"
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Stack Memory Usage",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 12,
-        "y": 78,
-        "w": 4,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3153,6 +3903,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 16,
+        "y": 78
+      },
+      "id": 40,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3167,81 +3925,96 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_heap_sys_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "sys",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         },
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_heap_idle_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "idle",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "B"
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         },
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_heap_released_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "released",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "C"
+          "refId": "C",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         },
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_next_gc_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "next_gc",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "D"
+          "refId": "D",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         },
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_heap_inuse_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "inuse",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "E"
+          "refId": "E",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         },
         {
           "editorMode": "code",
           "expr": "avg(go_memstats_heap_alloc_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "alloc",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "F"
+          "refId": "F",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Heap Memory Usage",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 16,
-        "y": 78,
-        "w": 4,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3279,10 +4052,18 @@
               "mode": "off"
             }
           },
-          "unit": "decbytes"
+          "unit": "short"
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 78
+      },
+      "id": 41,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3297,36 +4078,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "avg by (pod) (go_memstats_heap_objects{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Heap Objects",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 20,
-        "y": 78,
-        "w": 4,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3368,6 +4144,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 86
+      },
+      "id": 42,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3382,36 +4166,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (pod) (go_threads{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Threads",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 0,
-        "y": 86,
-        "w": 4,
-        "h": 8
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3453,6 +4232,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 4,
+        "y": 86
+      },
+      "id": 43,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3467,121 +4254,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
           "expr": "sum by (pod) (go_goroutines{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
-      "datasource": {
-        "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
       "title": "Goroutines",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 4,
-        "y": 86,
-        "w": 4,
-        "h": 8
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisGridShow": true,
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "desc"
-        }
-      }
+      "type": "timeseries"
     },
     {
-      "links": [],
-      "repeatDirection": "h",
-      "tags": [],
-      "targets": [
-        {
-          "editorMode": "code",
-          "expr": "sum by (pod) (rate(go_memstats_alloc_bytes_total{instance=~\"$instance\", job=\"$job\"}[$__rate_interval]))",
-          "legendFormat": "{{ pod }}",
-          "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
-        }
-      ],
-      "transformations": [],
-      "transparent": false,
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
-      "title": "Go Alloc Rate",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 8,
-        "y": 86,
-        "w": 4,
-        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -3623,6 +4320,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 8,
+        "y": 86
+      },
+      "id": 44,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3637,36 +4342,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (pod) (go_memstats_alloc_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "expr": "sum by (pod) (rate(go_memstats_alloc_bytes_total{instance=~\"$instance\", job=\"$job\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
+      "title": "Go Alloc Rate",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
-      "title": "Go Alloc Bytes",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 12,
-        "y": 86,
-        "w": 4,
-        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -3708,6 +4408,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 12,
+        "y": 86
+      },
+      "id": 45,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3722,36 +4430,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (pod) (rate(go_gc_duration_seconds_count{instance=~\"$instance\", job=\"$job\"}[$__rate_interval]))",
+          "expr": "sum by (pod) (go_memstats_alloc_bytes{instance=~\"$instance\", job=\"$job\"})",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
+      "title": "Go Alloc Bytes",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
-      "title": "Go GC Per Second",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 16,
-        "y": 86,
-        "w": 4,
-        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -3793,6 +4496,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 16,
+        "y": 86
+      },
+      "id": 46,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3807,36 +4518,31 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
-    },
-    {
-      "links": [],
+      },
       "repeatDirection": "h",
       "tags": [],
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (pod) (rate(go_gc_duration_seconds_sum{instance=~\"$instance\", job=\"$job\"}[$__rate_interval]))",
+          "expr": "sum by (pod) (rate(go_gc_duration_seconds_count{instance=~\"$instance\", job=\"$job\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
           "legendFormat": "{{ pod }}",
           "range": true,
-          "instant": false,
-          "format": "time_series",
-          "refId": "A"
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
         }
       ],
-      "transformations": [],
-      "transparent": false,
+      "title": "Go GC Per Second",
+      "type": "timeseries"
+    },
+    {
       "datasource": {
+        "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
-      },
-      "type": "timeseries",
-      "title": "Go GC Duration Seconds",
-      "maxDataPoints": 100,
-      "gridPos": {
-        "x": 20,
-        "y": 86,
-        "w": 4,
-        "h": 8
       },
       "fieldConfig": {
         "defaults": {
@@ -3878,6 +4584,14 @@
         },
         "overrides": []
       },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 20,
+        "y": 86
+      },
+      "id": 47,
+      "maxDataPoints": 100,
       "options": {
         "legend": {
           "calcs": [
@@ -3892,65 +4606,98 @@
           "mode": "multi",
           "sort": "desc"
         }
-      }
+      },
+      "repeatDirection": "h",
+      "tags": [],
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "sum by (pod) (rate(go_gc_duration_seconds_sum{instance=~\"$instance\", job=\"$job\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{ pod }}",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          }
+        }
+      ],
+      "title": "Go GC Duration Seconds",
+      "type": "timeseries"
     }
   ],
-  "schemaVersion": 36,
+  "schemaVersion": 39,
   "tags": [
     "smartctl"
   ],
-  "timezone": "browser",
-  "description": "Dashboard for smartctl",
+  "templating": {
+    "list": [
+      {
+        "current": {},
+        "hide": 0,
+        "includeAll": false,
+        "label": "Prometheus",
+        "multi": false,
+        "name": "DS_PROMETHEUS",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Job",
+        "multi": false,
+        "name": "job",
+        "options": [],
+        "query": "label_values(smartctl_version, job)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": true,
+        "label": "Instance",
+        "multi": true,
+        "name": "instance",
+        "options": [],
+        "query": "label_values(smartctl_version{job=\"$job\"}, instance)",
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
   "time": {
     "from": "now-6h",
     "to": "now"
   },
+  "timepicker": {},
+  "timezone": "browser",
   "title": "Smartctl",
   "uid": "smartctl",
   "version": 1,
-  "templating": {
-    "list": [
-      {
-        "multi": false,
-        "options": [],
-        "skipUrlSync": false,
-        "datasource": null,
-        "hide": 0,
-        "type": "datasource",
-        "label": "Prometheus",
-        "name": "DS_PROMETHEUS",
-        "query": "prometheus"
-      },
-      {
-        "options": [],
-        "skipUrlSync": false,
-        "datasource": {
-          "uid": "${DS_PROMETHEUS}"
-        },
-        "hide": 0,
-        "type": "query",
-        "label": "Job",
-        "name": "job",
-        "query": "label_values(smartctl_version, job)",
-        "sort": 1,
-        "refresh": 2
-      },
-      {
-        "multi": true,
-        "options": [],
-        "skipUrlSync": false,
-        "datasource": {
-          "uid": "${DS_PROMETHEUS}"
-        },
-        "hide": 0,
-        "type": "query",
-        "label": "Instance",
-        "name": "instance",
-        "query": "label_values(smartctl_version{job=\"$job\"}, instance)",
-        "includeAll": true,
-        "sort": 1,
-        "refresh": 2
-      }
-    ]
-  }
+  "weekStart": ""
 }
