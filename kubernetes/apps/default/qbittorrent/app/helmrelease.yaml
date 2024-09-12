@@ -128,8 +128,6 @@ spec:
               readOnlyRootFilesystem: false
               runAsNonRoot: false
               runAsUser: 0
-              appArmorProfile:
-                type: Unconfined
               capabilities: { add: ["NET_ADMIN"] }
           vuetorrent:
             image:
