@@ -6,6 +6,7 @@ metadata:
 spec:
   hostname: kantai-connector
   exitNode: true
+  proxyClass: kernel-org-tun
   subnetRouter:
     advertiseRoutes:
       - "10.10.0.0/16"
