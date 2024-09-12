@@ -13,8 +13,8 @@ metadata:
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       This policy enforces the latest version of the Pod Security Standards baseline profile by
-      default cluster wide. This policy allows NET_ADMIN in capabilities and Unconfined AppArmor for
-      gluetun containers on pods with the label "gluetun=true".
+      default cluster wide. This policy allows capabilities for gluetun containers on pods with the
+      label "gluetun=true".
 spec:
   background: true
   validationFailureAction: Enforce
@@ -67,7 +67,7 @@ spec:
               restrictedField: spec.initContainers[*].securityContext.capabilities.add
               values:
                 - NET_ADMIN
-            - controlName: AppArmor
+                - NET_RAW
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
