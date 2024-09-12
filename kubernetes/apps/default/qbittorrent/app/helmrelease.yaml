@@ -128,7 +128,7 @@ spec:
               readOnlyRootFilesystem: false
               runAsNonRoot: false
               runAsUser: 0
-              capabilities: { add: ["NET_ADMIN"] }
+              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
           vuetorrent:
             image:
               repository: ghcr.io/jfroy/vuetorrent
