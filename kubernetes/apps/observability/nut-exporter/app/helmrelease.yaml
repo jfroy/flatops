@@ -48,15 +48,10 @@ spec:
               limits:
                 memory: 100Mi
     service:
-      app:
+      nut-exporter:
         controller: nut-exporter
         ports:
           metrics:
             protocol: TCP
             port: 9199
         ipFamilyPolicy: PreferDualStack
-    serviceMonitor:
-      app:
-        serviceName: nut-exporter
-        endpoints:
-          - name: metrics
