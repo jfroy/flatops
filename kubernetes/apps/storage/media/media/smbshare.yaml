@@ -1,0 +1,13 @@
+---
+apiVersion: samba-operator.samba.org/v1alpha1
+kind: SmbShare
+metadata:
+  name: media
+spec:
+  readOnly: false
+  browseable: true
+  securityConfig: media
+  commonConfig: media
+  storage:
+    pvc:
+      name: media
