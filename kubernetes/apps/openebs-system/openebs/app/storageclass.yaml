@@ -1,0 +1,20 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: openebs-zfspv-media
+allowedTopologies:
+  - matchLabelExpressions:
+      - key: kubernetes.io/hostname
+        values:
+          - kantai1
+allowVolumeExpansion: true
+parameters:
+  compression: "off"
+  dedup: "off"
+  fstype: "zfs"
+  poolname: "reservoir"
+  recordsize: "1M"
+  shared: "yes"
+  thinprovision: "yes"
+provisioner: zfs.csi.openebs.io
