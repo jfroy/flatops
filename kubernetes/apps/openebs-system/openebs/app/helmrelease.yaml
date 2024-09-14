@@ -31,26 +31,25 @@ spec:
     # https://github.com/openebs/dynamic-localpv-provisioner/blob/HEAD/deploy/helm/charts/values.yaml
     localpv-provisioner:
       localpv:
-        image:
-          registry: quay.io/
         basePath: /var/openebs/local
-        resources:
-          requests:
-            cpu: 100m
-            memory: 32Mi
-          limits:
-            memory: 64Mi
       hostpathClass:
         name: openebs-hostpath
-      helperPod:
-        image:
-          registry: quay.io/
       analytics:
         enabled: false
 
     # https://github.com/openebs/zfs-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     zfs-localpv:
-      enabled: false
+      enabled: true
+      zfsNode:
+        encrKeysDir: "/var/zfs"
+      analytics:
+        enabled: false
+      zfs:
+        bin: /usr/local/sbin/zfs
+      crds:
+        csi:
+          volumeSnapshots:
+            enabled: false
 
     # https://github.com/openebs/lvm-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     lvm-localpv:
@@ -65,7 +64,7 @@ spec:
         lvm:
           enabled: false
         zfs:
-          enabled: false
+          enabled: true
       replicated:
         mayastor:
           enabled: false
