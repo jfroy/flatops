@@ -53,8 +53,7 @@ spec:
             runAsGroup: 1000
             runAsUser: 1000
             runAsNonRoot: true
-            seccompProfile:
-              type: RuntimeDefault
+            seccompProfile: { type: RuntimeDefault }
         containers:
           silence-operator:
             image:
@@ -88,8 +87,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
-              seccompProfile:
-                type: RuntimeDefault
+              seccompProfile: { type: RuntimeDefault }
     persistence:
       config:
         enabled: true

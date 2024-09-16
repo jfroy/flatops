@@ -52,8 +52,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-              seccompProfile:
-                type: RuntimeDefault
+              seccompProfile: { type: RuntimeDefault }
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
