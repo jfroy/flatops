@@ -1,0 +1,24 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app traefik
+  namespace: flux-system
+spec:
+  targetNamespace: network
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  dependsOn:
+    - name: gateway-crd
+    - name: ingress-certificates
+    - name: prometheus-operator-crds
+  path: ./kubernetes/apps/network/traefik/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: false
+  interval: 30m
+  retryInterval: 1m
+  timeout: 5m

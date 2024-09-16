@@ -10,3 +10,4 @@ resources:
   - ./k8s-gateway/ks.yaml
   - ./oauth2-proxy/ks.yaml
   - ./openspeedtest/ks.yaml
+  - ./traefik/ks.yaml

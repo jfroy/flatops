@@ -1,0 +1,12 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "traefik-allow-ingress"
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: traefik
+  ingress:
+  - fromEntities:
+    - "world"

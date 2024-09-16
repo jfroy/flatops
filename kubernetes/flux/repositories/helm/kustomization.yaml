@@ -37,6 +37,7 @@ resources:
   - ./prometheus-community.yaml
   - ./rook-ceph.yaml
   - ./tailscale.yaml
+  - ./traefik.yaml
   - ./vector.yaml
   - ./victoriametrics.yaml
   - ./yugabytedb.yaml
