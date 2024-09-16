@@ -72,6 +72,8 @@ spec:
           "http_user_agent": "$http_user_agent"}
         proxy-body-size: 0
         proxy-buffer-size: 16k
+        proxy-read-timeout: 3600
+        proxy-send-timeout: 3600
         ssl-protocols: TLSv1.3 TLSv1.2
         use-forwarded-headers: "true"
         worker-processes: 1
