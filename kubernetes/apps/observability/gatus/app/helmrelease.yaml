@@ -62,7 +62,7 @@ spec:
             securityContext: *securityContext
             restartPolicy: Always
         containers:
-          app:
+          gatus:
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.12.1@sha256:3cc4e90534c05599f07fbdf15580401aa7771fac15f51d1dc8f7de265d70d12f
@@ -102,13 +102,13 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      gatus:
         controller: gatus
         ports:
           http:
             port: *port
     serviceMonitor:
-      app:
+      gatus:
         serviceName: gatus
         endpoints:
           - port: http
@@ -117,7 +117,7 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
     ingress:
-      app:
+      gatus:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.${PUBLIC_DOMAIN0}
@@ -126,7 +126,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: gatus
                   port: http
     serviceAccount:
       create: true

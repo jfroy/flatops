@@ -38,7 +38,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          homepage:
             image: &image
               repository: ghcr.io/gethomepage/homepage
               tag: v0.9.9@sha256:5c264918d2d18a753da8657fee7e0579c8b11581b19275d9a93fde76a8267f3c
@@ -77,14 +77,14 @@ spec:
       create: true
       name: homepage
     service:
-      app:
+      homepage:
         controller: homepage
         type: ClusterIP
         ports:
           http:
             port: *port
     ingress:
-      app:
+      homepage:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
@@ -95,7 +95,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: homepage
                   port: http
     persistence:
       homepage-config:
@@ -115,7 +115,7 @@ spec:
         type: emptyDir
         advancedMounts:
           homepage:
-            app:
+            homepage:
               - path: /app/.next/server/pages
                 subPath: pages
             copy-nextjs:

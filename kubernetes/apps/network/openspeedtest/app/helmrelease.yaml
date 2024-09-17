@@ -27,7 +27,7 @@ spec:
     controllers:
       openspeedtest:
         containers:
-          app:
+          openspeedtest:
             image:
               repository: openspeedtest/latest
               tag: v2.0.5
@@ -50,19 +50,19 @@ spec:
                 memory: 128Mi
 
     service:
-      app:
+      openspeedtest:
         controller: openspeedtest
         ports:
           http:
             port: 3000
 
     ingress:
-      app:
+      openspeedtest:
         className: internal
         hosts:
           - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: openspeedtest
                   port: http

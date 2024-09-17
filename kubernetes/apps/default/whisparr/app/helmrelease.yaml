@@ -40,7 +40,7 @@ spec:
               - secretRef:
                   name: whisparr-initdb-secret
         containers:
-          app:
+          whisparr:
             image:
               repository: ghcr.io/jfroy/whisparr-nightly
               tag: 2.0.0.548@sha256:1c47253ada468c925efc13cc2ac8172a5b87f49d1d5f0bbbb838055c4d795ac8
@@ -84,13 +84,13 @@ spec:
         supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      whisparr:
         controller: whisparr
         ports:
           http:
             port: *port
     ingress:
-      app:
+      whisparr:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
@@ -101,7 +101,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: whisparr
                   port: http
     persistence:
       config:

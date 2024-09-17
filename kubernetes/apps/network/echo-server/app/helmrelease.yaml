@@ -25,10 +25,10 @@ spec:
       retries: 3
   values:
     controllers:
-      app:
+      echo-server:
         strategy: RollingUpdate
         containers:
-          app:
+          echo-server:
             image:
               repository: traefik/whoami
               tag: v1.10@sha256:43a68d10b9dfcfc3ffbfe4dd42100dc9aeaf29b3a5636c856337a5940f1b4f1c
@@ -62,14 +62,14 @@ spec:
         runAsGroup: 65534
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
-        controller: app
+      echo-server:
+        controller: echo-server
         ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: 80
     ingress:
-      app:
+      echo-server:
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: "external.${PUBLIC_DOMAIN0}"
@@ -78,5 +78,5 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: echo-server
                   port: http

@@ -28,7 +28,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          plex:
             image:
               repository: ghcr.io/jfroy/plex
               tag: 1.40.5.8854-f36c552fd@sha256:d9b9dcb8e2418ac1e4ba1945c02e9a7d6d252d27603d3a851a4743b6e0753979
@@ -78,7 +78,7 @@ spec:
         supplementalGroups: [44, 4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      plex:
         controller: plex
         type: LoadBalancer
         annotations:

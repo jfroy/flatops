@@ -35,7 +35,7 @@ spec:
           successfulJobsHistory: 1
           failedJobsHistory: 1
         containers:
-          app:
+          recyclarr:
             image:
               repository: ghcr.io/recyclarr/recyclarr
               tag: 7.2.3@sha256:77a3c0156ec0ddef256998b246d4d80a2f1b96ee4a3a1a21bbc8459bfd0c9ad9

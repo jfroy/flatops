@@ -30,7 +30,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          stash:
             image:
               repository: ghcr.io/jfroy/stash-cuda
               tag: 0.26.2@sha256:6a416b1e889161cffe854cb6f45fc1084630ea3a17cbcf11394534118fd144c4
@@ -83,20 +83,20 @@ spec:
         supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      stash:
         controller: stash
         ports:
           http:
             port: *port
     ingress:
-      app:
+      stash:
         className: internal
         hosts:
           - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: stash
                   port: http
     persistence:
       cache:

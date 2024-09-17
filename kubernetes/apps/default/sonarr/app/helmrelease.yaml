@@ -40,7 +40,7 @@ spec:
               - secretRef:
                   name: sonarr-initdb-secret
         containers:
-          app:
+          sonarr:
             image:
               repository: ghcr.io/jfroy/sonarr-develop
               tag: 4.0.9.2342@sha256:ddca998809975fed3227f496889040e3aa4fc736d4dd5435049f8fafa1046f76
@@ -84,13 +84,13 @@ spec:
         supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      sonarr:
         controller: sonarr
         ports:
           http:
             port: *port
     ingress:
-      app:
+      sonarr:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
@@ -101,7 +101,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: sonarr
                   port: http
     persistence:
       config:

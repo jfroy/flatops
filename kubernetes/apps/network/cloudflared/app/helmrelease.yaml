@@ -30,7 +30,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          cloudflared:
             image:
               repository: docker.io/cloudflare/cloudflared
               tag: 2024.9.1
@@ -90,14 +90,14 @@ spec:
             matchLabels:
               app.kubernetes.io/name: *app
     service:
-      app:
+      cloudflared:
         controller: cloudflared
         ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: *port
     serviceMonitor:
-      app:
+      cloudflared:
         serviceName: cloudflared
         endpoints:
           - port: http

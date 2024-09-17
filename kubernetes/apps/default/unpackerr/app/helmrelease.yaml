@@ -30,7 +30,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          unpackerr:
             image:
               repository: ghcr.io/unpackerr/unpackerr
               tag: 0.14.5@sha256:dc72256942ce50d1c8a1aeb5aa85b6ae2680a36eefd2182129d8d210fce78044
@@ -71,13 +71,13 @@ spec:
         supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      unpackerr:
         controller: unpackerr
         ports:
           http:
             port: 5656
     serviceMonitor:
-      app:
+      unpackerr:
         serviceName: unpackerr
         endpoints:
           - port: http

@@ -28,7 +28,7 @@ spec:
     controllers:
       unpoller:
         containers:
-          app:
+          unpoller:
             image:
               repository: ghcr.io/unpoller/unpoller
               tag: v2.11.2@sha256:73b39c0b3b8fa92aa82a7613d3486253ffbd8c057833b4621402a268159bf2a2
@@ -69,13 +69,13 @@ spec:
         runAsGroup: 65534
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      unpoller:
         controller: unpoller
         ports:
           http:
             port: 9130
     serviceMonitor:
-      app:
+      unpoller:
         serviceName: unpoller
         endpoints:
           - port: http

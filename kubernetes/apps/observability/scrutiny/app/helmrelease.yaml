@@ -26,11 +26,11 @@ spec:
       retries: 3
   values:
     controllers:
-      app:
+      scrutiny:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          scrutiny:
             image:
               repository: ghcr.io/analogj/scrutiny
               tag: v0.8.1-web@sha256:dbb6b56e5d3dfa9256fea8ef9b9fd8fb302c555ddd0554b8ad958ec050a14994
@@ -61,20 +61,20 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
-        controller: app
+      scrutiny:
+        controller: scrutiny
         ports:
           http:
             port: &port 8080
     ingress:
-      app:
+      scrutiny:
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${PUBLIC_DOMAIN0}"
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: scrutiny
                   port: http
     probes:
       liveness: &probe

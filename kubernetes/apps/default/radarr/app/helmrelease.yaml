@@ -40,7 +40,7 @@ spec:
               - secretRef:
                   name: radarr-initdb-secret
         containers:
-          app:
+          radarr:
             image:
               repository: ghcr.io/jfroy/radarr-develop
               tag: 5.10.2.9164@sha256:ba6a1df24d122b5279afdaf836e14918b728637aab42c27ab6394902fd555bf4
@@ -84,13 +84,13 @@ spec:
         supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      radarr:
         controller: radarr
         ports:
           http:
             port: *port
     ingress:
-      app:
+      radarr:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
@@ -101,7 +101,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: radarr
                   port: http
     persistence:
       config:

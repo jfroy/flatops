@@ -30,7 +30,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          sabnzbd:
             image:
               repository: ghcr.io/jfroy/sabnzbd
               tag: 4.3.3@sha256:93e1460dd1631b464d4ec05cc11a1ade189510a05d5da65c808ef4b9eb72f428
@@ -134,13 +134,13 @@ spec:
         supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      sabnzbd:
         controller: sabnzbd
         ports:
           http:
             port: *port
     ingress:
-      app:
+      sabnzbd:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
@@ -151,7 +151,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: sabnzbd
                   port: http
     persistence:
       config:

@@ -30,7 +30,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          qbittorrent:
             image:
               repository: ghcr.io/jfroy/qbittorrent
               tag: 4.6.6@sha256:3d3821d993b0a161e977bbbdc2d0c41202037fe81c02a71d9ab345dc3f6ae7f6
@@ -164,14 +164,14 @@ spec:
         supplementalGroups: [4000]
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      qbittorrent:
         controller: qbittorrent
         type: ClusterIP
         ports:
           http:
             port: *port
     ingress:
-      app:
+      qbittorrent:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
@@ -182,7 +182,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: qbittorrent
                   port: http
     persistence:
       config:

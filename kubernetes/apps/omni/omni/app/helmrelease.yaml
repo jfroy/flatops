@@ -39,7 +39,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          omni:
             image:
               repository: ghcr.io/siderolabs/omni
               tag: v0.42.0@sha256:89746dfe2cbdb72035d31ddadfcc5747fe6a8722769ac6897b99f94d75646e34
@@ -85,7 +85,7 @@ spec:
                   - NET_ADMIN
               readOnlyRootFilesystem: true
     service:
-      app:
+      omni:
         controller: omni
         ports:
           http:
@@ -122,7 +122,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: omni
       grpc:
         className: internal
         annotations:

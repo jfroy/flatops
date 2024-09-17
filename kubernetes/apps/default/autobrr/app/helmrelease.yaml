@@ -40,7 +40,7 @@ spec:
               - secretRef:
                   name: autobrr-initdb-secret
         containers:
-          app:
+          autobrr:
             image:
               repository: ghcr.io/autobrr/autobrr
               tag: v1.46.0@sha256:a39c921e6cdc050855ddf005316aae0ed3fec9f54a27e7ab298dff3d36b5dc69
@@ -78,13 +78,13 @@ spec:
         runAsGroup: 65534
         seccompProfile: { type: RuntimeDefault }
     service:
-      app:
+      autobrr:
         controller: autobrr
         ports:
           http:
             port: *port
     ingress:
-      app:
+      autobrr:
         className: internal
         annotations:
           nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
@@ -95,7 +95,7 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
+                  identifier: autobrr
                   port: http
     persistence:
       config:
