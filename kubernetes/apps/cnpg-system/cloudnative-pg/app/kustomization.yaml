@@ -10,6 +10,8 @@ configMapGenerator:
     files:
       - ./resources/cnp.json
     options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
       labels:
         grafana_dashboard: "1"
 generatorOptions:

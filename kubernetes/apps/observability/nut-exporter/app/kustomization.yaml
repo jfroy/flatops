@@ -12,7 +12,9 @@ configMapGenerator:
     files:
       - ./resources/ups-aggregate.json
     options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
       labels:
-        grafana_dashboard: "true"
+        grafana_dashboard: "1"
 generatorOptions:
   disableNameSuffixHash: true
