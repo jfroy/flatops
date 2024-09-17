@@ -1,0 +1,21 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./externalsecret.yaml
+  - ./prowlarr.yaml
+  - ./radarr.yaml
+  - ./sabnzbd.yaml
+  - ./sonarr.yaml
+configMapGenerator:
+  - name: exportarr-dashboard
+    files:
+      - ./resources/exportarr-dashboard2.json
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: "1"
+generatorOptions:
+  disableNameSuffixHash: true

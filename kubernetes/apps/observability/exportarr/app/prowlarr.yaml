@@ -1,0 +1,91 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr-exporter
+  labels:
+    app.kubernetes.io/instance: prowlarr
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/instance: prowlarr
+  ports:
+    - name: monitoring
+      port: 9707
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prowlarr-exporter
+  labels:
+    app.kubernetes.io/instance: prowlarr
+spec:
+  selector:
+    matchLabels:
+        app.kubernetes.io/instance: prowlarr
+  endpoints:
+    - port: monitoring
+      interval: 5m
+      scrapeTimeout: 12h
+      path: /metrics
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: prowlarr-exporter
+  labels:
+    app.kubernetes.io/instance: prowlarr
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+        app.kubernetes.io/instance: prowlarr
+  template:
+    metadata:
+      labels:
+            app.kubernetes.io/instance: prowlarr
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "monitoring"
+    spec:
+      containers:
+        - name: prowlarr-exporter
+          image: ghcr.io/onedr0p/exportarr:v2.0.1@sha256:727e7bc8f2f0934a2117978c59f4476b954018b849a010ea6cfb380bd6539644
+          imagePullPolicy: IfNotPresent
+          args:
+            - prowlarr
+          env:
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://prowlarr.default.svc.cluster.local:80"
+            - name: APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: prowlarr-exporter
+                  key: api-key
+            - name: PROWLARR__BACKFILL
+              value: "true"
+          ports:
+            - name: monitoring
+              containerPort: 9707
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: monitoring
+            failureThreshold: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: monitoring
+            failureThreshold: 5
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
