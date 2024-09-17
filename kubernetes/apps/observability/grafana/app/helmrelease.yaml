@@ -346,3 +346,4 @@ spec:
       datasources:
         enabled: true
         searchNamespace: ALL
+      enableUniqueFilenames: true
