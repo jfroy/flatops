@@ -28,6 +28,10 @@ spec:
       interval: 5m
       scrapeTimeout: 90s
       path: /metrics
+      metricRelabelings:
+        - action: replace
+          replacement: sabnzbd.default
+          targetLabel: instance
 ---
 kind: Deployment
 apiVersion: apps/v1
