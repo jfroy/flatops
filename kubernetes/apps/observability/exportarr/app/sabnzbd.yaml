@@ -22,7 +22,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-        app.kubernetes.io/instance: sabnzbd
+      app.kubernetes.io/instance: sabnzbd
   endpoints:
     - port: monitoring
       interval: 5m
@@ -40,11 +40,11 @@ spec:
   revisionHistoryLimit: 3
   selector:
     matchLabels:
-        app.kubernetes.io/instance: sabnzbd
+      app.kubernetes.io/instance: sabnzbd
   template:
     metadata:
       labels:
-            app.kubernetes.io/instance: sabnzbd
+        app.kubernetes.io/instance: sabnzbd
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "monitoring"
@@ -56,15 +56,15 @@ spec:
           args:
             - sabnzbd
           env:
-            - name: PORT
-              value: "9707"
-            - name: URL
-              value: "http://sabnzbd.default.svc.cluster.local:80"
-            - name: APIKEY
+            - name: API_KEY
               valueFrom:
                 secretKeyRef:
                   name: sabnzbd-exporter
                   key: api-key
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://sabnzbd.default.svc.cluster.local:80"
           ports:
             - name: monitoring
               containerPort: 9707
