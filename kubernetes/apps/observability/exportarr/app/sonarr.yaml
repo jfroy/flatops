@@ -60,15 +60,17 @@ spec:
           args:
             - sonarr
           env:
-            - name: PORT
-              value: "9707"
-            - name: URL
-              value: "http://sonarr.default.svc.cluster.local:80"
-            - name: APIKEY
+            - name: API_KEY
               valueFrom:
                 secretKeyRef:
                   name: sonarr-exporter
                   key: api-key
+            - name: ENABLE_ADDITIONAL_METRICS
+              value: "true"
+            - name: PORT
+              value: "9707"
+            - name: URL
+              value: "http://sonarr.default.svc.cluster.local:80"
           ports:
             - name: monitoring
               containerPort: 9707
