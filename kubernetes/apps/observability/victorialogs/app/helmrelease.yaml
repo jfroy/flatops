@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: victoria-logs-single
-      version: 0.6.0
+      version: 0.6.3
       sourceRef:
         kind: HelmRepository
         name: victoriametrics
@@ -34,7 +34,7 @@ spec:
     server:
       persistentVolume:
         enabled: true
-        storageClass: openebs-hostpath
+        storageClassName: openebs-hostpath
         size: 10Gi
       resources:
         requests:
