@@ -6,6 +6,7 @@ metadata:
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
   labels:
+    digest-resolution: enabled
     pod-security.kubernetes.io/enforce: restricted
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/provider_v1beta3.json

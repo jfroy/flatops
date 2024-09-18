@@ -7,6 +7,7 @@ metadata:
     kustomize.toolkit.fluxcd.io/prune: disabled
   labels:
     control-plane: openkruise
+    digest-resolution: enabled
     pod-security.kubernetes.io/enforce: privileged
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/notification.toolkit.fluxcd.io/provider_v1beta3.json

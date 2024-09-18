@@ -6,6 +6,7 @@ metadata:
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
   labels:
+    digest-resolution: enabled
     pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
 ---

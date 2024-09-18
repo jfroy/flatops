@@ -5,3 +5,5 @@ metadata:
   name: omni
   annotations:
     kustomize.toolkit.fluxcd.io/prune: disabled
+  labels:
+    digest-resolution: enabled
