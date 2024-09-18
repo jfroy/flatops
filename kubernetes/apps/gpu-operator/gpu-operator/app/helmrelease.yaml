@@ -54,7 +54,7 @@ spec:
         # https://github.com/siderolabs/talos/issues/9271
         - name: CONTAINERD_RESTART_MODE
           value: none
-      installDir: "/var/nvidia"
+      installDir: "/run/nvidia"
     devicePlugin:
       config:
         name: time-slicing-config-all
