@@ -36,13 +36,7 @@ spec:
     operator:
       upgradeCRD: true
     driver:
-      enabled: true
-      nvidiaDriverCRD:
-        enabled: true
-        deployDefaultCR: false
-      useOpenKernelModules: true
-      usePrecompiled: true
-      version: 550
+      enabled: false
     toolkit:
       repository: registry.${PUBLIC_DOMAIN0}/nvidia
       image: container-toolkit
@@ -54,7 +48,7 @@ spec:
         # https://github.com/siderolabs/talos/issues/9271
         - name: CONTAINERD_RESTART_MODE
           value: none
-      installDir: "/run/nvidia"
+      installDir: "/var/nvidia"
     devicePlugin:
       config:
         name: time-slicing-config-all
