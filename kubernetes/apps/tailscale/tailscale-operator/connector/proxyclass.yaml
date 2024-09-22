@@ -9,10 +9,10 @@ spec:
       tailscaleContainer:
         resources:
           requests:
-            cpu: 10m
+            cpu: 100m
           limits:
             kernel.org/tun: 1
-            memory: 200Mi
+            memory: 512Mi
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0
