@@ -32,8 +32,8 @@ spec:
         containers:
           stash:
             image:
-              repository: ghcr.io/jfroy/stash-cuda
-              tag: 0.26.2@sha256:6a416b1e889161cffe854cb6f45fc1084630ea3a17cbcf11394534118fd144c4
+              repository: ghcr.io/jfroy/stash
+              tag: v0.27.0-cudajellyfin.1
             env:
               HOME: /config
               NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
