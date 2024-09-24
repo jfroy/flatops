@@ -34,13 +34,14 @@ spec:
       enabled: true
       default: true
     operator:
-      upgradeCRD: true
+      repository: ghcr.io/jfroy
+      version: v24.6.1-ubi8
     driver:
       enabled: false
     toolkit:
-      repository: registry.${PUBLIC_DOMAIN0}/nvidia
+      repository: ghcr.io/jfroy
       image: container-toolkit
-      version: v1.16.1-ubuntu20.04
+      version: 1.16.1-ubi8
       env:
         - name: CONTAINERD_CONFIG
           value: /var/nvidia/etc/containerd.toml
