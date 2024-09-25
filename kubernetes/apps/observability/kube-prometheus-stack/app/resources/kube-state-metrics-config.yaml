@@ -28,7 +28,7 @@ kube-state-metrics:
       metricRelabelings:
         # Drop high-cardinality labels.
         - action: labeldrop
-          regex: (uid|id|name|pod_uid|interface)
+          regex: (uid|id|pod|pod_uid|interface)
   customResourceState:
     enabled: true
     config:
