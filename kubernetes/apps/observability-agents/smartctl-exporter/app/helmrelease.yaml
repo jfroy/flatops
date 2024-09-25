@@ -6,14 +6,10 @@ metadata:
   name: &app smartctl-exporter
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: prometheus-smartctl-exporter
-      version: 0.10.0
-      sourceRef:
-        kind: HelmRepository
-        name: prometheus-community
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: prometheus-smartctl-exporter
+    namespace: flux-system
   driftDetection:
     mode: enabled
     ignore:

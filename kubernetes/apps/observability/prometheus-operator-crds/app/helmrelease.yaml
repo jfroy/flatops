@@ -5,14 +5,10 @@ metadata:
   name: prometheus-operator-crds
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: prometheus-operator-crds
-      version: 14.0.0
-      sourceRef:
-        kind: HelmRepository
-        name: prometheus-community
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: prometheus-operator-crds
+    namespace: flux-system
   driftDetection:
     mode: disabled
   install:

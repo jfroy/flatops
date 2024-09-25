@@ -6,15 +6,10 @@ metadata:
   name: &app node-exporter
 spec:
   interval: 30m
-  timeout: 15m
-  chart:
-    spec:
-      chart: prometheus-node-exporter
-      version: 4.39.0
-      sourceRef:
-        kind: HelmRepository
-        name: prometheus-community
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: prometheus-node-exporter
+    namespace: flux-system
   driftDetection:
     mode: enabled
   install:

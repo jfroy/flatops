@@ -34,7 +34,6 @@ resources:
   - ./piraeus.yaml
   - ./policy-reporter.yaml
   - ./postfinance.yaml
-  - ./prometheus-community.yaml
   - ./rook-ceph.yaml
   - ./tailscale.yaml
   - ./traefik.yaml
