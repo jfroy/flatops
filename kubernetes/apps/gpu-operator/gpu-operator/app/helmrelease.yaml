@@ -35,13 +35,13 @@ spec:
       default: true
     operator:
       repository: ghcr.io/jfroy
-      version: v24.6.1-ubi8
+      version: v24.6.2-ubi8
     driver:
       enabled: false
     toolkit:
       repository: ghcr.io/jfroy
       image: container-toolkit
-      version: 1.16.1-ubi8
+      version: 1.16.2-ubi8
       env:
         - name: CONTAINERD_CONFIG
           value: /var/nvidia/etc/containerd.toml
