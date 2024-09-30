@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
 # renovate: datasource=docker depName=ghcr.io/jfroy/talos/secureboot-installer
-talosVersion: v1.8.0-jfroy.1
+talosVersion: v1.8.0-jfroy.2
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.31.1
 
@@ -167,7 +167,7 @@ patches:
             - slot: 0
               tpm: {}
 
-  # Enable Host DNS: https://www.talos.dev/v1.7/talos-guides/network/host-dns/
+  # Enable Host DNS: https://www.talos.dev/v1.8/talos-guides/network/host-dns/
   - |-
     machine:
       features:
