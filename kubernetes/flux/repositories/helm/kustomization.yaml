@@ -17,7 +17,7 @@ resources:
   - ./emberstack.yaml
   - ./external-dns.yaml
   - ./external-secrets.yaml
-  - ./grafana.yaml
+  - ./grafanalabs.yaml
   - ./harbor.yaml
   - ./headlamp.yaml
   - ./influxdata.yaml
