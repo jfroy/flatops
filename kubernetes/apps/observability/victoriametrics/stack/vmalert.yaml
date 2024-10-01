@@ -16,7 +16,7 @@ spec:
   remoteRead:
     url: http://vmsingle-stack.observability.svc:8429
   remoteWrite:
-    url: http://vmagent-stack.observability.svc:8429
+    url: http://vmsingle-stack.observability.svc:8429
   replicaCount: 1
   resources:
     requests:
