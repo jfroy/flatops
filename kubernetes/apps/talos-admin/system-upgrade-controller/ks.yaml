@@ -45,6 +45,6 @@ spec:
   postBuild:
     substitute:
       # renovate: datasource=docker depName=ghcr.io/jfroy/talos/secureboot-installer
-      TALOS_VERSION: v1.8.0-jfroy.2
+      TALOS_VERSION: v1.8.0-jfroy.5
       # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
       KUBERNETES_VERSION: v1.31.1
