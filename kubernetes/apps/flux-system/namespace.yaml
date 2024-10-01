@@ -41,6 +41,7 @@ spec:
     - kind: OCIRepository
       name: "*"
   exclusionList:
+    - "context canceled$"
     - "error.*lookup github\\.com"
     - "error.*lookup raw\\.githubusercontent\\.com"
     - "dial.*tcp.*timeout"
