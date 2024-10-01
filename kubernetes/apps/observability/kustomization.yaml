@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
+  - ./alloy/ks.yaml
   - ./exportarr/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml

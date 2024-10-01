@@ -1,0 +1,136 @@
+logging {
+	level    = "warn"
+	format   = "json"
+	write_to = [loki.write.victorialogs.receiver]
+}
+
+// DISCOVERY
+
+discovery.kubernetes "pod" {
+	role = "pod"
+}
+
+discovery.kubernetes "service" {
+	role = "service"
+}
+
+// POD LOGS
+
+discovery.relabel "pod_logs" {
+	targets = discovery.kubernetes.pod.targets
+
+	rule {
+		source_labels = ["__meta_kubernetes_namespace"]
+		action        = "replace"
+		target_label  = "namespace"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_name"]
+		action        = "replace"
+		target_label  = "pod"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_container_name"]
+		action        = "replace"
+		target_label  = "container"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+		action        = "replace"
+		target_label  = "app"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_namespace", "__meta_kubernetes_pod_container_name"]
+		action        = "replace"
+		target_label  = "job"
+		separator     = "/"
+		replacement   = "$1"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_uid", "__meta_kubernetes_pod_container_name"]
+		action        = "replace"
+		target_label  = "__path__"
+		separator     = "/"
+		replacement   = "/var/log/pods/*$1/*.log"
+	}
+
+	rule {
+		source_labels = ["__meta_kubernetes_pod_container_id"]
+		action        = "replace"
+		target_label  = "container_runtime"
+		regex         = "^(\\S+):\\/\\/.+$"
+		replacement   = "$1"
+	}
+}
+
+loki.source.kubernetes "pod_logs" {
+	targets    = discovery.relabel.pod_logs.output
+	forward_to = [loki.process.pod_logs.receiver]
+
+	clustering {
+		enabled = true
+	}
+}
+
+loki.process "pod_logs" {
+	stage.static_labels {
+		values = {
+			cluster = "kantai",
+		}
+	}
+	forward_to = [loki.write.victorialogs.receiver]
+}
+
+// PROMETHEUS OPERATOR
+
+// prometheus.operator.podmonitors "default" {
+// 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+
+// 	clustering {
+// 		enabled = true
+// 	}
+// }
+
+// prometheus.operator.probes "default" {
+// 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+
+// 	clustering {
+// 		enabled = true
+// 	}
+// }
+
+// prometheus.operator.servicemonitors "default" {
+// 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+
+// 	clustering {
+// 		enabled = true
+// 	}
+// }
+
+// META
+
+prometheus.exporter.self "default" { }
+
+prometheus.scrape "metamonitoring" {
+	targets    = prometheus.exporter.self.default.targets
+	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+}
+
+// WRITES
+
+prometheus.remote_write "victoriametrics" {
+	endpoint {
+		url = "http://vmsingle-stack.observability.svc:8429/prometheus/api/v1/write"
+	}
+}
+
+loki.write "victorialogs" {
+	endpoint {
+		url = "http://victoria-logs.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
+	}
+}

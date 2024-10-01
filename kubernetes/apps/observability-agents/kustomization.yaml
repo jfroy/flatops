@@ -5,7 +5,8 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
-  - ./node-exporter/ks.yaml
+  - ./alloy/ks.yaml
+  # - ./node-exporter/ks.yaml
   # - ./scrutiny-collector/ks.yaml
   - ./smartctl-exporter/ks.yaml
   # - ./vector-agent/ks.yaml

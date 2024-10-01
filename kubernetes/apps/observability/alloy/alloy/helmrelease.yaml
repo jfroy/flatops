@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: alloy
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: alloy
+      version: 0.8.1
+      sourceRef:
+        kind: HelmRepository
+        name: grafanalabs
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  values:
+    alloy:
+      configMap:
+        create: false
+        name: alloy-config
+        key: config.alloy
+      clustering:
+        enabled: true
+        name: alloy
+      storagePath: /var/lib/alloy
+      enableReporting: false
+      mounts:
+        extra:
+          - name: alloy
+            mountPath: /var/lib/alloy
+      resources:
+        limits:
+          memory: 500Mi
+        requests:
+          cpu: 200m
+    controller:
+      type: "statefulset"
+      replicas: 1
+      enableStatefulSetAutoDeletePVC: true
+      volumeClaimTemplates:
+        - metadata:
+            name: alloy
+          spec:
+            accessModes: [ReadWriteOnce]
+            storageClassName: ceph-block
+            resources:
+              requests:
+                storage: 5Gi

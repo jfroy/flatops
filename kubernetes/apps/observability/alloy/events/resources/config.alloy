@@ -1,0 +1,29 @@
+logging {
+	level    = "warn"
+	format   = "json"
+	write_to = [loki.write.victorialogs.receiver]
+}
+
+prometheus.exporter.self "default" { }
+
+prometheus.scrape "metamonitoring" {
+	targets    = prometheus.exporter.self.default.targets
+	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+}
+
+loki.source.kubernetes_events "default" {
+	log_format = "json"
+	forward_to = [loki.write.victorialogs.receiver]
+}
+
+prometheus.remote_write "victoriametrics" {
+	endpoint {
+		url = "http://vmsingle-stack.observability.svc:8429/prometheus/api/v1/write"
+	}
+}
+
+loki.write "victorialogs" {
+	endpoint {
+		url = "http://victoria-logs.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
+	}
+}
