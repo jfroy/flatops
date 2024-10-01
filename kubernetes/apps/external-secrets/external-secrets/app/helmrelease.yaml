@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: external-secrets
-      version: 0.10.3
+      version: 0.10.4
       sourceRef:
         kind: HelmRepository
         name: external-secrets
@@ -22,9 +22,14 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   values:
+    image:
+      repository: ghcr.io/external-secrets/external-secrets
     extendedMetricLabels: true
+    service:
+      ipFamilyPolicy: PreferDualStack
     serviceMonitor:
       enabled: true
       interval: 1m
@@ -38,6 +43,8 @@ spec:
     # Webhook crashloops when Cert-Manager is used with default values
     # https://github.com/external-secrets/external-secrets/issues/2519
     webhook:
+      image:
+        repository: ghcr.io/external-secrets/external-secrets
       lookaheadInterval: 240h  # 10d
       certManager:
         enabled: true
@@ -47,3 +54,6 @@ spec:
             kind: ClusterIssuer
             group: cert-manager.io
           duration: 2160h  # 90d
+    certController:
+      image:
+        repository: ghcr.io/external-secrets/external-secrets
