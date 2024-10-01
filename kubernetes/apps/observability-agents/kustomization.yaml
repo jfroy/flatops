@@ -8,4 +8,4 @@ resources:
   - ./node-exporter/ks.yaml
   # - ./scrutiny-collector/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./vector-agent/ks.yaml
+  # - ./vector-agent/ks.yaml
