@@ -42,7 +42,7 @@ spec:
             mountPath: /var/lib/alloy
       resources:
         limits:
-          memory: 100Mi
+          memory: 200Mi
         requests:
           cpu: 10m
     controller:
