@@ -344,6 +344,46 @@ sonarr:
 # documentation about file merging:                                                               #
 # https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
 ###################################################################################################
+###################################################################################################
+# Recyclarr Configuration Template: SQP-1 (2160p)                                                 #
+# Updated: 2024-10-02                                                                             #
+# Documentation: https://recyclarr.dev                                                            #
+# Note: If you are using multiple profiles in a single instance, please read the following        #
+# documentation about file merging:                                                               #
+# https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
+###################################################################################################
+###################################################################################################
+# Recyclarr Configuration Template: SQP-2                                                         #
+# Updated: 2024-10-02                                                                             #
+# Documentation: https://recyclarr.dev                                                            #
+# Note: If you are using multiple profiles in a single instance, please read the following        #
+# documentation about file merging:                                                               #
+# https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
+###################################################################################################
+###################################################################################################
+# Recyclarr Configuration Template: SQP-3                                                         #
+# Updated: 2024-10-02                                                                             #
+# Documentation: https://recyclarr.dev                                                            #
+# Note: If you are using multiple profiles in a single instance, please read the following        #
+# documentation about file merging:                                                               #
+# https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
+###################################################################################################
+###################################################################################################
+# Recyclarr Configuration Template: SQP-4                                                         #
+# Updated: 2024-10-02                                                                             #
+# Documentation: https://recyclarr.dev                                                            #
+# Note: If you are using multiple profiles in a single instance, please read the following        #
+# documentation about file merging:                                                               #
+# https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
+###################################################################################################
+###################################################################################################
+# Recyclarr Configuration Template: SQP-5                                                         #
+# Updated: 2024-10-02                                                                             #
+# Documentation: https://recyclarr.dev                                                            #
+# Note: If you are using multiple profiles in a single instance, please read the following        #
+# documentation about file merging:                                                               #
+# https://recyclarr.dev/wiki/yaml/config-examples/#merge-single-instance                          #
+###################################################################################################
 
 # Instance Definition: https://recyclarr.dev/wiki/yaml/config-reference/basic/
 radarr:
@@ -357,11 +397,21 @@ radarr:
       - template: radarr-custom-formats-hd-bluray-web
       - template: radarr-custom-formats-remux-web-1080p
       - template: radarr-custom-formats-remux-web-2160p
+      - template: radarr-custom-formats-sqp-1-2160p
+      - template: radarr-custom-formats-sqp-2
+      - template: radarr-custom-formats-sqp-3
+      - template: radarr-custom-formats-sqp-4
+      - template: radarr-custom-formats-sqp-5
       - template: radarr-custom-formats-uhd-bluray-web
-      - template: radarr-quality-definition-movie
+      - template: radarr-quality-definition-sqp-uhd
       - template: radarr-quality-profile-hd-bluray-web
       - template: radarr-quality-profile-remux-web-1080p
       - template: radarr-quality-profile-remux-web-2160p
+      - template: radarr-quality-profile-sqp-1-2160p-default
+      - template: radarr-quality-profile-sqp-2
+      - template: radarr-quality-profile-sqp-3
+      - template: radarr-quality-profile-sqp-4
+      - template: radarr-quality-profile-sqp-5
       - template: radarr-quality-profile-uhd-bluray-web
 
     # Custom Formats: https://recyclarr.dev/wiki/yaml/config-reference/custom-formats/
@@ -452,3 +502,106 @@ radarr:
           # - 25c12f78430a3a23413652cbd1d48d77 # SDR (no WEBDL)
         assign_scores_to:
           - name: Remux + WEB 2160p
+
+      # -- SQP
+
+      # Movie Versions
+      - trash_ids:
+          # - 570bc9ebecd92723d2d21500f4be314c # Remaster
+          # - eca37840c13c6ef2dd0262b141a5482f # 4K Remaster
+          # - e0c07d59beb37348e975a930d5e50319 # Criterion Collection
+          # - 9d27d9d2181838f76dee150882bdc58c # Masters of Cinema
+          # - db9b4c4b53d312a3ca5f1378f6440fc9 # Vinegar Syndrome
+          # - 957d0f44b592285f26449575e8b1167e # Special Edition
+      # Uncomment the next line if you prefer 1080p/2160p WEBDL with IMAX Enhanced
+          # - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
+        assign_scores_to:
+          - name: SQP-1 (2160p)
+      - trash_ids:
+          # - 0f12c086e289cf966fa5948eac571f44 # Hybrid
+          # - 570bc9ebecd92723d2d21500f4be314c # Remaster
+          # - eca37840c13c6ef2dd0262b141a5482f # 4K Remaster
+          # - e0c07d59beb37348e975a930d5e50319 # Criterion Collection
+          # - 9d27d9d2181838f76dee150882bdc58c # Masters of Cinema
+          # - db9b4c4b53d312a3ca5f1378f6440fc9 # Vinegar Syndrome
+          # - 957d0f44b592285f26449575e8b1167e # Special Edition
+          # - eecf3a857724171f968a66cb5719e152 # IMAX
+          # - 9f6cbff8cfe4ebbc1bde14c7b7bec0de # IMAX Enhanced
+        assign_scores_to:
+          - name: SQP-2
+          - name: SQP-3
+          - name: SQP-4
+          - name: SQP-5
+
+      # Misc
+      - trash_ids:
+          - 2899d84dc9372de3408e6d8cc18e9666 # x264
+        assign_scores_to:
+            # score: 0 # Uncomment this line to enable x264 releases
+          - name: SQP-2
+          - name: SQP-3
+          - name: SQP-4
+          - name: SQP-5
+
+      # Unwanted
+      - trash_ids:
+      # Uncomment the lines to block all x265 HD releases
+          # - 839bea857ed2c0a8e084f3cbdbd65ecb # x265 (no HDR/DV)
+        # assign_scores_to:
+          # - name: SQP-1 (2160p)
+            # score: 0
+          # - name: SQP-2
+            # score: 0
+          # - name: SQP-3
+            # score: 0
+          # - name: SQP-4
+            # score: 0
+          # - name: SQP-5
+            # score: 0
+      # - trash_ids:
+          # - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
+        assign_scores_to:
+          - name: SQP-1 (2160p)
+          - name: SQP-2
+          - name: SQP-3
+          - name: SQP-4
+          - name: SQP-5
+
+      # Optional
+      - trash_ids:
+          # Uncomment the next two lines if you have a setup that supports HDR10+
+          - b17886cb4158d9fea189859409975758 # HDR10+ Boost
+          - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
+
+          # Comment out the next line if you and all of your users' setups are fully DV compatible
+          - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
+
+          # Uncomment any of the following optional custom formats if you want them to be added to
+          # the quality profile
+          # - b6832f586342ef70d9c128d40c07b872 # Bad Dual Groups
+          # - 90cedc1fea7ea5d11298bebd3d1d3223 # EVO (no WEBDL)
+          # - ae9b7c9ebde1f3bd336a8cbd1ec4c5e5 # No-RlsGroup
+          # - 7357cf5161efbf8c4d5d0c30b4815ee2 # Obfuscated
+          # - 5c44f52a8714fdd79bb4d98e2673be1f # Retags
+          # - f537cf427b64c38c8e36298f657e4828 # Scene
+          # - f700d29429c023a5734505e77daeaea7 # DV (Disk)
+        assign_scores_to:
+          - name: SQP-1 (2160p)
+          - name: SQP-2
+          - name: SQP-3
+          - name: SQP-4
+          - name: SQP-5
+
+      # Optional SDR
+      # Only ever use ONE of the following custom formats:
+      # SDR - block ALL SDR releases
+      # SDR (no WEBDL) - block UHD/4k Remux and Bluray encode SDR releases, but allow SDR WEB
+      - trash_ids:
+          - 9c38ebb7384dada637be8899efa68e6f # SDR
+          # - 25c12f78430a3a23413652cbd1d48d77 # SDR (no WEBDL)
+        assign_scores_to:
+          - name: SQP-1 (2160p)
+          - name: SQP-2
+          - name: SQP-3
+          - name: SQP-4
+          - name: SQP-5
