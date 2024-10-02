@@ -487,7 +487,7 @@ radarr:
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
 
           # HDR10+ Boost - Uncomment the next two lines if any of your devices DO support HDR10+
-          # - b17886cb4158d9fea189859409975758 # HDR10Plus Boost
+          # - b17886cb4158d9fea189859409975758 # HDR10+ Boost
           # - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
         assign_scores_to:
           - name: Remux + WEB 2160p
@@ -570,8 +570,8 @@ radarr:
       # Optional
       - trash_ids:
           # Uncomment the next two lines if you have a setup that supports HDR10+
-          - b17886cb4158d9fea189859409975758 # HDR10+ Boost
-          - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
+          # - b17886cb4158d9fea189859409975758 # HDR10+ Boost
+          # - 55a5b50cb416dea5a50c4955896217ab # DV HDR10+ Boost
 
           # Comment out the next line if you and all of your users' setups are fully DV compatible
           - 923b6abef9b17f937fab56cfcf89e1f1 # DV (WEBDL)
