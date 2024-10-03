@@ -57,3 +57,29 @@ spec:
     dcgmExporter:
       serviceMonitor:
         enabled: true
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |-
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: gpu-operator
+                labels:
+                  app.kubernetes.io/component: "gpu-operator"
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: gpu-operator
+                        securityContext:
+                          allowPrivilegeEscalation: false
+                          capabilities: { drop: ["ALL"] }
+                          readOnlyRootFilesystem: true
+                          runAsNonRoot: true
+                          runAsUser: 1000
+                          runAsGroup: 1000
+                          seccompProfile: { type: RuntimeDefault }
+                    securityContext:
+                      fsGroup: 1000
+                      fsGroupChangePolicy: OnRootMismatch
