@@ -27,9 +27,7 @@ metadata:
 spec:
   targetNamespace: storage
   dependsOn:
-    - name: external-secrets-stores
     - name: media-volume
-    - name: samba-operator
   path: ./kubernetes/apps/storage/media/nfs
   prune: true
   sourceRef:
@@ -48,7 +46,9 @@ metadata:
 spec:
   targetNamespace: storage
   dependsOn:
+    - name: external-secrets-stores
     - name: media-volume
+    - name: samba-operator
   path: ./kubernetes/apps/storage/media/smb
   prune: true
   sourceRef:
