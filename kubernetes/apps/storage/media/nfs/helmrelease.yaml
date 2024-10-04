@@ -33,6 +33,15 @@ spec:
             image:
               repository: ghcr.io/jfroy/ganesha
               tag: 6.1@sha256:c316b95a8864d55a65ea638ea48d6b8e9e5f4335bc036865b03e56ec94c7de2a
+            ports:
+              - containerPort: 2049
+                hostPort: 2049
+                name: nfsv4-tcp
+                protocol: TCP
+              - containerPort: 2049
+                hostPort: 2049
+                name: nfsv4-udp
+                protocol: UDP
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -44,7 +53,11 @@ spec:
     service:
       media-nfs:
         controller: media-nfs
+        clusterIP: None
         ipFamilyPolicy: PreferDualStack
+        annotations:
+          external-dns.alpha.kubernetes.io/endpoints-type: HostIP
+          external-dns.alpha.kubernetes.io/hostname: media2.internal.
         ports:
           nfsv4-tcp:
             port: 2049
