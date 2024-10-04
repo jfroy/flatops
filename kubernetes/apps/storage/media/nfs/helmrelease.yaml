@@ -26,8 +26,10 @@ spec:
   values:
     controllers:
       media-nfs:
+        type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
+        replicas: 1 # do not scale up
         containers:
           ganesha:
             image:
@@ -42,14 +44,29 @@ spec:
                 hostPort: 2049
                 name: nfsv4-udp
                 protocol: UDP
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  tcpSocket:
+                    port: nfsv4-tcp
+              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
                 drop: ["ALL"]
-                add: ["SYS_RESOURCE"]
+                add:
+                  - CHOWN
+                  - DAC_OVERRIDE
+                  - DAC_READ_SEARCH
+                  - FOWNER
+                  - FSETID
+                  - SETGID
+                  - SETUID
+                  - SYS_RESOURCE
               seccompProfile: { type: RuntimeDefault }
-        replicas: 1
     service:
       media-nfs:
         controller: media-nfs
