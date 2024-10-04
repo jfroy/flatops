@@ -254,7 +254,7 @@ spec:
         victoria-operator:
           # renovate: depName="VictoriaMetrics - operator"
           gnetId: 17869
-          revision: 2
+          revision: 3
           datasource: Prometheus
         victoria-single:
           # renovate: depName="VictoriaMetrics - single-node"
