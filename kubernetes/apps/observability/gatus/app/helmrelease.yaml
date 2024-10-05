@@ -86,9 +86,9 @@ spec:
               readiness: *probe
             resources:
               requests:
-                cpu: 1m
+                cpu: 5m
               limits:
-                memory: 128Mi
+                memory: 150Mi
             securityContext: *securityContext
     defaultPodOptions:
       dnsConfig:
