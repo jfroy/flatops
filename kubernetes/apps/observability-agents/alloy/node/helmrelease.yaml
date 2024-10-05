@@ -60,6 +60,7 @@ spec:
           cpu: 10m
     controller:
       type: "daemonset"
+      hostNetwork: true
       hostPID: true
       volumes:
         extra:

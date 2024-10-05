@@ -19,6 +19,7 @@ prometheus.exporter.unix "default" {
 prometheus.scrape "nodeexporter" {
 	targets         = prometheus.exporter.unix.default.targets
 	forward_to      = [prometheus.remote_write.victoriametrics.receiver]
+  job_name        = "node-exporter"
 	body_size_limit = "32MiB"
 }
 
@@ -33,3 +34,26 @@ loki.write "victorialogs" {
 		url = "http://victoria-logs.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
 	}
 }
+
+// prometheus.scrape "nodeexporter" {
+//   targets = prometheus.exporter.unix.nodeexporter.targets
+//   forward_to = [otelcol.receiver.prometheus.victoriametrics.receiver]
+// }
+
+// otelcol.receiver.prometheus "victoriametrics" {
+//   output {
+//     metrics = [otelcol.processor.batch.batch.input]
+//   }
+// }
+
+// otelcol.processor.batch "batch" {
+//   output {
+//     metrics = [otelcol.exporter.otlphttp.victoriametrics.input]
+//   }
+// }
+
+// otelcol.exporter.otlphttp "victoriametrics" {
+//   client {
+//     endpoint = "http://<victoriametrics-addr>:<victoriametrics_port>/opentelemetry"
+//   }
+// }
