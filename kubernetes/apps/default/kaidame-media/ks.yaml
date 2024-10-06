@@ -8,6 +8,7 @@ metadata:
 spec:
   targetNamespace: default
   dependsOn:
+    - name: csi-driver-smb
     - name: external-secrets-stores
   path: ./kubernetes/apps/default/kaidame-media/objects
   prune: true
