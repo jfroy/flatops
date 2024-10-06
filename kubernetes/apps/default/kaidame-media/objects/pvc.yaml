@@ -10,3 +10,4 @@ spec:
     requests:
       storage: 10Ti
   volumeName: kaidame-media
+  storageClassName: ""
