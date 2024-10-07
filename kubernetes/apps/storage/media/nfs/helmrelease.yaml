@@ -74,7 +74,7 @@ spec:
         ipFamilyPolicy: PreferDualStack
         annotations:
           external-dns.alpha.kubernetes.io/endpoints-type: HostIP
-          external-dns.alpha.kubernetes.io/hostname: media2.internal.
+          external-dns.alpha.kubernetes.io/hostname: nfs.media2.internal.
         ports:
           nfsv4-tcp:
             port: 2049
