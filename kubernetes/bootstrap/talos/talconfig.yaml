@@ -36,28 +36,25 @@ nodes:
       - name: nvme-tcp
       - name: zfs
     networkInterfaces:
-      - interface: bond0
+      - interface: enp129s0f0
         dhcp: true
         mtu: 1500
         vip:
           ip: "192.168.1.8"
-        bond:
-          deviceSelectors:
-            - busPath: "0000:81:00.0"
-            - busPath: "0000:81:00.1"
-          mode: 802.3ad
-          lacpRate: fast
-          xmitHashPolicy: layer3+4
-          miimon: 100
-          updelay: 200
-          downdelay: 200
+      - interface: enp129s0f1
+        dhcp: true
+        mtu: 1500
     patches:
       - |-
         machine:
           sysctls:
             net.core.bpf_jit_harden: "1"
-            net.ipv6.conf.bond0.accept_ra: "2"
-            net.ipv6.conf.bond0.forwarding: "1"
+            net.ipv6.conf.all.accept_ra: "2"
+            net.ipv6.conf.all.forwarding: "1"
+            net.ipv6.conf.enp129s0f0.accept_ra: "2"
+            net.ipv6.conf.enp129s0f0.forwarding: "1"
+            net.ipv6.conf.enp129s0f1.accept_ra: "2"
+            net.ipv6.conf.enp129s0f1.forwarding: "1"
             vm.nr_hugepages: "1024"
 
 patches:
