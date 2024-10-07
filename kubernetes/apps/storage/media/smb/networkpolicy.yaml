@@ -5,9 +5,7 @@ metadata:
 spec:
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/component: smbd
-      app.kubernetes.io/instance: samba-media
-      app.kubernetes.io/name: samba
+      app.kubernetes.io/name: media-smb
   egress:
     - toCIDR:
         - 192.168.1.0/24

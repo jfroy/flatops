@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: media-smb
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      media-smb:
+        type: statefulset
+        annotations:
+          reloader.stakater.com/auto: "true"
+        replicas: 1 # do not scale up
+        containers:
+          samba-server:
+            image:
+              repository: quay.io/samba.org/samba-server
+              tag: latest@sha256:75b1a94619853e03fd640eb40d8bcd1d3fb440e083f0669b8f64f7a7b8ecb2c1
+            env:
+              SAMBACC_CONFIG: /config/config.yaml
+              SAMBA_CONTAINER_ID: media-smb
+            ports:
+              - containerPort: 445
+                hostPort: 445
+                name: smb
+                protocol: TCP
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+                add:
+                  - CHOWN
+                  - DAC_OVERRIDE
+                  - DAC_READ_SEARCH
+                  - FOWNER
+                  - FSETID
+                  - IPC_LOCK
+                  - NET_BIND_SERVICE
+                  - SETGID
+                  - SETPCAP
+                  - SETUID
+                  - SYS_RESOURCE
+              # NOTE: io_uring is blocked by the default containerd v2 seccomp profile
+              # https://github.com/containerd/containerd/pull/9320
+              seccompProfile: { type: Unconfined }
+    service:
+      media-smb:
+        controller: media-smb
+        clusterIP: None
+        ipFamilyPolicy: PreferDualStack
+        annotations:
+          external-dns.alpha.kubernetes.io/endpoints-type: HostIP
+          external-dns.alpha.kubernetes.io/hostname: smb.media2.internal.
+        ports:
+          smb:
+            port: 445
+            protocol: TCP
+    persistence:
+      config:
+        type: configMap
+        name: samba-config
+      media:
+        type: persistentVolumeClaim
+        existingClaim: media
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /run
+          - path: /var/run
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi

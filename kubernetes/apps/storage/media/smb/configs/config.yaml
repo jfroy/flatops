@@ -1,0 +1,59 @@
+samba-container-config: v0
+configs:
+  media-smb:
+    globals: ["default"]
+    shares:
+      - "media"
+globals:
+  default:
+    options:
+      bind interfaces only: "true"
+      clustering: "false"
+      create mask: "0775"
+      directory mask: "0775"
+      disable spoolss: "true"
+      dns proxy: "false"
+      fruit:nfs_aces: "false"
+      fruit:zero_file_id: "false"
+      guest account: "nobody"
+      load printers: "false"
+      local master: "true"
+      log level: "3"
+      netbios aliases: ""
+      netbios name: "kantai1"
+      ntlm auth: "false"
+      printcap name: "/dev/null"
+      restrict anonymous: "2"
+      rpc_daemon:mdssd: "disabled"
+      rpc_server:mdssvc: "disabled"
+      security: "user"
+      server min protocol: "SMB2_02"
+      server multi channel support: "false"
+      server role: "standalone server"
+      server string: "kantai1"
+      unix charset: "UTF-8"
+      winbind request timeout: "2"
+      workgroup: "WORKGROUP"
+shares:
+  media:
+    options:
+      access based share enum: "false"
+      available: "true"
+      browseable: "true"
+      comment: ""
+      ea support: "false"
+      fruit:metadata: "stream"
+      fruit:resource: "stream"
+      fruit:time machine: "false"
+      fruit:time machine max size: "0"
+      guest ok: "false"
+      kernel oplocks: "false"
+      path: "/media"
+      posix locking: "false"
+      read only: "false"
+      smbd max xattr size: "2097152"
+      # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
+      vfs objects: "fruit streams_xattr io_uring"
+users:
+  all_entries:
+    - { name: media, password: media, uid: 4000, gid: 4000 }
