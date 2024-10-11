@@ -15,6 +15,7 @@ spec:
     - action: replace
       targetLabel: job
       replacement: *name
+  scrapeTimeout: 15s
 # ---
 # Disabled because VM operator does not translate metricsPath. https://github.com/VictoriaMetrics/operator/issues/1073
 # # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
