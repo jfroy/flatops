@@ -4,7 +4,7 @@
 
 - Media:
     - plex:
-        icon: plex.png
+        icon: sh-plex.webp
         href: https://app.plex.tv/
         namespace: default
         app: plex
@@ -23,7 +23,7 @@
           key: {{HOMEPAGE_VAR_STASH_API_KEY}}
 - Arr:
     - radarr:
-        icon: radarr.png
+        icon: sh-radarr-light.webp
         href: https://radarr.${PUBLIC_DOMAIN0}/
         namespace: default
         app: radarr
@@ -33,7 +33,7 @@
           key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
           enableQueue: true
     - sonarr:
-        icon: sonarr.png
+        icon: sh-sonarr.webp
         href: https://sonarr.${PUBLIC_DOMAIN0}/
         namespace: default
         app: sonarr
@@ -43,7 +43,7 @@
           key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
           enableQueue: true
     - prowlarr:
-        icon: prowlarr.png
+        icon: sh-prowlarr.webp
         href: https://prowlarr.${PUBLIC_DOMAIN0}/
         namespace: default
         app: prowlarr
@@ -53,7 +53,7 @@
           key: {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
           enableQueue: true
     - qbittorrent:
-        icon: qbittorrent.png
+        icon: sh-qbittorrent.webp
         href: https://qbit.${PUBLIC_DOMAIN0}/
         namespace: default
         app: qbittorrent
@@ -61,7 +61,7 @@
           type: qbittorrent
           url: http://qbittorrent.default.svc:80
     - sabnzbd:
-        icon: sabnzbd.png
+        icon: sh-sabnzbd.webp
         href: https://sab.${PUBLIC_DOMAIN0}/
         namespace: default
         app: sabnzbd
@@ -89,7 +89,7 @@
           profile: {{HOMEPAGE_VAR_NEXTDNS_PROFILE}}
           key: {{HOMEPAGE_VAR_NEXTDNS_API_KEY}}
     - unifi:
-        icon: unifi.png
+        icon: sh-ubiquiti-unifi-light.webp
         href: https://unifi.ui.com/
         widget:
           type: unifi
