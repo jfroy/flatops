@@ -23,3 +23,8 @@
       - NVDA
       - TSM
       - UI
+
+- unifi_console:
+    url: https://udmpro-3014.flat
+    username: unpoller
+    password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
