@@ -14,7 +14,8 @@ metadata:
     policies.kyverno.io/description: >-
       This policy enforces the latest version of the Pod Security Standards baseline profile by
       default cluster wide. This policy allows capabilities for gluetun containers on pods with the
-      label "gluetun=true".
+      label "gluetun=true". This policy allows host paths for security scanners on pods with the
+      label "allow-host-paths=true".
 spec:
   background: true
   validationFailureAction: Enforce
@@ -37,6 +38,12 @@ spec:
               selector:
                 matchLabels:
                   gluetun: "true"
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  allow-host-paths: "true"
       validate:
         podSecurity:
           level: baseline
@@ -68,6 +75,27 @@ spec:
               values:
                 - NET_ADMIN
                 - NET_RAW
+    - name: baseline-hostpaths
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  allow-host-paths: "true"
+      exclude:
+        any:
+          - resources:
+              namespaceSelector:
+                matchLabels:
+                  pod-security.kubernetes.io/enforce: privileged
+      validate:
+        podSecurity:
+          level: baseline
+          version: latest
+          exclude:
+            - controlName: "HostPath Volumes"
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
