@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: storage
   dependsOn:
-    - name: openebs
+    - name: openebs-zfs-volumes
   path: ./kubernetes/apps/storage/media/volume
   prune: false  # don't prune media volume for safety
   sourceRef:

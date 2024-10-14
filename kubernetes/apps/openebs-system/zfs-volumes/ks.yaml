@@ -1,0 +1,18 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: openebs-zfs-volumes
+  namespace: flux-system
+spec:
+  targetNamespace: openebs-system
+  dependsOn:
+    - name: openebs
+  path: ./kubernetes/apps/openebs-system/zfs-volumes/resources
+  prune: false  # don't prune for safety
+  sourceRef:
+    kind: GitRepository
+    name: home-kubernetes
+  wait: true
+  interval: 30m
+  retryInterval: 1m

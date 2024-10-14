@@ -4,8 +4,11 @@ kind: PersistentVolumeClaim
 metadata:
   name: media
 spec:
-  accessModes: ["ReadWriteMany"]
+  accessModes:
+    - ReadWriteMany
   resources:
     requests:
-      storage: 200Ti
-  storageClassName: openebs-zfspv-media
+      storage: 160Ti
+  storageClassName: ""
+  volumeMode: Filesystem
+  volumeName: media
