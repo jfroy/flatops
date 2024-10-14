@@ -5,6 +5,7 @@ resources:
   - ./grafana.yaml
   - ./kyverno-policies.yaml
   - ./kyverno.yaml
+  - ./openclarity.yaml
   - ./prometheus-community.yaml
   - ./spegel.yaml
   - ./stakater.yaml
