@@ -34,7 +34,7 @@ spec:
           samba-server:
             image:
               repository: quay.io/samba.org/samba-server
-              tag: latest@sha256:35ef2842a783abd9de7e158be3947faad80217977f2e7b1ec58b0610571a447d
+              tag: latest@sha256:eb41604212d5f6bf2ee3ba47eecd20d824b4d39842b308a2a50b707d97da25f9
             env:
               SAMBACC_CONFIG: /config/config.yaml
               SAMBA_CONTAINER_ID: media-smb
