@@ -11,7 +11,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/spegel-org/helm-charts/spegel
   ref:
-    tag: v0.0.25
+    tag: v0.0.27
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
