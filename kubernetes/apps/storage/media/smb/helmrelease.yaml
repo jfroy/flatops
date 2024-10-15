@@ -36,7 +36,7 @@ spec:
               repository: quay.io/samba.org/samba-server
               tag: v0.5
             env:
-              SAMBACC_CONFIG: /config/config.yaml
+              SAMBACC_CONFIG: /config/config.yaml:/config/users.json
               SAMBA_CONTAINER_ID: media-smb
             ports:
               - containerPort: 445
@@ -76,8 +76,23 @@ spec:
             protocol: TCP
     persistence:
       config:
-        type: configMap
-        name: samba-config
+        type: custom
+        volumeSpec:
+          projected:
+            sources:
+              - configMap:
+                  name: samba-config
+                  items:
+                    - key: config.yaml
+                      path: config.yaml
+              - secret:
+                  name: media-smb
+                  items:
+                    - key: users.json
+                      path: users.json
+        globalMounts:
+          - path: /config
+            readOnly: true
       media:
         type: persistentVolumeClaim
         existingClaim: media

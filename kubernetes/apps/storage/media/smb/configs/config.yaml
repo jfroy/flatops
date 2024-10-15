@@ -54,6 +54,3 @@ shares:
       smbd max xattr size: "2097152"
       # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
       vfs objects: "fruit streams_xattr io_uring"
-users:
-  all_entries:
-    - { name: media, password: media, uid: 4000, gid: 4000 }
