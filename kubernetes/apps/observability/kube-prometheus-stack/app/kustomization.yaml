@@ -10,8 +10,7 @@ resources:
   - ./prometheusrule.yaml
 configMapGenerator:
   - name: kube-state-metrics-config
-    files: [./resources/kube-state-metrics-config.yaml]
-generatorOptions:
-  disableNameSuffixHash: true
+    files:
+      - ./resources/kube-state-metrics-config.yaml
 configurations:
   - kustomizeconfig.yaml
