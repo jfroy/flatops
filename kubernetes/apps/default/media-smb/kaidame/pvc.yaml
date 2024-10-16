@@ -2,12 +2,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: kaidame-media
+  name: media-kaidame
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 10Ti
-  volumeName: kaidame-media
+  volumeName: media-kaidame
   storageClassName: ""
