@@ -3,13 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-volume
+  name: media-kantai1-volume
   namespace: flux-system
 spec:
   targetNamespace: storage
   dependsOn:
     - name: openebs-zfs-volumes
-  path: ./kubernetes/apps/storage/media/volume
+  path: ./kubernetes/apps/storage/media-kantai1/volume
   prune: false  # don't prune media volume for safety
   sourceRef:
     kind: GitRepository
@@ -22,26 +22,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-nfs
-  namespace: flux-system
-spec:
-  targetNamespace: storage
-  dependsOn:
-    - name: media-volume
-  path: ./kubernetes/apps/storage/media/nfs
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: home-kubernetes
-  wait: false
-  interval: 30m
-  retryInterval: 1m
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app media-smb
+  name: &app media-kantai1-smb
   namespace: flux-system
 spec:
   targetNamespace: storage
@@ -50,8 +31,8 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets-stores
-    - name: media-volume
-  path: ./kubernetes/apps/storage/media/smb
+    - name: media-kantai1-volume
+  path: ./kubernetes/apps/storage/media-kantai1/smb
   prune: true
   sourceRef:
     kind: GitRepository

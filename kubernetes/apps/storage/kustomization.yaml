@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./maintenance/ks.yaml
-  - ./media/ks.yaml
+  - ./media-kantai1/ks.yaml

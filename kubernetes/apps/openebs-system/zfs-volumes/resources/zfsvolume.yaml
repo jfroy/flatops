@@ -2,7 +2,7 @@
 apiVersion: zfs.openebs.io/v1
 kind: ZFSVolume
 metadata:
-  name: media
+  name: media-kantai1
 spec:
   capacity: "175921860444160"
   compression: "off"
