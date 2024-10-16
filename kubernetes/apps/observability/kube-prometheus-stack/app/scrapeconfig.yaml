@@ -7,9 +7,9 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - "homeassistant.flat:9100"
-        - "kaidame.flat:9100"
-        - "pikvm.flat:9100"
+        - "homeassistant:9100"
+        - "kaidame:9100"
+        - "pikvm:9100"
   metricsPath: /metrics
   relabelings:
     - action: replace
@@ -25,7 +25,7 @@ spec:
 #   name: &name pikvm
 # spec:
 #   staticConfigs:
-#     - targets: ["pikvm.flat"]
+#     - targets: ["pikvm"]
 #   metricsPath: /api/export/prometheus/metrics
 #   relabelings:
 #     - action: replace
@@ -50,7 +50,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - "kaidame.flat:9134"
+        - "kaidame:9134"
   metricsPath: /metrics
   relabelings:
     - action: replace

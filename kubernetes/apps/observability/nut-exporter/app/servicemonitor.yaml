@@ -22,7 +22,7 @@ spec:
           regex: (pod)
       params:
         server:
-          - homeassistant.flat
+          - homeassistant
       path: /ups_metrics
       port: metrics
       scheme: http
@@ -59,7 +59,7 @@ spec:
           regex: (pod)
       params:
         server:
-          - pikvm.flat
+          - pikvm
       path: /ups_metrics
       port: metrics
       scheme: http

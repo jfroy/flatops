@@ -35,7 +35,7 @@ spec:
             env:
               TZ: America/Los_Angeles
               UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://udmpro-3014.flat
+              UP_UNIFI_DEFAULT_URL: https://udmpro-3014
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_UNIFI_DEFAULT_USER:
                 valueFrom:

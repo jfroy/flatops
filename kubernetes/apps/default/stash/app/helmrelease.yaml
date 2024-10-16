@@ -129,7 +129,7 @@ spec:
         size: 100Mi
       sss:
         type: nfs
-        server: kaidame.flat
+        server: kaidame
         path: /mnt/citerne/media/sss
         globalMounts:
           - path: /mnt/citerne/media/sss

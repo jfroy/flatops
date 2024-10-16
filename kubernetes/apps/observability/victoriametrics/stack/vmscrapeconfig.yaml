@@ -5,7 +5,7 @@ metadata:
   name: &name pikvm
 spec:
   staticConfigs:
-    - targets: ["pikvm.flat"]
+    - targets: ["pikvm"]
   path: /api/export/prometheus/metrics
   relabelConfigs:
     - action: replace

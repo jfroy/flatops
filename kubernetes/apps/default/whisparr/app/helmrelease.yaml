@@ -108,7 +108,7 @@ spec:
         existingClaim: ${APP}
       media:
         type: nfs
-        server: kaidame.flat
+        server: kaidame
         path: /mnt/citerne/media
       tmp:
         type: emptyDir

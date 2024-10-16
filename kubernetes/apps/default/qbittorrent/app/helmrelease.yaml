@@ -199,7 +199,7 @@ spec:
             subPath: tmp
       media:
         type: nfs
-        server: kaidame.flat
+        server: kaidame
         path: /mnt/citerne/media
         globalMounts:
           - path: /media/qbittorrent

@@ -37,6 +37,6 @@ spec:
       volumes:
         - name: backup
           nfs:
-            server: kaidame.flat
+            server: kaidame
             path: /mnt/citerne/backup/kantai
             readOnly: true

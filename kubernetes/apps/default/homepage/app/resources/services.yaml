@@ -93,7 +93,7 @@
         href: https://unifi.ui.com/
         widget:
           type: unifi
-          url: https://udmpro-3014.flat
+          url: https://udmpro-3014
           username: unpoller
           password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - victorialogs:

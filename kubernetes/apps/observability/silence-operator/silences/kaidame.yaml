@@ -9,7 +9,7 @@ spec:
       value: NodeMemoryMajorPagesFaults
       isRegex: false
     - name: instance
-      value: "kaidame.flat:9100"
+      value: "kaidame:9100"
       isRegex: false
 ---
 apiVersion: monitoring.giantswarm.io/v1alpha1
@@ -22,5 +22,5 @@ spec:
       value: NodeMemoryHighUtilization
       isRegex: false
     - name: instance
-      value: "kaidame.flat:9100"
+      value: "kaidame:9100"
       isRegex: false

@@ -5,4 +5,4 @@ metadata:
   name: homeassistant
 spec:
   type: ExternalName
-  externalName: homeassistant.flat
+  externalName: homeassistant
