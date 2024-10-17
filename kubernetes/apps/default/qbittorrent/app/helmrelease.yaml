@@ -198,11 +198,16 @@ spec:
           - path: /tmp
             subPath: tmp
       media:
-        type: nfs
-        server: kaidame
-        path: /mnt/citerne/media
+        type: persistentVolumeClaim
+        existingClaim: default-media-smb-kantai1
         globalMounts:
           - path: /media/qbittorrent
+            subPath: qbittorrent
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: default-media-smb-kaidame
+        globalMounts:
+          - path: /media2/qbittorrent
             subPath: qbittorrent
       run:
         type: emptyDir
