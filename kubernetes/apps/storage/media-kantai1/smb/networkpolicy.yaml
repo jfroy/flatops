@@ -1,11 +1,11 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: media-smb
+  name: media-kantai1-smb
 spec:
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/name: media-smb
+      app.kubernetes.io/name: media-kantai1-smb
   egress:
     - toCIDR:
         - 192.168.1.0/24
