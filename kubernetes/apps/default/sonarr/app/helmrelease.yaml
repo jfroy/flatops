@@ -107,8 +107,7 @@ spec:
       config:
         existingClaim: ${APP}
       media:
-        type: nfs
-        server: kaidame
-        path: /mnt/citerne/media
+        type: persistentVolumeClaim
+        existingClaim: default-media-smb-kantai1
       tmp:
         type: emptyDir
