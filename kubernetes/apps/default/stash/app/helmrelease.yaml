@@ -128,8 +128,7 @@ spec:
         retain: true
         size: 100Mi
       sss:
-        type: nfs
-        server: kaidame
-        path: /mnt/citerne/media/sss
+        type: persistentVolumeClaim
+        existingClaim: default-media-smb-kaidame
         globalMounts:
-          - path: /mnt/citerne/media/sss
+          - path: /mnt/citerne/media
