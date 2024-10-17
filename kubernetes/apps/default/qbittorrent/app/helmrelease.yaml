@@ -199,13 +199,13 @@ spec:
             subPath: tmp
       media:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai1
+        existingClaim: default-media-smb-kaidame
         globalMounts:
           - path: /media/qbittorrent
             subPath: qbittorrent
       media2:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kaidame
+        existingClaim: default-media-smb-kantai1
         globalMounts:
           - path: /media2/qbittorrent
             subPath: qbittorrent

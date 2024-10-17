@@ -106,7 +106,7 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}
-      media:
+      media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
       tmp:

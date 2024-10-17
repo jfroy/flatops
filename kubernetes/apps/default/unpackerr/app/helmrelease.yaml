@@ -88,11 +88,11 @@ spec:
     persistence:
       logs:
         type: emptyDir
-      media:
+      media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
         globalMounts:
-          - path: /media/qbittorrent
+          - path: /media2/qbittorrent
             subPath: qbittorrent
-          - path: /media/sabnzbd
+          - path: /media2/sabnzbd
             subPath: sabnzbd

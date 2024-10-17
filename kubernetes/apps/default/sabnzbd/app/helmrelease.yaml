@@ -164,11 +164,11 @@ spec:
             subPath: gluetun
           - path: /tmp
             subPath: tmp
-      media:
+      media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
         globalMounts:
-          - path: /media/sabnzbd
+          - path: /media2/sabnzbd
             subPath: sabnzbd
       logs:
         type: emptyDir
