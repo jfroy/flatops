@@ -75,9 +75,6 @@
         href: https://grafana.${PUBLIC_DOMAIN0}/
         namespace: observability
         app: grafana
-        widget:
-          type: grafana
-          url: http://grafana.observability.svc:80
     - homeassistant:
         icon: sh-home-assistant-light.webp
         href: https://hass.${PUBLIC_DOMAIN1}/
@@ -109,12 +106,9 @@
     - tailscale:
         icon: sh-tailscale-light.webp
         href: https://login.tailscale.com/admin/machines
-    # - traefik:
-    #     icon: traefik.png
-    #     href:
-    #     widget:
-    #       type: traefik
-    #       url: http://traefik.host.or.ip
-    #       username: username # optional
-    #       password: password # optional
-
+        namespace: tailscale
+        podSelector: ""
+    - traefik:
+        icon: traefik.png
+        namespace: network
+        app: traefik

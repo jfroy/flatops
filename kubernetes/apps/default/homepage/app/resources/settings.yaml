@@ -13,3 +13,6 @@ layout:
   Arr:
     style: row
     columns: 3
+  Infra:
+    style: row
+    columns: 3
