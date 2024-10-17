@@ -165,9 +165,8 @@ spec:
           - path: /tmp
             subPath: tmp
       media:
-        type: nfs
-        server: kaidame
-        path: /mnt/citerne/media
+        type: persistentVolumeClaim
+        existingClaim: default-media-smb-kantai1
         globalMounts:
           - path: /media/sabnzbd
             subPath: sabnzbd
