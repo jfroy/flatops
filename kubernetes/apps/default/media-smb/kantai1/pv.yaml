@@ -14,8 +14,10 @@ spec:
   storageClassName: ""
   mountOptions:
     - vers=3.1.1
-    - unix
+    - posix
     - mfsymlinks
+    - nomapposix
+    - noperm
     - noserverino
     - cache=strict
     - multichannel
@@ -23,7 +25,6 @@ spec:
     - file_mode=0660
     - uid=4000
     - gid=4000
-    - noperm
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
