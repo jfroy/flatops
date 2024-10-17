@@ -16,3 +16,4 @@ layout:
   Infra:
     style: row
     columns: 3
+    useEqualHeights: true

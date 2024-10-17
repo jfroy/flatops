@@ -78,6 +78,15 @@
     - homeassistant:
         icon: sh-home-assistant-light.webp
         href: https://hass.${PUBLIC_DOMAIN1}/
+    - kaidame:
+        icon: sh-truenas-scale-light.webp
+        href: https://kaidame:444/
+        widget:
+          type: truenas
+          url: https://kaidame:444
+          key: {{HOMEPAGE_VAR_KAIDAME_API_KEY}}
+          enablePools: false
+          nasType: scale
     - nextdns:
         icon: nextdns.png
         href: https://my.nextdns.io
