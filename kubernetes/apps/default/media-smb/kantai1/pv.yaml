@@ -31,5 +31,5 @@ spec:
     volumeAttributes:
       source: "//kantai1/media"
     nodeStageSecretRef:
-      name: media-kantai1
+      name: media-owner
       namespace: default
