@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
-  name: media-kaidame
+  name: default-media-kaidame-smb
 spec:
   capacity:
     storage: 10Ti
@@ -31,5 +31,5 @@ spec:
     volumeAttributes:
       source: "//kaidame/media"
     nodeStageSecretRef:
-      name: media-kaidame
+      name: media-kaidame-smb
       namespace: default

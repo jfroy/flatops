@@ -95,7 +95,7 @@ spec:
             readOnly: true
       media:
         type: persistentVolumeClaim
-        existingClaim: media
+        existingClaim: storage-media-kantai1-zfs
       run:
         type: emptyDir
         medium: Memory

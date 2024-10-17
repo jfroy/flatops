@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: media-kantai1
+  name: storage-media-kantai1-zfs
 spec:
   accessModes:
     - ReadWriteMany
@@ -11,4 +11,4 @@ spec:
       storage: 160Ti
   storageClassName: ""
   volumeMode: Filesystem
-  volumeName: media
+  volumeName: storage-media-kantai1-zfs

@@ -99,7 +99,7 @@ spec:
         name: ganesha-config
       media:
         type: persistentVolumeClaim
-        existingClaim: media
+        existingClaim: storage-media-kantai1-zfs
       recovery:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath

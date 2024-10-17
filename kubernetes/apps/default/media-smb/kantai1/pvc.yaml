@@ -2,12 +2,12 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: media-kantai1
+  name: default-media-kantai1-smb
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 160Ti
-  volumeName: media-kantai1
+  volumeName: default-media-kantai1-smb
   storageClassName: ""
