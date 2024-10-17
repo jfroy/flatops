@@ -1,9 +1,10 @@
 samba-container-config: v0
 configs:
   media-kantai1-smb:
-    globals: ["default"]
+    globals:
+      - default
     shares:
-      - "media"
+      - media
 globals:
   default:
     options:
@@ -13,27 +14,34 @@ globals:
       directory mask: "0775"
       disable spoolss: "true"
       dns proxy: "false"
+      ea support: "true"
+      fruit:delete_empty_adfiles: "true"
+      fruit:metadata: stream
+      fruit:model: MacSamba
       fruit:nfs_aces: "false"
-      fruit:zero_file_id: "false"
-      guest account: "nobody"
+      fruit:posix_rename: "true"
+      fruit:veto_appledouble: "false"
+      fruit:wipe_intentionally_left_blank_rfork: "true"
+      guest account: nobody
       load printers: "false"
       local master: "true"
       log level: "3"
       netbios aliases: ""
-      netbios name: "kantai1"
+      netbios name: kantai1
       ntlm auth: "false"
-      printcap name: "/dev/null"
+      printcap name: /dev/null
       restrict anonymous: "2"
-      rpc_daemon:mdssd: "disabled"
-      rpc_server:mdssvc: "disabled"
-      security: "user"
-      server max protocol: "SMB3_11"
-      server min protocol: "SMB2_02"
+      rpc_daemon:mdssd: disabled
+      rpc_server:mdssvc: disabled
+      security: user
+      server max protocol: SMB3_11
+      server min protocol: SMB3
       server multi channel support: "true"
-      server role: "standalone server"
-      server string: "kantai1"
+      server role: standalone server
+      server string: kantai1
+      smb1 unix extensions: "false"
       smb3 unix extensions: "true"
-      unix charset: "UTF-8"
+      unix charset: UTF-8
       winbind request timeout: "2"
       workgroup: "WORKGROUP"
 shares:
@@ -45,17 +53,14 @@ shares:
       comment: ""
       create mask: "0660"
       directory mask: "0770"
-      ea support: "false"
-      fruit:metadata: "stream"
-      fruit:resource: "stream"
-      fruit:time machine: "false"
       fruit:time machine max size: "0"
+      fruit:time machine: "false"
       guest ok: "false"
       kernel oplocks: "false"
       mangled names: "false"
-      path: "/media"
+      path: /media
       posix locking: "false"
       read only: "false"
       smbd max xattr size: "2097152"
       # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
-      vfs objects: "fruit streams_xattr io_uring"
+      vfs objects: fruit streams_xattr io_uring
