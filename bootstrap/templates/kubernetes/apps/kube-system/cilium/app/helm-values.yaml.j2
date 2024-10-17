@@ -41,7 +41,7 @@ l2announcements:
   #% endif %#
 loadBalancer:
   algorithm: maglev
-  mode: snat
+  mode: "#{ bootstrap_loadbalancer_mode|default('dsr', true) }#"
 localRedirectPolicy: true
 operator:
   replicas: 1
