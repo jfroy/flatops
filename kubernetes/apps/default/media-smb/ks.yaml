@@ -3,7 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-kaidame
+  name: default-media-smb-kaidame
   namespace: flux-system
 spec:
   targetNamespace: default
@@ -23,7 +23,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-kantai1
+  name: default-media-smb-kantai1
   namespace: flux-system
 spec:
   targetNamespace: default
