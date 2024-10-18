@@ -25,7 +25,7 @@ globals:
       guest account: nobody
       load printers: "false"
       local master: "true"
-      log level: "3"
+      log level: "1"
       netbios aliases: ""
       netbios name: kantai1
       ntlm auth: "false"
