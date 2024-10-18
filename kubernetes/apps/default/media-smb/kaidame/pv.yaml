@@ -13,7 +13,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   mountOptions:
-    - vers=3.0.2
+    - vers=3.1.1
     - resilienthandles
     - mfsymlinks
     - nomapposix
