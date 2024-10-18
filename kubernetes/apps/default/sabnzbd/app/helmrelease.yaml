@@ -74,14 +74,14 @@ spec:
               repository: ghcr.io/jfroy/gluetun
               tag: v3.39.0-jfroy.3@sha256:01466321c40563cf95e9d57ec978802072c4d51c8665646d3c80a72b25fe0dde
             env:
-              BLOCK_MALICIOUS: "off"  # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
+              BLOCK_MALICIOUS: "off" # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DOT_IPV6: "on"
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
               HEALTH_SERVER_ADDRESS: ":9999"
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
-              STORAGE_FILEPATH: ""  # prevent memory spike and avoid I/O
+              STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
               VERSION_INFORMATION: off
               VPN_INTERFACE: wg0
               VPN_TYPE: wireguard
@@ -156,6 +156,10 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}
+        advancedMounts:
+          sabnzbd:
+            sabnzbd:
+              - path: /config
       empty:
         type: emptyDir
         sizeLimit: 20Mi
@@ -167,13 +171,17 @@ spec:
       media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
-        globalMounts:
-          - path: /media2/sabnzbd
-            subPath: sabnzbd
+        advancedMounts:
+          sabnzbd:
+            sabnzbd:
+              - path: /media2/sabnzbd
+                subPath: sabnzbd
       logs:
         type: emptyDir
-        globalMounts:
-          - path: /config/logs
+        advancedMounts:
+          sabnzbd:
+            sabnzbd:
+              - path: /config/logs
       run:
         type: emptyDir
         medium: Memory
