@@ -15,6 +15,7 @@ spec:
   mountOptions:
     - vers=3.0.2
     - posix
+    - persistenthandles
     - mfsymlinks
     - nomapposix
     - noperm
