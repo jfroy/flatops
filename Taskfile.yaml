@@ -17,15 +17,15 @@ env:
   VIRTUAL_ENV: '{{.ROOT_DIR}}/.venv'
 
 includes:
-  bootstrap: .taskfiles/Bootstrap
-  kubernetes: .taskfiles/Kubernetes
-  rook: .taskfiles/Rook
-  sops: .taskfiles/Sops
-  talos: .taskfiles/Talos
-  volsync: .taskfiles/VolSync
-  workstation: .taskfiles/Workstation
+  bootstrap: .taskfiles/bootstrap
+  kubernetes: .taskfiles/kubernetes
+  rook: .taskfiles/rook
+  sops: .taskfiles/sops
+  talos: .taskfiles/talos
+  volsync: .taskfiles/volsync
+  workstation: .taskfiles/workstation
   user:
-    taskfile: .taskfiles/User
+    taskfile: .taskfiles/user
     optional: true
 
 tasks:
@@ -36,9 +36,9 @@ tasks:
     desc: Initialize configuration files
     cmds:
       - cp -n {{.BOOTSTRAP_CONFIG_FILE | replace ".yaml" ".sample.yaml"}} {{.BOOTSTRAP_CONFIG_FILE}}
-      - cmd: echo === Configuration file copied ===
-      - cmd: echo Proceed with updating the configuration files...
-      - cmd: echo {{.BOOTSTRAP_CONFIG_FILE}}
+      - echo "=== Configuration file copied ==="
+      - echo "Proceed with updating the configuration files..."
+      - echo "{{.BOOTSTRAP_CONFIG_FILE}}"
     status:
       - test -f {{.BOOTSTRAP_CONFIG_FILE}}
     silent: true
@@ -69,9 +69,9 @@ tasks:
     internal: true
     cmds:
       - task: kubernetes:kubeconform
-      - cmd: echo === Done rendering and validating YAML ===
-      - cmd: |
-          if test -f ~/.config/sops/age/keys.txt; then
-            echo WARNING: SOPS Age key found in home directory, this may cause conflicts.
-          fi
+      - echo "=== Done rendering and validating YAML ==="
+      - '{{if eq .HOME_SOPS_AGE_KEY_FILE_EXISTS "true"}}echo "WARNING: SOPS Age key found in home directory, this may cause conflicts."{{end}}'
+    vars:
+      HOME_SOPS_AGE_KEY_FILE_EXISTS:
+        sh: test -f ~/.config/sops/age/keys.txt && echo true || echo false
     silent: true
