@@ -15,13 +15,6 @@ globals:
       disable spoolss: "true"
       dns proxy: "false"
       ea support: "true"
-      fruit:delete_empty_adfiles: "true"
-      fruit:metadata: stream
-      fruit:model: MacSamba
-      fruit:nfs_aces: "false"
-      fruit:posix_rename: "true"
-      fruit:veto_appledouble: "false"
-      fruit:wipe_intentionally_left_blank_rfork: "true"
       guest account: nobody
       load printers: "false"
       local master: "true"
@@ -34,12 +27,11 @@ globals:
       rpc_daemon:mdssd: disabled
       rpc_server:mdssvc: disabled
       security: user
-      server max protocol: SMB3_11
-      server min protocol: SMB3
+      server min protocol: SMB3_11
       server multi channel support: "true"
       server role: standalone server
       server string: kantai1
-      smb1 unix extensions: "false"
+      smb1 unix extensions: "true"
       smb3 unix extensions: "true"
       unix charset: UTF-8
       winbind request timeout: "2"
@@ -53,8 +45,6 @@ shares:
       comment: ""
       create mask: "0660"
       directory mask: "0770"
-      fruit:time machine max size: "0"
-      fruit:time machine: "false"
       guest ok: "false"
       kernel oplocks: "false"
       mangled names: "false"
@@ -63,4 +53,4 @@ shares:
       read only: "false"
       smbd max xattr size: "2097152"
       # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
-      vfs objects: fruit streams_xattr io_uring
+      vfs objects: streams_xattr io_uring
