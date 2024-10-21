@@ -18,6 +18,7 @@ spec:
     - mfsymlinks
     - nomapposix
     - noperm
+    - noserverino
     - uid=4000
     - forceuid
     - gid=4000
@@ -27,7 +28,7 @@ spec:
     readOnly: false
     volumeHandle: kantai1/media##
     volumeAttributes:
-      source: "//kantai1/media"
+      source: "//192.168.1.13/media"
     nodeStageSecretRef:
       name: media-smb-kantai1
       namespace: default
