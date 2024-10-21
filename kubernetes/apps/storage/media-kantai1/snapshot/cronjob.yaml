@@ -18,7 +18,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - TS=$(date -Iseconds) && chroot /host /usr/local/sbin/zfs snapshot reservoir/media-kantai1@${TS}
+                - TS=$(date +%FT%T%Z) && chroot /host /usr/local/sbin/zfs snapshot reservoir/media-kantai1@${TS}
               securityContext:
                 privileged: true
                 runAsUser: 0
