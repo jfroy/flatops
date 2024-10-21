@@ -3,6 +3,8 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: media-kantai1-snapshot
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
 spec:
   schedule: "0 8 * * MON" # weekly on Monday at 8:00
   jobTemplate:
