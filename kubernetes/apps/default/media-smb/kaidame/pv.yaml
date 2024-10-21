@@ -18,7 +18,9 @@ spec:
     - nomapposix
     - noperm
     - uid=4000
+    - forceuid
     - gid=4000
+    - forcegid
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
