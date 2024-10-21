@@ -14,15 +14,9 @@ spec:
   storageClassName: ""
   mountOptions:
     - vers=3.1.1
-    - resilienthandles
     - mfsymlinks
     - nomapposix
     - noperm
-    - noserverino
-    - cache=strict
-    - multichannel
-    - dir_mode=0770
-    - file_mode=0660
     - uid=4000
     - gid=4000
   csi:
