@@ -33,28 +33,10 @@ spec:
           qbittorrent:
             image:
               repository: ghcr.io/jfroy/qbittorrent
-              tag: 5.0.0@sha256:68a59875f9baa3f2ac8fe31017757f793129571e40f10b8f500af931aff04eda
+              tag: 5.0.0@sha256:038a32f749801dc3070de5f26f3c3dd24ec362d5b1f784acf481568ea6b7f503
             env:
               TZ: America/Los_Angeles
-              QBITTORRENT__PORT: &port 80
-              QBT_BitTorrent__Session__AsyncIOThreadsCount: "4"
-              QBT_BitTorrent__Session__DefaultSavePath: /media/qbittorrent/complete/default
-              QBT_BitTorrent__Session__DisableAutoTMMByDefault: "false"
-              QBT_BitTorrent__Session__Interface: wg0
-              QBT_BitTorrent__Session__InterfaceAddress: 0.0.0.0
-              QBT_BitTorrent__Session__InterfaceName: wg0
-              QBT_BitTorrent__Session__LSDEnabled: "false"
-              QBT_BitTorrent__Session__TempPath: /media/qbittorrent/incomplete
-              QBT_BitTorrent__Session__TempPathEnabled: "true"
-              QBT_BitTorrent__Session__TorrentExportDirectory: /media/qbittorrent/torrents
-              QBT_Network__PortForwardingEnabled: "false"
-              QBT_Preferences__General__Locale: en
-              QBT_Preferences__WebUI__AlternativeUIEnabled: "true"
-              QBT_Preferences__WebUI__AuthSubnetWhitelist: 0.0.0.0/0
-              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: "true"
-              QBT_Preferences__WebUI__LocalHostAuth: "false"
-              QBT_Preferences__WebUI__RootFolder: /share/vuetorrent
-              QBT_Preferences__WebUI__UseUPnP: "false"
+              QBT_WEBUI_PORT: &port 80
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
