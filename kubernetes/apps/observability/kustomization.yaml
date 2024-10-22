@@ -17,6 +17,5 @@ resources:
   # - ./scrutiny/ks.yaml
   - ./silence-operator/ks.yaml
   - ./unpoller/ks.yaml
-  # - ./vector-aggregator/ks.yaml
   - ./victorialogs/ks.yaml
   - ./victoriametrics/ks.yaml
