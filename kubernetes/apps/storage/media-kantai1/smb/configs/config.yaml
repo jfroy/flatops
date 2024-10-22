@@ -16,6 +16,7 @@ globals:
       dns proxy: "false"
       ea support: "true"
       guest account: nobody
+      host msdfs: "false"
       load printers: "false"
       local master: "true"
       log level: "1"
@@ -32,7 +33,7 @@ globals:
       server role: standalone server
       server string: kantai1
       smb1 unix extensions: "true"
-      smb3 unix extensions: "true"
+      smb3 unix extensions: "false"
       unix charset: UTF-8
       winbind request timeout: "2"
       workgroup: "WORKGROUP"
@@ -53,4 +54,4 @@ shares:
       read only: "false"
       smbd max xattr size: "2097152"
       # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
-      vfs objects: streams_xattr io_uring
+      vfs objects: streams_xattr
