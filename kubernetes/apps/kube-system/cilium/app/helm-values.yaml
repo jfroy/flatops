@@ -7,7 +7,7 @@ bandwidthManager:
   bbr: true
 bpf:
   datapathMode: veth
-  masquerade: true # Incompatible with Talos forwardKubeDNSToHost. siderolabs/talos/#8836
+  masquerade: true # See https://github.com/siderolabs/talos/issues/8836 (forwardKubeDNSToHost)
   tproxy: true
 cgroup:
   automount:

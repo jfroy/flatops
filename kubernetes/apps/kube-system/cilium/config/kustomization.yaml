@@ -7,4 +7,3 @@ resources:
   - ./bgppeerconfig.yaml
   - ./clusterwidenetworkpolicy.yaml
   - ./loadbalancerippool.yaml
-  - ./localredirectpolicy.yaml
