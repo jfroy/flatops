@@ -34,6 +34,8 @@ releases:
     version: 1.36.0
     values:
       - ../apps/kube-system/coredns/app/helm-values.yaml
+    secrets:
+      - coredns.sops.yaml
     needs:
       - observability/prometheus-operator-crds
       - kube-system/cilium
