@@ -29,10 +29,6 @@ spec:
       - paths: [ "/metadata/annotations/prometheus-operator-validated" ]
         target:
           kind: PrometheusRule
-  valuesFrom:
-    - kind: ConfigMap
-      name: kube-state-metrics-config
-      valuesKey: kube-state-metrics-config.yaml
   values:
     nameOverride: *app
     cleanPrometheusOperatorObjectNames: true
@@ -166,6 +162,15 @@ spec:
 
     kubeProxy:
       enabled: false  # KubeProxy is disabled in the cluster, see Cilium/Talos configs
+
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      prometheus:
+        monitor:
+          metricRelabelings:
+            # Drop high-cardinality labels.
+            - action: labeldrop
+              regex: (uid)
 
     nodeExporter:
       enabled: false  # node-exporter must be in observability-agents
