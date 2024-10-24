@@ -21,3 +21,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: flux-operator
+  values:
+    serviceMonitor:
+      create: true
