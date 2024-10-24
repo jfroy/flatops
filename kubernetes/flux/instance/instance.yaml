@@ -1,0 +1,86 @@
+---
+apiVersion: fluxcd.controlplane.io/v1
+kind: FluxInstance
+metadata:
+  name: flux
+  namespace: flux-system
+  annotations:
+    fluxcd.controlplane.io/reconcile: "enabled"
+    fluxcd.controlplane.io/reconcileEvery: "10m"
+    fluxcd.controlplane.io/reconcileTimeout: "1m"
+spec:
+  distribution:
+    version: 2.x
+    registry: ghcr.io/fluxcd
+    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+  components:
+    - source-controller
+    - kustomize-controller
+    - helm-controller
+    - notification-controller
+  cluster:
+    type: kubernetes
+    multitenant: false
+    networkPolicy: false
+    domain: cluster.local
+  kustomize:
+    patches:
+      # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
+      # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --concurrent=8
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --kube-api-qps=500
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --kube-api-burst=1000
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --requeue-dependency=5s
+        target:
+          kind: Deployment
+          name: (kustomize-controller|helm-controller|source-controller)
+      - patch: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: not-used
+          spec:
+            template:
+              spec:
+                containers:
+                  - name: manager
+                    resources:
+                      limits:
+                        cpu: 2000m
+                        memory: 2Gi
+        target:
+          kind: Deployment
+          name: (kustomize-controller|helm-controller|source-controller)
+      # Enable Helm near OOM detection
+      # https://fluxcd.io/flux/installation/configuration/helm-oom-detection/
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --feature-gates=OOMWatch=true
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --oom-watch-memory-threshold=95
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --oom-watch-interval=500ms
+        target:
+          kind: Deployment
+          name: helm-controller
+      # Set HelmController log level to debug to investigate drift issues
+      # https://fluxcd.io/flux/components/helm/helmreleases/#drift-detection
+      - patch: |
+          - op: add
+            path: /spec/template/spec/containers/0/args/-
+            value: --log-level=debug
+        target:
+          kind: Deployment
+          name: helm-controller
