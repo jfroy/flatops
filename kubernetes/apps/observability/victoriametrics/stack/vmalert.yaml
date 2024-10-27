@@ -19,12 +19,4 @@ spec:
     url: http://vmsingle-stack.observability.svc:8429
   replicaCount: 1
   selectAllByDefault: true
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: DoNotSchedule
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/instance: stack
-          app.kubernetes.io/name: vmalert
   useStrictSecurity: true

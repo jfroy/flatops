@@ -22,12 +22,4 @@ spec:
       requests:
         storage: 10Gi
     storageClassName: openebs-hostpath
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: DoNotSchedule
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/instance: stack
-          app.kubernetes.io/name: vmsingle
   useStrictSecurity: true
