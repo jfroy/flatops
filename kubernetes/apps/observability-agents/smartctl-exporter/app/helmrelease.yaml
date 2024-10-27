@@ -31,3 +31,6 @@ spec:
       enabled: true
     prometheusRules:
       enabled: false
+    image:
+      repository: ghcr.io/jfroy/smartctl_exporter
+      tag: 0.12
