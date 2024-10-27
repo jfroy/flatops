@@ -44,7 +44,9 @@ spec:
   retryInterval: 1m
   postBuild:
     substitute:
+      # renovate: datasource=github-releases depName=siderolabs/talos
+      TALOS_VERSION: v1.8.1
       # renovate: datasource=docker depName=ghcr.io/jfroy/talos/secureboot-installer
-      TALOS_VERSION: v1.8.1-jfroy.7
+      TALOS_JFROY_VERSION: v1.8.1-jfroy.7
       # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
       KUBERNETES_VERSION: v1.31.2
