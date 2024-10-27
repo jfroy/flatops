@@ -18,7 +18,6 @@ cluster:
   name: kantai
 cni:
   exclusive: false
-devices: enp129s0+
 enableIPv4BIGTCP: true
 enableIPv6BIGTCP: true
 # Pod, service, and load-balancer IPs are allocated from a publicly routable CIDR.
