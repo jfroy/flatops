@@ -24,11 +24,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: influxdb2
-    resources:
-      requests:
-        cpu: 100m
-      limits:
-        memory: 256Mi
     securityContext:
       allowPrivilegeEscalation: false
       capabilities: { drop: ["ALL"] }

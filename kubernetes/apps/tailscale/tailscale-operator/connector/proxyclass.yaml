@@ -8,11 +8,8 @@ spec:
     pod:
       tailscaleContainer:
         resources:
-          requests:
-            cpu: 100m
           limits:
             kernel.org/tun: 1
-            memory: 512Mi
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0

@@ -18,11 +18,6 @@ spec:
   remoteWrite:
     url: http://vmsingle-stack.observability.svc:8429
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 3m
-    limits:
-      memory: 128Mi
   selectAllByDefault: true
   topologySpreadConstraints:
     - maxSkew: 1

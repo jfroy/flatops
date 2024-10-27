@@ -13,11 +13,6 @@ spec:
     class_name: internal
     host: vam.${PUBLIC_DOMAIN0}
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 1m
-    limits:
-      memory: 64Mi
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname

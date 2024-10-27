@@ -42,11 +42,6 @@ spec:
             envFrom:
               - secretRef:
                   name: nut-exporter-secret
-            resources:
-              requests:
-                cpu: 1m
-              limits:
-                memory: 100Mi
     service:
       nut-exporter:
         controller: nut-exporter

@@ -40,11 +40,6 @@ spec:
         extra:
           - name: alloy-events
             mountPath: /var/lib/alloy
-      resources:
-        limits:
-          memory: 200Mi
-        requests:
-          cpu: 10m
     controller:
       type: "deployment"
       replicas: 1 # do not scale up

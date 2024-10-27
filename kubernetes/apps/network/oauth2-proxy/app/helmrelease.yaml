@@ -53,13 +53,6 @@ spec:
               OAUTH2_PROXY_SET_AUTHORIZATION-HEADER: true
               OAUTH2_PROXY_SET_XAUTHREQUEST: true
               OAUTH2_PROXY_WHITELIST_DOMAINS: ".${PUBLIC_DOMAIN0}"
-            resources:
-              requests:
-                cpu: 15m
-                memory: 16Mi
-              limits:
-                cpu: 50m
-                memory: 64Mi
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true

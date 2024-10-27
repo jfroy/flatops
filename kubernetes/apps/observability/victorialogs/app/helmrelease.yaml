@@ -36,11 +36,6 @@ spec:
         enabled: true
         storageClassName: openebs-hostpath
         size: 10Gi
-      resources:
-        requests:
-          cpu: 5m
-        limits:
-          memory: 1Gi
       ingress:
         enabled: true
         annotations:

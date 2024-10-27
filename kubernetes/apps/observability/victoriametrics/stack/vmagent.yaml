@@ -15,11 +15,6 @@ spec:
   remoteWrite:
     - url: http://vmsingle-stack.observability.svc:8429/api/v1/write
   replicaCount: 1
-  resources:
-    requests:
-      cpu: 3m
-    limits:
-      memory: 512Mi
   scrapeInterval: 60s
   selectAllByDefault: true
   statefulMode: true

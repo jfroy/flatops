@@ -32,11 +32,6 @@ spec:
       enable_converter_ownership: true
     service:
       ipFamilyPolicy: PreferDualStack
-    resources:
-      requests:
-        cpu: 50m
-      limits:
-        memory: 200Mi
     admissionWebhooks:
       enabled: true
       certManager:

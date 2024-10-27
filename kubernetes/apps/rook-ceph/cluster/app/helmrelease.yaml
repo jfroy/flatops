@@ -67,31 +67,6 @@ spec:
         # "If no mgr annotations are set, prometheus scrape annotations will be set by default."
         mgr:
           dummy: "true"
-      resources:
-        mgr:
-          requests:
-            cpu: 100m
-            memory: 512Mi
-          limits:
-            memory: 1Gi
-        mon:
-          requests:
-            cpu: 500m
-            memory: 1Gi
-          limits:
-            memory: 2Gi
-        osd:
-          requests:
-            cpu: 500m
-            memory: 2Gi
-          limits:
-            memory: 4Gi
-        mgr-sidecar:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            memory: 256Mi
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -208,10 +183,6 @@ spec:
             activeCount: 1
             activeStandby: true
             priorityClassName: system-cluster-critical
-            resources:
-              requests:
-                cpu: 100m
-                memory: 1Gi
         storageClass:
           enabled: true
           isDefault: false
@@ -251,10 +222,6 @@ spec:
           preservePoolsOnDelete: true
           gateway:
             instances: 2
-            resources:
-              requests:
-                cpu: 100m
-                memory: 1Gi
             priorityClassName: system-cluster-critical
             port: 80
         storageClass:

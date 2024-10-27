@@ -61,13 +61,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 1
-                memory: 2Gi
-              limits:
-                cpu: 4
-                memory: 50Gi
         initContainers:
           gluetun:
             image:
@@ -108,10 +101,7 @@ spec:
                   periodSeconds: 10
                   failureThreshold: 5
             resources:
-              requests:
-                memory: 48Mi
               limits:
-                memory: 96Mi
                 kernel.org/tun: 1
             restartPolicy: Always
             securityContext:

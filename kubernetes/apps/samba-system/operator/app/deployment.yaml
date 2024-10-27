@@ -58,10 +58,6 @@ spec:
           ports:
             - containerPort: 8443
               name: https
-          resources:
-            limits:
-              cpu: 10m
-              memory: 100Mi
         - args:
             - --metrics-addr=127.0.0.1:8080
             - --enable-leader-election
@@ -90,11 +86,4 @@ spec:
           image: quay.io/samba.org/samba-operator:v0.5
           imagePullPolicy: Always
           name: manager
-          resources:
-            limits:
-              cpu: 100m
-              memory: 100Mi
-            requests:
-              cpu: 100m
-              memory: 20Mi
       terminationGracePeriodSeconds: 10

@@ -31,13 +31,6 @@ spec:
         - name: PROMETHEUS_NAMESPACE
           value: observability
       replicaCount: 1
-      resources:
-        requests:
-          memory: 128Mi
-    console:
-      resources:
-        requests:
-          memory: 128Mi
   postRenderers:
     - kustomize:
         patches:

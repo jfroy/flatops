@@ -30,8 +30,3 @@ spec:
         enabled: true
     monitoring:
       enabled: true
-    resources:
-      requests:
-        memory: 128Mi
-        cpu: 100m
-      limits: {}

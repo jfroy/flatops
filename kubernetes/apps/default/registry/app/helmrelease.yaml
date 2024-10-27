@@ -53,9 +53,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            resources:
-              limits:
-                memory: 256Mi
       gc:
         type: cronjob
         annotations:

@@ -59,11 +59,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                cpu: 1m
-              limits:
-                memory: 500Mi
         initContainers:
           copy-nextjs:
             image: *image

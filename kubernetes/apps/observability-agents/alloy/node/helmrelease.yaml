@@ -53,11 +53,6 @@ spec:
       securityContext:
         privileged: true
         runAsUser: 0
-      resources:
-        limits:
-          memory: 200Mi
-        requests:
-          cpu: 10m
     controller:
       type: "daemonset"
       hostNetwork: true

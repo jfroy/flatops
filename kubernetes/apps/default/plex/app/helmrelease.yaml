@@ -57,10 +57,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
-              requests:
-                cpu: 100m
               limits:
-                memory: 16Gi
                 nvidia.com/gpu: 1
         pod:
           runtimeClassName: nvidia

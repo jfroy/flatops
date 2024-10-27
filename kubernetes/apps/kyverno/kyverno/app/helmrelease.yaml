@@ -26,14 +26,6 @@ spec:
     admissionController:
       priorityClassName: system-cluster-critical
       apiPriorityAndFairness: true
-      container:
-        resources:
-          limits:
-            cpu: 100m
-            memory: 200Mi
-          requests:
-            cpu: 100m
-            memory: 200Mi
       serviceMonitor:
         enabled: true
         metricRelabelings:

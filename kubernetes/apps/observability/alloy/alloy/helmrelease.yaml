@@ -39,11 +39,6 @@ spec:
         extra:
           - name: alloy
             mountPath: /var/lib/alloy
-      resources:
-        limits:
-          memory: 500Mi
-        requests:
-          cpu: 200m
     controller:
       type: "statefulset"
       replicas: 1
