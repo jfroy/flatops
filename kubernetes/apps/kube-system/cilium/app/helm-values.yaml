@@ -40,7 +40,7 @@ kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: false
 loadBalancer:
-  acceleration: native
+  acceleration: best-effort
   algorithm: maglev
   mode: dsr
 localRedirectPolicy: true
