@@ -3,7 +3,7 @@
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
-  name: talos
+  name: talos-kantai1
 spec:
   version: ${TALOS_VERSION}
   serviceAccountName: system-upgrade
@@ -21,6 +21,9 @@ spec:
       - key: feature.node.kubernetes.io/system-os_release.VERSION_ID
         operator: NotIn
         values: ["${TALOS_VERSION}"]
+      - key: kubernetes.io/hostname
+        operator: In
+        values: ["kantai1"]
   tolerations:
     - key: CriticalAddonsOnly
       operator: Exists
