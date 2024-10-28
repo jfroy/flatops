@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./kaidame.yaml
   - ./smart.yaml
+  - ./overcommit.yaml

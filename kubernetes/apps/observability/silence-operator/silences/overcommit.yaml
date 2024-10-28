@@ -1,0 +1,13 @@
+---
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: i-am-overcommitted
+spec:
+  matchers:
+    - name: alertname
+      value: KubeCPUOvercommit
+      isRegex: false
+    - name: alertname
+      value: KubeMemoryOvercommit
+      isRegex: false
