@@ -14,18 +14,6 @@ env:
 
 tasks:
 
-  gen-mc:
-    desc: Generate machineconfigs
-    dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
-    cmd: talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --env-file {{.TALHELPER_ENV_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
-    preconditions:
-      - msg: Missing talhelper config file
-        sh: test -f {{.TALHELPER_CONFIG_FILE}}
-      - msg: Missing talenv config file
-        sh: test -f {{.TALHELPER_ENV_FILE}}
-      - msg: Missing talsecret config file
-        sh: test -f {{.TALHELPER_SECRET_FILE}}
-
   apply-mc:
     desc: Apply machineconfigs
     dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
@@ -36,9 +24,26 @@ tasks:
       - msg: Missing talosconfig
         sh: test -f {{.TALOSCONFIG}}
 
+  generate-config:
+    desc: Generate Talos configuration
+    aliases:
+      - gen-mc
+    cmd: talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --env-file {{.TALHELPER_ENV_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+    preconditions:
+      - msg: Missing talhelper config file
+        sh: test -f {{.TALHELPER_CONFIG_FILE}}
+      - msg: Missing talenv config file
+        sh: test -f {{.TALHELPER_ENV_FILE}}
+      - msg: Missing talsecret config file
+        sh: test -f {{.TALHELPER_SECRET_FILE}}
+
   apply-config:
     desc: Apply Talos configuration to a node
-    cmd: talosctl apply-config --mode={{.MODE}} --nodes {{.HOSTNAME}} --file {{.TALHELPER_CLUSTER_DIR}}/{{.CLUSTER_NAME}}-{{.HOSTNAME}}.yaml
+    cmds:
+      - '{{if eq .MODE "reboot"}}kubectl drain {{.HOSTNAME}} --ignore-daemonsets --delete-emptydir-data --force{{end}}'
+      - talosctl apply-config --mode={{.MODE}} --nodes {{.HOSTNAME}} --file {{.TALHELPER_CLUSTER_DIR}}/{{.CLUSTER_NAME}}-{{.HOSTNAME}}.yaml
+      - talosctl --nodes {{.HOSTNAME}} health --wait-timeout=10m --server=false
+      - '{{if eq .MODE "reboot"}}kubectl uncordon {{.HOSTNAME}}{{end}}'
     vars:
       MODE: '{{.MODE | default "no-reboot"}}'
       CLUSTER_NAME:
@@ -95,8 +100,7 @@ tasks:
 
   upgrade-k8s:
     desc: Upgrade Kubernetes
-    cmds:
-      - talosctl --nodes {{.KUBERNETES_CONTROLLER}} upgrade-k8s --to {{.KUBERNETES_VERSION}}
+    cmd: talosctl --nodes {{.KUBERNETES_CONTROLLER}} upgrade-k8s --to {{.KUBERNETES_VERSION}}
     vars:
       KUBERNETES_CONTROLLER:
         sh: talosctl config info --output json | jq --raw-output '.endpoints[]' | shuf -n 1
