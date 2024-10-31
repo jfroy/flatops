@@ -25,6 +25,7 @@ spec:
   values:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
+      provisionerReplicas: 1
       enableLiveness: true
       serviceMonitor:
         enabled: true
