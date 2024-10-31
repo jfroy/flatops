@@ -126,13 +126,14 @@ nodes:
     installDiskSelector:
       size: '> 50GB'
     controlPlane: true
-    talosImageURL: factory.talos.dev/installer/376567988ad370138ad8b2698212367b8edcb69b5fd68c80be1f2ec7d603b4ba
     networkInterfaces:
       - interface: enxf243cb7739d7
         dhcp: true
         mtu: 1500
         vip:
           ip: "192.168.1.8"
+    nodeTaints:
+      node-role.kubernetes.io/control-plane: :NoSchedule
     patches:
       # sysctls
       - |-
@@ -143,6 +144,30 @@ nodes:
             net.ipv6.conf.all.forwarding: "1"
             net.ipv6.conf.enxf243cb7739d7.accept_ra: "2"
             net.ipv6.conf.enxf243cb7739d7.forwarding: "1"
+
+  - hostname: "kantai3"
+    ipAddress: "192.168.1.10"
+    installDiskSelector:
+      wwid: eui.e8238fa6bf530001001b448b4e89de82
+    controlPlane: true
+    networkInterfaces:
+      - interface: enp1s0
+        dhcp: true
+        mtu: 1500
+        vip:
+          ip: "192.168.1.8"
+    nodeTaints:
+      node-role.kubernetes.io/control-plane: :NoSchedule
+    patches:
+      # sysctls
+      - |-
+        machine:
+          sysctls:
+            net.core.bpf_jit_harden: "1"
+            net.ipv6.conf.all.accept_ra: "2"
+            net.ipv6.conf.all.forwarding: "1"
+            net.ipv6.conf.enp1s0.accept_ra: "2"
+            net.ipv6.conf.enp1s0.forwarding: "1"
 
 patches:
   # Disable search domain everywhere
