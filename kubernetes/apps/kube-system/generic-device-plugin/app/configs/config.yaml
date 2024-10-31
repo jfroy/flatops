@@ -1,0 +1,9 @@
+---
+log-level: info
+domain: kernel.org
+devices:
+  - name: tun
+    groups:
+      - count: 1000
+        paths:
+          - path: /dev/net/tun
