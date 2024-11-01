@@ -175,7 +175,7 @@ spec:
             subPath: tmp
       media:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kaidame
+        existingClaim: default-media-smb-kantai3
         advancedMounts:
           qbittorrent:
             qbittorrent:
