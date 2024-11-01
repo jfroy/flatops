@@ -8,7 +8,6 @@ spec:
   staticConfigs:
     - targets:
         - "homeassistant:9100"
-        - "kaidame:9100"
         - "pikvm:9100"
   metricsPath: /metrics
   relabelings:
@@ -41,18 +40,3 @@ spec:
 #       name: pikvm-mini1-http-secret
 #   tlsConfig:
 #     insecureSkipVerify: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
-  name: &name zfs-exporter
-spec:
-  staticConfigs:
-    - targets:
-        - "kaidame:9134"
-  metricsPath: /metrics
-  relabelings:
-    - action: replace
-      targetLabel: job
-      replacement: *name
