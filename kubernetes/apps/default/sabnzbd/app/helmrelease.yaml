@@ -65,7 +65,7 @@ spec:
           gluetun:
             image:
               repository: ghcr.io/jfroy/gluetun
-              tag: v3.39.0-jfroy.3@sha256:01466321c40563cf95e9d57ec978802072c4d51c8665646d3c80a72b25fe0dde
+              tag: v3.39.1-jfroy.1@sha256:8700995646d83166e4f9322b99deba1802ee733f2fca792154865001ff02b8ce
             env:
               BLOCK_MALICIOUS: "off" # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DOT_IPV6: "on"
@@ -77,6 +77,7 @@ spec:
               STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
               VERSION_INFORMATION: off
               VPN_INTERFACE: wg0
+              VPN_IPV6_SERVER: "off"
               VPN_TYPE: wireguard
               TZ: America/Los_Angeles
             envFrom:
