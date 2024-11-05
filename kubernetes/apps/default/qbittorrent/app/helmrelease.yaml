@@ -53,22 +53,39 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         initContainers:
-          gluetun:
+          gluetun-update:
             image:
               repository: ghcr.io/jfroy/gluetun
-              tag: v3.39.1-jfroy.1@sha256:8700995646d83166e4f9322b99deba1802ee733f2fca792154865001ff02b8ce
+              tag: v3.39.1-jfroy.2@sha256:ca5057da97c0510b176c98a9c2494130d8aad0e357c46a1d0dddbff3f08c64ea
+            args:
+              - update
+              - -enduser
             env:
-              BLOCK_MALICIOUS: "off" # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
-              DOT_IPV6: "on"
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-gluetun-secret
+            securityContext: *securityContext
+          gluetun:
+            dependsOn:
+              - gluetun-update
+            image:
+              repository: ghcr.io/jfroy/gluetun
+              tag: v3.39.1-jfroy.2@sha256:ca5057da97c0510b176c98a9c2494130d8aad0e357c46a1d0dddbff3f08c64ea
+            env:
+              BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
+              DOT_IPV6: on
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
               HEALTH_SERVER_ADDRESS: ":9999"
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
+              PUBLICIP_API: cloudflare
               STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
+              UPDATER_PERIOD: 24h
               VERSION_INFORMATION: off
               VPN_INTERFACE: wg0
-              VPN_IPV6_SERVER: "off"
+              VPN_IPV6_SERVER: off
               VPN_TYPE: wireguard
               TZ: America/Los_Angeles
             envFrom:
@@ -168,12 +185,22 @@ spec:
         type: emptyDir
         sizeLimit: 20Mi
         globalMounts:
-          - path: /gluetun
-            subPath: gluetun
           - path: /share
             subPath: share
           - path: /tmp
             subPath: tmp
+      gluetun:
+        type: emptyDir
+        sizeLimit: 1Mi
+        advancedMounts:
+          qbittorrent:
+            gluetun-update:
+            - path: /gluetun
+              subPath: gluetun
+            gluetun:
+            - path: /gluetun
+              subPath: gluetun
+              readOnly: true
       media:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai3
