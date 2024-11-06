@@ -62,22 +62,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         initContainers:
-          gluetun-update:
-            image:
-              repository: ghcr.io/jfroy/gluetun
-              tag: v3.39.1-jfroy.2@sha256:ca5057da97c0510b176c98a9c2494130d8aad0e357c46a1d0dddbff3f08c64ea
-            args:
-              - update
-              - -enduser
-            env:
-              TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: sabnzbd-gluetun-secret
-            securityContext: *securityContext
           gluetun:
-            dependsOn:
-              - gluetun-update
             image:
               repository: ghcr.io/jfroy/gluetun
               tag: v3.39.1-jfroy.2@sha256:ca5057da97c0510b176c98a9c2494130d8aad0e357c46a1d0dddbff3f08c64ea
@@ -115,9 +100,7 @@ spec:
                   httpGet:
                     path: /
                     port: 9999
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  failureThreshold: 5
+                  initialDelaySeconds: 5
             resources:
               limits:
                 kernel.org/tun: 1
@@ -175,16 +158,11 @@ spec:
           - path: /tmp
             subPath: tmp
       gluetun:
-        type: emptyDir
-        sizeLimit: 1Mi
+        existingClaim: gluetun-update
         advancedMounts:
           sabnzbd:
-            gluetun-update:
-            - path: /gluetun
-              subPath: gluetun
             gluetun:
             - path: /gluetun
-              subPath: gluetun
               readOnly: true
       media2:
         type: persistentVolumeClaim
