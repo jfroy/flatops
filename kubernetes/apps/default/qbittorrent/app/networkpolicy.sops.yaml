@@ -9,21 +9,15 @@ spec:
         matchLabels:
             app.kubernetes.io/instance: qbittorrent
     egress:
-        - toCIDR:
-            - ENC[AES256_GCM,data:xsfsgKgQt/f3dsZqRI4ppw==,iv:oOYtzeNyKPdj8e9d8gF1Go+5VhHKqdW7zYlXCdW2WPU=,tag:/xxdKZwokEwOt71SUJ4pzA==,type:str]
-            - ENC[AES256_GCM,data:JBYdykm1hOxD4zDDvUUT/Q==,iv:+nl1azgwDmtjMLvNEtrqbpJRfH5aADGa0npJpY7JEf0=,tag:/0gInFQMU3OEDJfy7YXRAw==,type:str]
-            - ENC[AES256_GCM,data:Wr1ymdW7QutGfsgQwoFixflr,iv:svoG79R0egaw1gRdleANg2CrIWszxm+kOV/yR2Ps9aM=,tag:+PJlhn/7YfsdpRY3VZPopw==,type:str]
-            - ENC[AES256_GCM,data:j1yYnbPNjqlCmHHfVO28QUkad08nTYVYK66v+dyCUkaAx16y2E8Vt3M=,iv:1ViZc1WJ6ynwF5KK+K8qGzrmiOIRLFVrxpB2u78VPsQ=,tag:HR6kSkDDHiXFrPb/mBiLeg==,type:str]
-            - ENC[AES256_GCM,data:pwinIowkrDrS7BBwzdU5OCZtuTKun+zS4i1YX0f09tw8ZIZC4JU=,iv:i4tSQJ1saK51hSbwefWHwwxppi9U83qiu3RazOJMSdA=,tag:BjtaMoJYkH5KhLMOvm1jNw==,type:str]
-            - ENC[AES256_GCM,data:qkwuoc6g9caxChUpz+KYoU4a3LXDh4Fak8lMPDwtlI9X0PQndMs=,iv:UP1eJnZD/tq+4JKOMqHhiHNC/yHH0sLuS4plMTLrCEc=,tag:QJr9rzIMBg5VYvl69JHj1Q==,type:str]
+        - toPorts:
+            - ports:
+                - port: ENC[AES256_GCM,data:PLgfWQ==,iv:BVZOE7VAg6xepBDql6SNeM0CQQm1dhvynpNEVcqc61s=,tag:hDTkVzncNxovJfB5pgFP7g==,type:str]
+                  protocol: ENC[AES256_GCM,data:4/LD,iv:rdvjsK5j9qjJSk88wO/P704NBdaEkyR22QNMxXFbkUs=,tag:Pn4n5sTjTot+sOWa1XSj5g==,type:str]
     ingress:
-        - fromCIDR:
-            - ENC[AES256_GCM,data:EV6+034utA4Y6wcFHupv8g==,iv:2x+3WTQMfDQDbJOhg94RUS+5CX/tT9xO3cTyilJrVDM=,tag:EObkMoGVfvcs0rgUvcX1wg==,type:str]
-            - ENC[AES256_GCM,data:cAlulRKfUSRS1gFdp+QCaQ==,iv:iRMt/olmy6Qkac2KvjYj1xS95D65zV/jm5nyFT2Yx80=,tag:R4WpGAbCqv0/BtE2X65+nw==,type:str]
-            - ENC[AES256_GCM,data:9TK+h2mrr3R7jKWp85jmXecc,iv:He0n4Y2BeG1UEYN/joZJVnRsGlq2QPnhEqgsr4jIDVI=,tag:VQF3BhEK330cKsTtSJp20A==,type:str]
-            - ENC[AES256_GCM,data:mFOJsPpHR+dNmUcGGZz3FmVSG+Dwo1V3SDxRzRwg8jd0VqvWLnSbL64=,iv:7Vm8/8osIDcrfyPp/e0WM00BkM9guhGhP95iecHAFzU=,tag:WWNwwn8wMQB+p5iC+Bhrhg==,type:str]
-            - ENC[AES256_GCM,data:DIAlcz03qmLhd0kb+XhJENr4QNM8bkIa12ojJMfMeHLUfYJcRQ0=,iv:yfIyiUkrUzJFGVYdMbmURUYidGIsXLrJdXLYoyq+GkU=,tag:bxj9Ts3JUa6fus1W2F/g3g==,type:str]
-            - ENC[AES256_GCM,data:VsBlsN94838c8KC2/ARqSHL3QdERZgfuZE9yDTqDMX2Cb8g0QdA=,iv:ShsbJQbGsuhBoSpQSY9SC3levIdp7LYhnvOg7tWq43U=,tag:WSOpMP+BAwJz05nBPWLVgg==,type:str]
+        - toPorts:
+            - ports:
+                - port: ENC[AES256_GCM,data:2znAfQ==,iv:l7hN73LhXCSrstXdGqoac28HgFtNp7Be9BnhkARKaJo=,tag:lj7yQjon2qB1zHVWpvvzRg==,type:str]
+                  protocol: ENC[AES256_GCM,data:W/1y,iv:yzv1Yr7lj6rqxMrXlIPupdtaJmzQxbuX/qRFWcV3TOo=,tag:IiPLEZRHz23lp4q8Rmy4HA==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -39,8 +33,8 @@ sops:
             aFY2Y1IyeDVPL3hwMjFlM3RreW0yL3MKXViSZ6vOYKenQ48ONcD2ZOfIvoSpYJZW
             FkKsPqZUcU4SaVMHSKGjYSQ9ky+KN40aRPdOGNLRBBtq2PRXCjwPgw==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-08-15T05:20:17Z"
-    mac: ENC[AES256_GCM,data:4LDQEFVHOqUpq/5aIKnCJ30YlFWQApuX8Ysj1Kdowc4Z0S5z3R9I4sWe+2iahIB/osW6+ymvjBnCfJ/1k0fH/iGNUiHYDBTDgGeOMeUOy7dhBTUZjsxW76/WHIlJ/9Qe2n/rJbUoC6DmtHhytB9FWdEklDMz3DnuQYbkdO6waWs=,iv:DLt6coTTfTaeo501UBLehlrCn/WH14ZG/P0LpGAZSc0=,tag:97ChD9IOS6Vm7gSqS206Zw==,type:str]
+    lastmodified: "2024-11-05T23:36:06Z"
+    mac: ENC[AES256_GCM,data:dM6T61m1lYjZftxpExgEvZKNqmJuOLPUUgR8/Szw2SYU0NN5rK36hLkbp1h4fwcfYrAQtakIYoQPVe7rFN3d+cbHq1c7EH+GXCbV+QCtcV+fXt8al91jaVWsSToH//0PVinfDtAtsCY+UJtHeQm/S+3IqmH3RuA3HroNOWRLqrA=,iv:uFckMadgJjsDFXOBC/SyblcRCpULF7FV7hoSI1amHKA=,tag:PmquaKId1V4e0ldUoYS6XA==,type:str]
     pgp: []
     encrypted_regex: ^(egress|ingress)$
-    version: 3.9.0
+    version: 3.9.1

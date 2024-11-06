@@ -6,6 +6,7 @@ resources:
   - ./namespace.yaml
   # --
   # - ./autobrr/ks.yaml
+  - ./gluetun/ks.yaml
   - ./homepage/ks.yaml
   - ./media-smb/ks.yaml
   - ./plex/ks.yaml
