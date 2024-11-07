@@ -62,7 +62,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: zfs-scrub-kantai1-reservoir
+  name: zfs-scrub-kantai1
 spec:
   schedule: "0 2 1 * *" # 02:00 on the 1st of every month
   jobTemplate:
@@ -76,7 +76,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - chroot /host /usr/local/sbin/zpool scrub reservoir
+                - chroot /host /usr/local/sbin/zpool scrub -w reservoir
               securityContext:
                 privileged: true
                 runAsUser: 0
