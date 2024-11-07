@@ -59,7 +59,8 @@ spec:
               tag: v3.39.1-jfroy.2@sha256:ca5057da97c0510b176c98a9c2494130d8aad0e357c46a1d0dddbff3f08c64ea
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
-              DOT_IPV6: on
+              DOT: off
+              DOT_CACHING: off
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
               HEALTH_SERVER_ADDRESS: ":9999"
