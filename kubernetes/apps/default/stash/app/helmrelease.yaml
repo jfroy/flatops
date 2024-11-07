@@ -125,6 +125,6 @@ spec:
         size: 100Mi
       sss:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai3
+        existingClaim: media-smb-media1
         globalMounts:
           - path: /mnt/citerne/media
