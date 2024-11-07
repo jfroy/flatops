@@ -177,7 +177,7 @@ spec:
               readOnly: true
       media:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai3
+        existingClaim: media-smb-media1
         advancedMounts:
           qbittorrent:
             qbittorrent:

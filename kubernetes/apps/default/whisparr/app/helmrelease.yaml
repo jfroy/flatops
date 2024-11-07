@@ -103,6 +103,6 @@ spec:
         existingClaim: ${APP}
       media:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai3
+        existingClaim: media-smb-media1
       tmp:
         type: emptyDir
