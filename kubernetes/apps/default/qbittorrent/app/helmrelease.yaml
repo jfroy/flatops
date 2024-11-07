@@ -58,7 +58,7 @@ spec:
               tag: latest
               pullPolicy: Always
             command: ["/bin/bash"]
-            args: ["-c", "while true; sleep infinity; done"]
+            args: ["-c", "while true; do sleep infinity; done"]
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
