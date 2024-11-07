@@ -150,6 +150,11 @@ nodes:
     installDiskSelector:
       wwid: eui.e8238fa6bf530001001b448b4e89de82
     controlPlane: true
+    kernelModules:
+      - name: nvidia
+      - name: nvidia-uvm
+      - name: nvidia-modeset
+      - name: zfs
     networkInterfaces:
       - interface: enp1s0
         dhcp: true
