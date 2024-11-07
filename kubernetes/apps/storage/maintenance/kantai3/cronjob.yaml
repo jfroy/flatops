@@ -22,6 +22,10 @@ spec:
           nodeSelector:
             kubernetes.io/hostname: kantai3
           restartPolicy: OnFailure
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
           volumes:
             - hostPath:
                 path: /dev
@@ -53,6 +57,10 @@ spec:
           nodeSelector:
             kubernetes.io/hostname: kantai3
           restartPolicy: OnFailure
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
           volumes:
             - hostPath:
                 path: /dev
@@ -86,6 +94,10 @@ spec:
           nodeSelector:
             kubernetes.io/hostname: kantai3
           restartPolicy: OnFailure
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
           volumes:
             - hostPath:
                 path: /
