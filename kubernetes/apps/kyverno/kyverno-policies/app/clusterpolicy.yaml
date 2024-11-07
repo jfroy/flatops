@@ -70,7 +70,7 @@ spec:
           exclude:
             - controlName: Capabilities
               images:
-                - "*"
+                - "ghcr.io/jfroy/gluetun:*"
               restrictedField: spec.initContainers[*].securityContext.capabilities.add
               values:
                 - NET_ADMIN
