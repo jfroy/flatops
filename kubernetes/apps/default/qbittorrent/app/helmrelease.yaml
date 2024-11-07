@@ -123,6 +123,10 @@ spec:
                   periodSeconds: 1
             securityContext: *securityContext
             restartPolicy: Always
+        pod:
+          labels:
+            gluetun: "true"
+          hostname: qbittorrent
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
