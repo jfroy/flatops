@@ -42,7 +42,7 @@ spec:
               tag: fedora-latest
             env:
               SAMBACC_CONFIG: /config/config.yaml:/config/users.json
-              SAMBA_CONTAINER_ID: zfs-media1-smb
+              SAMBA_CONTAINER_ID: media
             ports:
               - containerPort: 445
                 hostPort: 445

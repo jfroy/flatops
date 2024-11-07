@@ -1,6 +1,6 @@
 samba-container-config: v0
 configs:
-  media-kantai1-smb:
+  media:
     globals:
       - default
     shares:
@@ -21,7 +21,7 @@ globals:
       local master: "true"
       log level: "1"
       netbios aliases: ""
-      netbios name: kantai1
+      netbios name: kantai3
       ntlm auth: "false"
       printcap name: /dev/null
       restrict anonymous: "2"
