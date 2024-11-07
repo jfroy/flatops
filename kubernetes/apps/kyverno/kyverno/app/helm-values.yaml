@@ -3,3 +3,6 @@ fullnameOverride: kyverno
 features:
   backgroundScan:
     skipResourceFilters: false
+  policyExceptions:
+    enabled: true
+    namespace: kyverno
