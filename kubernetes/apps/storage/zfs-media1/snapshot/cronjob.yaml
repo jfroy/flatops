@@ -1,0 +1,35 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zfs-media1-snapshot
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+spec:
+  schedule: "0 8 * * MON" # weekly on Monday at 8:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: snapshot
+              image: alpine:3.20.3
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - TS=$(date +%FT%T%Z) && chroot /host /usr/local/sbin/zfs snapshot citerne/media1@${TS}
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              volumeMounts:
+                - mountPath: /host
+                  name: host
+          nodeSelector:
+            kubernetes.io/hostname: kantai3
+          restartPolicy: OnFailure
+          volumes:
+            - hostPath:
+                path: /
+                type: Directory
+              name: host

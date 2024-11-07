@@ -14,3 +14,21 @@ spec:
   shared: "yes"
   thinProvision: "yes"
   volumeType: DATASET
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: media1
+  finalizers:
+    - cluster.local/data-protection
+spec:
+  capacity: "66349527615760"
+  compression: "off"
+  dedup: "off"
+  fsType: zfs
+  ownerNodeID: kantai3
+  poolName: citerne
+  recordsize: 1M
+  shared: "yes"
+  thinProvision: "yes"
+  volumeType: DATASET

@@ -1,0 +1,35 @@
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: zfs-media1-smb
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: storage-zfs-media1-smb
+  egress:
+    - toCIDR:
+        - 192.168.1.0/24
+      toPorts:
+        - ports:
+            - port: "445"
+              protocol: ANY
+    - toEntities:
+        - cluster
+      toPorts:
+        - ports:
+            - port: "445"
+              protocol: ANY
+  ingress:
+    - fromCIDR:
+        - 192.168.1.0/24
+      toPorts:
+        - ports:
+            - port: "445"
+              protocol: ANY
+    - fromEntities:
+        - cluster
+      toPorts:
+        - ports:
+            - port: "445"
+              protocol: ANY

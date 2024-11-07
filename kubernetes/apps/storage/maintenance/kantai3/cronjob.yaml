@@ -1,0 +1,93 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: smarttest-short-kantai3
+spec:
+  schedule: "0 4 * * 6" # every Saturday at 04:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: smarttest
+              image: ghcr.io/jfroy/smarttest:latest@sha256:b58ade228863935aecaee42d3979b659d18d89554726655355d50a62061b85b8
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              volumeMounts:
+                - mountPath: /dev
+                  name: dev
+          nodeSelector:
+            kubernetes.io/hostname: kantai3
+          restartPolicy: OnFailure
+          volumes:
+            - hostPath:
+                path: /dev
+                type: Directory
+              name: dev
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: smarttest-long-kantai3
+spec:
+  schedule: "0 0 1 1,4,7,10 *" # once per quarter at midnight
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: smarttest
+              image: ghcr.io/jfroy/smarttest:latest@sha256:b58ade228863935aecaee42d3979b659d18d89554726655355d50a62061b85b8
+              imagePullPolicy: IfNotPresent
+              args:
+                - -test=long
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              volumeMounts:
+                - mountPath: /dev
+                  name: dev
+          nodeSelector:
+            kubernetes.io/hostname: kantai3
+          restartPolicy: OnFailure
+          volumes:
+            - hostPath:
+                path: /dev
+                type: Directory
+              name: dev
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zfs-scrub-kantai3
+spec:
+  schedule: "0 2 1 * *" # 02:00 on the 1st of every month
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scrub
+              image: alpine:3.20.3
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+                - -c
+                - chroot /host /usr/local/sbin/zpool scrub -w bouteille citerne
+              securityContext:
+                privileged: true
+                runAsUser: 0
+              volumeMounts:
+                - mountPath: /host
+                  name: host
+          nodeSelector:
+            kubernetes.io/hostname: kantai3
+          restartPolicy: OnFailure
+          volumes:
+            - hostPath:
+                path: /
+                type: Directory
+              name: host
