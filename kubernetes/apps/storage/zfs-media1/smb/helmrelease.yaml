@@ -24,6 +24,11 @@ spec:
     remediation:
       retries: 3
   values:
+    defaultPodOptions:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
     controllers:
       zfs-media1-smb:
         type: statefulset
