@@ -42,6 +42,10 @@ spec:
       enabled: true
       zfsNode:
         encrKeysDir: "/var/zfs"
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
       analytics:
         enabled: false
       zfs:
