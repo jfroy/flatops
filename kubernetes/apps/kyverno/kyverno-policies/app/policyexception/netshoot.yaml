@@ -1,0 +1,20 @@
+---
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: allow-netshoot-caps
+spec:
+  exceptions:
+    - policyName: psa-baseline
+      ruleNames:
+        - baseline
+        - baseline-gluetun
+  match:
+    any:
+      - resources:
+          kinds:
+            - Pod
+  podSecurity:
+    - controlName: Capabilities
+      images:
+        - nicolaka/netshoot:*
