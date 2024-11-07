@@ -58,7 +58,7 @@ spec:
               tag: latest
               pullPolicy: Always
             command: ["/bin/bash"]
-            args: ["-c", "while true; do ping localhost; sleep 60; done"]
+            args: ["-c", "while true; sleep infinity; done"]
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -78,6 +78,7 @@ spec:
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
               HEALTH_SERVER_ADDRESS: ":9999"
+              HEALTH_SUCCESS_WAIT_DURATION: 10s
               HEALTH_VPN_DURATION_INITIAL: 60s
               LOG_LEVEL: debug
               PUBLICIP_API: cloudflare
@@ -99,6 +100,9 @@ spec:
                   httpGet:
                     path: /
                     port: 9999
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               startup:
                 enabled: true
                 custom: true
