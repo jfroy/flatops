@@ -12,9 +12,9 @@ spec:
   match:
     any:
       - resources:
-          kinds:
-            - Pod
+          namespaces:
+            - default
   podSecurity:
     - controlName: Capabilities
       images:
-        - nicolaka/netshoot:*
+        - "*"
