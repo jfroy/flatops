@@ -95,6 +95,9 @@ spec:
                   httpGet:
                     path: /check/
                     port: 9999
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               startup:
                 enabled: true
                 custom: true
