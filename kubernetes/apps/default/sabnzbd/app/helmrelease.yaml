@@ -65,14 +65,14 @@ spec:
           gluetun:
             image:
               repository: ghcr.io/jfroy/gluetun
-              tag: v3.39.1-jfroy.3@sha256:58f0b9fb88165e9361302755a39999a1b8a0cb0f900cc3a65d5694186f9cecd6
+              tag: v3.39.1-jfroy.4@sha256:236f04803c9c52efd1431a6bc9103c07bd454009b97582e0b9f22d9c130e1ee2
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DOT_IPV6: on
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
               HEALTH_SERVER_ADDRESS: ":9999"
-              HEALTH_VPN_DURATION_INITIAL: 60s
+              HEALTH_SERVER_DISABLE_LOOP: on
               LOG_LEVEL: debug
               PUBLICIP_API: cloudflare
               STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
@@ -91,14 +91,14 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /check/
                     port: 9999
               startup:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /check/
                     port: 9999
                   initialDelaySeconds: 5
             resources:
