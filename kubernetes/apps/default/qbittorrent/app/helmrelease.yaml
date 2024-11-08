@@ -75,6 +75,7 @@ spec:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DOT: off
               DOT_CACHING: off
+              DOT_IPV6: off
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
               HEALTH_SERVER_ADDRESS: ":9999"
