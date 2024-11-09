@@ -1,4 +1,22 @@
 ---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: media-kantai1
+  finalizers:
+    - cluster.local/data-protection
+spec:
+  capacity: "175921860444160"
+  compression: "off"
+  dedup: "off"
+  fsType: zfs
+  ownerNodeID: kantai1
+  poolName: reservoir
+  recordsize: 1M
+  shared: "yes"
+  thinProvision: "yes"
+  volumeType: DATASET
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
