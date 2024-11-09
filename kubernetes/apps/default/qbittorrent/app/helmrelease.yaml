@@ -206,6 +206,8 @@ spec:
             qbittorrent:
               - path: /media/qbittorrent
                 subPath: qbittorrent
+              - path: /media/sss
+                subPath: sss
       media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
