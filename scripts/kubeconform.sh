@@ -12,7 +12,7 @@ kubeconform_args=(
     "-strict"
     "-ignore-missing-schemas"
     "-skip"
-    "Secret,MinIOJob,ReplicationDestination,ReplicationSource"
+    "Secret,MinIOJob,ReplicationDestination,ReplicationSource,CiliumNetworkPolicy"
     "-schema-location"
     "default"
     "-schema-location"
