@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zfs-media1
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Ti
+  storageClassName: ""
+  volumeMode: Filesystem
+  volumeName: storage-zfs-media1
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homeassistant-backup
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 108Gi
+  storageClassName: ""
+  volumeMode: Filesystem
+  volumeName: homeassistant-backup

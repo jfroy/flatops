@@ -4,10 +4,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./externalsecret.yaml
-  - ./networkpolicy.yaml
   - ./helmrelease.yaml
+  - ./networkpolicy.yaml
+  - ./pvc.yaml
 configMapGenerator:
-  - name: zfs-media1-smb
+  - name: kantai3-samba
     files:
       - ./configs/config.yaml
 generatorOptions:

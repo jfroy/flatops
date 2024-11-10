@@ -2,11 +2,11 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: zfs-media1-smb
+  name: kantai3-samba
 spec:
   endpointSelector:
     matchLabels:
-      app.kubernetes.io/name: zfs-media1-smb
+      app.kubernetes.io/name: kantai3-samba
   egress:
     - toCIDR:
         - 192.168.1.0/24

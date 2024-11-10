@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: zfs-media1-smb
+  name: kantai3-samba
 spec:
   interval: 30m
   chart:
@@ -30,7 +30,7 @@ spec:
           operator: Exists
           effect: NoSchedule
     controllers:
-      zfs-media1-smb:
+      kantai3-samba:
         type: statefulset
         annotations:
           reloader.stakater.com/auto: "true"
@@ -42,7 +42,7 @@ spec:
               tag: fedora-latest
             env:
               SAMBACC_CONFIG: /config/config.yaml:/config/users.json
-              SAMBA_CONTAINER_ID: media
+              SAMBA_CONTAINER_ID: default
             ports:
               - containerPort: 445
                 hostPort: 445
@@ -68,13 +68,10 @@ spec:
               # https://github.com/containerd/containerd/pull/9320
               seccompProfile: { type: Unconfined }
     service:
-      zfs-media1-smb:
-        controller: zfs-media1-smb
+      kantai3-samba:
+        controller: kantai3-samba
         clusterIP: None
         ipFamilyPolicy: PreferDualStack
-        annotations:
-          external-dns.alpha.kubernetes.io/endpoints-type: HostIP
-          external-dns.alpha.kubernetes.io/hostname: smb.media1.internal.
         ports:
           smb:
             port: 445
@@ -86,18 +83,21 @@ spec:
           projected:
             sources:
               - configMap:
-                  name: zfs-media1-smb
+                  name: kantai3-samba
                   items:
                     - key: config.yaml
                       path: config.yaml
               - secret:
-                  name: zfs-media1-smb
+                  name: kantai3-samba
                   items:
                     - key: users.json
                       path: users.json
         globalMounts:
           - path: /config
             readOnly: true
+      homeassistant-backup:
+        type: persistentVolumeClaim
+        existingClaim: homeassistant-backup
       media:
         type: persistentVolumeClaim
         existingClaim: zfs-media1

@@ -1,9 +1,10 @@
 samba-container-config: v0
 configs:
-  media:
+  default:
     globals:
       - default
     shares:
+      - homeassistant-backup
       - media
 globals:
   default:
@@ -38,6 +39,23 @@ globals:
       winbind request timeout: "2"
       workgroup: "WORKGROUP"
 shares:
+  homeassistant-backup:
+    options:
+      access based share enum: "false"
+      available: "true"
+      browseable: "true"
+      comment: ""
+      create mask: "0660"
+      directory mask: "0770"
+      guest ok: "false"
+      kernel oplocks: "false"
+      mangled names: "false"
+      path: /homeassistant-backup
+      posix locking: "false"
+      read only: "false"
+      smbd max xattr size: "2097152"
+      # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
+      vfs objects: streams_xattr
   media:
     options:
       access based share enum: "false"
