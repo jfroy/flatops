@@ -19,7 +19,6 @@ resources:
   - ./external-secrets.yaml
   - ./grafanalabs.yaml
   - ./harbor.yaml
-  - ./headlamp.yaml
   - ./influxdata.yaml
   - ./ingress-nginx.yaml
   - ./jetstack.yaml
