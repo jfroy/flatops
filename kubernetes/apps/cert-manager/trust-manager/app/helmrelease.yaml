@@ -23,6 +23,9 @@ spec:
     remediation:
       retries: 3
   values:
+    crds:
+      enabled: true
+      keep: true
     secretTargets:
       enabled: true
       authorizedSecrets:
