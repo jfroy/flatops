@@ -19,7 +19,6 @@ spec:
     name: home-kubernetes
   wait: true
   interval: 30m
-  retryInterval: 1m
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -41,7 +40,6 @@ spec:
     name: home-kubernetes
   wait: false
   interval: 30m
-  retryInterval: 1m
   postBuild:
     substitute:
       # renovate: datasource=github-releases depName=siderolabs/talos
