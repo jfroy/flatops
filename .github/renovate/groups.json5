@@ -49,7 +49,7 @@
     },
     {
       "groupName": "Kyverno",
-      "matchPackagePatterns": ["kyverno$"],
+      "matchPackagePatterns": ["^kyverno"],
       "matchDatasources": ["docker"],
       "group": {
         "commitMessageTopic": "{{{groupName}}} group"
