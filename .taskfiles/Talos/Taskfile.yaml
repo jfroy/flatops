@@ -1,35 +1,35 @@
 ---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
-version: "3"
+version: '3'
 
 vars:
-  TALHELPER_CLUSTER_DIR: "{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig"
-  TALHELPER_CONFIG_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml"
-  TALHELPER_ENV_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talenv.sops.yaml"
-  TALHELPER_SECRET_FILE: "{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml"
-  HELMFILE_FILE: "{{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml"
-  TALOSCONFIG_FILE: "{{.TALHELPER_CLUSTER_DIR}}/talosconfig"
+  TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig'
+  TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml'
+  TALHELPER_ENV_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talenv.sops.yaml'
+  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml'
+  HELMFILE_FILE: '{{.KUBERNETES_DIR}}/bootstrap/helmfile.yaml'
+  TALOSCONFIG_FILE: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
 
 env:
-  TALOSCONFIG: "{{.TALOSCONFIG_FILE}}"
+  TALOSCONFIG: '{{.TALOSCONFIG_FILE}}'
 
 tasks:
 
   bootstrap:
     desc: Bootstrap the Talos cluster
-    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
+    dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
     cmds:
       - |
-        if [ ! -f "{{.TALHELPER_SECRET_FILE}}" ]; then
+        if [ ! -f '{{.TALHELPER_SECRET_FILE}}' ]; then
             talhelper gensecret > {{.TALHELPER_SECRET_FILE}}
             sops --encrypt --in-place {{.TALHELPER_SECRET_FILE}}
         fi
-        if [ ! -f "{{.TALHELPER_ENV_FILE}}" ]; then
-            echo "" > {{.TALHELPER_ENV_FILE}}
+        if [ ! -f '{{.TALHELPER_ENV_FILE}}' ]; then
+            echo '' > {{.TALHELPER_ENV_FILE}}
             sops --encrypt --in-place {{.TALHELPER_ENV_FILE}}
         fi
       - talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --env-file {{.TALHELPER_ENV_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
-      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--insecure" | bash
+      - talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags='--insecure' | bash
       - until talhelper gencommand bootstrap --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash; do sleep 10; done
       - task: fetch-kubeconfig
       - task: install-helm-apps
@@ -46,7 +46,7 @@ tasks:
 
   gen-mc:
     desc: Generate machineconfigs
-    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
+    dir: '{{.KUBERNETES_DIR}}/bootstrap/talos'
     cmd: talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --env-file {{.TALHELPER_ENV_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
     preconditions:
       - msg: Missing talhelper config file
@@ -109,7 +109,7 @@ tasks:
     vars:
       mode: '{{.mode | default "default"}}'
     requires:
-      vars: ["node", "image"]
+      vars: [node, image]
     preconditions:
       - msg: Missing talosconfig
         sh: test -f {{.TALOSCONFIG_FILE}}
