@@ -20,9 +20,9 @@ configMapGenerator:
       - ./resources/flux-logs.json
     options:
       annotations:
+        grafana_folder: "Flux"
         kustomize.toolkit.fluxcd.io/substitute: disabled
       labels:
         grafana_dashboard: "1"
-        grafana_folder: "Flux"
 generatorOptions:
   disableNameSuffixHash: true
