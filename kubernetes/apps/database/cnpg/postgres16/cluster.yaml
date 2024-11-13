@@ -18,9 +18,6 @@ spec:
     parameters:
       max_connections: "100"
       shared_buffers: 64MB
-  nodeMaintenanceWindow:
-    inProgress: false
-    reusePVC: true
   monitoring:
     enablePodMonitor: true
     # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
