@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ./cluster.yaml
   - ./instance.yaml
+  - ./podmonitor.yaml

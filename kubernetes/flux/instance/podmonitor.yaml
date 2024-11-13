@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    app.kubernetes.io/instance: flux
+    app.kubernetes.io/name: flux
+  name: flux
+  namespace: flux-system
+spec:
+  podMetricsEndpoints:
+    - honorLabels: true
+      interval: 60s
+      path: /metrics
+      port: http-prom
+      scheme: http
+      scrapeTimeout: 30s
+  jobLabel: app.kubernetes.io/instance
+  namespaceSelector:
+    matchNames:
+      - flux-system
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: flux
+      app.kubernetes.io/name: flux
