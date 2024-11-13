@@ -25,6 +25,23 @@ spec:
     domain: cluster.local
   kustomize:
     patches:
+      # Add labels to the pods.
+      # https://github.com/controlplaneio-fluxcd/flux-operator/issues/114
+      - patch: |-
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: not-used
+          spec:
+            template:
+              metadata:
+                labels:
+                  app.kubernetes.io/instance: flux
+                  app.kubernetes.io/managed-by: flux-operator
+                  app.kubernetes.io/name: flux
+                  app.kubernetes.io/part-of: flux
+        target:
+          kind: Deployment
       # Increase the number of reconciliations that can be performed in parallel and bump the resources limits
       # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
       - patch: |
