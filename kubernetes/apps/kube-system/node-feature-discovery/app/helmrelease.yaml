@@ -26,5 +26,31 @@ spec:
     remediation:
       retries: 3
   values:
+    worker:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Equal"
+          value: ""
+          effect: "NoSchedule"
+    topologyUpdater:
+      enable: true
+      createCRDs: true
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Equal"
+          value: ""
+          effect: "NoSchedule"
+    gc:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Equal"
+          value: ""
+          effect: "NoSchedule"
+    tls:
+      enabled: true
+      certManager: true
+      certManagerCertificate:
+        issuerKind: ClusterIssuer
+        issuerName: cluster-ca
     prometheus:
       enable: true
