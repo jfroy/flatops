@@ -3,7 +3,12 @@
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
-  name: talos
+  name: talos-siderolabs-minimal
+  annotations:
+    description: Schema for VM nodes with no hardware requirements
+    secure-boot: false
+    extensions: ""
+    cmdline: ""
 spec:
   version: ${TALOS_VERSION}
   serviceAccountName: system-upgrade
@@ -22,8 +27,8 @@ spec:
         operator: NotIn
         values: ["${TALOS_VERSION}"]
       - key: kubernetes.io/hostname
-        operator: NotIn
-        values: ["kantai1"]
+        operator: In
+        values: ["kantai2"]
   tolerations:
     - key: CriticalAddonsOnly
       operator: Exists

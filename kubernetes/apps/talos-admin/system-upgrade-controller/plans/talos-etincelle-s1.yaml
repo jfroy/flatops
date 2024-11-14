@@ -3,9 +3,14 @@
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
-  name: talos-kantai1
+  name: talos-etincelle-s1
+  annotations:
+    description: Schema for kantai1 (and kantai3, but it does not support secureboot, see s2)
+    secure-boot: true
+    extensions: siderolabs/amd-ucode, jfroy/siderolabs/glibc, jfroy/siderolabs/nvidia-driver-production, jfroy/siderolabs/zfs
+    cmdline: lsm=landlock,lockdown,yama,apparmor,bpf lsm.debug amd_pstate=active spec_rstack_overflow=microcode
 spec:
-  version: ${TALOS_JFROY_VERSION}
+  version: ${TALOS_VERSION}
   serviceAccountName: system-upgrade
   secrets:
     - name: talos
@@ -20,7 +25,7 @@ spec:
         values: ["talos"]
       - key: feature.node.kubernetes.io/system-os_release.VERSION_ID
         operator: NotIn
-        values: ["${TALOS_JFROY_VERSION}"]
+        values: ["${TALOS_VERSION}"]
       - key: kubernetes.io/hostname
         operator: In
         values: ["kantai1"]
@@ -31,7 +36,7 @@ spec:
       operator: Exists
       effect: NoSchedule
   prepare: &prepare
-    image: ghcr.io/jfroy/talos/talosctl:${TALOS_JFROY_VERSION}
+    image: ghcr.io/jfroy/talos/talosctl:${TALOS_VERSION}
     envs:
       - name: NODE_IP
         valueFrom:
@@ -46,6 +51,6 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=ghcr.io/jfroy/talos/secureboot-installer:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=tif.etincelle.cloud/installer-secureboot/60f187fc6f3cf26c1d5c16aa847991c8a261b64da170f10c66e76000ecd441fe:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
