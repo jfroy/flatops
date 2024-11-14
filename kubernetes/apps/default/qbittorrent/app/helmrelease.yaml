@@ -52,20 +52,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-          netshoot:
-            image:
-              repository: nicolaka/netshoot
-              tag: latest
-              pullPolicy: Always
-            command: ["/bin/bash"]
-            args: ["-c", "while true; do sleep infinity; done"]
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
-              runAsNonRoot: false
-              runAsUser: 0
-              runAsGroup: 0
-              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
         initContainers:
           gluetun:
             image:
