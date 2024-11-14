@@ -39,6 +39,7 @@ spec:
               args:
                 evictFailedBarePods: true
                 evictLocalStoragePods: true
+                evictSystemCriticalPods: true
             - name: RemoveFailedPods
               args:
                 reasons:
