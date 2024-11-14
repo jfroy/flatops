@@ -33,7 +33,7 @@ spec:
           value: ""
           effect: "NoSchedule"
     topologyUpdater:
-      enable: true
+      enable: false
       createCRDs: true
       tolerations:
         - key: "node-role.kubernetes.io/control-plane"
