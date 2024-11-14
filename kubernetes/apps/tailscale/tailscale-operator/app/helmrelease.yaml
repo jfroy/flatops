@@ -37,8 +37,6 @@ spec:
         - "tag:k8s-operator-kantai"
       hostname: kantai
       tolerations:
-        - key: CriticalAddonsOnly
-          operator: Exists
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule

@@ -28,8 +28,6 @@ spec:
     defaultPodOptions:
       priorityClassName: system-node-critical
       tolerations:
-        - key: CriticalAddonsOnly
-          operator: Exists
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
