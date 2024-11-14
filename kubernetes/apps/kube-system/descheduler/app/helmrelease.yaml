@@ -29,6 +29,8 @@ spec:
     replicas: 1
     leaderElection: {}
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
+    cmdOptions:
+      v: 4
     deschedulerPolicy:
       profiles:
         - name: default
