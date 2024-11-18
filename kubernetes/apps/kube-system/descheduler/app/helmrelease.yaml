@@ -43,6 +43,7 @@ spec:
                 reasons:
                 - "NodeAffinity"
                 - "Terminated"
+                - "UnexpectedAdmissionError"
                 includingInitContainers: true
                 excludeOwnerKinds:
                 - "Job"
