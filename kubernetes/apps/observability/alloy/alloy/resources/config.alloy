@@ -134,3 +134,48 @@ loki.write "victorialogs" {
 		url = "http://victoria-logs.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
 	}
 }
+
+// OTEL
+
+otelcol.receiver.otlp "default" {
+	grpc { }
+
+	http { }
+
+	output {
+		metrics = [otelcol.processor.memory_limiter.default.input]
+		logs    = [otelcol.processor.memory_limiter.default.input]
+		traces  = []
+	}
+}
+
+otelcol.processor.memory_limiter "default" {
+	check_interval = "1s"
+	limit          = "1GiB"
+
+	output {
+		metrics = [otelcol.processor.batch.default.input]
+		logs    = [otelcol.processor.batch.default.input]
+		traces  = []
+	}
+}
+
+otelcol.processor.batch "default" {
+	output {
+		metrics = [otelcol.exporter.otlphttp.victoriametrics.input]
+		logs    = [otelcol.exporter.otlphttp.victorialogs.input]
+		traces  = []
+	}
+}
+
+otelcol.exporter.otlphttp "victoriametrics" {
+	client {
+		endpoint = "http://vmsingle-stack.observability.svc:8429/opentelemetry"
+	}
+}
+
+otelcol.exporter.otlphttp "victorialogs" {
+	client {
+		endpoint = "http://victoria-logs.observability.svc:9428/opentelemetry"
+	}
+}
