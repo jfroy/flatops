@@ -154,9 +154,25 @@ otelcol.processor.memory_limiter "default" {
 	limit          = "1GiB"
 
 	output {
-		metrics = [otelcol.processor.batch.default.input]
-		logs    = [otelcol.processor.batch.default.input]
+		metrics = [otelcol.processor.transform.default.input]
+		logs    = [otelcol.processor.transform.default.input]
 		traces  = []
+	}
+}
+
+otelcol.processor.transform "default" {
+	output {
+		metrics = [otelcol.exporter.otlphttp.victoriametrics.input]
+		logs    = [otelcol.exporter.otlphttp.victorialogs.input]
+		traces  = []
+	}
+
+	metric_statements {
+		context    = "datapoint"
+		statements = [
+			`set(attributes["job"], resource.attributes["service.name"])`,
+			`set(attributes["instance"], resource.attributes["service.instance.id"])`,
+		]
 	}
 }
 
