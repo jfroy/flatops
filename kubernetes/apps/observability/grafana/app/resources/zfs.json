@@ -86,7 +86,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -137,7 +137,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_free{instance=\"$instance\",name=~\"$pool\",vdev=~\"root\"}",
@@ -180,7 +180,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -234,7 +234,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "(zpool_stats_alloc{instance=\"$instance\",name=~\"$pool\",vdev=~\"root\"} /\r\nzpool_stats_size{instance=\"$instance\",name=~\"$pool\",vdev=~\"root\"}) * 100",
@@ -250,7 +250,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -408,7 +408,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -421,7 +421,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -437,7 +437,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_stats_read_ops{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval])) without (state)",
@@ -451,7 +451,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_stats_write_ops{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval])) without (state)",
@@ -469,7 +469,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -535,7 +535,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_read_errors{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}",
@@ -547,7 +547,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_write_errors{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}",
@@ -560,7 +560,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_checksum_errors{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}",
@@ -573,7 +573,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_fragmentation{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}",
@@ -589,7 +589,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -652,7 +652,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_alloc{instance=\"$instance\",name=~\"$pool\",vdev=~\"root\"}",
@@ -665,7 +665,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_free{instance=\"$instance\",name=~\"$pool\",vdev=~\"root\"}",
@@ -678,7 +678,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "zpool_stats_size{instance=\"$instance\",name=~\"$pool\",vdev=~\"root\"}",
@@ -693,7 +693,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -777,7 +777,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_async_r_active_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -790,7 +790,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_async_w_active_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -804,7 +804,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_sync_r_active_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -818,7 +818,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_sync_w_active_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -832,7 +832,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_async_scrub_active_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -850,7 +850,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -934,7 +934,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_async_r_pend_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -947,7 +947,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_async_w_pend_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -961,7 +961,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_sync_r_pend_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -975,7 +975,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_sync_w_pend_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -989,7 +989,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(rate(zpool_vdev_stats_async_scrub_pend_queue{instance=\"$instance\",name=~\"$pool\",vdev=\"root\"}[$__rate_interval]))",
@@ -1033,7 +1033,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1244,7 +1244,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1258,7 +1258,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1273,7 +1273,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1288,7 +1288,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1401,7 +1401,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -1536,7 +1536,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_start_ts{instance=\"$instance\",name=~\"$pool\",state=\"finished\"} * 1000",
@@ -1550,7 +1550,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_end_ts{instance=\"$instance\",name=~\"$pool\",state=\"finished\"} * 1000",
@@ -1564,7 +1564,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_examined{instance=\"$instance\",name=~\"$pool\",state=\"finished\"}",
@@ -1578,7 +1578,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_processed{instance=\"$instance\",name=~\"$pool\",state=\"finished\"}",
@@ -1592,7 +1592,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_errors{instance=\"$instance\",name=~\"$pool\",state=\"finished\"}",
@@ -1665,7 +1665,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -1800,7 +1800,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_start_ts{instance=\"$instance\",name=~\"$pool\",state!=\"finished\"} * 1000",
@@ -1814,7 +1814,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_rate{instance=\"$instance\",name=~\"$pool\",state!=\"finished\"}",
@@ -1828,7 +1828,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_errors{instance=\"$instance\",name=~\"$pool\",state!=\"finished\"}",
@@ -1841,7 +1841,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_to_examine{instance=\"$instance\",name=~\"$pool\",state!=\"finished\"}",
@@ -1855,7 +1855,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_to_process{instance=\"$instance\",name=~\"$pool\",state!=\"finished\"}",
@@ -1930,7 +1930,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -2012,7 +2012,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "zpool_scan_stats_rate{instance=\"$instance\",name=~\"$pool\",state!=\"finished\"}",
@@ -2050,7 +2050,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2127,7 +2127,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2168,7 +2168,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2245,7 +2245,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2286,7 +2286,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2363,7 +2363,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2404,7 +2404,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2481,7 +2481,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2522,7 +2522,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2599,7 +2599,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2640,7 +2640,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2717,7 +2717,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2785,7 +2785,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2862,7 +2862,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -2903,7 +2903,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -2981,7 +2981,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3022,7 +3022,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3099,7 +3099,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3140,7 +3140,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3217,7 +3217,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3258,7 +3258,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3335,7 +3335,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3376,7 +3376,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3453,7 +3453,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3494,7 +3494,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3571,7 +3571,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3612,7 +3612,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3689,7 +3689,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3730,7 +3730,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3807,7 +3807,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3848,7 +3848,7 @@
           "dataFormat": "timeseries",
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "description": "",
           "fieldConfig": {
@@ -3925,7 +3925,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_PROMETHEUS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -3975,9 +3975,19 @@
     "list": [
       {
         "current": {},
+        "includeAll": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(zpool_stats_size, instance)",
         "hide": 0,
@@ -3999,7 +4009,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(zpool_stats_size{instance=\"$instance\", vdev=\"root\"}, name)",
         "hide": 0,

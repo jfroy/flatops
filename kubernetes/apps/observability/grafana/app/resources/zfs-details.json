@@ -64,7 +64,7 @@
       }
     ]
   },
-  "description": "ZFS monitoring dashboard for Unraid",
+  "description": "ZFS monitoring dashboard",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
