@@ -154,16 +154,16 @@ otelcol.processor.memory_limiter "default" {
 	limit          = "1GiB"
 
 	output {
-		metrics = [otelcol.processor.transform.default.input]
-		logs    = [otelcol.processor.transform.default.input]
+		metrics = [otelcol.processor.transform.prometheus_labels.input]
+		logs    = [otelcol.processor.transform.prometheus_labels.input]
 		traces  = []
 	}
 }
 
-otelcol.processor.transform "default" {
+otelcol.processor.transform "prometheus_labels" {
 	output {
-		metrics = [otelcol.exporter.otlphttp.victoriametrics.input]
-		logs    = [otelcol.exporter.otlphttp.victorialogs.input]
+		metrics = [otelcol.processor.batch.default.input]
+		logs    = [otelcol.processor.batch.default.input]
 		traces  = []
 	}
 
@@ -174,7 +174,24 @@ otelcol.processor.transform "default" {
 			`set(attributes["instance"], resource.attributes["service.instance.id"])`,
 		]
 	}
+
+	metric_statements {
+		context    = "resource"
+		statements = [
+			`delete_key(attributes, "service.name")`,
+			`delete_key(attributes, "service.instance.id")`,
+		]
+	}
 }
+
+// otelcol.processor.transform "delete_resource_attributes" {
+// 	output {
+// 		metrics = [otelcol.exporter.otlphttp.victoriametrics.input]
+// 		logs    = [otelcol.exporter.otlphttp.victorialogs.input]
+// 		traces  = []
+// 	}
+
+// }
 
 otelcol.processor.batch "default" {
 	output {

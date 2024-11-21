@@ -67,3 +67,8 @@ spec:
         hostPath: /dev/zfs
         globalMounts:
           - path: /dev/zfs
+      proc-spl-kstat-zfs:
+        type: hostPath
+        hostPath: /proc/spl/kstat/zfs
+        globalMounts:
+          - path: /proc/spl/kstat/zfs
