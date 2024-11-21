@@ -9,3 +9,4 @@ resources:
   - ./node-exporter/ks.yaml
   # - ./scrutiny-collector/ks.yaml
   - ./smartctl-exporter/ks.yaml
+  - ./telegraf-zfs/ks.yaml

@@ -1,0 +1,69 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: telegraf-zfs
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: extensions.talos.dev/zfs
+                    operator: Exists
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    controllers:
+      telegraf-zfs:
+        type: daemonset
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          telegraf:
+            image:
+              repository: ghcr.io/jfroy/telegraf-zfs
+              tag: 1.32.3@sha256:f5ad738b47bd6b1e1d01e8362edc016035df5a525d2c3403a7bd7072fdf18ebf
+            env:
+              NODE_NAME:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: spec.nodeName
+            securityContext:
+              privileged: true
+    persistence:
+      config:
+        type: configMap
+        name: telegraf
+        globalMounts:
+          - path: /etc/telegraf
+            readOnly: true
+      dev-zfs:
+        type: hostPath
+        hostPath: /dev/zfs
+        globalMounts:
+          - path: /dev/zfs
