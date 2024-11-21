@@ -184,15 +184,6 @@ otelcol.processor.transform "prometheus_labels" {
 	}
 }
 
-// otelcol.processor.transform "delete_resource_attributes" {
-// 	output {
-// 		metrics = [otelcol.exporter.otlphttp.victoriametrics.input]
-// 		logs    = [otelcol.exporter.otlphttp.victorialogs.input]
-// 		traces  = []
-// 	}
-
-// }
-
 otelcol.processor.batch "default" {
 	output {
 		metrics = [otelcol.exporter.otlphttp.victoriametrics.input]
