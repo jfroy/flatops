@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.2.0"
+      "version": "11.3.0"
     },
     {
       "type": "panel",
@@ -67,18 +67,12 @@
   "description": "ZFS monitoring dashboard for Unraid",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": 19376,
   "graphTooltip": 0,
   "id": null,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -92,11 +86,9 @@
     },
     {
       "datasource": {
-        "default": false,
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -110,7 +102,6 @@
             "filterable": false,
             "inspect": false
           },
-          "decimals": 2,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -178,6 +169,92 @@
           {
             "matcher": {
               "id": "byName",
+              "options": "Fragmentation"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "lcd",
+                  "type": "gauge"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 30
+                    },
+                    {
+                      "color": "orange",
+                      "value": 40
+                    },
+                    {
+                      "color": "red",
+                      "value": 55
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CHK Errors"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "red",
+                      "value": 1
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
               "options": "Health"
             },
             "properties": [
@@ -186,40 +263,29 @@
                 "value": [
                   {
                     "options": {
-                      "0": {
-                        "color": "green",
-                        "index": 0,
-                        "text": "ONLINE"
-                      },
-                      "1": {
+                      "DEGRADED": {
                         "color": "yellow",
-                        "index": 1,
-                        "text": "DEGRADED"
+                        "index": 1
                       },
-                      "2": {
+                      "FAULTED": {
                         "color": "red",
-                        "index": 2,
-                        "text": "FAULTED"
+                        "index": 2
                       },
-                      "3": {
+                      "OFFLINE": {
                         "color": "#808080",
-                        "index": 3,
-                        "text": "OFFLINE"
+                        "index": 3
                       },
-                      "4": {
-                        "color": "#808080",
-                        "index": 4,
-                        "text": "UNAVAIL"
+                      "ONLINE": {
+                        "color": "green",
+                        "index": 0
                       },
-                      "5": {
+                      "REMOVED": {
                         "color": "#808080",
-                        "index": 5,
-                        "text": "REMOVED"
+                        "index": 5
                       },
-                      "6": {
+                      "UNAVAILABLE": {
                         "color": "#808080",
-                        "index": 6,
-                        "text": "SUSPENDED"
+                        "index": 4
                       }
                     },
                     "type": "value"
@@ -263,24 +329,25 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.2.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zfs_dataset_available_bytes",
+          "expr": "zpool_stats_alloc{instance=~\"$instance\"}",
           "format": "table",
           "fullMetaSearch": false,
+          "hide": false,
           "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "AVAIL",
+          "refId": "ALLOC",
           "useBackend": false
         },
         {
@@ -291,7 +358,7 @@
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zfs_dataset_used_bytes",
+          "expr": "zpool_stats_checksum_errors{instance=~\"$instance\"}",
           "format": "table",
           "fullMetaSearch": false,
           "hide": false,
@@ -299,18 +366,18 @@
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "USED",
+          "refId": "CHKSUM",
           "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zfs_pool_health",
+          "expr": "zpool_stats_fragmentation{instance=~\"$instance\"}",
           "format": "table",
           "fullMetaSearch": false,
           "hide": false,
@@ -318,58 +385,130 @@
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "HEALTH",
+          "refId": "FRAG",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "zpool_stats_free{instance=~\"$instance\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "FREE",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "zpool_stats_read_bytes{instance=~\"$instance\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "READ",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "zpool_stats_size{instance=~\"$instance\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "SIZE",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "zpool_stats_write_bytes{instance=~\"$instance\"}",
+          "format": "table",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "WRITE",
           "useBackend": false
         }
       ],
-      "title": "ZFS Datasets",
+      "title": "ZFS Pool Detail",
       "transformations": [
         {
           "id": "groupBy",
           "options": {
             "fields": {
+              "Value #A": {
+                "aggregations": [],
+                "operation": "aggregate"
+              },
               "Value #ALLOC": {
                 "aggregations": [
                   "lastNotNull"
                 ],
                 "operation": "aggregate"
               },
-              "Value #AVAIL": {
+              "Value #B": {
+                "aggregations": [],
+                "operation": "aggregate"
+              },
+              "Value #C": {
+                "aggregations": []
+              },
+              "Value #CHKSUM": {
                 "aggregations": [
                   "lastNotNull"
                 ],
                 "operation": "aggregate"
               },
-              "Value #B": {
-                "aggregations": []
-              },
-              "Value #C": {
-                "aggregations": [
-                  "last"
-                ],
-                "operation": "aggregate"
-              },
               "Value #D": {
-                "aggregations": [
-                  "last"
-                ],
+                "aggregations": [],
                 "operation": "aggregate"
               },
               "Value #E": {
-                "aggregations": [
-                  "last"
-                ],
+                "aggregations": [],
                 "operation": "aggregate"
               },
               "Value #F": {
-                "aggregations": [
-                  "last"
-                ],
+                "aggregations": [],
                 "operation": "aggregate"
               },
               "Value #FRAG": {
                 "aggregations": [
-                  "last"
+                  "lastNotNull"
                 ],
                 "operation": "aggregate"
               },
@@ -380,20 +519,12 @@
                 "operation": "aggregate"
               },
               "Value #G": {
-                "aggregations": [
-                  "last"
-                ],
+                "aggregations": [],
                 "operation": "aggregate"
               },
               "Value #H": {
                 "aggregations": [
                   "last"
-                ],
-                "operation": "aggregate"
-              },
-              "Value #HEALTH": {
-                "aggregations": [
-                  "lastNotNull"
                 ],
                 "operation": "aggregate"
               },
@@ -409,13 +540,19 @@
                 ],
                 "operation": "aggregate"
               },
+              "Value #READ": {
+                "aggregations": [
+                  "lastNotNull"
+                ],
+                "operation": "aggregate"
+              },
               "Value #SIZE": {
                 "aggregations": [
                   "lastNotNull"
                 ],
                 "operation": "aggregate"
               },
-              "Value #USED": {
+              "Value #WRITE": {
                 "aggregations": [
                   "lastNotNull"
                 ],
@@ -432,8 +569,7 @@
                 "aggregations": []
               },
               "pool": {
-                "aggregations": [],
-                "operation": "groupby"
+                "aggregations": []
               },
               "state": {
                 "aggregations": [],
@@ -453,26 +589,21 @@
         {
           "id": "calculateField",
           "options": {
-            "alias": "Capacity",
-            "binary": {
-              "left": "Value #AVAIL (lastNotNull)",
-              "right": "Value #USED (lastNotNull)"
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            }
-          }
-        },
-        {
-          "id": "calculateField",
-          "options": {
             "alias": "Used %",
             "binary": {
-              "left": "Value #USED (lastNotNull)",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #ALLOC (lastNotNull)"
+                }
+              },
               "operator": "/",
-              "reducer": "sum",
-              "right": "Capacity"
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #SIZE (lastNotNull)"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -485,46 +616,60 @@
           "options": {
             "excludeByName": {
               "host": true,
-              "path": true,
-              "pool": true
+              "path": true
             },
             "includeByName": {},
             "indexByName": {
-              "Used %": 8,
-              "Value #C (last)": 6,
-              "Value #D (last)": 10,
-              "Value #E (last)": 9,
-              "Value #F (last)": 7,
-              "Value #G (last)": 11,
-              "Value #H (last)": 5,
-              "Value #I (last)": 12,
-              "host": 1,
+              "Used %": 4,
+              "Value #ALLOC (lastNotNull)": 6,
+              "Value #CHKSUM (lastNotNull)": 3,
+              "Value #FRAG (lastNotNull)": 5,
+              "Value #FREE (lastNotNull)": 7,
+              "Value #READ (lastNotNull)": 9,
+              "Value #SIZE (lastNotNull)": 8,
+              "Value #WRITE (lastNotNull)": 10,
               "name": 0,
-              "path": 4,
-              "state": 3,
-              "vdev": 2
+              "state": 2,
+              "vdev": 1
             },
             "renameByName": {
               "Value #ALLOC (lastNotNull)": "Allocated",
-              "Value #AVAIL (lastNotNull)": "Available",
               "Value #C (last)": "Used",
+              "Value #CHKSUM (lastNotNull)": "CHK Errors",
               "Value #D (last)": "CHK Errors",
               "Value #E (last)": "Fragmentation",
               "Value #F (last)": "Free",
-              "Value #FRAG (last)": "Fragmentation",
+              "Value #FRAG (lastNotNull)": "Fragmentation",
               "Value #FREE (lastNotNull)": "Free",
               "Value #G (last)": "Read Bytes",
               "Value #H (last)": "Size",
-              "Value #HEALTH (lastNotNull)": "Health",
               "Value #I (last)": "Write Bytes",
+              "Value #READ (lastNotNull)": "Read Bytes",
               "Value #SIZE (lastNotNull)": "Size",
-              "Value #USED (lastNotNull)": "Used",
+              "Value #WRITE (lastNotNull)": "Write Bytes",
               "host": "",
               "name": "Pool",
-              "pool": "",
               "state": "Health",
               "vdev": "VDEV"
             }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lowerOrEqual",
+                  "options": {
+                    "value": "0"
+                  }
+                },
+                "fieldName": "Size"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
           }
         }
       ],
@@ -533,7 +678,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -609,19 +754,24 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "delta(zpool_stats_alloc{job='$job', vdev=\"root\"}[1d])",
+          "expr": "delta(zpool_stats_alloc{instance=~\"$instance\", vdev=\"root\"}[1d])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "interval": "",
           "legendFormat": "{{name}}",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         }
       ],
       "timeFrom": "30d",
@@ -629,91 +779,9 @@
       "type": "timeseries"
     },
     {
-      "alert": {
-        "alertRuleTags": {},
-        "conditions": [
-          {
-            "evaluator": {
-              "params": [
-                2199023255552
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "and"
-            },
-            "query": {
-              "params": [
-                "B",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          },
-          {
-            "evaluator": {
-              "params": [
-                536870912000
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "or"
-            },
-            "query": {
-              "params": [
-                "H",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          },
-          {
-            "evaluator": {
-              "params": [
-                322122547200
-              ],
-              "type": "lt"
-            },
-            "operator": {
-              "type": "or"
-            },
-            "query": {
-              "params": [
-                "I",
-                "5m",
-                "now"
-              ]
-            },
-            "reducer": {
-              "params": [],
-              "type": "avg"
-            },
-            "type": "query"
-          }
-        ],
-        "executionErrorState": "alerting",
-        "for": "5m",
-        "frequency": "1m",
-        "handler": 1,
-        "message": "ZPool Low on Space ${hddmain - Free} ${ssdnvme- Free} ${ssdsata - Free}",
-        "name": "Pool Space alert",
-        "noDataState": "no_data",
-        "notifications": []
-      },
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -792,57 +860,61 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "zpool_stats_alloc{job='$job', vdev=\"root\"}",
+          "expr": "zpool_stats_alloc{instance=~\"$instance\", vdev=\"root\"}",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "legendFormat": "{{name}} - Used",
-          "refId": "F"
+          "refId": "F",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "zpool_stats_size{job='$job', vdev=\"root\"}",
+          "expr": "zpool_stats_size{instance=~\"$instance\", vdev=\"root\"}",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "legendFormat": "{{name}} - Size",
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "zpool_stats_free{job='$job', vdev=\"root\"}",
+          "expr": "zpool_stats_free{instance=~\"$instance\", vdev=\"root\"}",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": false,
           "interval": "",
           "legendFormat": "{{name}} - Free",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [
-        {
-          "colorMode": "critical",
-          "op": "lt",
-          "value": 2199023255552,
-          "visible": true
+          "refId": "B",
+          "useBackend": false
         }
       ],
       "timeFrom": "24h",
@@ -851,10 +923,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -869,7 +937,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -945,77 +1013,102 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "node_zfs_arc_data_size{job=\"$job\"}",
-          "legendFormat": "Data",
+          "expr": "node_zfs_arc_data_size{instance=~\"$instance\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Data",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "node_zfs_arc_metadata_size{job=\"$job\"}",
+          "expr": "node_zfs_arc_metadata_size{instance=~\"$instance\"}",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Metadata",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Metadata",
           "range": true,
-          "refId": "B"
+          "refId": "B",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "node_zfs_arc_mfu_size{job=\"$job\"}",
+          "expr": "node_zfs_arc_mfu_size{instance=~\"$instance\"}",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Most Frequently Used",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Most Frequently Used",
           "range": true,
-          "refId": "C"
+          "refId": "C",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "node_zfs_arc_dnode_size{job=\"$job\"}",
+          "expr": "node_zfs_arc_dnode_size{instance=~\"$instance\"}",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Dnode Size",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Dnode Size",
           "range": true,
-          "refId": "D"
+          "refId": "D",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "node_zfs_arc_mru_size{job=\"$job\"}",
+          "expr": "node_zfs_arc_mru_size{instance=~\"$instance\"}",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Most Recently Used",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Most Recently Used",
           "range": true,
-          "refId": "E"
+          "refId": "E",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "node_zfs_arc_size{job=\"$job\"}",
+          "expr": "node_zfs_arc_size{instance=~\"$instance\"}",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "ARC Size",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - ARC Size",
           "range": true,
-          "refId": "F"
+          "refId": "F",
+          "useBackend": false
         }
       ],
       "title": "ARC Size",
@@ -1024,7 +1117,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1113,41 +1206,54 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(node_zfs_arc_demand_data_hits{job=\"$job\"}[$__rate_interval])",
-          "legendFormat": "Hits",
+          "expr": "rate(node_zfs_arc_demand_data_hits{instance=~\"$instance\"}[$__rate_interval])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Hits",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(node_zfs_arc_demand_data_misses{job=\"$job\"}[$__rate_interval])",
+          "expr": "rate(node_zfs_arc_demand_data_misses{instance=~\"$instance\"}[$__rate_interval])",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Misses",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Misses",
           "range": true,
-          "refId": "B"
+          "refId": "B",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(node_zfs_arc_demand_data_hits{job=\"$job\"}[$__rate_interval])/(rate(node_zfs_arc_demand_data_misses{job=\"$job\"}[$__rate_interval])+rate(node_zfs_arc_demand_data_hits{job=\"$job\"}[$__rate_interval]))",
+          "expr": "rate(node_zfs_arc_demand_data_hits{instance=~\"$instance\"}[$__rate_interval]) / (rate(node_zfs_arc_demand_data_misses{instance=~\"$instance\"}[$__rate_interval]) + rate(node_zfs_arc_demand_data_hits{instance=~\"$instance\"}[$__rate_interval]))",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Hit Ratio",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Hit Ratio",
           "range": true,
-          "refId": "C"
+          "refId": "C",
+          "useBackend": false
         }
       ],
       "title": "ARC Demand - Data",
@@ -1156,7 +1262,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1245,41 +1351,54 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(node_zfs_arc_demand_metadata_hits{job=\"$job\"}[$__rate_interval])",
-          "legendFormat": "Hits",
+          "expr": "rate(node_zfs_arc_demand_metadata_hits{instance=~\"$instance\"}[$__rate_interval])",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Hits",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(node_zfs_arc_demand_metadata_misses{job=\"$job\"}[$__rate_interval])",
+          "expr": "rate(node_zfs_arc_demand_metadata_misses{instance=~\"$instance\"}[$__rate_interval])",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Misses",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Misses",
           "range": true,
-          "refId": "B"
+          "refId": "B",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "rate(node_zfs_arc_demand_metadata_hits{job=\"$job\"}[$__rate_interval])/(rate(node_zfs_arc_demand_metadata_misses{job=\"$job\"}[$__rate_interval])+rate(node_zfs_arc_demand_metadata_hits{job=\"$job\"}[$__rate_interval]))",
+          "expr": "rate(node_zfs_arc_demand_metadata_hits{instance=~\"$instance\"}[$__rate_interval]) / (rate(node_zfs_arc_demand_metadata_misses{instance=~\"$instance\"}[$__rate_interval]) + rate(node_zfs_arc_demand_metadata_hits{instance=~\"$instance\"}[$__rate_interval]))",
+          "fullMetaSearch": false,
           "hide": false,
-          "legendFormat": "Hit Ratio",
+          "includeNullMetadata": true,
+          "legendFormat": "{{instance}} - Hit Ratio",
           "range": true,
-          "refId": "C"
+          "refId": "C",
+          "useBackend": false
         }
       ],
       "title": "ARC Demand - Metadata",
@@ -1287,10 +1406,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1305,7 +1420,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1405,81 +1520,101 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.2.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_end_ts{state=~\"finished|canceled\", job=\"$job\"} * 1000",
+          "expr": "zpool_scan_stats_end_ts{state=~\"finished|canceled\", instance=~\"$instance\"} * 1000",
           "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_start_ts{state=~\"finished|canceled\", job=\"$job\"} * 1000",
+          "expr": "zpool_scan_stats_start_ts{state=~\"finished|canceled\", instance=~\"$instance\"} * 1000",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "B"
+          "refId": "B",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_examined{state=~\"finished|canceled\", job=\"$job\"}",
+          "expr": "zpool_scan_stats_examined{state=~\"finished|canceled\", instance=~\"$instance\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "C"
+          "refId": "C",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_errors{state=~\"finished|canceled\", job=\"$job\"}",
+          "expr": "zpool_scan_stats_errors{state=~\"finished|canceled\", instance=~\"$instance\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "D"
+          "refId": "D",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_processed{state=~\"finished|canceled\", job=\"$job\"}",
+          "expr": "zpool_scan_stats_processed{state=~\"finished|canceled\", instance=~\"$instance\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "E"
+          "refId": "E",
+          "useBackend": false
         }
       ],
       "title": "Pools Scans Finished",
@@ -1572,7 +1707,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1659,126 +1794,158 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.2.0",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_start_ts{job=~'$job', state!~\"finished|canceled\"} * 1000",
+          "expr": "zpool_scan_stats_start_ts{instance=~\"$instance\", state!~\"finished|canceled\"} * 1000",
           "format": "table",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_remaining_t{state!~\"finished|canceled\", job=~\"$job\"}",
+          "expr": "zpool_scan_stats_remaining_t{state!~\"finished|canceled\", instance=~\"$instance\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "B"
+          "refId": "B",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_errors{job=~'$job', state!~\"finished|canceled\"}",
+          "expr": "zpool_scan_stats_errors{instance=~\"$instance\", state!~\"finished|canceled\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "C"
+          "refId": "C",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_issued{job=~'$job', state!~\"finished|canceled\"}",
+          "expr": "zpool_scan_stats_issued{instance=~\"$instance\", state!~\"finished|canceled\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "D"
+          "refId": "D",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_pass_issued{job=~'$job', state!~\"finished|canceled\"}",
+          "expr": "zpool_scan_stats_pass_issued{instance=~\"$instance\", state!~\"finished|canceled\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "E"
+          "refId": "E",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_processed{job=~'$job',state!~\"finished|canceled\"}",
+          "expr": "zpool_scan_stats_processed{instance=~\"$instance\", state!~\"finished|canceled\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "F"
+          "refId": "F",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_to_process{job=~'$job',state!~\"finished|canceled\"}",
+          "expr": "zpool_scan_stats_to_process{instance=~\"$instance\", state!~\"finished|canceled\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "G"
+          "refId": "G",
+          "useBackend": false
         },
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
+          "disableTextWrap": false,
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "zpool_scan_stats_rate{job=~'$job',state!~\"finished|canceled\"}",
+          "expr": "zpool_scan_stats_rate{instance=~\"$instance\", state!~\"finished|canceled\"}",
           "format": "table",
+          "fullMetaSearch": false,
           "hide": false,
+          "includeNullMetadata": true,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "H"
+          "refId": "H",
+          "useBackend": false
         }
       ],
       "title": "Pools Scans In Progress",
@@ -1948,10 +2115,6 @@
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1961,14 +2124,13 @@
       "id": 26,
       "panels": [],
       "repeat": "pool",
-      "repeatDirection": "h",
       "title": "Pool Stats - $pool",
       "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2047,16 +2209,16 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.5",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "zpool_stats_alloc{job='$job', vdev=\"root\", name=\"$pool\"}",
+          "expr": "zpool_stats_alloc{instance=~\"$instance\", vdev=\"root\", name=\"$pool\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2066,11 +2228,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "zpool_stats_size{job='$job', vdev=\"root\", name=\"$pool\"}",
+          "expr": "zpool_stats_size{instance=~\"$instance\", vdev=\"root\", name=\"$pool\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2080,11 +2242,11 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "zpool_stats_free{job='$job', vdev=\"root\", name=\"$pool\"}",
+          "expr": "zpool_stats_free{instance=~\"$instance\", vdev=\"root\", name=\"$pool\"}",
           "hide": false,
           "instant": false,
           "interval": "",
@@ -2099,7 +2261,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2202,14 +2364,15 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
-          "expr": "irate(zpool_stats_read_bytes{job='$job', name=\"$pool\",vdev=\"root\"}[$__rate_interval])",
+          "expr": "irate(zpool_stats_read_bytes{instance=~\"$instance\", name=\"$pool\",vdev=\"root\"}[$__rate_interval])",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -2217,10 +2380,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
-          "expr": "irate(zpool_stats_read_ops{job='$job', name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
+          "expr": "irate(zpool_stats_read_ops{instance=~\"$instance\", name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
           "hide": false,
           "legendFormat": "{{name}} IOPS",
           "range": true,
@@ -2229,10 +2392,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
-          "expr": "irate(zpool_stats_read_errors{job='$job', name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
+          "expr": "irate(zpool_stats_read_errors{instance=~\"$instance\", name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
           "hide": false,
           "legendFormat": "{{name}} Errors",
           "range": true,
@@ -2243,18 +2406,9 @@
       "type": "timeseries"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2277,14 +2431,8 @@
         "x": 13,
         "y": 73
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 399,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -2324,17 +2472,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum(increase(zpool_latency_total_read{name=\"$pool\", job=\"$job\"}[$__rate_interval])) by(le)",
+          "expr": "sum(increase(zpool_latency_total_read{name=\"$pool\", instance=~\"$instance\"}[$__rate_interval])) by(le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -2343,26 +2490,12 @@
         }
       ],
       "title": "Total Reads Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2465,14 +2598,15 @@
           "sort": "none"
         }
       },
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
-          "expr": "irate(zpool_stats_write_bytes{job='$job', name=\"$pool\",vdev=\"root\"}[$__rate_interval])",
+          "expr": "irate(zpool_stats_write_bytes{instance=~\"$instance\", name=\"$pool\",vdev=\"root\"}[$__rate_interval])",
           "legendFormat": "{{name}}",
           "range": true,
           "refId": "A"
@@ -2480,10 +2614,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
-          "expr": "irate(zpool_stats_write_ops{job='$job', name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
+          "expr": "irate(zpool_stats_write_ops{instance=~\"$instance\", name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
           "hide": false,
           "legendFormat": "{{name}} IOPS",
           "range": true,
@@ -2492,10 +2626,10 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
-          "expr": "irate(zpool_stats_write_errors{job='$job', name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
+          "expr": "irate(zpool_stats_write_errors{instance=~\"$instance\", name=\"$pool\", vdev=\"root\"}[$__rate_interval])",
           "hide": false,
           "legendFormat": "{{name}} Errors",
           "range": true,
@@ -2506,18 +2640,9 @@
       "type": "timeseries"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2540,14 +2665,8 @@
         "x": 13,
         "y": 83
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 325,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -2587,17 +2706,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum by(le) (increase(zpool_latency_total_write{name=\"$pool\", job=\"$job\"}[$__rate_interval]))",
+          "expr": "sum by(le) (increase(zpool_latency_total_write{name=\"$pool\", instance=~\"$instance\"}[$__rate_interval]))",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -2606,28 +2724,10 @@
         }
       ],
       "title": "Total Writes Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
       "collapsed": false,
-      "datasource": {
-        "type": "datasource",
-        "uid": "grafana"
-      },
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -2641,18 +2741,9 @@
       "type": "row"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2675,14 +2766,8 @@
         "x": 0,
         "y": 146
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 361,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -2722,17 +2807,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum  (increase(zpool_latency_sync_read{job=\"$job\", name=\"$pool\"}[$__rate_interval])) by(le) ",
+          "expr": "sum  (increase(zpool_latency_sync_read{instance=~\"$instance\", name=\"$pool\"}[$__rate_interval])) by(le) ",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -2741,35 +2825,12 @@
         }
       ],
       "title": "Sync Reads Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2792,14 +2853,8 @@
         "x": 12,
         "y": 146
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 362,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -2839,17 +2894,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum (increase(zpool_latency_sync_write{job='$job', name=\"$pool\"}[$__rate_interval])) by (le)",
+          "expr": "sum (increase(zpool_latency_sync_write{instance=~\"$instance\", name=\"$pool\"}[$__rate_interval])) by (le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -2858,35 +2912,12 @@
         }
       ],
       "title": "Sync Writes Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2909,14 +2940,8 @@
         "x": 0,
         "y": 156
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 363,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -2956,17 +2981,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum(increase(zpool_latency_async_read{job='$job', name=\"$pool\"}[$__rate_interval])) by (le)",
+          "expr": "sum(increase(zpool_latency_async_read{instance=~\"$instance\", name=\"$pool\"}[$__rate_interval])) by (le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -2975,35 +2999,12 @@
         }
       ],
       "title": "Async Reads Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3026,14 +3027,8 @@
         "x": 12,
         "y": 156
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 364,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -3073,17 +3068,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum(increase(zpool_latency_async_write{job='$job',name=\"$pool\"}[$__rate_interval])) by (le)",
+          "expr": "sum(increase(zpool_latency_async_write{instance=~\"$instance\",name=\"$pool\"}[$__rate_interval])) by (le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -3092,35 +3086,12 @@
         }
       ],
       "title": "Async Writes Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3143,14 +3114,8 @@
         "x": 0,
         "y": 166
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 365,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -3190,17 +3155,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum(increase(zpool_latency_disk_read{job='$job', name=\"$pool\"}[$__rate_interval])) by (le)",
+          "expr": "sum(increase(zpool_latency_disk_read{instance=~\"$instance\", name=\"$pool\"}[$__rate_interval])) by (le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -3209,35 +3173,12 @@
         }
       ],
       "title": "Disk Reads Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3260,14 +3201,8 @@
         "x": 12,
         "y": 166
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 366,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -3307,17 +3242,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum(increase(zpool_latency_disk_write{job='$job',name=\"$pool\"}[$__rate_interval])) by (le)",
+          "expr": "sum(increase(zpool_latency_disk_write{instance=~\"$instance\",name=\"$pool\"}[$__rate_interval])) by (le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -3326,35 +3260,12 @@
         }
       ],
       "title": "Disk Writes Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3377,14 +3288,8 @@
         "x": 0,
         "y": 176
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 367,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -3424,17 +3329,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum(increase(zpool_latency_scrub{job='$job', name=\"$pool\"}[$__rate_interval])) by (le)",
+          "expr": "sum(increase(zpool_latency_scrub{instance=~\"$instance\", name=\"$pool\"}[$__rate_interval])) by (le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -3443,35 +3347,12 @@
         }
       ],
       "title": "Scrub Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     },
     {
-      "cards": {},
-      "color": {
-        "cardColor": "#56A64B",
-        "colorScale": "sqrt",
-        "colorScheme": "interpolateSpectral",
-        "exponent": 0.5,
-        "mode": "spectrum"
-      },
-      "dataFormat": "tsbuckets",
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -3494,14 +3375,8 @@
         "x": 12,
         "y": 176
       },
-      "heatmap": {},
-      "hideZeroBuckets": true,
-      "highlightCards": true,
       "id": 368,
       "interval": "$interval",
-      "legend": {
-        "show": true
-      },
       "options": {
         "calculate": false,
         "calculation": {},
@@ -3541,17 +3416,16 @@
           "unit": "s"
         }
       },
-      "pluginVersion": "11.2.0",
-      "reverseYBuckets": false,
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "editorMode": "builder",
           "exemplar": true,
-          "expr": "sum(increase(zpool_latency_trim{job='$job', name=\"$pool\"}[$__rate_interval])) by(le)",
+          "expr": "sum(increase(zpool_latency_trim{instance=~\"$instance\", name=\"$pool\"}[$__rate_interval])) by(le)",
           "format": "heatmap",
           "interval": "",
           "legendFormat": "{{le}}",
@@ -3560,51 +3434,31 @@
         }
       ],
       "title": "Trim Latency",
-      "tooltip": {
-        "show": true,
-        "showHistogram": true
-      },
-      "type": "heatmap",
-      "xAxis": {
-        "show": true
-      },
-      "yAxis": {
-        "decimals": 0,
-        "format": "s",
-        "logBase": 1,
-        "show": true
-      },
-      "yBucketBound": "auto"
+      "type": "heatmap"
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {},
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "datasource",
         "options": [],
         "query": "prometheus",
-        "queryValue": "",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
         "current": {
-          "selected": false,
           "text": "30s",
           "value": "30s"
         },
         "hide": 2,
         "includeAll": false,
-        "multi": false,
         "name": "interval",
         "options": [
           {
@@ -3614,55 +3468,50 @@
           }
         ],
         "query": "30s",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
+        "allValue": ".*",
         "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(zfs_pool_health,pool)",
-        "hide": 0,
-        "includeAll": true,
-        "label": "Pool",
-        "multi": false,
-        "name": "pool",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(zfs_pool_health,pool)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
-        },
-        "definition": "label_values(zfs_pool_health,instance)",
-        "hide": 0,
+        "definition": "label_values(zpool_stats_alloc,instance)",
         "includeAll": true,
         "label": "Instance",
-        "multi": false,
+        "multi": true,
         "name": "instance",
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(zfs_pool_health,instance)",
+          "query": "label_values(zpool_stats_alloc,instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(zpool_stats_alloc{instance=~\"$instance\"},name)",
+        "includeAll": true,
+        "label": "Pool",
+        "multi": true,
+        "name": "pool",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(zpool_stats_alloc{instance=~\"$instance\"},name)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
         "type": "query"
       }
     ]
@@ -3674,7 +3523,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "ZFS Details",
-  "uid": "-AweIwvnk",
-  "version": 5,
+  "uid": "zfs-details",
+  "version": 16,
   "weekStart": ""
 }

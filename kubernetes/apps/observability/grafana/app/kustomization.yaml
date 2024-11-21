@@ -8,6 +8,7 @@ configMapGenerator:
   - name: grafana-dashboards
     files:
       - ./resources/zfs-details.json
+      - ./resources/zfs.json
     options:
       annotations:
         kustomize.toolkit.fluxcd.io/substitute: disabled
