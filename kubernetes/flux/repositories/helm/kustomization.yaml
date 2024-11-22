@@ -37,5 +37,4 @@ resources:
   - ./tailscale.yaml
   - ./traefik.yaml
   - ./vector.yaml
-  - ./victoriametrics.yaml
   - ./yugabytedb.yaml

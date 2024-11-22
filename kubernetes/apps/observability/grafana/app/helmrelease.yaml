@@ -208,11 +208,6 @@ spec:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
           datasource: Prometheus
       observability:
-        prometheus:
-          # renovate: depName="Prometheus"
-          gnetId: 19105
-          revision: 5
-          datasource: Prometheus
         victoria-agent:
           # renovate: depName="VictoriaMetrics - vmagent"
           gnetId: 12683
@@ -222,6 +217,11 @@ spec:
           # renovate: depName="VictoriaMetrics - vmalert"
           gnetId: 14950
           revision: 13
+          datasource: Prometheus
+        victoria-logs:
+          # renovate: depName="VictoriaLogs"
+          gnetId: 22084
+          revision: 3
           datasource: Prometheus
         victoria-operator:
           # renovate: depName="VictoriaMetrics - operator"
