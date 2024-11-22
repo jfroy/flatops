@@ -24,6 +24,6 @@ prometheus.remote_write "victoriametrics" {
 
 loki.write "victorialogs" {
 	endpoint {
-		url = "http://victoria-logs.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
+		url = "http://victoria-logs-server.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
 	}
 }

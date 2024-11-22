@@ -71,7 +71,7 @@ spec:
           - name: VictoriaLogs
             type: victorialogs-datasource
             access: proxy
-            url: http://victoria-logs.observability:9428
+            url: http://victoria-logs-server.observability.svc:9428
           - name: Alertmanager
             type: alertmanager
             uid: alertmanager
