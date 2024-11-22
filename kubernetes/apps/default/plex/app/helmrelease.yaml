@@ -88,10 +88,15 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server
-      cache:
-        existingClaim: plex-cache
+      local:
+        existingClaim: plex-local
         globalMounts:
           - path: /config/Library/Application Support/Plex Media Server/Cache
+            subPath: Cache
+          - path: /config/Library/Application Support/Plex Media Server/Media
+            subPath: Media
+          - path: /config/Library/Application Support/Plex Media Server/Metadata
+            subPath: Metadata
       logs:
         type: emptyDir
         globalMounts:
