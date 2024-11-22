@@ -9,3 +9,17 @@ spec:
     requests:
       storage: 100Gi
   storageClassName: ceph-block
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-local
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 200Gi
+  storageClassName: ceph-block
+  dataSource:
+    kind: PersistentVolumeClaim
+    name: plex
