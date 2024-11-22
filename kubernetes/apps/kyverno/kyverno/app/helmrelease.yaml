@@ -39,6 +39,9 @@ spec:
       serviceMonitor:
         enabled: true
     reportsController:
+      resources:
+        limits:
+          memory: 256Mi
       serviceMonitor:
         enabled: true
     grafana:
