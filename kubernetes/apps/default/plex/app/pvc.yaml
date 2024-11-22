@@ -20,6 +20,3 @@ spec:
     requests:
       storage: 200Gi
   storageClassName: ceph-block
-  dataSource:
-    kind: PersistentVolumeClaim
-    name: plex
