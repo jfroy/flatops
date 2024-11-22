@@ -65,10 +65,13 @@ spec:
       dev-zfs:
         type: hostPath
         hostPath: /dev/zfs
+        hostPathType: CharDevice
         globalMounts:
           - path: /dev/zfs
       proc-spl-kstat-zfs:
         type: hostPath
         hostPath: /proc/spl/kstat/zfs
+        hostPathType: Directory
         globalMounts:
-          - path: /proc/spl/kstat/zfs
+          - path: /host/proc/spl/kstat/zfs
+            readOnly: true
