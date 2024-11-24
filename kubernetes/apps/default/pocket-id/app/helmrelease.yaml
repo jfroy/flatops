@@ -48,6 +48,14 @@ spec:
               TRUST_PROXY: true
               TZ: America/Los_Angeles
               UPLOAD_PATH: /data/uploads
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: http
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
