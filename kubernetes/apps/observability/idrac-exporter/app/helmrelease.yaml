@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: idrac-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    controllers:
+      idrac-exporter:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          idrac-exporter:
+            image:
+              repository: docker.io/mrlhansen/idrac_exporter
+              tag: 1.4.3@sha256:b7b022374e7272ed0fe6b13f8cd986b43ad891809b3cce09f38202b9d388e34c
+            command:
+              - /app/bin/idrac_exporter
+              - --config=/config/idrac.yml
+            env:
+              TZ: America/Los_Angeles
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+    service:
+      idrac-exporter:
+        controller: idrac-exporter
+        ports:
+          metrics:
+            protocol: HTTP
+            port: 9348
+    persistence:
+      config:
+        type: secret
+        name: idrac-exporter

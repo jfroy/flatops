@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/component: idrac-exporter
+    app.kubernetes.io/instance: kantai1
+    app.kubernetes.io/name: idrac-exporter
+  name: idrac-exporter-kantai1
+spec:
+  endpoints:
+    - interval: 30s
+      metricRelabelings:
+        - action: replace
+          replacement: kantai1
+          targetLabel: instance
+        - action: labeldrop
+          regex: (pod)
+      params:
+        target:
+          - kantai1-ipmi
+      path: /metrics
+      port: metrics
+      scheme: http
+      scrapeTimeout: 5m
+  jobLabel: app.kubernetes.io/instance
+  namespaceSelector:
+    matchNames:
+      - observability
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: idrac-exporter
+      app.kubernetes.io/name: idrac-exporter
