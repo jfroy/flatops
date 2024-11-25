@@ -55,7 +55,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: http
+                    port: 80
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
