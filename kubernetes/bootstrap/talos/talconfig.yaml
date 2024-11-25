@@ -279,6 +279,15 @@ controlPlane:
           advertisedSubnets:
             - 192.168.1.0/27
 
+    # api-server configuration
+    - |-
+      cluster:
+        apiServer:
+          extraArgs:
+            oidc-client-id: "${OIDC_CLIENT_ID}"
+            oidc-issuer-url: "${OIDC_ISSUER_URL}"
+            oidc-username-claim: email
+
     # Disable default API server admission plugins.
     - |-
       - op: remove
