@@ -1,9 +1,0 @@
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: kubernetes-dashboard
-  annotations:
-    kustomize.toolkit.fluxcd.io/prune: disabled
-  labels:
-    digest-resolution: enabled
