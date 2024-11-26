@@ -6,4 +6,3 @@ resources:
   - ./namespace.yaml
   # --
   - ./cnpg/ks.yaml
-  # - ./influxdb2/ks.yaml
