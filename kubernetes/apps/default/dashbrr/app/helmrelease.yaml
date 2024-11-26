@@ -46,7 +46,7 @@ spec:
           dashbrr:
             image:
               repository: ghcr.io/autobrr/dashbrr
-              tag: develop
+              tag: pr-67
               pullPolicy: Always
             env:
               DASHBRR__CONFIG_PATH: /config/config.toml
