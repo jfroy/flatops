@@ -10,6 +10,7 @@ resources:
   - ./gluetun/ks.yaml
   - ./homepage/ks.yaml
   - ./media-smb/ks.yaml
+  - ./pgadmin/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
