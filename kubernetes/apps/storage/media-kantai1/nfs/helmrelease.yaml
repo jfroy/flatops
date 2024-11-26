@@ -34,7 +34,7 @@ spec:
           ganesha:
             image:
               repository: ghcr.io/jfroy/ganesha
-              tag: 6.2@sha256:a8d9e62dfa38ed428e9966574f8f7baa1d569af0c61ac82457593d548179287c
+              tag: 6.3@sha256:98a34fff32b6461f3f8488183c4a5139370c57d0bfe1b3105f716c78793d394a
             ports:
               - containerPort: 2049
                 hostPort: 2049
