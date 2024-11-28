@@ -39,6 +39,8 @@ metadata:
   name: sabnzbd-exporter
   labels:
     app.kubernetes.io/instance: sabnzbd
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   revisionHistoryLimit: 3

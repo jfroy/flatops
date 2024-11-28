@@ -39,6 +39,8 @@ metadata:
   name: radarr-exporter
   labels:
     app.kubernetes.io/instance: radarr
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   revisionHistoryLimit: 3

@@ -40,9 +40,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: sonarr
   annotations:
-    fluxcd.io/ignore: "false"
-    fluxcd.io/automated: "true"
-    fluxcd.io/tag.sonarr-exporter: semver:~v0.1
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   revisionHistoryLimit: 3
