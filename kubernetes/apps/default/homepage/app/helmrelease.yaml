@@ -57,17 +57,7 @@ spec:
                     port: &port 3000
             securityContext: &securityContext
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-        initContainers:
-          copy-nextjs:
-            image: *image
-            command:
-              - "/bin/cp"
-              - "-r"
-              - "/app/.next/server/pages"
-              - "/pages"
-            securityContext: *securityContext
     serviceAccount:
       create: true
       name: homepage
@@ -98,20 +88,3 @@ spec:
         name: homepage-config
         globalMounts:
           - path: /app/config
-      logs:
-        type: emptyDir
-        globalMounts:
-          - path: /app/config/logs
-      cache:
-        type: emptyDir
-        globalMounts:
-          - path: /app/.next/cache
-      pages:
-        type: emptyDir
-        advancedMounts:
-          homepage:
-            homepage:
-              - path: /app/.next/server/pages
-                subPath: pages
-            copy-nextjs:
-              - path: /pages
