@@ -90,3 +90,8 @@ spec:
         name: homepage-config
         globalMounts:
           - path: /app/config
+      logs:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /app/config/logs
