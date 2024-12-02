@@ -104,5 +104,17 @@ spec:
       media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
+      scripts:
+        type: configMap
+        name: sonarr-configmap
+        defaultMode: 0775
+        globalMounts:
+          - path: /scripts/pushover-notify.sh
+            subPath: pushover-notify.sh
+            readOnly: true
+          - path: /scripts/refresh-series.sh
+            subPath: refresh-series.sh
+            readOnly: true
       tmp:
         type: emptyDir
+        sizeLimit: 1Gi
