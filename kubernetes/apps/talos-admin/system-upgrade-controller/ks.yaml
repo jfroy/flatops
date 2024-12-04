@@ -42,7 +42,7 @@ spec:
   interval: 30m
   postBuild:
     substitute:
-      # renovate: datasource=docker depName=ghcr.io/jfroy/siderolabs/installer
-      TALOS_VERSION: v1.8.3
+      # renovate: datasource=docker depName=ghcr.io/jfroy/siderolabs/imager
+      TALOS_VERSION: v1.8.3-jfroy.20241204-1
       # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
       KUBERNETES_VERSION: v1.31.3
