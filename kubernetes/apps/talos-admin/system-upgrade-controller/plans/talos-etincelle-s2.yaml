@@ -8,7 +8,7 @@ metadata:
     description: Same as talos-etincelle-s1 but without secureboot
     secure-boot: false
     extensions: siderolabs/amd-ucode, jfroy/siderolabs/glibc, jfroy/siderolabs/nvidia-driver-production, jfroy/siderolabs/zfs
-    cmdline: lsm=landlock,lockdown,yama,apparmor,bpf lsm.debug amd_pstate=active spec_rstack_overflow=microcode
+    cmdline: lsm=landlock,lockdown,yama,apparmor,bpf lsm.debug amd_pstate=active spec_rstack_overflow=microcode zfs.zfs_arc_max=26843545600 zfs.zfs_arc_shrinker_limit=0
 spec:
   version: ${TALOS_VERSION}
   serviceAccountName: system-upgrade
@@ -49,6 +49,6 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=tif.etincelle.cloud/installer/60f187fc6f3cf26c1d5c16aa847991c8a261b64da170f10c66e76000ecd441fe:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=tif.etincelle.cloud/installer/62f9fce7f705007200ec6e510c078227eea151cd8f2efc30338fe3c4521c99cf:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
