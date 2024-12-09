@@ -5,10 +5,10 @@ kind: Plan
 metadata:
   name: talos-etincelle-s2
   annotations:
-    description: Same as talos-etincelle-s1 but without secureboot
+    description: Mostly the same as talos-etincelle-s1. No secureboot and different zfs tuning.
     secure-boot: false
     extensions: siderolabs/amd-ucode, jfroy/siderolabs/glibc, jfroy/siderolabs/nvidia-driver-production, jfroy/siderolabs/zfs
-    cmdline: lsm=landlock,lockdown,yama,apparmor,bpf lsm.debug amd_pstate=active spec_rstack_overflow=microcode zfs.zfs_arc_max=26843545600 zfs.zfs_arc_shrinker_limit=0
+    cmdline: lsm=landlock,lockdown,yama,apparmor,bpf lsm.debug amd_pstate=active spec_rstack_overflow=microcode zfs.zfs_arc_max=6871947674 zfs.zfs_arc_shrinker_limit=0
 spec:
   version: ${TALOS_VERSION}
   serviceAccountName: system-upgrade
@@ -49,6 +49,6 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=tif.etincelle.cloud/installer/62f9fce7f705007200ec6e510c078227eea151cd8f2efc30338fe3c4521c99cf:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=tif.etincelle.cloud/installer/ad8785c1d7e983857bdb8ccdffd55d90c5bd160cb4212f295d3098c1ecbd6b1c:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false
