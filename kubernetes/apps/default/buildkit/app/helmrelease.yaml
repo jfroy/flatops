@@ -76,6 +76,9 @@ spec:
                       - workers
                   initialDelaySeconds: 5
                   periodSeconds: 30
+            resources:
+              requests:
+                cpu: 16
             securityContext:
               privileged: true
     service:
