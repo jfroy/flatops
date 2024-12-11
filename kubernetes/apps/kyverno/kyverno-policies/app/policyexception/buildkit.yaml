@@ -16,5 +16,3 @@ spec:
             - Deployment
           names:
             - buildkit*
-  podSecurity:
-    - controlName: "Seccomp"

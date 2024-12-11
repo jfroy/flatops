@@ -24,13 +24,15 @@ spec:
       retries: 3
   values:
     defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: Unconfined }
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
@@ -38,27 +40,16 @@ spec:
     controllers:
       buildkit-amd64:
         replicas: 1
-        pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/arch
-                        operator: In
-                        values:
-                          - amd64
         containers:
           buildkitd:
             image:
               repository: moby/buildkit
-              tag: v0.18.1-rootless@sha256:8e70f1e38c50ec5ac8e8fb861c837e9e7b2350ccb90b10e429733f8bda3b7809
+              tag: v0.18.1@sha256:58e6d150a3c5a4b92e99ea8df2cbe976ad6d2ae5beab39214e84fada05b059d5
             args:
               - --addr
-              - unix:///run/user/1000/buildkit/buildkitd.sock
+              - unix:///run/buildkit/buildkitd.sock
               - --addr
               - tcp://0.0.0.0:9999
-              - --oci-worker-no-process-sandbox
             ports:
               - name: grpc
                 containerPort: 9999
@@ -85,6 +76,8 @@ spec:
                       - workers
                   initialDelaySeconds: 5
                   periodSeconds: 30
+            securityContext:
+              privileged: true
     service:
       buildkit-amd64:
         controller: buildkit-amd64
@@ -101,10 +94,6 @@ spec:
         globalMounts:
           - path: /run
           - path: /var/run
-      share:
-        type: emptyDir
-        globalMounts:
-          - path: /home/user/.local/share/buildkit
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -131,13 +120,15 @@ spec:
       retries: 3
   values:
     defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: Unconfined }
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - arm64
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
@@ -145,27 +136,16 @@ spec:
     controllers:
       buildkit-arm64:
         replicas: 1
-        pod:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                  - matchExpressions:
-                      - key: kubernetes.io/arch
-                        operator: In
-                        values:
-                          - arm64
         containers:
           buildkitd:
             image:
               repository: moby/buildkit
-              tag: v0.18.1-rootless@sha256:8e70f1e38c50ec5ac8e8fb861c837e9e7b2350ccb90b10e429733f8bda3b7809
+              tag: v0.18.1@sha256:58e6d150a3c5a4b92e99ea8df2cbe976ad6d2ae5beab39214e84fada05b059d5
             args:
               - --addr
-              - unix:///run/user/1000/buildkit/buildkitd.sock
+              - unix:///run/buildkit/buildkitd.sock
               - --addr
               - tcp://0.0.0.0:9999
-              - --oci-worker-no-process-sandbox
             ports:
               - name: grpc
                 containerPort: 9999
@@ -192,6 +172,8 @@ spec:
                       - workers
                   initialDelaySeconds: 5
                   periodSeconds: 30
+            securityContext:
+              privileged: true
     service:
       buildkit-arm64:
         controller: buildkit-arm64
@@ -208,7 +190,3 @@ spec:
         globalMounts:
           - path: /run
           - path: /var/run
-      share:
-        type: emptyDir
-        globalMounts:
-          - path: /home/user/.local/share/buildkit
