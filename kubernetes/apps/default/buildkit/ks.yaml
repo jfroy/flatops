@@ -17,6 +17,3 @@ spec:
     name: home-kubernetes
   wait: false
   interval: 30m
-  postBuild:
-    substitute:
-      APP: *app
