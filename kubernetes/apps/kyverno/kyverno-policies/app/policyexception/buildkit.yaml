@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v2
+kind: PolicyException
+metadata:
+  name: buildkit
+  namespace: kyverno
+spec:
+  exceptions:
+    - policyName: psa-baseline
+      ruleNames:
+        - baseline
+  match:
+    any:
+      - resources:
+          kinds:
+            - Pod
+            - Deployment
+          names:
+            - buildkit*
+  podSecurity:
+    - controlName: "Seccomp"
