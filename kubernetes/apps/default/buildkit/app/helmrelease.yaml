@@ -94,6 +94,13 @@ spec:
             port: 9999
             protocol: TCP
     persistence:
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /run
+          - path: /var/run
       share:
         type: emptyDir
         globalMounts:
@@ -194,6 +201,13 @@ spec:
             port: 9999
             protocol: TCP
     persistence:
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /run
+          - path: /var/run
       share:
         type: emptyDir
         globalMounts:
