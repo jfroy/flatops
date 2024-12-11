@@ -1,0 +1,37 @@
+[grpc]
+  address = ["unix:///run/buildkit/buildkitd.sock", "tcp://0.0.0.0:9999"]
+  uid = 0
+  gid = 0
+
+[worker.oci]
+  enabled = true
+  rootless = false
+  noProcessSandbox = false
+
+  gc = true
+
+[[worker.oci.gcpolicy]]
+  filters = ["type==source.local", "type==exec.cachemount", "type==source.git.checkout"]
+  reservedSpace = "10GiB"
+[[worker.oci.gcpolicy]]
+  all = true
+  reservedSpace = "50GiB"
+
+[worker.containerd]
+  address = "/run/containerd/containerd.sock"
+  enabled = false
+  namespace = "buildkit"
+
+  gc = true
+
+[worker.containerd.runtime]
+  name = "io.containerd.runc.v2"
+  path = "/path/to/containerd/runc/shim"
+  options = { BinaryName = "runc" }
+
+[[worker.containerd.gcpolicy]]
+  filters = ["type==source.local", "type==exec.cachemount", "type==source.git.checkout"]
+  reservedSpace = "10GiB"
+[[worker.containerd.gcpolicy]]
+  all = true
+  reservedSpace = "50GiB"
