@@ -36,3 +36,4 @@ spec:
       serviceType: ClusterIP
     operator:
       create: true
+      autoRestart: true
