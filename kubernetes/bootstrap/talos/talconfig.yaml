@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
-# renovate: datasource=github-releases depName=siderolabs/talos
-talosVersion: v1.8.3
+# renovate: datasource=docker depName=ghcr.io/jfroy/siderolabs/imager
+talosVersion: v1.8.3000
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.31.3
 
@@ -22,19 +22,24 @@ additionalMachineCertSans: *sans
 cniConfig:
   name: none
 
+imageFactory:
+  registryURL: tif.etincelle.cloud
+
 nodes:
   - hostname: "kantai1"
     ipAddress: "192.168.1.13"
     installDiskSelector:
       wwid: eui.e8238fa6bf530001001b448b4a49b465
     controlPlane: true
-    talosImageURL: ghcr.io/jfroy/talos/secureboot-installer
     kernelModules:
       - name: nvidia
       - name: nvidia-uvm
       - name: nvidia-modeset
       - name: nvme-tcp
       - name: zfs
+    machineSpec:
+      secureboot: true
+      useUKI: true
     networkInterfaces:
       - interface: enp129s0f0
         dhcp: true
@@ -44,6 +49,21 @@ nodes:
       - interface: enp129s0f1
         dhcp: true
         mtu: 1500
+    schematic:
+      customization:
+        extraKernelArgs:
+          - lsm=landlock,lockdown,yama,apparmor,bpf
+          - lsm.debug
+          - amd_pstate=active
+          - spec_rstack_overflow=microcode
+          - zfs.zfs_arc_max=26843545600
+          - zfs.zfs_arc_shrinker_limit=0
+        systemExtensions:
+          officialExtensions:
+            - jfroy/siderolabs/glibc
+            - jfroy/siderolabs/nvidia-driver-production
+            - jfroy/siderolabs/zfs
+            - siderolabs/amd-ucode
     patches:
       # sysctls
       - |-
@@ -163,6 +183,21 @@ nodes:
           ip: "192.168.1.8"
     nodeTaints:
       node-role.kubernetes.io/control-plane: :NoSchedule
+    schematic:
+      customization:
+        extraKernelArgs:
+          - lsm=landlock,lockdown,yama,apparmor,bpf
+          - lsm.debug
+          - amd_pstate=active
+          - spec_rstack_overflow=microcode
+          - zfs.zfs_arc_max=6871947674
+          - zfs.zfs_arc_shrinker_limit=0
+        systemExtensions:
+          officialExtensions:
+            - jfroy/siderolabs/glibc
+            - jfroy/siderolabs/nvidia-driver-production
+            - jfroy/siderolabs/zfs
+            - siderolabs/amd-ucode
     patches:
       # sysctls
       - |-

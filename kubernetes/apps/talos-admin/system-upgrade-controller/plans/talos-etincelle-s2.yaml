@@ -7,7 +7,7 @@ metadata:
   annotations:
     description: Mostly the same as talos-etincelle-s1. No secureboot and different zfs tuning.
     secure-boot: false
-    extensions: siderolabs/amd-ucode, jfroy/siderolabs/glibc, jfroy/siderolabs/nvidia-driver-production, jfroy/siderolabs/zfs
+    extensions: jfroy/siderolabs/glibc, jfroy/siderolabs/nvidia-driver-production, jfroy/siderolabs/zfs, siderolabs/amd-ucode
     cmdline: lsm=landlock,lockdown,yama,apparmor,bpf lsm.debug amd_pstate=active spec_rstack_overflow=microcode zfs.zfs_arc_max=6871947674 zfs.zfs_arc_shrinker_limit=0
 spec:
   version: ${TALOS_VERSION}
