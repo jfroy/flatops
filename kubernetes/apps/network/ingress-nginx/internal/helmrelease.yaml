@@ -27,6 +27,8 @@ spec:
     controller:
       replicaCount: 1
       service:
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: &hostname "internal.${PUBLIC_DOMAIN0}"
         externalTrafficPolicy: Cluster
         ipFamilyPolicy: PreferDualStack
         ipFamilies:
@@ -80,4 +82,7 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: "network/${PUBLIC_DOMAIN0/./-}-production-tls"
+        publish-status-address: *hostname
         sync-rate-limit: "0.008"
+      publishService:
+        enabled: false

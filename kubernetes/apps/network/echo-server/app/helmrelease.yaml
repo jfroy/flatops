@@ -66,8 +66,6 @@ spec:
     ingress:
       echo-server:
         className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: "external.${PUBLIC_DOMAIN0}"
         hosts:
           - host: "{{ .Release.Name }}.${PUBLIC_DOMAIN0}"
             paths:
