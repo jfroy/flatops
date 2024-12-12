@@ -31,7 +31,7 @@ spec:
           plex:
             image:
               repository: ghcr.io/jfroy/plex
-              tag: 1.41.2.9200-c6bbc1b53@sha256:2f45b51113e0155282a16228d310132273c1f0afc75bf60de09a94536a128594
+              tag: 1.41.2.9200-c6bbc1b53@sha256:fc15a49d7b50561751f4ee33d09648f404a811ad29a4600b80ac3ec9aa23f53f
             env:
               NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
               TZ: America/Los_Angeles
