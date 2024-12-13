@@ -56,7 +56,7 @@ spec:
       enabled: true
       accessModes:
         - ReadWriteOnce
-      size: 1Gi
+      size: 100Mi
       storageClassName: openebs-hostpath
     ingress:
       enabled: true
