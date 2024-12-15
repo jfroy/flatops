@@ -42,7 +42,8 @@ spec:
       name: "*"
   exclusionList:
     - "context canceled$"
+    - "dial.*tcp.*timeout"
     - "error.*lookup github\\.com"
     - "error.*lookup raw\\.githubusercontent\\.com"
-    - "dial.*tcp.*timeout"
+    - "read: connection timed out"
     - "waiting.*socket"
