@@ -8,24 +8,23 @@ pages:
           - type: rss
             limit: 10
             collapse-after: 3
-            cache: 3h
+            cache: 10m
             feeds:
-              - url: https://ciechanow.ski/atom.xml
-              - url: https://www.joshwcomeau.com/rss.xml
-                title: Josh Comeau
-              - url: https://samwho.dev/rss.xml
-              - url: https://awesomekling.github.io/feed.xml
-              - url: https://ishadeed.com/feed.xml
-                title: Ahmad Shadeed
+              - url: http://feeds.macrumors.com/MacRumors-All
+                title: MacRumors
+              - url: https://www.phoronix.com/rss.php
+                title: Phoronix
+              - url: https://www.gamingonlinux.com/article_rss.php
+              - url: https://chipsandcheese.com/feed/
+              - url: https://www.home-assistant.io/atom.xml
 
           - type: twitch-channels
             channels:
-              - theprimeagen
-              - cohhcarnage
-              - christitustech
-              - blurbs
-              - asmongold
-              - jembawls
+              - gamesdonequick
+              - teammacintyre
+              - nilaus
+              - nefrums
+              - raxxanterax
 
       - size: full
         widgets:
@@ -33,9 +32,16 @@ pages:
 
           - type: videos
             channels:
-              - UCR-DXc1voovS8nhAvccRZhg # Jeff Geerling
+              - UChIs72whgZI9w6d6FhwGGHA # Gamers Nexus
+              - UC4w1YQAJMWOz4qtxinq55LQ # Level1Techs
+              - UCI8iQa1hv7oV_Z8D35vVuSg # Hardware Unboxed
               - UCv6J_jJa8GJqFwQNgNrMuww # ServeTheHome
-              - UCOk-gHyjcWZNj3Br4oxwh0A # Techno Tim
+              - UC1LpsuAUaKoMzzJSEt5WImw # Asianometry
+              - UC9PBzalIcEQCsiIkq36PyUA # Digital Foundry
+              - UCSNsJvvc3LarXVkJ2H6e2zQ # Michael Hendriks
+              - UCD80bzqJh1N7lOqn7n0vKTg # Nilaus
+              - UCMb0O2CdPBNi-QqPk5T3gsQ # James Hoffmann
+              - UCHnyfMqiRRG1u-2MsSQLbXA # Veritasium
 
           - type: reddit
             subreddit: selfhosted
@@ -43,14 +49,13 @@ pages:
       - size: small
         widgets:
           - type: weather
-            location: London, United Kingdom
+            location: San Francisco, California, United States
+            hour-format: 24h
 
           - type: markets
             markets:
               - symbol: SPY
                 name: S&P 500
-              - symbol: BTC-USD
-                name: Bitcoin
               - symbol: NVDA
                 name: NVIDIA
               - symbol: AAPL
@@ -61,5 +66,3 @@ pages:
                 name: Google
               - symbol: AMD
                 name: AMD
-              - symbol: RDDT
-                name: Reddit
