@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/grafana/helm-charts/grafana
   ref:
-    tag: 8.6.4
+    tag: 8.8.2
