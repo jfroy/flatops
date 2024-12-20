@@ -23,11 +23,19 @@ spec:
     remediation:
       retries: 3
   values:
+    image:
+      # csi-snapshotter broke in rook v1.16.0 with upgraded volumesnapshot crds
+      # https://github.com/rook/rook/issues/15195
+      tag: v1.16.0-4.g6da8ef89d
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
       provisionerReplicas: 1
       enableLiveness: true
       serviceMonitor:
         enabled: true
+      # csi-snapshotter broke in rook v1.16.0 with upgraded volumesnapshot crds
+      # https://github.com/rook/rook/issues/15195
+      snapshotter:
+        tag: v8.2.0
     monitoring:
       enabled: true
