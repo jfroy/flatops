@@ -7,7 +7,7 @@ metadata:
   annotations:
     description: Schema for kantai1 (and kantai3, but it does not support secureboot, see s2)
     secure-boot: true
-    extensions: jfroy/siderolabs/glibc, jfroy/siderolabs/nvidia-driver-production, jfroy/siderolabs/zfs, siderolabs/amd-ucode
+    extensions: jfroy/siderolabs/nvidia-driver-production, jfroy/siderolabs/zfs, siderolabs/amd-ucode, siderolabs/glibc
     cmdline: lsm=landlock,lockdown,yama,apparmor,bpf lsm.debug amd_pstate=active spec_rstack_overflow=microcode zfs.zfs_arc_max=26843545600 zfs.zfs_arc_shrinker_limit=0
 spec:
   version: ${TALOS_VERSION}
@@ -49,6 +49,6 @@ spec:
     args:
       - --nodes=$(NODE_IP)
       - upgrade
-      - --image=tif.etincelle.cloud/installer-secureboot/62f9fce7f705007200ec6e510c078227eea151cd8f2efc30338fe3c4521c99cf:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --image=tif.etincelle.cloud/installer-secureboot/d23b1d9b4724da9b63e7c06c4f28e560c26c8161b131b058fd7dae0f46f02211:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
       - --preserve=true
       - --wait=false

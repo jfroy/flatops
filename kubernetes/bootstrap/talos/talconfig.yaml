@@ -60,10 +60,10 @@ nodes:
           - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
-            - jfroy/siderolabs/glibc
             - jfroy/siderolabs/nvidia-driver-production
             - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
+            - siderolabs/glibc
     patches:
       # sysctls
       - |-
@@ -152,6 +152,11 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.1.8"
+    schematic:
+      customization:
+        extraKernelArgs:
+          - lsm=landlock,lockdown,yama,apparmor,bpf
+          - lsm.debug
     nodeTaints:
       node-role.kubernetes.io/control-plane: :NoSchedule
     patches:
@@ -194,10 +199,10 @@ nodes:
           - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
-            - jfroy/siderolabs/glibc
             - jfroy/siderolabs/nvidia-driver-production
             - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
+            - siderolabs/glibc
     patches:
       # sysctls
       - |-
