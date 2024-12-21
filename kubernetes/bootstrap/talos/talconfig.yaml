@@ -72,10 +72,10 @@ nodes:
             net.core.bpf_jit_harden: "1"
             net.ipv6.conf.all.accept_ra: "2"
             net.ipv6.conf.all.forwarding: "1"
-            net.ipv6.conf.enp129s0f0.accept_ra: "2"
-            net.ipv6.conf.enp129s0f0.forwarding: "1"
-            net.ipv6.conf.enp129s0f1.accept_ra: "2"
-            net.ipv6.conf.enp129s0f1.forwarding: "1"
+            net.ipv6.conf.enp129s0f0np0.accept_ra: "2"
+            net.ipv6.conf.enp129s0f0np0.forwarding: "1"
+            net.ipv6.conf.enp129s0f1np1.accept_ra: "2"
+            net.ipv6.conf.enp129s0f1np1.forwarding: "1"
             vm.nr_hugepages: "1024"
 
       # nvidia containerd runtimes
@@ -167,8 +167,8 @@ nodes:
             net.core.bpf_jit_harden: "1"
             net.ipv6.conf.all.accept_ra: "2"
             net.ipv6.conf.all.forwarding: "1"
-            net.ipv6.conf.enxf243cb7739d7.accept_ra: "2"
-            net.ipv6.conf.enxf243cb7739d7.forwarding: "1"
+            net.ipv6.conf.enp0s1.accept_ra: "2"
+            net.ipv6.conf.enp0s1.forwarding: "1"
 
   - hostname: "kantai3"
     ipAddress: "192.168.1.10"
