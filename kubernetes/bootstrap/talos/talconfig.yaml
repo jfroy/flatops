@@ -37,6 +37,9 @@ nodes:
       - name: nvidia-modeset
       - name: nvme-tcp
       - name: zfs
+        parameters:
+          - zfs_arc_max=26843545600
+          - zfs_arc_shrinker_limit=0
     machineSpec:
       secureboot: true
       useUKI: true
@@ -56,8 +59,6 @@ nodes:
           - lsm.debug
           - amd_pstate=active
           - spec_rstack_overflow=microcode
-          - zfs.zfs_arc_max=26843545600
-          - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
             - jfroy/siderolabs/nvidia-driver-production
@@ -180,6 +181,9 @@ nodes:
       - name: nvidia-uvm
       - name: nvidia-modeset
       - name: zfs
+        parameters:
+          - zfs_arc_max=6871947674
+          - zfs_arc_shrinker_limit=0
     networkInterfaces:
       - interface: enp1s0
         dhcp: true
@@ -195,8 +199,6 @@ nodes:
           - lsm.debug
           - amd_pstate=active
           - spec_rstack_overflow=microcode
-          - zfs.zfs_arc_max=6871947674
-          - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
             - jfroy/siderolabs/nvidia-driver-production
