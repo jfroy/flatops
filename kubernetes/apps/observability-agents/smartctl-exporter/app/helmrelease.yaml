@@ -33,4 +33,4 @@ spec:
       enabled: false
     image:
       repository: ghcr.io/jfroy/smartctl_exporter
-      tag: 0.12
+      tag: 0.13
