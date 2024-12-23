@@ -45,6 +45,7 @@ spec:
             env:
               DB_PATH: /data/pocket-id.db
               PUBLIC_APP_URL: https://${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
+              SQLITE_DB_PATH: /data/pocket-id.db
               TRUST_PROXY: true
               TZ: America/Los_Angeles
               UPLOAD_PATH: /data/uploads
