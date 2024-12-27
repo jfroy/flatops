@@ -233,17 +233,20 @@ patches:
       network:
         disableSearchDomain: true
 
-  # Enable etcd discovery and disable external service discovery.
-  # https://www.talos.dev/v1.8/talos-guides/discovery/#discovery-service
+  # Use etincelle discovery-service.
+  # The previous Kubernetes discovery service is deprecated due to security changes in Kubernetes.
+  # https://www.talos.dev/v1.10/talos-guides/discovery/#registries
+  # https://github.com/siderolabs/talos/issues/9980
   - |-
     cluster:
       discovery:
         enabled: true
         registries:
           kubernetes:
-            disabled: false
-          service:
             disabled: true
+          service:
+            disabled: false
+            endpoint: https://ds.etincelle.cloud/
 
   # Configure kubelet
   - |-
