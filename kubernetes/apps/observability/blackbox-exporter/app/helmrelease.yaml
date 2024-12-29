@@ -1,0 +1,88 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: blackbox-exporter
+spec:
+  interval: 30m
+  chartRef:
+    kind: OCIRepository
+    name: blackbox-exporter
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: blackbox-exporter
+    securityContext:
+      capabilities:
+        add: ["NET_RAW"]
+    config:
+      modules:
+        http_2xx:
+          prober: http
+          timeout: 5s
+          http:
+            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+            follow_redirects: true
+        http_2xx_ipv4:
+          prober: http
+          timeout: 5s
+          http:
+            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+            follow_redirects: true
+            preferred_ip_protocol: ipv4
+            ip_protocol_fallback: false
+        http_2xx_ipv6:
+          prober: http
+          timeout: 5s
+          http:
+            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+            follow_redirects: true
+            preferred_ip_protocol: ipv6
+            ip_protocol_fallback: false
+    serviceMonitor:
+      selfMonitor:
+        enabled: true
+      enabled: true
+      defaults:
+        interval: 1m
+        scrapeTimeout: 10s
+      targets:
+        - name: cloudflare-ipv4
+          url: https://cloudflare.com
+          module: http_2xx_ipv4
+        - name: cloudflare-ipv6
+          url: https://cloudflare.com
+          module: http_2xx_ipv6
+        - name: google-ipv4
+          url: https://google.com
+          module: http_2xx_ipv4
+        - name: google-ipv6
+          url: https://google.com
+          module: http_2xx_ipv6
+        - name: github-ipv4
+          url: https://github.com
+          module: http_2xx_ipv4
+        - name: github-ipv6
+          url: https://github.com
+          module: http_2xx_ipv6
+    prometheusRule:
+      enabled: true
+      rules:
+        - alert: BlackboxProbeFailed
+          expr: probe_success == 0
+          for: 15m
+          labels:
+            severity: critical
+          annotations:
+            summary: |-
+              The host {{ $labels.target }} is currently unreachable

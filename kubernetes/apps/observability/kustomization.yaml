@@ -6,6 +6,7 @@ resources:
   - ./namespace.yaml
   # --
   - ./alloy/ks.yaml
+  - ./blackbox-exporter/ks.yaml
   - ./exportarr/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml

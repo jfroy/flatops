@@ -16,6 +16,20 @@ spec:
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
+  name: blackbox-exporter
+  namespace: flux-system
+spec:
+  interval: 2h
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  url: oci://ghcr.io/prometheus-community/charts/prometheus-blackbox-exporter
+  ref:
+    semver: 9.1.0
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
   name: kube-state-metrics
   namespace: flux-system
 spec:
