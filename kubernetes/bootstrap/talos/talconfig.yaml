@@ -255,6 +255,9 @@ patches:
         extraArgs:
           rotate-server-certificates: true
         extraConfig:
+          featureGates:
+            UserNamespacesSupport: true
+            UserNamespacesPodSecurityStandards: true
           maxPods: 400
         nodeIP:
           validSubnets:
@@ -342,6 +345,7 @@ controlPlane:
       cluster:
         apiServer:
           extraArgs:
+            feature-gates: UserNamespacesSupport=true,UserNamespacesPodSecurityStandards=true
             oidc-client-id: "${OIDC_CLIENT_ID}"
             oidc-issuer-url: "${OIDC_ISSUER_URL}"
             oidc-username-claim: email
