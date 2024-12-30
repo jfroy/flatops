@@ -49,38 +49,29 @@ spec:
             follow_redirects: true
             preferred_ip_protocol: ipv6
             ip_protocol_fallback: false
+        icmp:
+          prober: icmp
+          icmp:
+            preferred_ip_protocol: ip4
+            ip_protocol_fallback: false
+        icmp6:
+          prober: icmp
+          icmp:
+            preferred_ip_protocol: ip6
+            ip_protocol_fallback: false
+    service:
+      ipDualStack:
+        enabled: true
+        ipFamilies: ["IPv4", "IPv6"]
     serviceMonitor:
       selfMonitor:
         enabled: true
-      enabled: true
-      defaults:
-        interval: 1m
-        scrapeTimeout: 10s
-      targets:
-        - name: cloudflare-ipv4
-          url: https://cloudflare.com
-          module: http_2xx_ipv4
-        - name: cloudflare-ipv6
-          url: https://cloudflare.com
-          module: http_2xx_ipv6
-        - name: google-ipv4
-          url: https://google.com
-          module: http_2xx_ipv4
-        - name: google-ipv6
-          url: https://google.com
-          module: http_2xx_ipv6
-        - name: github-ipv4
-          url: https://github.com
-          module: http_2xx_ipv4
-        - name: github-ipv6
-          url: https://github.com
-          module: http_2xx_ipv6
     prometheusRule:
       enabled: true
       rules:
         - alert: BlackboxProbeFailed
           expr: probe_success == 0
-          for: 15m
+          for: 5m
           labels:
             severity: critical
           annotations:

@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: http-ipv4
+spec:
+  prober:
+    url: blackbox-exporter.observability.svc:9115
+  module: http_2xx_ipv4
+  targets:
+    staticConfig:
+      static:
+        - https://cloudflare.com
+        - https://google.com
+        - https://github.com
+  interval: 1m
+  scrapeTimeout: 10s
+  metricRelabelings:
+    - action: labeldrop
+      regex: (pod)
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: http-ipv6
+spec:
+  prober:
+    url: blackbox-exporter.observability.svc:9115
+  module: http_2xx_ipv6
+  targets:
+    staticConfig:
+      static:
+        - https://cloudflare.com
+        - https://google.com
+        - https://github.com
+  interval: 1m
+  scrapeTimeout: 10s
+  metricRelabelings:
+    - action: labeldrop
+      regex: (pod)
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: icmp
+spec:
+  prober:
+    url: blackbox-exporter.observability.svc:9115
+  module: icmp
+  targets:
+    staticConfig:
+      static:
+        - cloudflare.com
+        - google.com
+        - github.com
+  interval: 1m
+  scrapeTimeout: 10s
+  metricRelabelings:
+    - action: labeldrop
+      regex: (pod)
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/probe_v1.json
+kind: Probe
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: icmp6
+spec:
+  prober:
+    url: blackbox-exporter.observability.svc:9115
+  module: icmp6
+  targets:
+    staticConfig:
+      static:
+        - cloudflare.com
+        - google.com
+        - github.com
+  interval: 1m
+  scrapeTimeout: 10s
+  metricRelabelings:
+    - action: labeldrop
+      regex: (pod)
