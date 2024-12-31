@@ -353,7 +353,7 @@
           "expr": "1-avg_over_time(probe_success{job=~\"$job\",instance=~\"$instance\"}[$__interval])",
           "hide": false,
           "instant": false,
-          "legendFormat": "packet loss",
+          "legendFormat": "packet loss {{job}}",
           "range": true,
           "refId": "A"
         },
@@ -366,7 +366,7 @@
           "expr": "probe_icmp_duration_seconds{phase=\"rtt\",job=~\"$job\",instance=~\"$instance\"} > 0",
           "hide": false,
           "instant": false,
-          "legendFormat": "RTT",
+          "legendFormat": "rtt {{job}}",
           "range": true,
           "refId": "B"
         }
