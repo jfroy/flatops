@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
-  - ./db/ks.yaml
+  # - ./db/ks.yaml
