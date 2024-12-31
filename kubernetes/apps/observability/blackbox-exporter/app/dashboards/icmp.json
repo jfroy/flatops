@@ -138,7 +138,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
-          "expr": "sum(probe_icmp_duration_seconds{phase=\"rtt\",job=~\"$job\",instance=~\"$instance\"}) by (instance)",
+          "expr": "sum(probe_icmp_duration_seconds{phase=\"rtt\",job=~\"$job\",instance=~\"$instance\"}) by (instance, job)",
           "instant": false,
           "legendFormat": "{{instance}} {{job}}",
           "range": true,
