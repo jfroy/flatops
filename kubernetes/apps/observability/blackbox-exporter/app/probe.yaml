@@ -5,6 +5,7 @@ apiVersion: monitoring.coreos.com/v1
 metadata:
   name: http-ipv4
 spec:
+  jobName: http-ipv4
   prober:
     url: blackbox-exporter.observability.svc:9115
   module: http_2xx_ipv4
@@ -26,6 +27,7 @@ apiVersion: monitoring.coreos.com/v1
 metadata:
   name: http-ipv6
 spec:
+  jobName: http-ipv6
   prober:
     url: blackbox-exporter.observability.svc:9115
   module: http_2xx_ipv6
@@ -47,6 +49,7 @@ apiVersion: monitoring.coreos.com/v1
 metadata:
   name: icmp
 spec:
+  jobName: icmp
   prober:
     url: blackbox-exporter.observability.svc:9115
   module: icmp
@@ -68,6 +71,7 @@ apiVersion: monitoring.coreos.com/v1
 metadata:
   name: icmp6
 spec:
+  jobName: icmp6
   prober:
     url: blackbox-exporter.observability.svc:9115
   module: icmp6
