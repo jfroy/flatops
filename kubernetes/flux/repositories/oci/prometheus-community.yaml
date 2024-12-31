@@ -11,7 +11,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/alertmanager
   ref:
-    semver: 1.13.0
+    tag: 1.13.1
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
@@ -25,7 +25,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-blackbox-exporter
   ref:
-    semver: 9.1.0
+    tag: 9.1.0
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
@@ -39,7 +39,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/kube-state-metrics
   ref:
-    semver: 5.25.1
+    tag: 5.25.1
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
@@ -53,7 +53,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
   ref:
-    semver: 62.7.0
+    tag: 62.7.0
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
@@ -67,7 +67,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-node-exporter
   ref:
-    semver: 4.39.0
+    tag: 4.39.0
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
@@ -81,7 +81,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
   ref:
-    semver: 14.0.0
+    tag: 14.0.0
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
@@ -95,4 +95,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-smartctl-exporter
   ref:
-    semver: 0.10.0
+    tag: 0.10.0
