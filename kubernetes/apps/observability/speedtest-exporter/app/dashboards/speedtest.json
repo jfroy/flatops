@@ -749,7 +749,7 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values({job=\"integrations/speedtest\"},instance)",
+        "definition": "label_values({job=\"speedtest-exporter\"},instance)",
         "hide": 0,
         "includeAll": false,
         "label": "instance",
@@ -758,7 +758,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values({job=\"integrations/speedtest\"},instance)",
+          "query": "label_values({job=\"speedtest-exporter\"},instance)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
