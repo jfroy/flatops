@@ -81,7 +81,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
   ref:
-    tag: 14.0.0
+    tag: 17.0.2
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
