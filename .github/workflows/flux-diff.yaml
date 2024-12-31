@@ -16,12 +16,12 @@ jobs:
     name: Flux Diff
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       pull-requests: write
     strategy:
       matrix:
-        paths: ["kubernetes"]
         resources: ["helmrelease", "kustomization"]
+      max-parallel: 4
+      fail-fast: false
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,19 +34,30 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
-      - name: Diff resources
-        uses: docker://ghcr.io/allenporter/flux-local:main
+      - name: Mise en place
+        uses: jdx/mise-action@v2
         with:
-          args: >-
-            diff ${{ matrix.resources }}
-            --unified 6
-            --path /github/workspace/pull/${{ matrix.paths }}/flux
-            --path-orig /github/workspace/default/${{ matrix.paths }}/flux
-            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
-            --limit-bytes 10000
-            --all-namespaces
-            --sources "home-kubernetes"
-            --output-file diff.patch
+          mise_toml: |
+            [tools]
+            python = "3.12"
+            "aqua:astral-sh/uv" = "latest"
+            "aqua:fluxcd/flux2" = "latest"
+            "aqua:helm/helm" = "latest"
+            "aqua:kubernetes-sigs/kustomize" = "latest"
+            "pipx:flux-local" = "latest"
+
+      - name: Diff resources
+        shell: bash
+        run: |
+          flux-local diff ${{ matrix.resources }} \
+              --unified 6 \
+              --path ${{ github.workspace }}/pull/kubernetes/flux \
+              --path-orig ${{ github.workspace }}/default/kubernetes/flux \
+              --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" \
+              --limit-bytes 10000 \
+              --all-namespaces \
+              --sources "home-kubernetes" \
+              --output-file diff.patch
 
       - name: Generate diff markdown
         id: diff-md
@@ -60,6 +71,17 @@ jobs:
         if: ${{ steps.diff-md.outputs.size > 0 }}
         uses: mshick/add-pr-comment@v2
         with:
-          message-id: "${{ github.event.pull_request.number }}/${{ matrix.paths }}/${{ matrix.resources }}"
+          message-id: "${{ github.event.pull_request.number }}/${{ matrix.resources }}"
           message-failure: Diff was not successful
           message-path: diff.md
+
+  # Summarize matrix https://github.community/t/status-check-for-a-matrix-jobs/127354/7
+  flux-diff-success:
+    if: ${{ always() }}
+    needs: ["flux-diff"]
+    name: Flux Diff Successful
+    runs-on: ubuntu-latest
+    steps:
+      - if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}
+        name: Check matrix status
+        run: exit 1
