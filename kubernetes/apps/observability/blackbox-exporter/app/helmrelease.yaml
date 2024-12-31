@@ -59,6 +59,8 @@ spec:
           icmp:
             preferred_ip_protocol: ip6
             ip_protocol_fallback: false
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
     service:
       ipDualStack:
         enabled: true
