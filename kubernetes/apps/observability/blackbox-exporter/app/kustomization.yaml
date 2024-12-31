@@ -5,3 +5,14 @@ kind: Kustomization
 resources:
   - helmrelease.yaml
   - probe.yaml
+configMapGenerator:
+  - name: bbe-dashboards
+    files:
+      - ./dashboards/icmp.json
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: "1"
+generatorOptions:
+  disableNameSuffixHash: true
