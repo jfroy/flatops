@@ -12,7 +12,6 @@ spec:
   dependsOn:
     - name: gateway-crd
     - name: ingress-certificates
-    - name: prometheus-operator-crds
   path: ./kubernetes/apps/network/traefik/app
   prune: true
   sourceRef:
