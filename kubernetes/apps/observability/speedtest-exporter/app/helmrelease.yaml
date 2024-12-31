@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: speedtest-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      speedtest-exporter:
+        pod:
+          securityContext:
+            runAsGroup: 1000
+            runAsUser: 1000
+            runAsNonRoot: true
+            seccompProfile: { type: RuntimeDefault }
+        containers:
+          speedtest-exporter:
+            image:
+              repository: ghcr.io/heathcliff26/speedtest-exporter
+              tag: v1.0.5
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+    service:
+      speedtest-exporter:
+        controller: speedtest-exporter
+        ports:
+          http:
+            port: 8080
+    serviceMonitor:
+      speedtest-exporter:
+        serviceName: speedtest-exporter
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 75m
+            scrapeTimeout: 30s

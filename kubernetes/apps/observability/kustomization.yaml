@@ -18,6 +18,7 @@ resources:
   - ./prometheus-operator-crds/ks.yaml
   # - ./scrutiny/ks.yaml
   - ./silence-operator/ks.yaml
+  - ./speedtest-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./victorialogs/ks.yaml
   - ./victoriametrics/ks.yaml
