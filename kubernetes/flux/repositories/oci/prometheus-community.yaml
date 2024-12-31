@@ -95,4 +95,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-smartctl-exporter
   ref:
-    tag: 0.10.0
+    tag: 0.13.0
