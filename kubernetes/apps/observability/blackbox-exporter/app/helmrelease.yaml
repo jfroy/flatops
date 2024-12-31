@@ -47,7 +47,7 @@ spec:
           http:
             valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
             follow_redirects: true
-            preferred_ip_protocol: ipv6
+            preferred_ip_protocol: ip6
             ip_protocol_fallback: false
         icmp:
           prober: icmp
