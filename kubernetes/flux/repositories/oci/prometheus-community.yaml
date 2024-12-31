@@ -39,7 +39,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/kube-state-metrics
   ref:
-    tag: 5.25.1
+    tag: 5.28.0
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
