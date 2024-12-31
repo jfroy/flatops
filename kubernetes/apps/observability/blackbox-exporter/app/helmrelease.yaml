@@ -66,8 +66,8 @@ spec:
     podAnnotations:
       reloader.stakater.com/auto: "true"
     extraArgs:
-      - --log.level=debug
-      - --log.prober=debug
+      - --log.level=info
+      - --log.prober=warning
     serviceMonitor:
       selfMonitor:
         enabled: true
