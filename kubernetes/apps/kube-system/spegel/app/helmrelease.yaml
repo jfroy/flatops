@@ -7,7 +7,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: spegel-jfroy
+    name: spegel
     namespace: flux-system
   driftDetection:
     mode: enabled
