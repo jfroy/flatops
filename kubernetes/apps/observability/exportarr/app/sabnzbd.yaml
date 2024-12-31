@@ -32,6 +32,8 @@ spec:
         - action: replace
           replacement: sabnzbd.default
           targetLabel: instance
+        - action: labeldrop
+          regex: (pod)
 ---
 kind: Deployment
 apiVersion: apps/v1
