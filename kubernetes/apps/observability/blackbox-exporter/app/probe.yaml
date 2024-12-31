@@ -36,7 +36,6 @@ spec:
       static:
         - https://cloudflare.com
         - https://google.com
-        - https://github.com
   interval: 1m
   scrapeTimeout: 10s
   metricRelabelings:
@@ -80,7 +79,6 @@ spec:
       static:
         - cloudflare.com
         - google.com
-        - github.com
   interval: 1m
   scrapeTimeout: 10s
   metricRelabelings:
