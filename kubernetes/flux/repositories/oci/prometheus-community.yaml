@@ -67,7 +67,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-node-exporter
   ref:
-    tag: 4.39.0
+    tag: 4.43.1
 ---
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
