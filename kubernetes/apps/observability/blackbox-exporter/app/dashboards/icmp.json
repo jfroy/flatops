@@ -125,6 +125,7 @@
         },
         "yAxis": {
           "axisPlacement": "left",
+          "axisWidth": 140,
           "reverse": true,
           "unit": "percentunit"
         }
@@ -139,7 +140,7 @@
           "editorMode": "code",
           "expr": "sum(probe_icmp_duration_seconds{phase=\"rtt\",job=~\"$job\",instance=~\"$instance\"}) by (instance)",
           "instant": false,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{instance}} {{job}}",
           "range": true,
           "refId": "A"
         }
@@ -207,6 +208,7 @@
         },
         "yAxis": {
           "axisPlacement": "left",
+          "axisWidth": 140,
           "reverse": true,
           "unit": "percentunit"
         }
@@ -221,7 +223,7 @@
           "editorMode": "code",
           "expr": "1-probe_success{job=~\"$job\",instance=~\"$instance\"}",
           "instant": false,
-          "legendFormat": "{{instance}}",
+          "legendFormat": "{{instance}} {{job}}",
           "range": true,
           "refId": "A"
         }
@@ -294,14 +296,10 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "packet loss"
+              "id": "byFrameRefID",
+              "options": "A"
             },
             "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "hidden"
-              },
               {
                 "id": "unit",
                 "value": "percentunit"
@@ -309,13 +307,23 @@
               {
                 "id": "custom.axisSoftMax",
                 "value": 1
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 9,
+        "h": 10,
         "w": 12,
         "x": 0,
         "y": 16
