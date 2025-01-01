@@ -6,5 +6,5 @@ resources:
   - ./pvc.yaml
   - ./helmrelease.yaml
   - ./networkpolicy.yaml
-  - ../../../../templates/gatus/external
+  - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
