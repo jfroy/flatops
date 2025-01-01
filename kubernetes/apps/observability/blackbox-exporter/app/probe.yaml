@@ -12,9 +12,13 @@ spec:
   targets:
     staticConfig:
       static:
+        - https://apple.com
         - https://cloudflare.com
         - https://google.com
         - https://github.com
+        - https://microsoft.com
+        - https://dynamodb.us-west-1.amazonaws.com/ping
+        - https://us-west2-5tkroniexa-wl.a.run.app/ping
   interval: 1m
   scrapeTimeout: 10s
   metricRelabelings:
@@ -34,8 +38,11 @@ spec:
   targets:
     staticConfig:
       static:
+        - https://apple.com
         - https://cloudflare.com
         - https://google.com
+        - https://microsoft.com
+        - https://us-west2-5tkroniexa-wl.a.run.app/ping
   interval: 1m
   scrapeTimeout: 10s
   metricRelabelings:
@@ -55,9 +62,13 @@ spec:
   targets:
     staticConfig:
       static:
+        - apple.com
         - cloudflare.com
         - google.com
         - github.com
+        - microsoft.com
+        - dynamodb.us-west-1.amazonaws.com
+        - us-west2-5tkroniexa-wl.a.run.app
   interval: 1m
   scrapeTimeout: 10s
   metricRelabelings:
@@ -77,8 +88,11 @@ spec:
   targets:
     staticConfig:
       static:
+        - apple.com
         - cloudflare.com
         - google.com
+        - microsoft.com
+        - us-west2-5tkroniexa-wl.a.run.app
   interval: 1m
   scrapeTimeout: 10s
   metricRelabelings:
