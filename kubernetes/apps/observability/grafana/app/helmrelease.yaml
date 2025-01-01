@@ -184,22 +184,22 @@ spec:
       kubernetes:
         k8s-system-api-server:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
-          token: ''
+          token: ""
         k8s-system-coredns:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
-          token: ''
+          token: ""
         k8s-views-global:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
-          token: ''
+          token: ""
         k8s-views-namespaces:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
-          token: ''
+          token: ""
         k8s-views-nodes:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
-          token: ''
+          token: ""
         k8s-views-pods:
           url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
-          token: ''
+          token: ""
       nginx:
         nginx:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
@@ -296,6 +296,14 @@ spec:
         header_property: username
         auto_sign_up: true
         enable_login_token: false
+      date_formats:
+        full_date: "YYYY-MM-DD HH:mm:ss"
+        interval_second: "HH:mm:ss"
+        interval_minute: "HH:mm"
+        interval_hour: "MMM DD HH:mm"
+        interval_day: "MMM DD"
+        interval_month: "YYYY-MM"
+        interval_year: "YYYY"
       news:
         news_feed_enabled: false
       plugins:
