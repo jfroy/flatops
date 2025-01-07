@@ -41,13 +41,13 @@ spec:
             - name: RemoveFailedPods
               args:
                 reasons:
-                - "ContainerStatusUnknown"
-                - "NodeAffinity"
-                - "Terminated"
-                - "UnexpectedAdmissionError"
+                  - "ContainerStatusUnknown"
+                  - "NodeAffinity"
+                  - "Terminated"
+                  - "UnexpectedAdmissionError"
                 includingInitContainers: true
                 excludeOwnerKinds:
-                - "Job"
+                  - "Job"
                 minPodLifetimeSeconds: 3600
             - name: RemovePodsHavingTooManyRestarts
               args:
@@ -71,6 +71,10 @@ spec:
                 - RemovePodsViolatingNodeTaints
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingInterPodAntiAffinity
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
     service:
       enabled: true
     serviceMonitor:
