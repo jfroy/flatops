@@ -44,14 +44,11 @@ nodes:
       secureboot: true
       useUKI: true
     networkInterfaces:
-      - interface: enp129s0f0
+      - interface: enp129s0f0np0
         dhcp: true
         mtu: 1500
         vip:
           ip: "192.168.1.8"
-      - interface: enp129s0f1
-        dhcp: true
-        mtu: 1500
     schematic:
       customization:
         extraKernelArgs:
