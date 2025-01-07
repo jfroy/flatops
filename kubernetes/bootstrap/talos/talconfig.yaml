@@ -115,7 +115,7 @@ nodes:
                   [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-legacy.options]
                     BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.legacy"
 
-      # Encrypt system disk with TPM
+      # Encrypt disks
       - |-
         machine:
           systemDiskEncryption:
@@ -123,12 +123,20 @@ nodes:
               provider: luks2
               keys:
                 - slot: 0
-                  tpm: {}
+                  tpm:
+                    checkSecurebootStatusOnEnroll: true
+              options:
+                - no_read_workqueue
+                - no_write_workqueue
             state:
               provider: luks2
               keys:
                 - slot: 0
-                  tpm: {}
+                  tpm:
+                    checkSecurebootStatusOnEnroll: true
+              options:
+                - no_read_workqueue
+                - no_write_workqueue
 
       # udev rules
       # - set all disks to no scheduler (optimal setting for Ceph and ZFS)
