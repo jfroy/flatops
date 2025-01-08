@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./operator/ks.yaml
-  - ./cluster/ks.yaml
+  # - ./cluster/ks.yaml
