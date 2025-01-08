@@ -49,6 +49,12 @@ nodes:
         mtu: 1500
         vip:
           ip: "192.168.1.8"
+      - interface: enp129s0f1np1
+        ignore: true
+      - interface: enp66s0f0
+        ignore: true
+      - interface: enp66s0f1
+        ignore: true
     schematic:
       customization:
         extraKernelArgs:
