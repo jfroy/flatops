@@ -257,13 +257,12 @@ patches:
   - |-
     machine:
       kubelet:
-        extraArgs:
-          rotate-server-certificates: true
         extraConfig:
           featureGates:
             UserNamespacesSupport: true
             UserNamespacesPodSecurityStandards: true
           maxPods: 400
+          serverTLSBootstrap: true
         nodeIP:
           validSubnets:
             - 192.168.1.0/27
