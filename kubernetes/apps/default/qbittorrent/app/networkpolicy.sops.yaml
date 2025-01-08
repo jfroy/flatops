@@ -1,40 +1,40 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-    name: qbittorrent-allow-gluetun
-    annotations:
-        future-me-why: allow ingress and egress to gluetun endpoints; also puts pod in deny-by-default mode for egress
+  name: qbittorrent-allow-gluetun
+  annotations:
+    future-me-why: allow ingress and egress to gluetun endpoints; also puts pod in deny-by-default mode for egress
 spec:
-    endpointSelector:
-        matchLabels:
-            app.kubernetes.io/instance: qbittorrent
-    egress:
-        - toPorts:
-            - ports:
-                - port: ENC[AES256_GCM,data:PLgfWQ==,iv:BVZOE7VAg6xepBDql6SNeM0CQQm1dhvynpNEVcqc61s=,tag:hDTkVzncNxovJfB5pgFP7g==,type:str]
-                  protocol: ENC[AES256_GCM,data:4/LD,iv:rdvjsK5j9qjJSk88wO/P704NBdaEkyR22QNMxXFbkUs=,tag:Pn4n5sTjTot+sOWa1XSj5g==,type:str]
-    ingress:
-        - toPorts:
-            - ports:
-                - port: ENC[AES256_GCM,data:2znAfQ==,iv:l7hN73LhXCSrstXdGqoac28HgFtNp7Be9BnhkARKaJo=,tag:lj7yQjon2qB1zHVWpvvzRg==,type:str]
-                  protocol: ENC[AES256_GCM,data:W/1y,iv:yzv1Yr7lj6rqxMrXlIPupdtaJmzQxbuX/qRFWcV3TOo=,tag:IiPLEZRHz23lp4q8Rmy4HA==,type:str]
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/instance: qbittorrent
+  egress:
+    - toPorts:
+        - ports:
+            - port: ENC[AES256_GCM,data:983CiQ==,iv:BVZOE7VAg6xepBDql6SNeM0CQQm1dhvynpNEVcqc61s=,tag:ffFxyLVgbV7TeV/5Psjm1Q==,type:str]
+              protocol: ENC[AES256_GCM,data:+UNr,iv:rdvjsK5j9qjJSk88wO/P704NBdaEkyR22QNMxXFbkUs=,tag:+B0Khyxhj/3UZG3vbm0Suw==,type:str]
+  ingress:
+    - toPorts:
+        - ports:
+            - port: ENC[AES256_GCM,data:0lofnw==,iv:l7hN73LhXCSrstXdGqoac28HgFtNp7Be9BnhkARKaJo=,tag:vUxi7sAFAzkJgfs0jIO5ZA==,type:str]
+              protocol: ENC[AES256_GCM,data:fceP,iv:yzv1Yr7lj6rqxMrXlIPupdtaJmzQxbuX/qRFWcV3TOo=,tag:4jcIXqzPeYrHZ09sjzaXoQ==,type:str]
 sops:
-    kms: []
-    gcp_kms: []
-    azure_kv: []
-    hc_vault: []
-    age:
-        - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
-          enc: |
-            -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBvRE9WbHB2WGhCaTNzYmVD
-            c2xhZmdyNUhYaWZVWVB6aC93K3Q3Wnl1Q3djCmhiQzdvTTNOaVVxWW9jeEZuc3d0
-            T2lteERMWCtUWmhHRk4yQWxaVGhqMTAKLS0tIFJtcldaZWlOTkxPMHQ0NEI4alB0
-            aFY2Y1IyeDVPL3hwMjFlM3RreW0yL3MKXViSZ6vOYKenQ48ONcD2ZOfIvoSpYJZW
-            FkKsPqZUcU4SaVMHSKGjYSQ9ky+KN40aRPdOGNLRBBtq2PRXCjwPgw==
-            -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2024-11-05T23:36:06Z"
-    mac: ENC[AES256_GCM,data:dM6T61m1lYjZftxpExgEvZKNqmJuOLPUUgR8/Szw2SYU0NN5rK36hLkbp1h4fwcfYrAQtakIYoQPVe7rFN3d+cbHq1c7EH+GXCbV+QCtcV+fXt8al91jaVWsSToH//0PVinfDtAtsCY+UJtHeQm/S+3IqmH3RuA3HroNOWRLqrA=,iv:uFckMadgJjsDFXOBC/SyblcRCpULF7FV7hoSI1amHKA=,tag:PmquaKId1V4e0ldUoYS6XA==,type:str]
-    pgp: []
-    encrypted_regex: ^(egress|ingress)$
-    version: 3.9.1
+  kms: []
+  gcp_kms: []
+  azure_kv: []
+  hc_vault: []
+  age:
+    - recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBLdWZIV29kR3ljUHkwUW5w
+        OTZlNWdCTFQ0Q2gySElGRUVPdE53MDMzcm5JClY4VmE1ZjQvdklnVFJHblJNTGhk
+        emV0WStDaWE1SVMxd0N5UWRhbGlMVFkKLS0tIDNhZloycGdNYVFGb0RoNWdSWWpN
+        cjhCRzY4KysreFdJblV3TDdFS0laOUkK21bzoJ5s0C6cX2ZI3RdF02rcvKreZ4fO
+        Rx7Lxk8FOTot886s1NUFklCxX/PTVSn1BZuKkHYP1d65DOwubnSMCw==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-01-08T21:04:07Z"
+  mac: ENC[AES256_GCM,data:nJhCJMehJ2SPcSHl74UGACsN2wdHU663HDKrgFHUiCfqGNkn9kljy7n/npg32Bq6XGGuh0XzA0VhL0s1Ssb0iHLmxVsgKMltygry9cmEcwB6BKGbby7FSLfAaMLpkZb7qe4D2H6Q7Q7xk9dmIcNQDBGeU5VHsZLVNB8v21Xil1U=,iv:kfDRPnBp51x9zqnSEW3u180lUPF+xfWvXlM/QlIGuGM=,tag:epOL0ndr5C0epltC6/DrTA==,type:str]
+  pgp: []
+  encrypted_regex: ^(egress|ingress)$
+  version: 3.9.1
