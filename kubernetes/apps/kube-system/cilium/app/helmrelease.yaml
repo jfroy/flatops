@@ -67,9 +67,6 @@ spec:
           enabled: true
           className: internal
           hosts: ["hubble.${PUBLIC_DOMAIN0}"]
-    loadBalancer:
-      l7:
-        backend: envoy
     operator:
       prometheus:
         enabled: true
@@ -98,17 +95,3 @@ spec:
       enabled: true
       annotations:
         grafana_folder: Cilium
-  postRenderers:
-    - kustomize:
-        patches:
-          # hubble-ui backend container file permissions issue on loading client cert for hubble-relay
-          # https://github.com/cilium/cilium/issues/18816
-          - target:
-              group: apps
-              version: v1
-              kind: Deployment
-              name: hubble-ui
-            patch: |
-              - op: replace
-                path: /spec/template/spec/volumes/2/projected/defaultMode
-                value: 0404

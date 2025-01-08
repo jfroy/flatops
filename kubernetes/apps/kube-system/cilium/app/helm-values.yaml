@@ -1,13 +1,14 @@
 ---
 autoDirectNodeRoutes: true
-bgpControlPlane:
-  enabled: true
 bandwidthManager:
   enabled: true
   bbr: true
+bgpControlPlane:
+  enabled: true
 bpf:
   datapathMode: netkit
   masquerade: true # See https://github.com/siderolabs/talos/issues/8836 (forwardKubeDNSToHost)
+  preallocateMaps: true
   tproxy: true
 cgroup:
   automount:
@@ -24,6 +25,8 @@ enableIPv6BIGTCP: true
 enableIPv6Masquerade: false
 endpointRoutes:
   enabled: true
+envoy:
+  enabled: false
 hubble:
   enabled: false
 ipam:
@@ -45,24 +48,26 @@ loadBalancer:
   mode: dsr
 localRedirectPolicy: true
 operator:
-  replicas: 1
+  replicas: 2
   rollOutPods: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:
   capabilities:
     ciliumAgent:
+      - BPF
       - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - IPC_LOCK
       - KILL
       - NET_ADMIN
       - NET_RAW
-      - IPC_LOCK
-      - SYS_ADMIN
-      - SYS_RESOURCE
-      - DAC_OVERRIDE
-      - FOWNER
+      - PERFMON
       - SETGID
       - SETUID
+      - SYS_ADMIN
+      - SYS_RESOURCE
     cleanCiliumState:
       - NET_ADMIN
       - SYS_ADMIN
