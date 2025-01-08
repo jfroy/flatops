@@ -18,5 +18,6 @@
         "upstream",
         "template-upstream"
     ],
-    "git.rebaseWhenSync": true
+    "git.rebaseWhenSync": true,
+    "sops.configPath": "./.sops.yaml"
 }
