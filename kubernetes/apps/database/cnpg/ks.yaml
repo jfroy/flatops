@@ -14,6 +14,7 @@ spec:
   dependsOn:
     - name: cloudnative-pg
     - name: openebs
+    - name: rook-ceph-cluster
   path: ./kubernetes/apps/database/cnpg/postgres16
   prune: true
   sourceRef:
