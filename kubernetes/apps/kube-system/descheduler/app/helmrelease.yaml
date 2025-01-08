@@ -79,3 +79,17 @@ spec:
       enabled: true
     serviceMonitor:
       enabled: true
+  postRenderers:
+    - kustomize:
+        patches:
+          # helm chart version 0.32.0 lacks poddisruptionbudgets.policy perms
+          # https://github.com/kubernetes-sigs/descheduler/issues/1595
+          - target:
+              kind: ClusterRole
+            patch: |
+              - op: add
+                path: /rules/-
+                value:
+                  verbs: ["get", "watch", "list"]
+                  apiGroups: ["policy"]
+                  resources: ["poddisruptionbudgets"]
