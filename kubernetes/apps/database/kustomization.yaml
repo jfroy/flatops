@@ -5,4 +5,4 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
-  - ./cnpg/ks.yaml
+  # - ./cnpg/ks.yaml
