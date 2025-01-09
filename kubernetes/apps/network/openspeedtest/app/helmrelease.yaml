@@ -30,7 +30,7 @@ spec:
           openspeedtest:
             image:
               repository: openspeedtest/latest
-              tag: v2.0.5
+              tag: v2.0.6
             probes:
               liveness: &probe
                 enabled: true
