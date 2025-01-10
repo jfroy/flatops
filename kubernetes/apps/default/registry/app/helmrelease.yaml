@@ -40,8 +40,8 @@ spec:
         containers:
           registry:
             image: &image
-              repository: registry
-              tag: 3.0.0-rc.2
+              repository: docker.io/library/registry
+              tag: 3.0.0-rc.2@sha256:fbf22241ff4609969d9a3bf5900f3a0dc5c35fce3840882a57a62091aed872a5
             command:
               - /bin/registry
               - serve
