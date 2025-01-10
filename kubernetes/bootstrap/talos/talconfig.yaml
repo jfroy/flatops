@@ -279,13 +279,14 @@ patches:
     machine:
       sysctls:
         fs.inotify.max_queued_events: "65536"
-        fs.inotify.max_user_watches: "1048576"  # Watchdog
-        fs.inotify.max_user_instances: "8192"   # Watchdog
-        net.core.default_qdisc: fq_codel        # Fair Queue CoDel packet scheduler to fight bufferbloat
-        net.core.rmem_max: "67108864"           # 64 MiB; QUIC and 10 Gbps
-        net.core.wmem_max: "67108864"           # 64 MiB; QUIC and 10 Gbps
+        fs.inotify.max_user_watches: "1048576"
+        fs.inotify.max_user_instances: "8192"
+        net.core.default_qdisc: fq_codel         # Fair Queue CoDel packet scheduler to fight bufferbloat
+        net.core.rmem_max: "67108864"            # 64 MiB; QUIC and 10 Gbps
+        net.core.wmem_max: "67108864"            # 64 MiB; QUIC and 10 Gbps
         net.ipv4.tcp_rmem: 4096 131072 33554432  # 1K, 128K, 32M; QUIC and 10 Gbps
         net.ipv4.tcp_wmem: 4096 131072 33554432  # 1K, 128K, 32M; QUIC and 10 Gbps
+        user.max_user_namespaces: "49152"        # C000; arbitrary
 
   # Mount openebs-hostpath in kubelet
   - |-
