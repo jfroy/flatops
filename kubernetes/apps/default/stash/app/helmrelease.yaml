@@ -33,7 +33,7 @@ spec:
           stash:
             image:
               repository: ghcr.io/jfroy/stash
-              tag: v0.27.2-cudajellyfin.1@sha256:05f55b61bc95857602a46bab41285126c9a0d36374a2c07c22ab64707a0810c5
+              tag: v0.27.2-cudajellyfin.2@sha256:c810c63a64fc43a75ae49df0daf897976456faa6f6436f15c0e9f7055b747a5c
             env:
               HOME: /config
               NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
@@ -64,6 +64,30 @@ spec:
               limits:
                 nvidia.com/gpu: 1
             workingDir: /config
+        initContainers:
+          nams:
+            image:
+              repository: registry.${PUBLIC_DOMAIN0}/nams
+              tag: 2.0.0@sha256:bff337ca9ec86b1879263f2d1a2ab75c72ce34e86afd1fb09273d48cd441bb01
+            env:
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &namsProbe
+                enabled: false
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8000
+              readiness: *namsProbe
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              limits:
+                nvidia.com/gpu: 1
+            restartPolicy: Always
         pod:
           runtimeClassName: nvidia
           tolerations:
@@ -98,31 +122,64 @@ spec:
     persistence:
       cache:
         type: emptyDir
+        advancedMounts:
+          stash:
+            stash:
+              - path: /cache
       config:
         existingClaim: ${APP}
+        advancedMounts:
+          stash:
+            stash:
+              - path: /config
       data:
         type: persistentVolumeClaim
         storageClass: ceph-block
         accessMode: ReadWriteOnce
         retain: true
         size: 200Gi
-        globalMounts:
-          - path: /blobs
-            subPath: blobs
-          - path: /generated
-            subPath: generated
+        advancedMounts:
+          stash:
+            stash:
+              - path: /blobs
+                subPath: blobs
+              - path: /generated
+                subPath: generated
+      nams-license:
+        type: secret
+        name: nams-license
+        advancedMounts:
+          stash:
+            nams:
+              - path: /app/models/licenseV1.0.lic
+                subPath: licenseV1.0.lic
+      nams-logs:
+        type: emptyDir
+        sizeLimit: 10Mi
+        advancedMounts:
+          stash:
+            nams:
+              - path: /app/logs
       plugins:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         retain: true
         size: 100Mi
+        advancedMounts:
+          stash:
+            stash:
+              - path: /plugins
       scrapers:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         retain: true
         size: 100Mi
+        advancedMounts:
+          stash:
+            stash:
+              - path: /scrapers
       sss:
         type: persistentVolumeClaim
         existingClaim: media-smb-media1
