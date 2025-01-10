@@ -1,0 +1,71 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: docker-registry-ui
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    defaultPodOptions:
+      hostUsers: false
+    controllers:
+      docker-registry-ui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          docker-registry-ui:
+            image:
+              repository: docker.io/joxit/docker-registry-ui
+              tag: main
+              pullPolicy: Always
+            env:
+              DELETE_IMAGES: "true"
+              SHOW_CONTENT_DIGEST: "true"
+              SINGLE_REGISTRY: "true"
+              REGISTRY_TITLE: kantai
+              REGISTRY_URL: https://registry.${PUBLIC_DOMAIN0}
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 80
+              readiness: *probe
+    service:
+      docker-registry-ui:
+        controller: docker-registry-ui
+        ports:
+          http:
+            port: *port
+    ingress:
+      docker-registry-ui:
+        className: internal
+        hosts:
+          - host: ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
+            paths:
+              - path: /
+                service:
+                  identifier: docker-registry-ui
+                  port: http
