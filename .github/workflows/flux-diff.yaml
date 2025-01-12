@@ -34,30 +34,19 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
-      - name: Mise en place
-        uses: jdx/mise-action@v2
-        with:
-          mise_toml: |
-            [tools]
-            python = "3.12"
-            "aqua:astral-sh/uv" = "latest"
-            "aqua:fluxcd/flux2" = "latest"
-            "aqua:helm/helm" = "latest"
-            "aqua:kubernetes-sigs/kustomize" = "latest"
-            "pipx:flux-local" = "latest"
-
       - name: Diff resources
-        shell: bash
-        run: |
-          flux-local diff ${{ matrix.resources }} \
-              --unified 6 \
-              --path ${{ github.workspace }}/pull/kubernetes/flux \
-              --path-orig ${{ github.workspace }}/default/kubernetes/flux \
-              --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart" \
-              --limit-bytes 10000 \
-              --all-namespaces \
-              --sources "home-kubernetes" \
-              --output-file diff.patch
+        uses: docker://ghcr.io/allenporter/flux-local:v7.0.0@sha256:abf237e31d20de26f8a4b08e588cc927cb0a9f0ecf90d04bada00f393b919354
+        with:
+          args: >-
+            diff ${{ matrix.resources }}
+            --unified 6
+            --path ${{ github.workspace }}/pull/kubernetes/flux
+            --path-orig ${{ github.workspace }}/default/kubernetes/flux
+            --strip-attrs "helm.sh/chart,checksum/config,app.kubernetes.io/version,chart"
+            --limit-bytes 10000
+            --all-namespaces
+            --sources home-kubernetes
+            --output-file diff.patch
 
       - name: Generate diff markdown
         id: diff-md
