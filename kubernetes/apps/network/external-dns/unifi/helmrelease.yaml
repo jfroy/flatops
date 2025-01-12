@@ -37,16 +37,9 @@ spec:
         env:
           - name: UNIFI_HOST
             value: https://192.168.1.1
-          - name: UNIFI_USER
-            valueFrom:
-              secretKeyRef:
-                name: external-dns-unifi-secret
-                key: username
-          - name: UNIFI_PASS
-            valueFrom:
-              secretKeyRef:
-                name: external-dns-unifi-secret
-                key: password
+        envFrom:
+          - secretRef:
+              name: external-dns-unifi
         livenessProbe:
           httpGet:
             path: /healthz
@@ -66,7 +59,11 @@ spec:
     sources: ["ingress", "service"]
     txtOwnerId: kantai
     txtPrefix: edns.
-    domainFilters: ["${PUBLIC_DOMAIN0}", "${PUBLIC_DOMAIN1}", "${PUBLIC_DOMAIN2}", "internal."]
+    domainFilters:
+      - "${PUBLIC_DOMAIN0}"
+      - "${PUBLIC_DOMAIN1}"
+      - "${PUBLIC_DOMAIN2}"
+      - "internal."
     serviceMonitor:
       enabled: true
     podAnnotations:

@@ -37,17 +37,10 @@ spec:
               UP_UNIFI_DEFAULT_ROLE: home-ops
               UP_UNIFI_DEFAULT_URL: https://udmpro-3014
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
-              UP_UNIFI_DEFAULT_USER:
-                valueFrom:
-                  secretKeyRef:
-                    name: unpoller
-                    key: username
-              UP_UNIFI_DEFAULT_PASS:
-                valueFrom:
-                  secretKeyRef:
-                    name: unpoller
-                    key: password
               UP_INFLUXDB_DISABLE: true
+            envFrom:
+              - secretRef:
+                  name: unpoller
             probes:
               liveness:
                 enabled: true
