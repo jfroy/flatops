@@ -40,7 +40,7 @@ spec:
           pocket-id:
             image:
               repository: docker.io/stonith404/pocket-id
-              tag: v0.23.0@sha256:73858025001bca20b60e1cf1324b3ffb142670622040293ecf5245e175da7997
+              tag: v0.24.0@sha256:523142ed06c97f178540ee44e6d851221d9aefd17cd23e47b0ee57cdfb2b9b1c
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
             env:
               DB_PATH: /data/pocket-id.db
