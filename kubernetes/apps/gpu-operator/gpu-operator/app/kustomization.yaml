@@ -5,6 +5,14 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
+  - name: better-dcgm-dashboard
+    files:
+      - ./resources/better-dcgm-dashboard.json
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: "1"
   - name: time-slicing-config-all
     files:
       - any=./resources/time-slicing-config-all.yaml
