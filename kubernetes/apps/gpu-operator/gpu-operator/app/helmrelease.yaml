@@ -58,6 +58,13 @@ spec:
     dcgmExporter:
       serviceMonitor:
         enabled: true
+        honorLabels: true
+        relabelings:
+          - sourceLabels: ["__meta_kubernetes_pod_node_name"]
+            regex: (.*)
+            targetLabel: instance
+            replacement: $1
+            action: replace
   postRenderers:
     - kustomize:
         patches:
