@@ -15,5 +15,5 @@ spec:
       value: smartctl-exporter
       isRegex: false
     - name: device
-      value: nvme0|nvme8
+      value: nvme0
       isRegex: true
