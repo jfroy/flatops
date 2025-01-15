@@ -1,0 +1,13 @@
+---
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: blackbox-ipv6
+spec:
+  matchers:
+    - name: alertname
+      value: BlackboxProbeFailed
+      isRegex: false
+    - name: job
+      value: http-ipv6|icmp6
+      isRegex: true
