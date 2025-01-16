@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -13,7 +13,7 @@ spec:
   driftDetection:
     mode: enabled
     ignore:
-      - paths: [ "/metadata/labels/app.kubernetes.io~1name" ]
+      - paths: ["/metadata/labels/app.kubernetes.io~1name"]
         target:
           kind: VMServiceScrape
   install:

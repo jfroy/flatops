@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -45,7 +45,7 @@ spec:
     webhook:
       image:
         repository: ghcr.io/external-secrets/external-secrets
-      lookaheadInterval: 240h  # 10d
+      lookaheadInterval: 240h # 10d
       certManager:
         enabled: true
         cert:
@@ -53,7 +53,7 @@ spec:
             name: cluster-ca
             kind: ClusterIssuer
             group: cert-manager.io
-          duration: 2160h  # 90d
+          duration: 2160h # 90d
     certController:
       image:
         repository: ghcr.io/external-secrets/external-secrets

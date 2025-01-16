@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -18,7 +18,7 @@ spec:
     mode: enabled
     ignore:
       # Ignore "validated" annotation which is not inserted during install
-      - paths: [ "/metadata/annotations/prometheus-operator-validated" ]
+      - paths: ["/metadata/annotations/prometheus-operator-validated"]
         target:
           kind: PrometheusRule
   install:
@@ -35,7 +35,7 @@ spec:
     monitoring:
       podMonitorEnabled: true
       grafanaDashboard:
-        create: false  # Install custom version that uses cnpg_cluster label.
+        create: false # Install custom version that uses cnpg_cluster label.
   postRenderers:
     - kustomize:
         patches:
