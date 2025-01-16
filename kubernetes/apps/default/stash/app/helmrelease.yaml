@@ -137,7 +137,7 @@ spec:
         storageClass: ceph-block
         accessMode: ReadWriteOnce
         retain: true
-        size: 200Gi
+        size: 1Ti
         advancedMounts:
           stash:
             stash:
