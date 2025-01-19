@@ -1,0 +1,13 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "tailscale-connector-allow-ingress"
+spec:
+  endpointSelector:
+    matchLabels:
+      tailscale.com/parent-resource: connector
+      tailscale.com/parent-resource-type: connector
+  ingress:
+    - fromEntities:
+        - "world"
