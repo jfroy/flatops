@@ -7,8 +7,9 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - "homeassistant:9100"
-        - "pikvm:9100"
+        - homeassistant:9100
+        - pikvm:9100
+        - threadassistant:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
