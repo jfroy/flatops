@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gpu-operator
-      version: v24.6.2
+      version: v24.9.1
       sourceRef:
         kind: HelmRepository
         name: nvidia
@@ -36,13 +36,13 @@ spec:
       default: true
     operator:
       repository: ghcr.io/jfroy
-      version: v24.6.2-ubi8
+      version: v24.9.1
+      defaultRuntime: containerd
     driver:
       enabled: false
     toolkit:
       repository: ghcr.io/jfroy
-      image: container-toolkit
-      version: 1.16.2-ubi8
+      version: 1.17.4-ubuntu20.04
       env:
         - name: CONTAINERD_CONFIG
           value: /var/nvidia/etc/containerd.toml
@@ -65,6 +65,14 @@ spec:
             targetLabel: instance
             replacement: $1
             action: replace
+    migManager:
+      enabled: false
+    vgpuDeviceManager:
+      enabled: false
+    vfioManager:
+      enabled: false
+    sandboxDevicePlugin:
+      enabled: false
   postRenderers:
     - kustomize:
         patches:
@@ -91,3 +99,11 @@ spec:
                     securityContext:
                       fsGroup: 1000
                       fsGroupChangePolicy: OnRootMismatch
+          - patch: |-
+              apiVersion: nvidia.com/v1
+              kind: ClusterPolicy
+              metadata:
+                name: cluster-policy
+              spec:
+                operator:
+                  useDevicePluginCDIDevicesFeature: true
