@@ -82,45 +82,6 @@ nodes:
             net.ipv6.conf.enp129s0f1np1.forwarding: "1"
             vm.nr_hugepages: "1024"
 
-      # nvidia containerd runtimes
-      - |-
-        machine:
-          files:
-            - op: create
-              path: /etc/cri/conf.d/20-customization.part
-              content: |-
-                [plugins.'io.containerd.cri.v1.images']
-                  discard_unpacked_layers = false
-                [plugins.'io.containerd.cri.v1.runtime']
-                  enable_unprivileged_ports = true
-                  enable_unprivileged_icmp = true
-                [plugins.'io.containerd.cri.v1.runtime'.containerd]
-                  default_runtime_name = "runc"
-                [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia]
-                  container_annotations = ["nvidia.cdi.k8s.io/*"]
-                  privileged_without_host_devices = false
-                  runtime_engine = ""
-                  runtime_root = ""
-                  runtime_type = "io.containerd.runc.v2"
-                  [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia.options]
-                    BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime"
-                [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-cdi]
-                  container_annotations = ["nvidia.cdi.k8s.io/*"]
-                  privileged_without_host_devices = false
-                  runtime_engine = ""
-                  runtime_root = ""
-                  runtime_type = "io.containerd.runc.v2"
-                  [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-cdi.options]
-                    BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.cdi"
-                [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-legacy]
-                  container_annotations = ["nvidia.cdi.k8s.io/*"]
-                  privileged_without_host_devices = false
-                  runtime_engine = ""
-                  runtime_root = ""
-                  runtime_type = "io.containerd.runc.v2"
-                  [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-legacy.options]
-                    BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.legacy"
-
       # Encrypt disks
       - |-
         machine:
@@ -311,8 +272,51 @@ patches:
           # Incompatible with Cilium bpf masquerade. https://github.com/siderolabs/talos/issues/8836
           forwardKubeDNSToHost: false
 
+  # containerd config
+  # - discard_unpacked_layers (spegel, https://spegel.dev/docs/getting-started/#talos)
+  # - enable_unprivileged_ports, enable_unprivileged_icmp (convenience, https://github.com/kubernetes/kubernetes/issues/102612)
+  # - cgroup_writable (buildkit, https://github.com/containerd/containerd/pull/11131, planned for containerd 2.1)
+  # - nvidia runtimes (nvidia, https://www.talos.dev/latest/talos-guides/configuration/nvidia-gpu/)
+  - |-
+    machine:
+      files:
+        - op: create
+          path: /etc/cri/conf.d/20-customization.part
+          content: |-
+            [plugins.'io.containerd.cri.v1.images']
+              discard_unpacked_layers = false
+            [plugins.'io.containerd.cri.v1.runtime']
+              enable_unprivileged_ports = true
+              enable_unprivileged_icmp = true
+            [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.runc]
+              cgroup_writable = true
+            [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia]
+              container_annotations = ["nvidia.cdi.k8s.io/*"]
+              privileged_without_host_devices = false
+              runtime_engine = ""
+              runtime_root = ""
+              runtime_type = "io.containerd.runc.v2"
+              [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia.options]
+                BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime"
+            [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-cdi]
+              container_annotations = ["nvidia.cdi.k8s.io/*"]
+              privileged_without_host_devices = false
+              runtime_engine = ""
+              runtime_root = ""
+              runtime_type = "io.containerd.runc.v2"
+              [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-cdi.options]
+                BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.cdi"
+            [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-legacy]
+              container_annotations = ["nvidia.cdi.k8s.io/*"]
+              privileged_without_host_devices = false
+              runtime_engine = ""
+              runtime_root = ""
+              runtime_type = "io.containerd.runc.v2"
+              [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-legacy.options]
+                BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.legacy"
+
   # NFS mount options
-  - &nfsPatch |
+  - |
     machine:
       files:
         - op: overwrite
