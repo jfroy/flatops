@@ -31,10 +31,7 @@ spec:
                       - amd64
       annotations:
         reloader.stakater.com/auto: "true"
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
+      hostUsers: false
     controllers:
       buildkit-amd64:
         replicas: 1
@@ -72,8 +69,6 @@ spec:
             resources:
               requests:
                 cpu: 16
-            securityContext:
-              privileged: true
     service:
       buildkit-amd64:
         controller: buildkit-amd64
@@ -137,7 +132,9 @@ spec:
                       - arm64
       annotations:
         reloader.stakater.com/auto: "true"
+      hostUsers: false
       tolerations:
+        # The only arm64 node in the cluster is a control plane node
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
@@ -175,8 +172,6 @@ spec:
                       - workers
                   initialDelaySeconds: 5
                   periodSeconds: 30
-            securityContext:
-              privileged: true
     service:
       buildkit-arm64:
         controller: buildkit-arm64
