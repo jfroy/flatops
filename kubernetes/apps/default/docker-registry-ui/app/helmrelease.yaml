@@ -37,6 +37,7 @@ spec:
               DEFAULT_REGISTRIES: https://registry.${PUBLIC_DOMAIN0},https://registry.etincelle.cloud
               DELETE_IMAGES: "true"
               READ_ONLY_REGISTRIES: "true"
+              SHOW_CATALOG_NB_TAGS: "true"
               SHOW_CONTENT_DIGEST: "true"
               SINGLE_REGISTRY: "false"
               TZ: America/Los_Angeles
