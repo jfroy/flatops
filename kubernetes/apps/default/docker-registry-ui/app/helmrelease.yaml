@@ -34,11 +34,11 @@ spec:
               tag: main
               pullPolicy: Always
             env:
+              DEFAULT_REGISTRIES: https://registry.${PUBLIC_DOMAIN0},https://registry.etincelle.cloud
               DELETE_IMAGES: "true"
+              READ_ONLY_REGISTRIES: "true"
               SHOW_CONTENT_DIGEST: "true"
-              SINGLE_REGISTRY: "true"
-              REGISTRY_TITLE: kantai
-              REGISTRY_URL: https://registry.${PUBLIC_DOMAIN0}
+              SINGLE_REGISTRY: "false"
               TZ: America/Los_Angeles
             probes:
               liveness: &probe
