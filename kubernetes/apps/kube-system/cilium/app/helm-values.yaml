@@ -74,3 +74,4 @@ securityContext:
       - SYS_RESOURCE
 socketLB:
   enabled: true
+  terminatePodConnections: true
