@@ -91,7 +91,7 @@
         widget:
           type: unifi
           url: https://udmpro-3014
-          username: unpoller
+          username: homeassistant
           password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - victorialogs:
         icon: sh-victoriametrics-light.webp
