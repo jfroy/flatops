@@ -108,7 +108,3 @@
         href: https://login.tailscale.com/admin/machines
         namespace: tailscale
         podSelector: ""
-    - traefik:
-        icon: traefik.png
-        namespace: network
-        app: traefik
