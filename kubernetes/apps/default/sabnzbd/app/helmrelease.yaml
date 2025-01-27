@@ -29,7 +29,7 @@ spec:
           sabnzbd:
             image:
               repository: ghcr.io/jfroy/sabnzbd
-              tag: 4.4.1@sha256:e03073090e96acf8a3ecbab637b2f14158bb6dd60269694f51875bd2a641df84
+              tag: 4.4.1@sha256:3bcc16244535d91f84ae7d01295af5866dc23e5ca033e6ae460461627300e8f4
             env:
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 sabnzbd,
