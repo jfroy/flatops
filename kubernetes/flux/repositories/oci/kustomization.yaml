@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./bjw-s.yaml
   - ./grafana.yaml
-  - ./kyverno-policies.yaml
   - ./kyverno.yaml
   - ./prometheus-community.yaml
   - ./spegel.yaml

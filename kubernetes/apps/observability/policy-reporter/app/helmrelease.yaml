@@ -6,14 +6,10 @@ metadata:
   name: &app policy-reporter
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: policy-reporter
-      version: 3.0.0
-      sourceRef:
-        kind: HelmRepository
-        name: policy-reporter
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: kyverno-policy-reporter
+    namespace: flux-system
   driftDetection:
     mode: enabled
   install:
@@ -25,10 +21,29 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    kyvernoPlugin:
+    metrics:
       enabled: true
+      mode: simple
     ui:
       enabled: true
-    global:
-      plugins:
-        kyverno: true
+      openIDConnect:
+        enabled: true
+        callbackUrl: https://kpr.${PUBLIC_DOMAIN0}/callback
+        secretRef: kyverno-policy-reporter
+      ingress:
+        enabled: true
+        className: internal
+        hosts:
+          - host: kpr.${PUBLIC_DOMAIN0}
+            paths:
+              - path: /
+                pathType: Prefix
+    plugin:
+      kyverno:
+        enabled: true
+    monitoring:
+      enabled: true
+      serviceMonitor:
+        honorLabels: true
+      grafana:
+        namespace: observability
