@@ -29,7 +29,7 @@ spec:
           qbittorrent:
             image:
               repository: ghcr.io/jfroy/qbittorrent
-              tag: 5.0.3@sha256:ee64cba38f5d38bd3650c7070a5c83ac01fce485d72c1bab6179c2507fe089ce
+              tag: 5.0.3@sha256:a06546bb5fd5c90f6e78a2213d53f22042cfaadb857765325e2c05b3c0b2405c
             env:
               TZ: America/Los_Angeles
               QBT_WEBUI_PORT: &port 80
