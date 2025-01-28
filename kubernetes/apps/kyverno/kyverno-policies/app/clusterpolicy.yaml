@@ -14,6 +14,7 @@ metadata:
     policies.kyverno.io/description: >-
       This policy enforces the latest version of the Pod Security Standards baseline profile by
       default cluster wide.
+    pod-policies.kyverno.io/autogen-controllers: none
 spec:
   background: true
   validationFailureAction: Enforce
@@ -50,6 +51,7 @@ metadata:
     policies.kyverno.io/description: >-
       This policy enforces the latest version of the Pod Security Standards restricted profile on
       pods in annotated namespaces.
+    pod-policies.kyverno.io/autogen-controllers: none
 spec:
   background: true
   validationFailureAction: Enforce
@@ -83,6 +85,7 @@ metadata:
     policies.kyverno.io/description: >-
       This policy audits the latest version of the Pod Security Standards restricted profile on
       pods in annotated namespaces.
+    pod-policies.kyverno.io/autogen-controllers: none
 spec:
   background: true
   validationFailureAction: Audit

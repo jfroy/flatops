@@ -7,7 +7,6 @@ spec:
   exceptions:
     - policyName: psa-baseline
       ruleNames:
-        - autogen-baseline
         - baseline
   match:
     any:
