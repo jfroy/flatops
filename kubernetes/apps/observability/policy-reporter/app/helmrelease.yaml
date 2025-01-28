@@ -23,7 +23,6 @@ spec:
   values:
     metrics:
       enabled: true
-      mode: simple
     ui:
       enabled: true
       openIDConnect:
