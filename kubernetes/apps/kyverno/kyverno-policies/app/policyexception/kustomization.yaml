@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - blackbox-exporter.yaml
   - buildkit.yaml
+  - gluetun.yaml
