@@ -27,13 +27,13 @@ spec:
       enabled: true
       openIDConnect:
         enabled: true
-        callbackUrl: https://kpr.${PUBLIC_DOMAIN0}/callback
-        secretRef: kyverno-policy-reporter
+        callbackUrl: https://pr.${PUBLIC_DOMAIN0}/callback
+        secretRef: policy-reporter-oidc
       ingress:
         enabled: true
         className: internal
         hosts:
-          - host: kpr.${PUBLIC_DOMAIN0}
+          - host: pr.${PUBLIC_DOMAIN0}
             paths:
               - path: /
                 pathType: Prefix
