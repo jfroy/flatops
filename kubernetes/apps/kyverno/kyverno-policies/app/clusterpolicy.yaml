@@ -107,7 +107,7 @@ kind: ClusterPolicy
 metadata:
   name: psa-restricted-audit
   annotations:
-    policies.kyverno.io/title: Restricted Pod Security Standards
+    policies.kyverno.io/title: Restricted Pod Security Standards (Audit)
     policies.kyverno.io/category: Pod Security
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.8.0
