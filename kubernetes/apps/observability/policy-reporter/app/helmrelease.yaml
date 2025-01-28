@@ -23,6 +23,13 @@ spec:
   values:
     metrics:
       enabled: true
+    sourceFilters:
+      - selector:
+          source: kyverno
+        uncontrolledOnly: false
+        disableClusterReports: false
+        kinds:
+          exclude: [ReplicaSet]
     ui:
       enabled: true
       openIDConnect:
