@@ -18,9 +18,6 @@ spec:
       - key: feature.node.kubernetes.io/system-os_release.ID
         operator: In
         values: ["talos"]
-      - key: feature.node.kubernetes.io/system-os_release.VERSION_ID
-        operator: NotIn
-        values: ["${TALOS_VERSION}"]
   tolerations:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
