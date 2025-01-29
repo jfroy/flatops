@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: smarttest
-              image: ghcr.io/jfroy/smarttest:latest@sha256:d466276e360d0fe785cc3641c6e5f849a01d78940a0bcd2476db8b4669c6ee73
+              image: ghcr.io/jfroy/smarttest:latest@sha256:bdb6e681d0087d0b0041b59f9116013a0ce1d57a2b4f8fb7824336ef86000630
               imagePullPolicy: IfNotPresent
               securityContext:
                 privileged: true
@@ -40,7 +40,7 @@ spec:
         spec:
           containers:
             - name: smarttest
-              image: ghcr.io/jfroy/smarttest:latest@sha256:d466276e360d0fe785cc3641c6e5f849a01d78940a0bcd2476db8b4669c6ee73
+              image: ghcr.io/jfroy/smarttest:latest@sha256:bdb6e681d0087d0b0041b59f9116013a0ce1d57a2b4f8fb7824336ef86000630
               imagePullPolicy: IfNotPresent
               args:
                 - -test=long
