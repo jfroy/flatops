@@ -35,5 +35,11 @@ spec:
       - --server=false
   upgrade:
     image: ghcr.io/jfroy/tnu:latest
+    envs:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
     args:
+      - $(NODE_IP)
       - $(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
