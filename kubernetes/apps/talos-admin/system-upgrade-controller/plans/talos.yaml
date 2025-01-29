@@ -25,21 +25,21 @@ spec:
   prepare: &prepare
     image: ghcr.io/jfroy/siderolabs/talosctl:${TALOS_VERSION}
     envs:
-      - name: NODE_IP
+      - name: NODE
         valueFrom:
           fieldRef:
-            fieldPath: status.hostIP
+            fieldPath: spec.nodeName
     args:
-      - --nodes=$(NODE_IP)
+      - --nodes=$(NODE)
       - health
       - --server=false
   upgrade:
     image: ghcr.io/jfroy/tnu:latest
     envs:
-      - name: NODE_IP
+      - name: NODE
         valueFrom:
           fieldRef:
-            fieldPath: status.hostIP
+            fieldPath: spec.nodeName
     args:
-      - $(NODE_IP)
+      - $(NODE)
       - $(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
