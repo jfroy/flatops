@@ -6,14 +6,10 @@ metadata:
   name: coredns
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: coredns
-      version: 1.38.1
-      sourceRef:
-        kind: HelmRepository
-        name: coredns
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: coredns
+    namespace: flux-system
   driftDetection:
     mode: enabled
   install:

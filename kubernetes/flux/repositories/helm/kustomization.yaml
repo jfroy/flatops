@@ -10,7 +10,6 @@ resources:
   - ./bitnami.yaml
   - ./cilium.yaml
   - ./cloudnative-pg.yaml
-  - ./coredns.yaml
   - ./csi-driver-smb.yaml
   - ./democratic-csi.yaml
   - ./descheduler.yaml
