@@ -22,17 +22,6 @@ spec:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
-  prepare: &prepare
-    image: ghcr.io/jfroy/siderolabs/talosctl:${TALOS_VERSION}
-    envs:
-      - name: NODE
-        valueFrom:
-          fieldRef:
-            fieldPath: spec.nodeName
-    args:
-      - --nodes=$(NODE)
-      - health
-      - --server=false
   upgrade:
     image: ghcr.io/jfroy/tnu:latest
     envs:
@@ -41,5 +30,5 @@ spec:
           fieldRef:
             fieldPath: spec.nodeName
     args:
-      - $(NODE)
-      - $(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
+      - --node=$(NODE)
+      - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
