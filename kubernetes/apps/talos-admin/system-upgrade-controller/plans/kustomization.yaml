@@ -5,6 +5,3 @@ kind: Kustomization
 resources:
   - ./kubernetes.yaml
   - ./talos.yaml
-  # - ./talos-etincelle-s1.yaml
-  # - ./talos-etincelle-s2.yaml
-  # - ./talos-siderolabs-minimal.yaml
