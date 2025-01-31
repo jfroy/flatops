@@ -25,10 +25,10 @@ spec:
   upgrade:
     image: ghcr.io/jfroy/tnu:0.3.0-beta.3
     envs:
-      - name: NODE
+      - name: NODE_IP
         valueFrom:
           fieldRef:
-            fieldPath: spec.nodeName
+            fieldPath: status.hostIP
     args:
-      - --node=$(NODE)
+      - --node=$(NODE_IP)
       - --tag=$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
