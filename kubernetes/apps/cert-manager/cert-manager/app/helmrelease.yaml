@@ -33,3 +33,5 @@ spec:
       enabled: true
       servicemonitor:
         enabled: true
+    cainjector:
+      featureGates: CAInjectorMerging
