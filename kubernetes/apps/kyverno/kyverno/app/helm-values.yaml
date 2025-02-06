@@ -1,10 +1,22 @@
 ---
 fullnameOverride: kyverno
 global:
+  image:
+    registry: ghcr.io
   tolerations:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
+webhooksCleanup:
+  image:
+    registry: registry.k8s.io
+    repository: kubectl
+    tag: v1.32.1
+policyReportsCleanup:
+  image:
+    registry: registry.k8s.io
+    repository: kubectl
+    tag: v1.32.1
 features:
   backgroundScan:
     skipResourceFilters: false
