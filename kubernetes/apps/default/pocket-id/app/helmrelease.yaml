@@ -35,11 +35,13 @@ spec:
         containers:
           pocket-id:
             image:
-              repository: docker.io/stonith404/pocket-id
-              tag: v0.28.0@sha256:d09898b1b3404b199115b7ddb9fa302d049e4e0624767f123d604305c7364ef7
+              repository: ghcr.io/pocket-id/pocket-id
+              tag: v0.29.0@sha256:269adea6b7046b904e4c5a0a75717fe41717e78ccb452fe5b7bbc8d675356aca
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
             env:
+              CADDY_DISABLED: "true"
               DB_PATH: /data/pocket-id.db
+              HOST: "0.0.0.0"
               PUBLIC_APP_URL: https://${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
               SQLITE_DB_PATH: /data/pocket-id.db
               TRUST_PROXY: true
@@ -52,7 +54,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: 80
+                    port: 3000
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -61,18 +63,28 @@ spec:
       pocket-id:
         controller: pocket-id
         ports:
-          http:
-            port: 80
+          backend:
+            port: 8080
+          frontend:
+            port: 3000
     ingress:
       pocket-id:
         className: internal
         hosts:
           - host: ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
             paths:
+              - path: /api/
+                service:
+                  identifier: pocket-id
+                  port: backend
+              - path: /.well-known/
+                service:
+                  identifier: pocket-id
+                  port: backend
               - path: /
                 service:
                   identifier: pocket-id
-                  port: http
+                  port: frontend
     persistence:
       data:
         existingClaim: ${APP}
