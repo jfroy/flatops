@@ -9,10 +9,8 @@ clusterName: "kantai"
 endpoint: https://10.1.1.0:6443
 clusterPodNets:
   - "10.11.0.0/16"
-  - "${CLUSTER_POD_V6_CIDR}"
 clusterSvcNets:
   - "10.12.0.0/16"
-  - "${CLUSTER_SVC_V6_CIDR}"
 additionalApiServerCertSans: &sans
   - "10.1.1.0"
   - "127.0.0.1" # KubePrism
@@ -72,12 +70,8 @@ nodes:
         machine:
           sysctls:
             net.core.bpf_jit_harden: "1"
-            net.ipv6.conf.all.accept_ra: "2"
-            net.ipv6.conf.all.forwarding: "1"
-            net.ipv6.conf.enp129s0f0np0.accept_ra: "2"
-            net.ipv6.conf.enp129s0f0np0.forwarding: "1"
-            net.ipv6.conf.enp129s0f1np1.accept_ra: "2"
-            net.ipv6.conf.enp129s0f1np1.forwarding: "1"
+            net.ipv6.conf.all.accept_ra: "0"
+            net.ipv6.conf.all.forwarding: "0"
             vm.nr_hugepages: "1024"
 
       # Encrypt disks
@@ -136,10 +130,8 @@ nodes:
         machine:
           sysctls:
             net.core.bpf_jit_harden: "1"
-            net.ipv6.conf.all.accept_ra: "2"
-            net.ipv6.conf.all.forwarding: "1"
-            net.ipv6.conf.enp0s1.accept_ra: "2"
-            net.ipv6.conf.enp0s1.forwarding: "1"
+            net.ipv6.conf.all.accept_ra: "0"
+            net.ipv6.conf.all.forwarding: "0"
 
   - hostname: "kantai3"
     ipAddress: "10.1.1.3"
@@ -179,10 +171,8 @@ nodes:
         machine:
           sysctls:
             net.core.bpf_jit_harden: "1"
-            net.ipv6.conf.all.accept_ra: "2"
-            net.ipv6.conf.all.forwarding: "1"
-            net.ipv6.conf.enp1s0.accept_ra: "2"
-            net.ipv6.conf.enp1s0.forwarding: "1"
+            net.ipv6.conf.all.accept_ra: "0"
+            net.ipv6.conf.all.forwarding: "0"
             vm.nr_hugepages: "1024"
 
       # udev rules
@@ -229,7 +219,6 @@ patches:
         nodeIP:
           validSubnets:
             - 10.1.1.0/24
-            - ${CLUSTER_NODE_V6_CIDR}
 
   # Custom sysctl settings
   - |-
@@ -333,7 +322,6 @@ controlPlane:
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
-            node-cidr-mask-size-ipv6: "118"
         coreDNS:
           disabled: true
         proxy:

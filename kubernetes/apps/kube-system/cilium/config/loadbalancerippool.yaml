@@ -7,7 +7,6 @@ spec:
   allowFirstLastIPs: "Yes"
   blocks:
     - cidr: "10.10.0.0/16"
-    - cidr: "${CLUSTER_LBA_V6_CIDR}"
   serviceSelector:
     matchExpressions:
       - { key: not-used, operator: NotIn, values: [not-used] }
