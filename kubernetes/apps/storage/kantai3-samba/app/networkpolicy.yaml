@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/datreeio/CRDs-catalog/refs/heads/main/cilium.io/ciliumnetworkpolicy_v2.json
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
@@ -9,7 +10,7 @@ spec:
       app.kubernetes.io/name: kantai3-samba
   egress:
     - toCIDR:
-        - 192.168.1.0/24
+        - 10.1.0.0/16
       toPorts:
         - ports:
             - port: "445"
@@ -22,7 +23,7 @@ spec:
               protocol: ANY
   ingress:
     - fromCIDR:
-        - 192.168.1.0/24
+        - 10.1.0.0/16
       toPorts:
         - ports:
             - port: "445"

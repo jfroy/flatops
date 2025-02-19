@@ -26,7 +26,7 @@ spec:
     readOnly: false
     volumeHandle: kantai3/media##
     volumeAttributes:
-      source: "//kantai3/media"
+      source: "//kantai3.internal/media"
     nodeStageSecretRef:
       name: media-smb-media1
       namespace: default
