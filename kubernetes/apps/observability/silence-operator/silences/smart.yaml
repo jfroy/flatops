@@ -8,9 +8,6 @@ spec:
     - name: alertname
       value: SmartDeviceMediaErrors
       isRegex: false
-    - name: instance
-      value: "192.168.1.13:9633"
-      isRegex: false
     - name: job
       value: smartctl-exporter
       isRegex: false
