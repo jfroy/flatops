@@ -6,12 +6,15 @@ metadata:
   name: cluster
 spec:
   route:
-    groupBy: ["alertname", "job"]
-    groupInterval: 10m
-    groupWait: 1m
     receiver: "null"
-    repeatInterval: 1h
+    groupBy: ["alertname", "job"]
     routes:
+      - receiver: robusta
+        groupInterval: 1s
+        groupWait: 1s
+        repeatInterval: 4h
+        matchers: [{name: severity, value: .*, matchType: =~}]
+        continue: true
       - receiver: "null"
         matchers: [{name: alertname, value: InfoInhibitor, matchType: =}]
       - receiver: heartbeat
@@ -20,6 +23,9 @@ spec:
         repeatInterval: 5m
         matchers: [{name: alertname, value: Watchdog, matchType: =}]
       - receiver: discord
+        groupInterval: 10m
+        groupWait: 1m
+        repeatInterval: 1h
         matchers: [{name: severity, value: critical|error|warning, matchType: =~}]
   receivers:
   - name: "null"
@@ -70,6 +76,10 @@ spec:
               {{- end }}
             {{- end }}
           {{- end }}
+  - name: 'robusta'
+    webhookConfigs:
+      - url: 'http://robusta-runner.observability.svc.cluster.local/api/alerts'
+        sendResolved: true
   inhibitRules:
     - sourceMatch: [{name: severity, value: critical, matchType: =}]
       targetMatch: [{ name: severity, value: error|warning|info, matchType: =~ }]

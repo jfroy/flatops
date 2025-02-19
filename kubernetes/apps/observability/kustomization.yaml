@@ -16,6 +16,7 @@ resources:
   - ./nut-exporter/ks.yaml
   - ./policy-reporter/ks.yaml
   - ./prometheus-operator-crds/ks.yaml
+  - ./robusta/ks.yaml
   # - ./scrutiny/ks.yaml
   - ./silence-operator/ks.yaml
   - ./speedtest-exporter/ks.yaml
