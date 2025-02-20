@@ -39,7 +39,7 @@ spec:
           buildkitd:
             image:
               repository: moby/buildkit
-              tag: v0.19.0@sha256:14aa1b4dd92ea0a4cd03a54d0c6079046ea98cd0c0ae6176bdd7036ba370cbbe
+              tag: v0.20.0@sha256:2c59b0a95f5b2dc103814d69f695a61f131e75f3150ab58ea8afecd75e3d1f9a
             ports:
               - name: grpc
                 containerPort: 9999
@@ -145,7 +145,7 @@ spec:
           buildkitd:
             image:
               repository: moby/buildkit
-              tag: v0.19.0@sha256:14aa1b4dd92ea0a4cd03a54d0c6079046ea98cd0c0ae6176bdd7036ba370cbbe
+              tag: v0.20.0@sha256:2c59b0a95f5b2dc103814d69f695a61f131e75f3150ab58ea8afecd75e3d1f9a
             ports:
               - name: grpc
                 containerPort: 9999
