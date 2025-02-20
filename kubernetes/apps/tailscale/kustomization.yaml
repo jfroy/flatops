@@ -4,4 +4,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./tailscale-operator/ks.yaml
+  # - ./tailscale-operator/ks.yaml
