@@ -6,7 +6,8 @@ metadata:
 spec:
   allowFirstLastIPs: "Yes"
   blocks:
-    - cidr: "10.10.0.0/16"
+    - start: 10.10.0.2
+      stop: 10.10.255.254
   serviceSelector:
     matchExpressions:
       - { key: not-used, operator: NotIn, values: [not-used] }

@@ -31,7 +31,6 @@ spec:
             env:
               NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
               TZ: America/Los_Angeles
-              PLEX_ADVERTISE_URL: "http://10.10.1.0:32400"
               PLEX_NO_AUTH_NETWORKS: 10.1.0.0/16
             probes:
               liveness: &probe
@@ -74,8 +73,6 @@ spec:
       plex:
         controller: plex
         type: LoadBalancer
-        annotations:
-          lbipam.cilium.io/ips: 10.10.1.0
         ports:
           https:
             port: 32400
