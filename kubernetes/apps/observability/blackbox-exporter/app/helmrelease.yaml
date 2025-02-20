@@ -48,8 +48,7 @@ spec:
             ip_protocol_fallback: false
     service:
       ipDualStack:
-        enabled: true
-        ipFamilies: ["IPv4"]
+        enabled: false
     podAnnotations:
       reloader.stakater.com/auto: "true"
     extraArgs:
