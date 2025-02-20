@@ -38,6 +38,8 @@ spec:
       repository: ghcr.io/jfroy
       version: v24.9.1
       defaultRuntime: containerd
+      resources:
+        limits: null
     driver:
       enabled: false
     toolkit:
