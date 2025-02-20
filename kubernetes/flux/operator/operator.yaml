@@ -25,6 +25,8 @@ spec:
     name: flux-operator
     namespace: flux-system
   values:
+    resources:
+      limits: null
     tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
