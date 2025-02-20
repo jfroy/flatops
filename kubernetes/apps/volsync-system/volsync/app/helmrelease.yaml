@@ -33,3 +33,13 @@ spec:
     manageCRDs: true
     metrics:
       disableAuth: true
+    resources:
+      limits: null
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |
+              - op: remove
+                path: /spec/template/spec/containers/0/resources/limits
+            target:
+              kind: Deployment
