@@ -85,22 +85,6 @@ spec:
         target:
           kind: Deployment
 
-      # Enable Helm near OOM detection
-      # https://fluxcd.io/flux/installation/configuration/helm-oom-detection/
-      - patch: |
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --feature-gates=OOMWatch=true
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --oom-watch-memory-threshold=95
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --oom-watch-interval=500ms
-        target:
-          kind: Deployment
-          name: helm-controller
-
       # Set HelmController log level to debug to investigate drift issues
       # https://fluxcd.io/flux/components/helm/helmreleases/#drift-detection
       - patch: |
