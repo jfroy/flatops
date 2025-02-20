@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: talos-backup
-              image: ghcr.io/siderolabs/talos-backup:v0.1.0-beta.1
+              image: ghcr.io/siderolabs/talos-backup:v0.1.0-beta.3
               workingDir: /tmp
               imagePullPolicy: IfNotPresent
               env:
