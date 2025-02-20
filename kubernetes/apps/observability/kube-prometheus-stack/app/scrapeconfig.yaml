@@ -7,37 +7,10 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - homeassistant:9100
         - pikvm:9100
-        - threadassistant:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
       targetLabel: job
       replacement: *name
   scrapeTimeout: 15s
-# ---
-# Disabled because VM operator does not translate metricsPath. https://github.com/VictoriaMetrics/operator/issues/1073
-# # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
-# apiVersion: monitoring.coreos.com/v1alpha1
-# kind: ScrapeConfig
-# metadata:
-#   name: &name pikvm
-# spec:
-#   staticConfigs:
-#     - targets: ["pikvm"]
-#   metricsPath: /api/export/prometheus/metrics
-#   relabelings:
-#     - action: replace
-#       targetLabel: job
-#       replacement: *name
-#   scheme: HTTPS
-#   basicAuth:
-#     username:
-#       key: username
-#       name: pikvm-mini1-http-secret
-#     password:
-#       key: password
-#       name: pikvm-mini1-http-secret
-#   tlsConfig:
-#     insecureSkipVerify: true
