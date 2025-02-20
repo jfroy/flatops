@@ -37,6 +37,10 @@ spec:
       name: robusta-helm-values
       valuesKey: robusta_ui_sink_token
       targetPath: sinksConfig[0].robusta_sink.token
+    - kind: Secret
+      name: robusta-helm-values
+      valuesKey: slack_sink_key
+      targetPath: sinksConfig[1].slack_sink.api_key
   values:
     clusterName: kantai
     # globalConfig:
@@ -45,6 +49,10 @@ spec:
     sinksConfig:
       - robusta_sink:
           name: robusta_ui_sink
+      - slack_sink:
+          name: main_slack_sink
+          slack_channel: kantai
+          investigate_link: true
     enablePrometheusStack: false
     enablePlatformPlaybooks: true
     runner:
