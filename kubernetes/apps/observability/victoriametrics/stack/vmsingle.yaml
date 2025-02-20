@@ -22,4 +22,5 @@ spec:
       requests:
         storage: 10Gi
     storageClassName: openebs-hostpath
+  useDefaultResources: false
   useStrictSecurity: true

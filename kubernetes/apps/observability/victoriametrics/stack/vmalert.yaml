@@ -19,4 +19,5 @@ spec:
     url: http://vmsingle-stack.observability.svc:8429
   replicaCount: 1
   selectAllByDefault: true
+  useDefaultResources: false
   useStrictSecurity: true

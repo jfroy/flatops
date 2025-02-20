@@ -20,4 +20,5 @@ spec:
     - src_paths: [".*"]
       url_prefix:
         - http://vmsingle-stack.observability.svc:8429
+  useDefaultResources: false
   useStrictSecurity: true

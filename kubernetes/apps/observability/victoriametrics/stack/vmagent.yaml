@@ -25,5 +25,6 @@ spec:
         resources:
           requests:
             storage: 1Gi
+  useDefaultResources: false
   useStrictSecurity: true
   vmAgentExternalLabelName: prometheus
