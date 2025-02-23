@@ -37,7 +37,7 @@ spec:
           svelocker-ui:
             image:
               repository: ghcr.io/kmendell/svelocker-ui
-              tag: v0.22.1
+              tag: v0.23.0
             env:
               DEFAULT_REGISTRIES: https://registry.${PUBLIC_DOMAIN0},https://registry.etincelle.cloud
               PUBLIC_REGISTRY_URL: https://registry.${PUBLIC_DOMAIN0}
