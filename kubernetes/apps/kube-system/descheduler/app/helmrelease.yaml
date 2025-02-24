@@ -52,7 +52,7 @@ spec:
                 includingInitContainers: true
                 excludeOwnerKinds:
                   - "Job"
-                minPodLifetimeSeconds: 3600
+                minPodLifetimeSeconds: 1800
             - name: RemovePodsHavingTooManyRestarts
               args:
                 podRestartThreshold: 100
