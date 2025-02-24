@@ -26,8 +26,9 @@ spec:
       retries: 3
   values:
     kind: Deployment
-    replicas: 1
-    leaderElection: {}
+    replicas: 2
+    leaderElection:
+      enabled: true
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
       profiles:
