@@ -67,6 +67,7 @@ spec:
               TZ: America/Los_Angeles
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
+              PUBLIC_DOMAIN0: ${PUBLIC_DOMAIN0}
               WEB_PORT: &port 80
             envFrom:
               - secretRef:
