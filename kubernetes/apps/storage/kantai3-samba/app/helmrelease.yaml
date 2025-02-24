@@ -67,7 +67,6 @@ spec:
       kantai3-samba:
         controller: kantai3-samba
         clusterIP: None
-        ipFamilyPolicy: PreferDualStack
         ports:
           smb:
             port: 445

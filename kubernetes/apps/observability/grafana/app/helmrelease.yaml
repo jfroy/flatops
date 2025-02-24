@@ -24,8 +24,6 @@ spec:
       type: RollingUpdate
     testFramework:
       enabled: false
-    service:
-      ipFamilyPolicy: PreferDualStack
     serviceMonitor:
       enabled: true
       metricRelabelings:

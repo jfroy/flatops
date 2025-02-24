@@ -72,7 +72,6 @@ spec:
     service:
       buildkit-amd64:
         controller: buildkit-amd64
-        ipFamilyPolicy: PreferDualStack
         ports:
           grpc:
             enabled: true
@@ -175,7 +174,6 @@ spec:
     service:
       buildkit-arm64:
         controller: buildkit-arm64
-        ipFamilyPolicy: PreferDualStack
         ports:
           grpc:
             enabled: true

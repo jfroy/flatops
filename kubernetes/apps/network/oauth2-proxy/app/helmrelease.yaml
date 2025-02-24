@@ -81,7 +81,6 @@ spec:
       oauth2-proxy:
         controller: oauth2-proxy
         type: ClusterIP
-        ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: *port

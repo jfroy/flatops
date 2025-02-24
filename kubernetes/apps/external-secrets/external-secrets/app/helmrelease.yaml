@@ -28,8 +28,6 @@ spec:
     image:
       repository: ghcr.io/external-secrets/external-secrets
     extendedMetricLabels: true
-    service:
-      ipFamilyPolicy: PreferDualStack
     serviceMonitor:
       enabled: true
       interval: 1m

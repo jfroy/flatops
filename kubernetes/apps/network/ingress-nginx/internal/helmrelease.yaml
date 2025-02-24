@@ -31,9 +31,6 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: &hostname "internal.${PUBLIC_DOMAIN0}"
         externalTrafficPolicy: Cluster
-        ipFamilyPolicy: PreferDualStack
-        ipFamilies:
-          - IPv4
       ingressClassResource:
         name: internal
         default: true

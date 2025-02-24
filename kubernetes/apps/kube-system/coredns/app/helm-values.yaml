@@ -6,7 +6,6 @@ serviceAccount:
   create: true
 service:
   name: kube-dns
-  ipFamilyPolicy: PreferDualStack
 servers:
   - zones:
       - zone: .

@@ -57,4 +57,3 @@ spec:
           metrics:
             protocol: TCP
             port: 9199
-        ipFamilyPolicy: PreferDualStack

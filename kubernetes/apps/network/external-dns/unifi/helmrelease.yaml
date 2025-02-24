@@ -26,8 +26,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    service:
-      ipFamilyPolicy: PreferDualStack
     provider:
       name: webhook
       webhook:

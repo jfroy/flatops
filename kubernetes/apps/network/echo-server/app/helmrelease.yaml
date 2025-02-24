@@ -55,7 +55,6 @@ spec:
     service:
       echo-server:
         controller: echo-server
-        ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: 80

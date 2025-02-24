@@ -80,7 +80,6 @@ spec:
     service:
       cloudflared:
         controller: cloudflared
-        ipFamilyPolicy: PreferDualStack
         ports:
           http:
             port: *port

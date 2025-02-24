@@ -62,7 +62,6 @@ spec:
       media-kantai1-smb:
         controller: media-kantai1-smb
         clusterIP: None
-        ipFamilyPolicy: PreferDualStack
         annotations:
           external-dns.alpha.kubernetes.io/endpoints-type: HostIP
           external-dns.alpha.kubernetes.io/hostname: smb.media2.internal.

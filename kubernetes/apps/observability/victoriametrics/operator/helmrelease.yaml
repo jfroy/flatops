@@ -30,8 +30,6 @@ spec:
     fullnameOverride: vm-operator
     operator:
       enable_converter_ownership: true
-    service:
-      ipFamilyPolicy: PreferDualStack
     admissionWebhooks:
       enabled: true
       certManager:
