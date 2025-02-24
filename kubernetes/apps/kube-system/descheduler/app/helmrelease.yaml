@@ -43,6 +43,7 @@ spec:
                 reasons:
                   - "ContainerStatusUnknown"
                   - "NodeAffinity"
+                  - "NodeShutdown"
                   - "Terminated"
                   - "UnexpectedAdmissionError"
                 includingInitContainers: true
