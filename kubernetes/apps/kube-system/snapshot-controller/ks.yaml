@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cert-manager-issuers
   path: ./kubernetes/apps/kube-system/snapshot-controller/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

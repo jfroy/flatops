@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: kyverno
   path: ./kubernetes/apps/kyverno/kyverno-policies/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

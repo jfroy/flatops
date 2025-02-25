@@ -15,7 +15,7 @@ spec:
     - name: external-secrets-stores
     - name: volsync
   path: ./kubernetes/apps/default/whisparr/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

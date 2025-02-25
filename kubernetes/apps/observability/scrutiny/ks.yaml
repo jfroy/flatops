@@ -14,7 +14,7 @@ spec:
     - name: external-secrets-stores
     - name: volsync
   path: ./kubernetes/apps/observability/scrutiny/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

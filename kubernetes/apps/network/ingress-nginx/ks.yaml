@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: ingress-certificates
   path: ./kubernetes/apps/network/ingress-nginx/internal
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -34,7 +34,7 @@ spec:
   dependsOn:
     - name: ingress-certificates
   path: ./kubernetes/apps/network/ingress-nginx/external
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

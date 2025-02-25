@@ -13,7 +13,7 @@ spec:
     - name: external-secrets-stores
     - name: cnpg-postgres16
   path: ./kubernetes/apps/observability/gatus/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

@@ -32,7 +32,7 @@ spec:
     - name: external-secrets-stores
     - name: storage-media-kantai1-volume
   path: ./kubernetes/apps/storage/media-kantai1/smb
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

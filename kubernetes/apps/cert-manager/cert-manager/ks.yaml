@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/cert-manager/cert-manager/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -29,7 +29,7 @@ spec:
   dependsOn:
     - name: cert-manager
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

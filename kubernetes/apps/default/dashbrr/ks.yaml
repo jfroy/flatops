@@ -14,7 +14,7 @@ spec:
     - name: cnpg-postgres16
     - name: external-secrets-stores
   path: ./kubernetes/apps/default/dashbrr/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

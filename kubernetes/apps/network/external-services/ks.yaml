@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: network
   path: ./kubernetes/apps/network/external-services/resources
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cert-manager
   path: ./kubernetes/apps/cert-manager/trust-manager/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -34,7 +34,7 @@ spec:
   dependsOn:
     - name: trust-manager
   path: ./kubernetes/apps/cert-manager/trust-manager/cluster-ca-bundle
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

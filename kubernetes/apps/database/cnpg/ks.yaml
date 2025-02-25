@@ -17,7 +17,7 @@ spec:
     - name: openebs
     - name: rook-ceph-cluster
   path: ./kubernetes/apps/database/cnpg/postgres16
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

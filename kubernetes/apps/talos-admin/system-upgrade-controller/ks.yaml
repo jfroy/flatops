@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: node-feature-discovery-rules
   path: ./kubernetes/apps/talos-admin/system-upgrade-controller/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -34,7 +34,7 @@ spec:
   dependsOn:
     - name: system-upgrade-controller
   path: ./kubernetes/apps/talos-admin/system-upgrade-controller/plans
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

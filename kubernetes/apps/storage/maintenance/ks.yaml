@@ -8,7 +8,7 @@ metadata:
 spec:
   targetNamespace: storage
   path: ./kubernetes/apps/storage/maintenance/kantai1
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -24,7 +24,7 @@ metadata:
 spec:
   targetNamespace: storage
   path: ./kubernetes/apps/storage/maintenance/kantai3
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

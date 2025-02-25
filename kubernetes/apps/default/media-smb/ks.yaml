@@ -11,7 +11,7 @@ spec:
     - name: csi-driver-smb
     - name: external-secrets-stores
   path: ./kubernetes/apps/default/media-smb/kantai1
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -30,7 +30,7 @@ spec:
     - name: csi-driver-smb
     - name: external-secrets-stores
   path: ./kubernetes/apps/default/media-smb/media1
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

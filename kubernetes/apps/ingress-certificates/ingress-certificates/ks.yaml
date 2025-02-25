@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: cert-manager-issuers
   path: ./kubernetes/apps/ingress-certificates/ingress-certificates/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

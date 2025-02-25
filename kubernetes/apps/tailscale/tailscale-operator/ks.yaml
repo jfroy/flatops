@@ -13,7 +13,7 @@ spec:
   dependsOn:
     - name: 1password-cko
   path: ./kubernetes/apps/tailscale/tailscale-operator/app
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
@@ -34,7 +34,7 @@ spec:
   dependsOn:
     - name: tailscale-operator
   path: ./kubernetes/apps/tailscale/tailscale-operator/connector
-  prune: true
+  prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
