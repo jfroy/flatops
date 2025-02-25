@@ -10,9 +10,11 @@ metadata:
     fluxcd.controlplane.io/reconcileTimeout: "1m"
 spec:
   distribution:
-    version: 2.x
+    # renovate: datasource=github-releases depName=controlplaneio-fluxcd/distribution
+    version: 2.5.1
     registry: ghcr.io/fluxcd
-    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+    # renovate: datasource=docker depName=ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
+    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.16.0
   components:
     - source-controller
     - kustomize-controller
