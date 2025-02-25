@@ -1,0 +1,39 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "docker:enableMajor",
+    "schedule:nonOfficeHours",
+    ":automergeBranch",
+    ":dependencyDashboard",
+    ":disableRateLimiting",
+    ":semanticCommits",
+    ":timezone(America/Los_Angeles)",
+    "github>jfroy/flatops//.renovate/autoMerge.json5",
+    "github>jfroy/flatops//.renovate/customManagers.json5",
+    "github>jfroy/flatops//.renovate/grafanaDashboards.json5",
+    "github>jfroy/flatops//.renovate/groups.json5",
+    "github>jfroy/flatops//.renovate/labels.json5",
+    "github>jfroy/flatops//.renovate/packageRules.json5",
+    "github>jfroy/flatops//.renovate/semanticCommits.json5"
+  ],
+  "dependencyDashboardTitle": "Renovate Dashboard 🤖",
+  "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
+  "ignorePaths": ["**/*.sops.*", "**/resources/**"],
+  "rebaseWhen": "conflicted",
+  "flux": {
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
+  },
+  "helm-values": {
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
+  },
+  "helmfile": {
+    "fileMatch": ["(^|/)helmfile\\.ya?ml$"]
+  },
+  "kubernetes": {
+    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
+  },
+  "kustomize": {
+    "fileMatch": ["(^|/)kustomization\\.ya?ml$"]
+  }
+}

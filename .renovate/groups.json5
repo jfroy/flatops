@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "packageRules": [
+    {
+      "groupName": "1Password Connnect",
+      "matchPackagePatterns": ["1password/connect"],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    },
+    {
+      "groupName": "Actions Runner Controller",
+      "matchPackagePatterns": ["gha-runner-scale-set"],
+      "matchDatasources": ["docker", "helm"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    },
+    {
+      "groupName": "Flux Operator",
+      "matchPackagePatterns": ["flux-operator", "flux-instance"],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    },
+    {
+      "groupName": "Kyverno",
+      "matchPackagePatterns": ["^kyverno"],
+      "matchDatasources": ["docker"],
+      "group": {
+        "commitMessageTopic": "{{{groupName}}} group"
+      }
+    }
+  ]
+}
