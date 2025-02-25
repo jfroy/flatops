@@ -6,18 +6,22 @@ set: [pipefail]
 shopt: [globstar]
 
 vars:
+  BOOTSTRAP_CONFIG_FILE: '{{.ROOT_DIR}}/config.yaml'
   BOOTSTRAP_DIR: '{{.ROOT_DIR}}/bootstrap'
+  KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
   KUBERNETES_DIR: '{{.ROOT_DIR}}/kubernetes'
   SCRIPTS_DIR: '{{.ROOT_DIR}}/scripts'
-  BOOTSTRAP_CONFIG_FILE: '{{.ROOT_DIR}}/config.yaml'
-  MAKEJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/makejinja.toml'
   SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
+  TALOS_DIR: '{{.ROOT_DIR}}/talos'
+  TALOSCONFIG: '{{.ROOT_DIR}}/talos/clusterconfig/talosconfig'
+
+dotenv:
+  - '{{.KUBERNETES_DIR}}/apps/talos-admin/.env'
 
 env:
-  KUBECONFIG: '{{.ROOT_DIR}}/kubeconfig'
-  PYTHONDONTWRITEBYTECODE: '1'
+  KUBECONFIG: '{{.KUBECONFIG}}'
   SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
-  VIRTUAL_ENV: '{{.ROOT_DIR}}/.venv'
+  TALOSCONFIG: '{{.TALOSCONFIG}}'
 
 includes:
   bootstrap: .taskfiles/bootstrap

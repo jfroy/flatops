@@ -3,21 +3,17 @@
 version: '3'
 
 vars:
-  TALHELPER_CLUSTER_DIR: '{{.KUBERNETES_DIR}}/bootstrap/talos/clusterconfig'
-  TALHELPER_CONFIG_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talconfig.yaml'
-  TALHELPER_ENV_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talenv.sops.yaml'
-  TALHELPER_SECRET_FILE: '{{.KUBERNETES_DIR}}/bootstrap/talos/talsecret.sops.yaml'
-  TALOSCONFIG: '{{.TALHELPER_CLUSTER_DIR}}/talosconfig'
-
-env:
-  TALOSCONFIG: '{{.TALOSCONFIG}}'
+  TALHELPER_CLUSTER_DIR: '{{.TALOS_DIR}}/clusterconfig'
+  TALHELPER_CONFIG_FILE: '{{.TALOS_DIR}}/talconfig.yaml'
+  TALHELPER_ENV_FILE: '{{.TALOS_DIR}}/talenv.sops.yaml'
+  TALHELPER_SECRET_FILE: '{{.TALOS_DIR}}/talsecret.sops.yaml'
 
 tasks:
 
   apply-mc:
     desc: Apply machineconfigs
-    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
-    cmd: talhelper gencommand apply --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} | bash
+    dir: '{{.TALOS_DIR}}'
+    cmd: talhelper gencommand apply | bash
     preconditions:
       - msg: Missing talhelper config file
         sh: test -f {{.TALHELPER_CONFIG_FILE}}
@@ -28,7 +24,8 @@ tasks:
     desc: Generate Talos configuration
     aliases:
       - gen-mc
-    cmd: talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}} --secret-file {{.TALHELPER_SECRET_FILE}} --env-file {{.TALHELPER_ENV_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}}
+    dir: '{{.TALOS_DIR}}'
+    cmd: talhelper genconfig --config-file {{.TALHELPER_CONFIG_FILE}}
     preconditions:
       - test -f {{.TALHELPER_CONFIG_FILE}}
       - test -f {{.TALHELPER_ENV_FILE}}
@@ -93,9 +90,9 @@ tasks:
 
   reset:
     desc: Resets nodes back to maintenance mode
-    dir: "{{.KUBERNETES_DIR}}/bootstrap/talos"
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
-    cmd: talhelper gencommand reset --config-file {{.TALHELPER_CONFIG_FILE}} --out-dir {{.TALHELPER_CLUSTER_DIR}} --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
+    dir: '{{.TALOS_DIR}}'
+    cmd: talhelper gencommand reset --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
   preconditions:
     - which talhelper
 
