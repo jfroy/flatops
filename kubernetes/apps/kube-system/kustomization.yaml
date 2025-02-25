@@ -9,6 +9,7 @@ resources:
   - ./coredns/ks.yaml
   - ./csi-driver-smb/ks.yaml
   - ./descheduler/ks.yaml
+  - ./external-kube-apiserver/service.yaml
   - ./gateway-crd/ks.yaml
   - ./generic-device-plugin/ks.yaml
   # - ./k8s-digester/ks.yaml
