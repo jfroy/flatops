@@ -68,7 +68,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 4000]
-        seccompProfile: { type: RuntimeDefault }
     service:
       plex:
         controller: plex

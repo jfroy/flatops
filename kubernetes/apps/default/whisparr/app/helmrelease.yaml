@@ -73,7 +73,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [4000]
-        seccompProfile: { type: RuntimeDefault }
     service:
       whisparr:
         controller: whisparr

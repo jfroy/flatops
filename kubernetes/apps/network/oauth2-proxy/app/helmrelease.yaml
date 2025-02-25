@@ -76,7 +76,6 @@ spec:
         fsGroup: 2000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [4000]
-        seccompProfile: { type: RuntimeDefault }
     service:
       oauth2-proxy:
         controller: oauth2-proxy

@@ -29,10 +29,7 @@ spec:
                 runAsGroup: 1000
                 allowPrivilegeEscalation: false
                 runAsNonRoot: true
-                capabilities:
-                  drop:
-                    - ALL
-                seccompProfile: { type: RuntimeDefault }
+                capabilities: { drop: ["ALL"] }
               command:
                 - /talos-backup
               volumeMounts:
