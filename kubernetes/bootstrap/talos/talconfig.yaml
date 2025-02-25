@@ -3,7 +3,7 @@
 # renovate: datasource=docker depName=ghcr.io/jfroy/siderolabs/imager
 talosVersion: v1.9.10004
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.32.1
+kubernetesVersion: v1.32.2
 
 clusterName: "kantai"
 endpoint: https://10.1.1.0:6443

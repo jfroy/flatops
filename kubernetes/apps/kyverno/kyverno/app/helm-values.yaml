@@ -11,12 +11,12 @@ webhooksCleanup:
   image:
     registry: registry.k8s.io
     repository: kubectl
-    tag: v1.32.1
+    tag: v1.32.2
 policyReportsCleanup:
   image:
     registry: registry.k8s.io
     repository: kubectl
-    tag: v1.32.1
+    tag: v1.32.2
 features:
   backgroundScan:
     skipResourceFilters: false
