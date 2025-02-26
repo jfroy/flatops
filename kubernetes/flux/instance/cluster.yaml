@@ -30,7 +30,3 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
