@@ -107,5 +107,5 @@ spec:
         name: cloudflared-secret
         globalMounts:
           - path: /etc/cloudflared/creds/credentials.json
-            subPath: credentials.json
+            subPath: credentials_json
             readOnly: true
