@@ -345,6 +345,7 @@ controlPlane:
       cluster:
         apiServer:
           extraArgs:
+            enable-aggregator-routing: true
             feature-gates: UserNamespacesSupport=true,UserNamespacesPodSecurityStandards=true
             oidc-client-id: "${OIDC_CLIENT_ID}"
             oidc-issuer-url: "${OIDC_ISSUER_URL}"
