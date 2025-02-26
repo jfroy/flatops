@@ -3,43 +3,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ./namespace.yaml
   - ./tailscale-operator/ks.yaml
+namespace: tailscale
 components:
   - ../../components/common
-transformers:
-  - |-
-    apiVersion: builtin
-    kind: PatchTransformer
-    metadata:
-      name: rename-ns
-    patch: |-
-      - op: replace
-        path: /metadata/name
-        value: tailscale
-    target:
-      kind: Namespace
-  - |-
-    apiVersion: builtin
-    kind: NamespaceTransformer
-    metadata:
-      name: apply-ns
-      namespace: tailscale
-    unsetOnly: true
-    fieldSpecs:
-      - path: spec/service/namespace
-        group: apiregistration.k8s.io
-        kind: APIService
-        create: true
-      - path: spec/conversion/webhook/clientConfig/service/namespace
-        group: apiextensions.k8s.io
-        kind: CustomResourceDefinition
-  - |-
-    apiVersion: builtin
-    kind: LabelTransformer
-    metadata:
-      name: label-ns
-    labels:
-      pod-security.kubernetes.io/enforce: privileged
-    fieldSpecs:
-      - path: metadata/labels
-        kind: Namespace
