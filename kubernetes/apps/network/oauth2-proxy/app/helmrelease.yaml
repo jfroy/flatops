@@ -32,7 +32,7 @@ spec:
               tag: v7.8.1@sha256:d62e2d81c6f5048f652f67c302083be1272c181b971fad80e5a30ebe2b8b75d8
             envFrom:
               - secretRef:
-                  name: oauth2-proxy-secret
+                  name: oauth2-proxy-oidc
             env:
               OAUTH2_PROXY_COOKIE_DOMAINS: "kantai.xyz"
               OAUTH2_PROXY_COOKIE_SECURE: true
