@@ -12,7 +12,6 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-secrets
-    - name: gluetun-update
     - name: volsync
   path: ./kubernetes/apps/default/qbittorrent/app
   prune: false

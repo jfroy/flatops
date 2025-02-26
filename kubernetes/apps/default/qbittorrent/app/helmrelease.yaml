@@ -73,7 +73,9 @@ spec:
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
-                  name: qbittorrent-gluetun-secret
+                  name: gluetun-secret
+              - secretRef:
+                  name: qbittorrent-secret
             probes:
               liveness:
                 enabled: true
