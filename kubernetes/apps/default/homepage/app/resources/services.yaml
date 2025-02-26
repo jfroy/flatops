@@ -14,7 +14,7 @@
           key: {{HOMEPAGE_VAR_PLEX_API_KEY}}
     - stash:
         icon: stash.png
-        href: https://stash.${PUBLIC_DOMAIN0}/
+        href: https://stash.kantai.xyz/
         namespace: default
         app: stash
         widget:
@@ -24,7 +24,7 @@
 - Arr:
     - radarr:
         icon: sh-radarr-light.webp
-        href: https://radarr.${PUBLIC_DOMAIN0}/
+        href: https://radarr.kantai.xyz/
         namespace: default
         app: radarr
         widget:
@@ -34,7 +34,7 @@
           enableQueue: true
     - sonarr:
         icon: sh-sonarr.webp
-        href: https://sonarr.${PUBLIC_DOMAIN0}/
+        href: https://sonarr.kantai.xyz/
         namespace: default
         app: sonarr
         widget:
@@ -44,7 +44,7 @@
           enableQueue: true
     - prowlarr:
         icon: sh-prowlarr.webp
-        href: https://prowlarr.${PUBLIC_DOMAIN0}/
+        href: https://prowlarr.kantai.xyz/
         namespace: default
         app: prowlarr
         widget:
@@ -54,7 +54,7 @@
           enableQueue: true
     - qbittorrent:
         icon: sh-qbittorrent.webp
-        href: https://qbit.${PUBLIC_DOMAIN0}/
+        href: https://qbit.kantai.xyz/
         namespace: default
         app: qbittorrent
         widget:
@@ -62,7 +62,7 @@
           url: http://qbittorrent.default.svc:80
     - sabnzbd:
         icon: sh-sabnzbd.webp
-        href: https://sab.${PUBLIC_DOMAIN0}/
+        href: https://sab.kantai.xyz/
         namespace: default
         app: sabnzbd
         widget:
@@ -72,12 +72,12 @@
 - Infra:
     - grafana:
         icon: sh-grafana.webp
-        href: https://grafana.${PUBLIC_DOMAIN0}/
+        href: https://grafana.kantai.xyz/
         namespace: observability
         app: grafana
     - homeassistant:
         icon: sh-home-assistant-light.webp
-        href: https://hass.${PUBLIC_DOMAIN1}/
+        href: https://hass.example.com/
     - nextdns:
         icon: nextdns.png
         href: https://my.nextdns.io
@@ -95,12 +95,12 @@
           password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
     - victorialogs:
         icon: sh-victoriametrics-light.webp
-        href: https://val.${PUBLIC_DOMAIN0}/
+        href: https://val.kantai.xyz/
         namespace: observability
         app: victoria-logs-single
     - victoriametrics:
         icon: sh-victoriametrics-light.webp
-        href: https://vam.${PUBLIC_DOMAIN0}/
+        href: https://vam.kantai.xyz/
         namespace: observability
         app: vmsingle
     - tailscale:

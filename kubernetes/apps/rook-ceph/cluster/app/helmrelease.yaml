@@ -105,13 +105,13 @@ spec:
     ingress:
       dashboard:
         annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
           nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           nginx.ingress.kubernetes.io/proxy-ssl-verify: "off"
         hosts:
-          - host: rook.${PUBLIC_DOMAIN0}
+          - host: rook.kantai.xyz
             path: /
         ingressClassName: internal
     cephBlockPools:
@@ -257,5 +257,5 @@ spec:
             nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
           ingressClassName: internal
           host:
-            name: objectstore.${PUBLIC_DOMAIN0}
+            name: objectstore.kantai.xyz
             path: /

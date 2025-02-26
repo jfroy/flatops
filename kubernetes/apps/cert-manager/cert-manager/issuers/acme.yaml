@@ -6,7 +6,6 @@ metadata:
 spec:
   acme:
     server: https://acme-v02.api.letsencrypt.org/directory
-    email: "${SECRET_ACME_EMAIL}"
     privateKeySecretRef:
       name: letsencrypt-production
     solvers:
@@ -17,9 +16,7 @@ spec:
               key: api-token
         selector:
           dnsZones:
-            - "${PUBLIC_DOMAIN0}"
-            - "${PUBLIC_DOMAIN1}"
-            - "${PUBLIC_DOMAIN2}"
+            - "kantai.xyz"
 ---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
@@ -28,7 +25,6 @@ metadata:
 spec:
   acme:
     server: https://acme-staging-v02.api.letsencrypt.org/directory
-    email: "${SECRET_ACME_EMAIL}"
     privateKeySecretRef:
       name: letsencrypt-staging
     solvers:
@@ -39,6 +35,5 @@ spec:
               key: api-token
         selector:
           dnsZones:
-            - "${PUBLIC_DOMAIN0}"
-            - "${PUBLIC_DOMAIN1}"
-            - "${PUBLIC_DOMAIN2}"
+            - "kantai.xyz"
+            - "kantai.wtf"

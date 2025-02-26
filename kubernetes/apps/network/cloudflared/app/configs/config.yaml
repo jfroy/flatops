@@ -1,10 +1,10 @@
 ---
 originRequest:
-  originServerName: "external.${PUBLIC_DOMAIN0}"
+  originServerName: "external.kantai.xyz"
 
 ingress:
-  - hostname: "${PUBLIC_DOMAIN0}"
+  - hostname: "kantai.xyz"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
-  - hostname: "*.${PUBLIC_DOMAIN0}"
+  - hostname: "*.kantai.xyz"
     service: https://ingress-nginx-external-controller.network.svc.cluster.local:443
   - service: http_status:404

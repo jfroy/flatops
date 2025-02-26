@@ -41,7 +41,7 @@ spec:
               - node
               - build
             env:
-              PUBLIC_REGISTRY_URL: https://registry.${PUBLIC_DOMAIN0}
+              PUBLIC_REGISTRY_URL: https://registry.kantai.xyz
               PUBLIC_REGISTRY_NAME: kantai
               TZ: America/Los_Angeles
             probes:
@@ -67,7 +67,7 @@ spec:
       svelocker-ui:
         className: internal
         hosts:
-          - host: ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
+          - host: ${APP_SUBDOMAIN:-${APP}}.kantai.xyz
             paths:
               - path: /
                 service:

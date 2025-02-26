@@ -63,7 +63,7 @@ spec:
       enabled: true
       ingressClassName: internal
       hosts:
-        - host: headlamp.${PUBLIC_DOMAIN0}
+        - host: headlamp.kantai.xyz
           paths:
             - path: /
               type: Prefix

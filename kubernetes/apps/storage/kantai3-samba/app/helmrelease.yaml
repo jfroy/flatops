@@ -34,7 +34,7 @@ spec:
         containers:
           samba-server:
             image:
-              repository: registry.${PUBLIC_DOMAIN0}/jfroy/samba-server
+              repository: registry.kantai.xyz/jfroy/samba-server
               tag: fedora-latest
             env:
               SAMBACC_CONFIG: /config/config.yaml:/config/users.json

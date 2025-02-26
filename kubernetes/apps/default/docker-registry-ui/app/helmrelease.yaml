@@ -34,7 +34,7 @@ spec:
               tag: main
               pullPolicy: Always
             env:
-              DEFAULT_REGISTRIES: https://registry.${PUBLIC_DOMAIN0},https://registry.etincelle.cloud
+              DEFAULT_REGISTRIES: https://registry.kantai.xyz,https://registry.etincelle.cloud
               DELETE_IMAGES: "true"
               READ_ONLY_REGISTRIES: "true"
               SHOW_CATALOG_NB_TAGS: "true"
@@ -60,7 +60,7 @@ spec:
       docker-registry-ui:
         className: internal
         hosts:
-          - host: ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
+          - host: ${APP_SUBDOMAIN:-${APP}}.kantai.xyz
             paths:
               - path: /
                 service:

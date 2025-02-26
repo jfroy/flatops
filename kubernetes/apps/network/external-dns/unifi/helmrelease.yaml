@@ -59,11 +59,7 @@ spec:
     sources: ["ingress", "service"]
     txtOwnerId: kantai
     txtPrefix: edns.
-    domainFilters:
-      - "${PUBLIC_DOMAIN0}"
-      - "${PUBLIC_DOMAIN1}"
-      - "${PUBLIC_DOMAIN2}"
-      - "internal."
+    domainFilters: ["kantai.xyz", "kantai.wtf", "internal."]
     serviceMonitor:
       enabled: true
     podAnnotations:

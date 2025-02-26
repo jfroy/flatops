@@ -50,7 +50,7 @@ spec:
       openspeedtest:
         className: internal
         hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
+          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
             paths:
               - path: /
                 service:

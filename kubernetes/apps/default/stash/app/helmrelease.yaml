@@ -63,7 +63,7 @@ spec:
         initContainers:
           nams:
             image:
-              repository: registry.${PUBLIC_DOMAIN0}/nams
+              repository: registry.kantai.xyz/nams
               tag: 2.0.0@sha256:bff337ca9ec86b1879263f2d1a2ab75c72ce34e86afd1fb09273d48cd441bb01
             env:
               TZ: America/Los_Angeles
@@ -108,7 +108,7 @@ spec:
       stash:
         className: internal
         hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
+          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
             paths:
               - path: /
                 service:

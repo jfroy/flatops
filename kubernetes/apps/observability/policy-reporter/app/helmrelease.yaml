@@ -34,13 +34,13 @@ spec:
       enabled: true
       openIDConnect:
         enabled: true
-        callbackUrl: https://pr.${PUBLIC_DOMAIN0}/callback
+        callbackUrl: https://pr.kantai.xyz/callback
         secretRef: policy-reporter-oidc
       ingress:
         enabled: true
         className: internal
         hosts:
-          - host: pr.${PUBLIC_DOMAIN0}
+          - host: pr.kantai.xyz
             paths:
               - path: /
                 pathType: Prefix

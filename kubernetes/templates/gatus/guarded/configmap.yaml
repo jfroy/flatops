@@ -16,7 +16,7 @@ data:
           hide-hostname: true
           hide-url: true
         dns:
-          query-name: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
+          query-name: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
           query-type: A
         conditions:
           - "len([BODY]) == 0"

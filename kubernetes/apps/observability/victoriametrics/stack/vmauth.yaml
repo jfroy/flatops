@@ -7,11 +7,11 @@ spec:
   selectAllByDefault: true
   ingress:
     annotations:
-      nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
-      nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+      nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
+      nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
       nginx.ingress.kubernetes.io/auth-response-headers: x-auth-request-email
     class_name: internal
-    host: vam.${PUBLIC_DOMAIN0}
+    host: vam.kantai.xyz
   replicaCount: 1
   unauthorizedAccessConfig:
     - src_paths: ["/targets"]

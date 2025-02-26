@@ -61,7 +61,7 @@ spec:
       echo-server:
         className: external
         hosts:
-          - host: "{{ .Release.Name }}.${PUBLIC_DOMAIN0}"
+          - host: "{{ .Release.Name }}.kantai.xyz"
             paths:
               - path: /
                 service:

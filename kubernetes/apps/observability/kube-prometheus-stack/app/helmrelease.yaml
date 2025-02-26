@@ -38,10 +38,10 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
         hosts:
-          - alm.${PUBLIC_DOMAIN0}
+          - alm.kantai.xyz
         paths:
           - /
         pathType: Prefix

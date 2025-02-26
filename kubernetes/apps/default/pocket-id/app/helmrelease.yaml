@@ -41,7 +41,7 @@ spec:
               CADDY_DISABLED: "true"
               DB_PATH: /data/pocket-id.db
               HOST: "0.0.0.0"
-              PUBLIC_APP_URL: https://${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
+              PUBLIC_APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
               SQLITE_DB_PATH: /data/pocket-id.db
               TRUST_PROXY: true
               TZ: America/Los_Angeles
@@ -70,7 +70,7 @@ spec:
       pocket-id:
         className: internal
         hosts:
-          - host: ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}
+          - host: ${APP_SUBDOMAIN:-${APP}}.kantai.xyz
             paths:
               - path: /api/
                 service:

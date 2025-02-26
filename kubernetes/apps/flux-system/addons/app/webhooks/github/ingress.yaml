@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: external
   rules:
-    - host: &host "flux-webhook.${PUBLIC_DOMAIN0}"
+    - host: &host "flux-webhook.kantai.xyz"
       http:
         paths:
           - path: /

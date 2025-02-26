@@ -67,7 +67,6 @@ spec:
               TZ: America/Los_Angeles
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
-              PUBLIC_DOMAIN0: ${PUBLIC_DOMAIN0}
               WEB_PORT: &port 80
             envFrom:
               - secretRef:
@@ -111,7 +110,7 @@ spec:
       gatus:
         className: external
         hosts:
-          - host: status.${PUBLIC_DOMAIN0}
+          - host: status.kantai.xyz
             paths:
               - path: /
                 service:

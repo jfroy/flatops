@@ -2,57 +2,17 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: "${PUBLIC_DOMAIN0/./-}-0-staging"
+  name: "xyz-kantai-staging"
 spec:
-  secretName: "${PUBLIC_DOMAIN0/./-}-staging-tls"
+  secretName: "xyz-kantai-staging-tls"
   issuerRef:
     name: letsencrypt-staging
     kind: ClusterIssuer
     group: cert-manager.io
-  commonName: "${PUBLIC_DOMAIN0}"
+  commonName: "kantai.xyz"
   dnsNames:
-    - "${PUBLIC_DOMAIN0}"
-    - "*.${PUBLIC_DOMAIN0}"
-  secretTemplate:
-    annotations:
-      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "network,kube-system"
-      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: "${PUBLIC_DOMAIN1/./-}-1-staging"
-spec:
-  secretName: "${PUBLIC_DOMAIN1/./-}-staging-tls"
-  issuerRef:
-    name: letsencrypt-staging
-    kind: ClusterIssuer
-    group: cert-manager.io
-  commonName: "${PUBLIC_DOMAIN1}"
-  dnsNames:
-    - "${PUBLIC_DOMAIN1}"
-    - "*.${PUBLIC_DOMAIN1}"
-  secretTemplate:
-    annotations:
-      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "network,kube-system"
-      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: "${PUBLIC_DOMAIN2/./-}-2-staging"
-spec:
-  secretName: "${PUBLIC_DOMAIN2/./-}-staging-tls"
-  issuerRef:
-    name: letsencrypt-staging
-    kind: ClusterIssuer
-    group: cert-manager.io
-  commonName: "${PUBLIC_DOMAIN2}"
-  dnsNames:
-    - "${PUBLIC_DOMAIN2}"
-    - "*.${PUBLIC_DOMAIN2}"
+    - "kantai.xyz"
+    - "*.kantai.xyz"
   secretTemplate:
     annotations:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"

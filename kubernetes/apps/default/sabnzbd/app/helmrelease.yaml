@@ -37,8 +37,7 @@ spec:
                 sabnzbd.default.svc,
                 sabnzbd.default.svc.cluster,
                 sabnzbd.default.svc.cluster.local,
-                ${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0},
-                ${APP_SUBDOMAIN:-${APP}}.${TAILNET_DOMAIN}
+                ${APP_SUBDOMAIN:-${APP}}.kantai.xyz,
               SABNZBD__PORT: &port 80
               TZ: America/Los_Angeles
             envFrom:
@@ -134,11 +133,11 @@ spec:
       sabnzbd:
         className: internal
         annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.${PUBLIC_DOMAIN0}/oauth2/start?rd=$scheme://$best_http_host$request_uri
+          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
+          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
           nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
         hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.${PUBLIC_DOMAIN0}"
+          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
             paths:
               - path: /
                 service:
