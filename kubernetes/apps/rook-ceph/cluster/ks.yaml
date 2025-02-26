@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager-issuers
+    - name: cert-manager
     - name: rook-ceph-operator
     - name: snapshot-controller
   path: ./kubernetes/apps/rook-ceph/cluster/app

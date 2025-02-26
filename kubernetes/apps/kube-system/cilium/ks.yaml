@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   # NOTE: Cannot depend on cilium-config to prevent helm stalls
   dependsOn:
-    - name: cert-manager-issuers
+    - name: cert-manager
     - name: gateway-crd
   path: ./kubernetes/apps/kube-system/cilium/app
   prune: false # never should be deleted
