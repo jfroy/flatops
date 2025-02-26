@@ -38,9 +38,7 @@ spec:
               - -enduser
             env:
               TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: gluetun-secret
+              UPDATER_VPN_SERVICE_PROVIDERS: airvpn
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
