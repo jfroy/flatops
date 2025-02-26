@@ -81,7 +81,7 @@ spec:
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
-                  name: sabnzbd-gluetun-secret
+                  name: gluetun-sabnzbd-secret
             probes:
               liveness:
                 enabled: true

@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
-  - ./networkpolicy.sops.yaml
-  - ./secret.sops.yaml
+  - ./networkpolicy.yaml
   - ../../../../templates/gatus/guarded
   - ../../../../templates/volsync
