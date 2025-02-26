@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cnpg-postgres16
-    - name: external-secrets-stores
+    - name: external-secrets
   path: ./kubernetes/apps/default/glance/app
   prune: false
   sourceRef:

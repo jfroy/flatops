@@ -29,7 +29,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: external-secrets
     - name: storage-media-kantai1-volume
   path: ./kubernetes/apps/storage/media-kantai1/smb
   prune: false

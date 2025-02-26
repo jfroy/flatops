@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cnpg-postgres16
-    - name: external-secrets-stores
+    - name: external-secrets
     - name: volsync
   path: ./kubernetes/apps/default/sonarr/app
   prune: false

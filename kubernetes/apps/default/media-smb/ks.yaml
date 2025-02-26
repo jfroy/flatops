@@ -9,7 +9,7 @@ spec:
   targetNamespace: default
   dependsOn:
     - name: csi-driver-smb
-    - name: external-secrets-stores
+    - name: external-secrets
   path: ./kubernetes/apps/default/media-smb/kantai1
   prune: false
   sourceRef:
@@ -28,7 +28,7 @@ spec:
   targetNamespace: default
   dependsOn:
     - name: csi-driver-smb
-    - name: external-secrets-stores
+    - name: external-secrets
   path: ./kubernetes/apps/default/media-smb/media1
   prune: false
   sourceRef:

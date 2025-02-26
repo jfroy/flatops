@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets-stores
+    - name: external-secrets
   path: ./kubernetes/apps/observability/exportarr/app
   prune: false
   sourceRef:
