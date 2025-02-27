@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/alert-notification-v1beta3.json
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: alertmanager-flux-system
+spec:
+  providerRef:
+    name: alertmanager
+  eventSeverity: error
+  eventSources:
+    - kind: FluxInstance
+      name: flux
+    - kind: GitRepository
+      name: "*"
+    - kind: HelmRepository
+      name: "*"
+    - kind: OCIRepository
+      name: "*"
+  exclusionList:
+    - "context canceled$"
+    - "dial.*tcp.*timeout"
+    - "error.*lookup github\\.com"
+    - "error.*lookup raw\\.githubusercontent\\.com"
+    - "read: connection timed out"
+    - "waiting.*socket"

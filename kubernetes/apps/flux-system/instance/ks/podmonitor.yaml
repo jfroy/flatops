@@ -3,11 +3,10 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
+  name: flux
   labels:
     app.kubernetes.io/instance: flux
     app.kubernetes.io/name: flux
-  name: flux
-  namespace: flux-system
 spec:
   podMetricsEndpoints:
     - honorLabels: true
