@@ -23,3 +23,7 @@ resources:
   - ./unpoller/ks.yaml
   - ./victorialogs/ks.yaml
   - ./victoriametrics/ks.yaml
+components:
+  - ../../components/common
+transformers:
+  - ./transformers

@@ -6,11 +6,10 @@ metadata:
   name: prometheus-operator-crds
   namespace: flux-system
 spec:
-  targetNamespace: observability
   path: ./kubernetes/apps/observability/prometheus-operator-crds/app
   prune: false # never should be deleted
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+    namespace: flux-system
   interval: 30m
