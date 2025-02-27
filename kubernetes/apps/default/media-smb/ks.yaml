@@ -6,16 +6,15 @@ metadata:
   name: default-media-smb-kantai1
   namespace: flux-system
 spec:
-  targetNamespace: default
   dependsOn:
-    - name: csi-driver-smb
     - name: external-secrets
+      namespace: external-secrets
   path: ./kubernetes/apps/default/media-smb/kantai1
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+    namespace: flux-system
   interval: 30m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -25,14 +24,13 @@ metadata:
   name: default-media-smb-media1
   namespace: flux-system
 spec:
-  targetNamespace: default
   dependsOn:
-    - name: csi-driver-smb
     - name: external-secrets
+      namespace: external-secrets
   path: ./kubernetes/apps/default/media-smb/media1
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+    namespace: flux-system
   interval: 30m

@@ -4,21 +4,16 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app glance
-  namespace: flux-system
 spec:
-  targetNamespace: default
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cnpg-postgres16
-    - name: external-secrets
   path: ./kubernetes/apps/default/glance/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+    namespace: flux-system
   interval: 30m
   postBuild:
     substitute:
