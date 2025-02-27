@@ -4,9 +4,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app trust-manager
-  namespace: flux-system
 spec:
-  targetNamespace: cert-manager
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -17,7 +15,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+    namespace: flux-system
   interval: 30m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -25,9 +23,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cluster-ca-bundle
-  namespace: flux-system
 spec:
-  targetNamespace: cert-manager
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -38,5 +34,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+    namespace: flux-system
   interval: 30m
