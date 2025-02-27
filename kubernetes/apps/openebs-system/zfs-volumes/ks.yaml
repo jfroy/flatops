@@ -5,8 +5,6 @@ kind: Kustomization
 metadata:
   name: openebs-zfs-volumes
 spec:
-  dependsOn:
-    - name: openebs
   path: ./kubernetes/apps/openebs-system/zfs-volumes/resources
   prune: false # don't prune for safety
   sourceRef:

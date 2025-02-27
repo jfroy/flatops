@@ -6,9 +6,6 @@ metadata:
   name: default-media-smb-kantai1
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: external-secrets
-      namespace: external-secrets
   path: ./kubernetes/apps/default/media-smb/kantai1
   prune: false
   sourceRef:
@@ -24,9 +21,6 @@ metadata:
   name: default-media-smb-media1
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: external-secrets
-      namespace: external-secrets
   path: ./kubernetes/apps/default/media-smb/media1
   prune: false
   sourceRef:

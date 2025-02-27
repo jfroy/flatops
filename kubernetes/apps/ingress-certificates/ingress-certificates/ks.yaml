@@ -8,9 +8,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
   path: ./kubernetes/apps/ingress-certificates/ingress-certificates/app
   prune: false
   sourceRef:

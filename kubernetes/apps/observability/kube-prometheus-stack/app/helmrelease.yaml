@@ -19,9 +19,6 @@ spec:
     crds: CreateReplace
     remediation:
       retries: 3
-  dependsOn:
-    - name: openebs
-      namespace: openebs-system
   driftDetection:
     mode: enabled
     ignore:

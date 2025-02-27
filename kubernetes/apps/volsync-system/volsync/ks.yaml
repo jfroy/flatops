@@ -11,8 +11,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: openebs
-    - name: rook-ceph-cluster
     - name: snapshot-controller
   path: ./kubernetes/apps/volsync-system/volsync/app
   prune: false

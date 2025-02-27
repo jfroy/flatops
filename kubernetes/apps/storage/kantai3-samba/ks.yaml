@@ -10,9 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets
-    - name: openebs-zfs-volumes
   path: ./kubernetes/apps/storage/kantai3-samba/app
   prune: false
   sourceRef:

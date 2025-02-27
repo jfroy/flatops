@@ -7,8 +7,6 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: storage
-  dependsOn:
-    - name: openebs-zfs-volumes
   path: ./kubernetes/apps/storage/media-kantai1/volume
   prune: false # don't prune media volume for safety
   sourceRef:
@@ -28,9 +26,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets
-    - name: storage-media-kantai1-volume
   path: ./kubernetes/apps/storage/media-kantai1/smb
   prune: false
   sourceRef:

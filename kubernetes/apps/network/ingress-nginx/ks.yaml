@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: ingress-certificates
   path: ./kubernetes/apps/network/ingress-nginx/internal
   prune: false
   sourceRef:
@@ -31,8 +29,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: ingress-certificates
   path: ./kubernetes/apps/network/ingress-nginx/external
   prune: false
   sourceRef:

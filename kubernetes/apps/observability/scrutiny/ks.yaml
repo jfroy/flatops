@@ -10,9 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets
-    - name: volsync
   path: ./kubernetes/apps/observability/scrutiny/app
   prune: false
   sourceRef:

@@ -9,8 +9,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: cert-manager
-      namespace: cert-manager
     - name: rook-ceph-operator
     - name: snapshot-controller
       namespace: kube-system

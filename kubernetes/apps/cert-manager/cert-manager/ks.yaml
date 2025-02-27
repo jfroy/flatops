@@ -24,8 +24,6 @@ metadata:
 spec:
   dependsOn:
     - name: cert-manager
-    - name: external-secrets
-      namespace: external-secrets
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
   prune: false
   sourceRef:

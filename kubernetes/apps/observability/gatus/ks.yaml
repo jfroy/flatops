@@ -9,9 +9,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: external-secrets
-    - name: cnpg-postgres16
   path: ./kubernetes/apps/observability/gatus/app
   prune: false
   sourceRef:

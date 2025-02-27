@@ -10,8 +10,6 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  dependsOn:
-    - name: openebs
   path: ./kubernetes/apps/observability/victorialogs/app
   prune: false
   sourceRef:

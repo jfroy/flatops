@@ -32,7 +32,6 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: openebs
     - name: vm-operator
   path: ./kubernetes/apps/observability/victoriametrics/stack
   prune: false
