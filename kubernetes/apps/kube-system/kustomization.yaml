@@ -20,3 +20,7 @@ resources:
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
+components:
+  - ../../components/common
+transformers:
+  - ./transformers
