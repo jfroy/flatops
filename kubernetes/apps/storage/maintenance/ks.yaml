@@ -4,15 +4,13 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: storage-maintenance-kantai1
-  namespace: flux-system
 spec:
-  targetNamespace: storage
   path: ./kubernetes/apps/storage/maintenance/kantai1
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+    namespace: flux-system
   interval: 30m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -20,13 +18,11 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: storage-maintenance-kantai3
-  namespace: flux-system
 spec:
-  targetNamespace: storage
   path: ./kubernetes/apps/storage/maintenance/kantai3
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: false
+    namespace: flux-system
   interval: 30m
