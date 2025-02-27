@@ -11,6 +11,8 @@ spec:
   eventSources:
     - kind: HelmRelease
       name: "*"
+    - kind: Kustomization
+      name: "*"
   exclusionList:
     - "error.*lookup github\\.com"
     - "error.*lookup raw\\.githubusercontent\\.com"
