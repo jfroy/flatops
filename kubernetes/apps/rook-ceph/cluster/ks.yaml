@@ -4,20 +4,20 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app rook-ceph-cluster
-  namespace: flux-system
 spec:
-  targetNamespace: rook-ceph
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
+      namespace: cert-manager
     - name: rook-ceph-operator
     - name: snapshot-controller
+      namespace: kube-system
   path: ./kubernetes/apps/rook-ceph/cluster/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+    namespace: flux-system
   interval: 30m
