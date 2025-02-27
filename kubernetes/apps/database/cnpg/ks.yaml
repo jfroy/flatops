@@ -4,22 +4,22 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app cnpg-postgres16
-  namespace: flux-system
 spec:
-  targetNamespace: database
   commonMetadata:
     labels:
       app.kubernetes.io/name: cnpg
       app.kubernetes.io/instance: postgres16
   dependsOn:
+    - name: cert-manager
+      namespace: cert-manager
     - name: cloudnative-pg
+      namespace: cnpg-system
     - name: external-secrets
-    - name: openebs
-    - name: rook-ceph-cluster
+      namespace: external-secrets
   path: ./kubernetes/apps/database/cnpg/postgres16
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+    namespace: flux-system
   interval: 30m
