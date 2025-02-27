@@ -5,3 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./1password-cko/ks.yaml
+components:
+  - ../../components/common
+transformers:
+  - ./transformers
