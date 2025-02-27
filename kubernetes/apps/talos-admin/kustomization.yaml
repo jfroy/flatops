@@ -6,3 +6,7 @@ resources:
   - ./namespace.yaml
   - ./system-upgrade-controller/ks.yaml
   - ./talos-backup/ks.yaml
+components:
+  - ../../components/common
+transformers:
+  - ./transformers

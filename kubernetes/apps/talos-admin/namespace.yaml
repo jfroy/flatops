@@ -2,40 +2,6 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: talos-admin
-  annotations:
-    kustomize.toolkit.fluxcd.io/prune: disabled
-    volsync.backube/privileged-movers: "true"
+  name: .invalid
   labels:
-    digest-resolution: enabled
     pod-security.kubernetes.io/enforce: privileged
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/provider-notification-v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
-kind: Provider
-metadata:
-  name: alertmanager
-  namespace: talos-admin
-spec:
-  type: alertmanager
-  address: http://alertmanager-operated.observability.svc.cluster.local:9093/api/v2/alerts/
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/alert-notification-v1beta3.json
-apiVersion: notification.toolkit.fluxcd.io/v1beta3
-kind: Alert
-metadata:
-  name: alertmanager
-  namespace: talos-admin
-spec:
-  providerRef:
-    name: alertmanager
-  eventSeverity: error
-  eventSources:
-    - kind: HelmRelease
-      name: "*"
-    - kind: HelmChart
-      name: "*"
-    - kind: HelmRepository
-      name: "*"
-    - kind: Kustomization
-      name: "*"
