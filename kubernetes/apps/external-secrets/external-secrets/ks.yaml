@@ -4,20 +4,19 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app external-secrets
-  namespace: flux-system
 spec:
-  targetNamespace: external-secrets
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
+      namespace: cert-manager
   path: ./kubernetes/apps/external-secrets/external-secrets/app
   prune: false
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+    namespace: flux-system
   interval: 30m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
@@ -25,9 +24,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: external-secrets-stores
-  namespace: flux-system
 spec:
-  targetNamespace: external-secrets
   dependsOn:
     - name: external-secrets
   path: ./kubernetes/apps/external-secrets/external-secrets/stores
@@ -35,5 +32,5 @@ spec:
   sourceRef:
     kind: GitRepository
     name: home-kubernetes
-  wait: true
+    namespace: flux-system
   interval: 30m
