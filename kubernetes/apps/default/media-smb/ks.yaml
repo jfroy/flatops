@@ -7,7 +7,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/default/media-smb/kantai1
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -22,7 +22,7 @@ metadata:
   namespace: flux-system
 spec:
   path: ./kubernetes/apps/default/media-smb/media1
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -6,7 +6,7 @@ metadata:
   name: openebs-zfs-volumes
 spec:
   path: ./kubernetes/apps/openebs-system/zfs-volumes/resources
-  prune: false # don't prune for safety
+  prune: false  # don't GC zfs volumes to avoid unwanted DR
   sourceRef:
     kind: GitRepository
     name: flux-system

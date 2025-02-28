@@ -6,7 +6,7 @@ metadata:
   name: storage-maintenance-kantai1
 spec:
   path: ./kubernetes/apps/storage/maintenance/kantai1
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -20,7 +20,7 @@ metadata:
   name: storage-maintenance-kantai3
 spec:
   path: ./kubernetes/apps/storage/maintenance/kantai3
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

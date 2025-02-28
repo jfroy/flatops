@@ -13,7 +13,7 @@ spec:
     - name: snapshot-controller
       namespace: kube-system
   path: ./kubernetes/apps/rook-ceph/cluster/app
-  prune: false
+  prune: false  # don't GC ceph cluster to avoid unwanted DR
   sourceRef:
     kind: GitRepository
     name: flux-system

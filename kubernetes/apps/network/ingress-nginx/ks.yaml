@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/ingress-nginx/internal
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -26,7 +26,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/network/ingress-nginx/external
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

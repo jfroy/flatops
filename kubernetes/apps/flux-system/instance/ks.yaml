@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/flux-system/instance/ks
-  prune: false
+  prune: false  # don't GC the flux instance to avoid unwanted DR
   sourceRef:
     kind: GitRepository
     name: flux-system

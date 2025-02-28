@@ -6,7 +6,7 @@ metadata:
   name: storage-media-kantai1-volume
 spec:
   path: ./kubernetes/apps/storage/media-kantai1/volume
-  prune: false # don't prune media volume for safety
+  prune: true # don't prune media volume for safety
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -23,7 +23,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/storage/media-kantai1/smb
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

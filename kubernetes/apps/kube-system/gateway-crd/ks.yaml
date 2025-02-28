@@ -6,7 +6,7 @@ metadata:
   name: &app gateway-crd
 spec:
   path: ./kubernetes/apps/kube-system/gateway-crd/experimental
-  prune: false
+  prune: false  # don't GC CRDs
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/cert-manager/cert-manager/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -25,7 +25,7 @@ spec:
   dependsOn:
     - name: cert-manager
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
-  prune: false
+  prune: false  # don't delete issued certificates
   sourceRef:
     kind: GitRepository
     name: flux-system

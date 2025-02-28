@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/talos-admin/system-upgrade-controller/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -28,7 +28,7 @@ spec:
   dependsOn:
     - name: system-upgrade-controller
   path: ./kubernetes/apps/talos-admin/system-upgrade-controller/plans
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

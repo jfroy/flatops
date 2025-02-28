@@ -12,7 +12,7 @@ spec:
     - name: cert-manager
       namespace: cert-manager
   path: ./kubernetes/apps/observability/victoriametrics/operator
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -31,7 +31,7 @@ spec:
   dependsOn:
     - name: vm-operator
   path: ./kubernetes/apps/observability/victoriametrics/stack
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

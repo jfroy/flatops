@@ -11,7 +11,7 @@ spec:
   dependsOn:
     - name: kyverno
   path: ./kubernetes/apps/kyverno/kyverno-policies/app
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system

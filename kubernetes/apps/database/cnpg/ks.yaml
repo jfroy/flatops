@@ -13,7 +13,7 @@ spec:
     - name: cloudnative-pg
       namespace: cnpg-system
   path: ./kubernetes/apps/database/cnpg/postgres16
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
