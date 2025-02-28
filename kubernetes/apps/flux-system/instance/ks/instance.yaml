@@ -13,7 +13,7 @@ spec:
     version: 2.5.1
     registry: ghcr.io/fluxcd
     # renovate: datasource=docker depName=ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
-    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.16.0
+    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.17.0
   components:
     - source-controller
     - kustomize-controller
