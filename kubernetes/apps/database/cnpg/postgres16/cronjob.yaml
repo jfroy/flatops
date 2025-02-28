@@ -69,6 +69,7 @@ spec:
                 allowPrivilegeEscalation: false
                 capabilities: { drop: ["ALL"] }
                 readOnlyRootFilesystem: true
+                seccompProfile: { type: RuntimeDefault }
           restartPolicy: OnFailure
           securityContext:
             fsGroup: 1000
