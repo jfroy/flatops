@@ -9,14 +9,16 @@ global:
       effect: NoSchedule
 webhooksCleanup:
   image:
-    registry: registry.k8s.io
-    repository: kubectl
-    tag: v1.32.1
+    registry: docker.io
+    repository: bitnami/kubectl
+    # renovate: datasource=docker depName=docker.io/bitnami/kubectl
+    tag: "1.32"
 policyReportsCleanup:
   image:
-    registry: registry.k8s.io
-    repository: kubectl
-    tag: v1.32.1
+    registry: docker.io
+    repository: bitnami/kubectl
+    # renovate: datasource=docker depName=docker.io/bitnami/kubectl
+    tag: "1.32"
 features:
   backgroundScan:
     skipResourceFilters: false
