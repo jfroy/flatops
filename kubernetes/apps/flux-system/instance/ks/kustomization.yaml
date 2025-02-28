@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./alert.yaml
   - ./externalsecret.yaml
-  - ./gitrepository.yaml
   - ./ingress.yaml
   - ./instance.yaml
   - ./podmonitor.yaml

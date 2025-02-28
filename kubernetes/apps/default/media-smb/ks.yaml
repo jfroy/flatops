@@ -10,7 +10,7 @@ spec:
   prune: false
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
     namespace: flux-system
   interval: 30m
 ---
@@ -25,6 +25,6 @@ spec:
   prune: false
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
     namespace: flux-system
   interval: 30m

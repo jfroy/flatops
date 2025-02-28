@@ -9,6 +9,6 @@ spec:
   prune: false # don't prune for safety
   sourceRef:
     kind: GitRepository
-    name: home-kubernetes
+    name: flux-system
     namespace: flux-system
   interval: 30m
