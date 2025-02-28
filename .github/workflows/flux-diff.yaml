@@ -5,6 +5,8 @@ name: "Flux Diff"
 on:
   pull_request:
     branches: ["main"]
+  push:
+    branches: ['renovate/**']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
@@ -72,7 +74,7 @@ jobs:
           echo "size=$(stat -c%s diff.patch)" >> "$GITHUB_OUTPUT"
 
       - name: Add comment
-        if: ${{ steps.diff-md.outputs.size > 0 }}
+        if: ${{ steps.diff-md.outputs.size > 0 && github.event_name == 'pull_request' }}
         uses: mshick/add-pr-comment@v2
         with:
           message-id: "${{ github.event.pull_request.number }}/${{ matrix.resources }}"

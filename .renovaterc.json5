@@ -5,6 +5,7 @@
     "docker:enableMajor",
     "schedule:nonOfficeHours",
     ":automergeBranch",
+    ":automergeStableNonMajor",
     ":dependencyDashboard",
     ":disableRateLimiting",
     ":semanticCommits",
