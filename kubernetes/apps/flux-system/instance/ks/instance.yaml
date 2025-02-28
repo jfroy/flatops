@@ -24,6 +24,12 @@ spec:
     multitenant: false
     networkPolicy: false
     domain: cluster.local
+  sync:
+    kind: GitRepository
+    url: https://github.com/jfroy/flatops
+    ref: refs/heads/main
+    path: kubernetes/cluster
+    interval: 1h
   kustomize:
     patches:
       # Add labels to the pods.
