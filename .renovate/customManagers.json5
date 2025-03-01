@@ -9,7 +9,7 @@
         // version: 1.2.3
         // # renovate: datasource=helm depName=project repository=https://helm.project.com versioning=loose
         // version: 1.15.1
-        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+?)(?: repository=(?<registryUrl>\\S+?))?(?: versioning=(?<versioning>\\S+?))?\\n.+:(?<currentValue>\\S+)",
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+?)(?: repository=(?<registryUrl>\\S+?))?(?: versioning=(?<versioning>\\S+?))?\\n.+:\\s*\"?(?<currentValue>[-a-zA-Z0-9._+])",
         // # renovate: datasource=github-releases depName=org/repo versioning=loose
         // https://github.com/org/repo/releases/download/v1.2.3/artifact
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+?)(?: versioning=(?<versioning>\\S+?))?\\n.+\\/(?<currentValue>v?\\d[^/]*)\\/?"
