@@ -32,7 +32,7 @@ spec:
           speedtest-exporter:
             image:
               repository: ghcr.io/heathcliff26/speedtest-exporter
-              tag: v1.0.7
+              tag: v1.0.8
             probes:
               liveness:
                 enabled: false
