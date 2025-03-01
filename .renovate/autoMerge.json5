@@ -1,4 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": []
+  "packageRules": [
+    {
+      "matchDatasources": ["docker"],
+      "automerge": false,
+      "matchPackagePatterns": ["ghcr.io/jfroy/siderolabs/imager"]
+    }
+  ]
 }
