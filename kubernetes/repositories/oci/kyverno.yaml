@@ -42,4 +42,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/kyverno/charts/policy-reporter
   ref:
-    tag: 3.0.1
+    tag: 3.0.4
