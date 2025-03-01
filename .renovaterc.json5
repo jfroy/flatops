@@ -18,21 +18,19 @@
     "github>jfroy/flatops//.renovate/semanticCommits.json5"
   ],
   "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "suppressNotifications": ["prEditedNotification", "prIgnoreNotification"],
-  "ignorePaths": ["**/*.sops.*", "**/resources/**"],
   "flux": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
+    "fileMatch": ["(^|/)kubernetes/.+\\.yaml$"]
   },
   "helm-values": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
+    "fileMatch": ["(^|/)kubernetes/.+\\.yaml$"]
   },
   "helmfile": {
-    "fileMatch": ["(^|/)helmfile\\.ya?ml$"]
+    "fileMatch": ["(^|/)helmfile\\.yaml$"]
   },
   "kubernetes": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"]
+    "fileMatch": ["(^|/)kubernetes/.+\\.yaml$"]
   },
   "kustomize": {
-    "fileMatch": ["(^|/)kustomization\\.ya?ml$"]
+    "fileMatch": ["(^|/)kustomization\\.yaml$"]
   }
 }
