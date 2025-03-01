@@ -27,4 +27,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-logs-single
   ref:
-    tag: 0.8.16
+    tag: 0.9.2
