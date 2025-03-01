@@ -10,6 +10,11 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["plex"],
       "versioning": "loose"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackagePrefixes": ["registry.kantai.xyz/"],
+      "enabled": false
     }
   ]
 }
