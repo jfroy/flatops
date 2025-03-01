@@ -36,7 +36,7 @@ spec:
           svelocker-ui:
             image:
               repository: ghcr.io/kmendell/svelocker-ui
-              tag: v0.23.6
+              tag: v0.23.7
             command:
               - node
               - build
