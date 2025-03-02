@@ -24,7 +24,6 @@ resources:
   - ./stash/ks.yaml
   - ./svelocker-ui/ks.yaml
   - ./unpackerr/ks.yaml
-  - ./whisparr/ks.yaml
 components:
   - ../../components/common
 transformers:
