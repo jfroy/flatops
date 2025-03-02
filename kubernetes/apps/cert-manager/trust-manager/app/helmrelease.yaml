@@ -38,3 +38,6 @@ spec:
           servicemonitor:
             enabled: true
             interval: 1m
+    defaultPackageImage:
+      repository: quay.io/jetstack/trust-pkg-debian-bookworm
+      tag: "20230311.0"
