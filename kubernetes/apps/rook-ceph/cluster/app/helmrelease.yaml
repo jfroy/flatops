@@ -5,8 +5,8 @@ kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
 spec:
-  interval: 30m
-  timeout: 25m
+  interval: 1h
+  timeout: 5m
   chart:
     spec:
       chart: rook-ceph-cluster

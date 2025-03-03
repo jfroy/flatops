@@ -5,7 +5,8 @@ kind: HelmRelease
 metadata:
   name: generic-device-plugin
 spec:
-  interval: 30m
+  interval: 1h
+  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: app-template

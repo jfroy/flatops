@@ -5,7 +5,8 @@ kind: HelmRelease
 metadata:
   name: &app external-dns-cloudflare
 spec:
-  interval: 30m
+  interval: 1h
+  timeout: 5m
   chart:
     spec:
       chart: external-dns
