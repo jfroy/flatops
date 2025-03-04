@@ -215,7 +215,9 @@ patches:
           featureGates:
             UserNamespacesSupport: true
             UserNamespacesPodSecurityStandards: true
+          maxParallelImagePulls: 10
           maxPods: 400
+          serializeImagePulls: false
           serverTLSBootstrap: true
         nodeIP:
           validSubnets:
