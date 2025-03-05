@@ -27,9 +27,23 @@ jobs:
         with:
           files: kubernetes/**
 
+  test:
+    if: ${{ needs.changed-files.outputs.any_changed == 'true' }}
+    name: Flux Local - Test
+    needs: changed-files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run flux-local test
+        uses: docker://ghcr.io/allenporter/flux-local:v7.2.0
+        with:
+          args: test --enable-helm --all-namespaces --path /github/workspace/kubernetes/cluster -v
+
   diff:
     if: ${{ needs.changed-files.outputs.any_changed == 'true' }}
-    name: Flux Diff
+    name: Flux Local - Diff
     needs: changed-files
     permissions:
       pull-requests: write
@@ -51,7 +65,7 @@ jobs:
           ref: "${{ github.event.repository.default_branch }}"
           path: default
 
-      - name: Diff resources
+      - name: Run flux-local diff
         uses: docker://ghcr.io/allenporter/flux-local:v7.2.0
         with:
           args: >-
@@ -84,7 +98,7 @@ jobs:
   status:
     if: ${{ always() }}
     name: Status
-    needs: ["diff"]
+    needs: ["test", "diff"]
     runs-on: ubuntu-latest
     steps:
       - if: ${{ contains(needs.*.result, 'failure') }}
