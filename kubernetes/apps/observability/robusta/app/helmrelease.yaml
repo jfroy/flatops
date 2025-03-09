@@ -55,6 +55,7 @@ spec:
           slack_channel: kantai
           investigate_link: true
     enablePrometheusStack: false
+    enabledManagedConfiguration: true
     enablePlatformPlaybooks: true
     runner:
       sendAdditionalTelemetry: true

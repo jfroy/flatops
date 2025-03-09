@@ -60,6 +60,27 @@ spec:
           limits:
             memory: 200Mi # hardcoded in promtheus-operator
 
+    # managed by Robusta
+    defaultRules:
+      rules:
+        alertmanager: false
+        etcd: false
+        configReloaders: false
+        general: false
+        kubeApiserverSlos: false
+        kubeControllerManager: false
+        kubeProxy: false
+        kubernetesApps: false
+        kubernetesResources: false
+        kubernetesStorage: false
+        kubernetesSystem: false
+        kubeSchedulerAlerting: false
+        kubeStateMetrics: false
+        network: false
+        nodeExporterAlerting: false
+        prometheus: false
+        prometheusOperator: false
+
     grafana:
       enabled: false
       forceDeployDashboards: true
