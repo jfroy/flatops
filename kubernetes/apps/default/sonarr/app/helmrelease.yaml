@@ -40,7 +40,7 @@ spec:
           sonarr:
             image:
               repository: ghcr.io/jfroy/sonarr-develop
-              tag: 4.0.13.2933@sha256:17aaf31d96b48569b434284adef9c4a161498f718d995c696fb32cb28e3ebd1b
+              tag: 4.0.13.2934@sha256:8e0803e5cf6dcf23146aa6d07479b931fa2798297bc8e8a171e978bded259f23
             env:
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__APP__THEME: auto
