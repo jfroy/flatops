@@ -7,4 +7,5 @@ resources:
   - ./bgpclusterconfig.yaml
   - ./bgppeerconfig.yaml
   - ./clusterwidenetworkpolicy.yaml
+  - ./gateway.yaml
   - ./loadbalancerippool.yaml

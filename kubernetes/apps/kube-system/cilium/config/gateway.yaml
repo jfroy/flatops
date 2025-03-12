@@ -1,0 +1,25 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: internal
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: igw.kantai.xyz
+spec:
+  gatewayClassName: cilium
+  addresses:
+    - type: Hostname
+      value: igw.kantai.xyz
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.kantai.xyz"
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        certificateRefs:
+          - kind: Secret
+            name: xyz-kantai-production-tls
+            namespace: ingress-certificates
