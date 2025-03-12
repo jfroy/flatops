@@ -12,13 +12,13 @@ webhooksCleanup:
     registry: docker.io
     repository: bitnami/kubectl
     # renovate: datasource=docker depName=docker.io/bitnami/kubectl
-    tag: "1.32.2"
+    tag: "1.32.3"
 policyReportsCleanup:
   image:
     registry: docker.io
     repository: bitnami/kubectl
     # renovate: datasource=docker depName=docker.io/bitnami/kubectl
-    tag: "1.32.2"
+    tag: "1.32.3"
 features:
   backgroundScan:
     skipResourceFilters: false
