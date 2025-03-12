@@ -27,6 +27,7 @@ endpointRoutes:
   enabled: true
 envoy:
   enabled: true
+  rollOutPods: true
 gatewayAPI:
   enabled: true
   enableAlpn: true
