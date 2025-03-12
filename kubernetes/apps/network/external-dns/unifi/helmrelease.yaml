@@ -27,6 +27,22 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
+    # TODO: switch back to upstream; https://github.com/kubernetes-sigs/external-dns/pull/5169
+    image:
+      repository: ghcr.io/buroa/external-dns
+      tag: a6243325
+    domainFilters: ["kantai.xyz", "kantai.wtf", "internal."]
+    extraArgs:
+      - '--ignore-ingress-tls-spec'
+    podAnnotations:
+      secret.reloader.stakater.com/reload: external-dns-unifi
+    policy: sync
+    serviceMonitor:
+      enabled: true
+    sources: ["gateway-httproute", "ingress", "service"]
+    triggerLoopOnEvent: true
+    txtOwnerId: kantai
+    txtPrefix: edns.
     provider:
       name: webhook
       webhook:
@@ -35,7 +51,7 @@ spec:
           tag: v0.4.3@sha256:1a58193c2c1985f4ce5ef4031be38d740daa4b1c54b0edbd2299524504e8d60e
         env:
           - name: UNIFI_HOST
-            value: https://10.1.0.1
+            value: https://unifi.internal
           - name: UNIFI_API_KEY
             valueFrom:
               secretKeyRef:
@@ -53,15 +69,3 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
-    extraArgs:
-      - --ignore-ingress-tls-spec
-    triggerLoopOnEvent: true
-    policy: sync
-    sources: ["ingress", "service"]
-    txtOwnerId: kantai
-    txtPrefix: edns.
-    domainFilters: ["kantai.xyz", "kantai.wtf", "internal."]
-    serviceMonitor:
-      enabled: true
-    podAnnotations:
-      secret.reloader.stakater.com/reload: external-dns-unifi
