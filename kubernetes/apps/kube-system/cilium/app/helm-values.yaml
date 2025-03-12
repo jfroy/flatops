@@ -26,7 +26,10 @@ enableIPv6Masquerade: false
 endpointRoutes:
   enabled: true
 envoy:
-  enabled: false
+  enabled: true
+gatewayAPI:
+  enabled: true
+  enableAlpn: true
 hubble:
   enabled: false
 ipam:
@@ -42,6 +45,7 @@ kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 l2announcements:
   enabled: false
+l7Proxy: true
 loadBalancer:
   acceleration: disabled
   algorithm: maglev
