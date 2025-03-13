@@ -10,3 +10,18 @@ spec:
   ingress:
   - fromEntities:
     - "cluster"
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: ingress-endpoint-allow-from-world
+  annotations:
+    future-me-why: "allow ingress from world for the reserved ingress endpoint (i.e. cilium envoy proxy for cilium ingress and gateway api)"
+spec:
+  endpointSelector:
+    matchExpressions:
+    - key: reserved:ingress
+      operator: Exists
+  ingress:
+  - fromEntities:
+    - "world"
