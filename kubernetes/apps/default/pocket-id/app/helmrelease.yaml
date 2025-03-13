@@ -104,3 +104,16 @@ spec:
             backendRefs:
               - port: *frontendPort
                 name: pocket-id
+  # TODO: remove after app-template fix is released; https://github.com/bjw-s/helm-charts/pull/393
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: gateway.networking.k8s.io
+              version: v1
+              kind: HTTPRoute
+              name: pocket-id
+            patch: |
+              - op: replace
+                path: /spec/rules/2/backendRefs/0/port
+                value: 3000
