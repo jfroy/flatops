@@ -60,16 +60,3 @@ spec:
         - ReadWriteOnce
       size: 100Mi
       storageClassName: openebs-hostpath
-    ingress:
-      enabled: true
-      ingressClassName: internal
-      hosts:
-        - host: headlamp.kantai.xyz
-          paths:
-            - path: /
-              type: Prefix
-              backend:
-                service:
-                  name: headlamp
-                  port:
-                    number: 80
