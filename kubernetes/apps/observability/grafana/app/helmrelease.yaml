@@ -30,21 +30,22 @@ spec:
       metricRelabelings:
         - action: labeldrop
           regex: (pod)
-    ingress:
-      enabled: true
-      annotations:
-        nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
-        nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
-        nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email, x-auth-request-user"
-      ingressClassName: internal
-      hosts:
-        - &host "grafana.kantai.xyz"
     persistence:
       enabled: false
     plugins:
       - grafana-clock-panel
       - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.4.0/victorialogs-datasource-v0.4.0.zip;victorialogs-datasource
       - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.9.0/victoriametrics-datasource-v0.9.0.zip;victoriametrics-datasource
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - &host grafana.kantai.xyz
+        parentRefs:
+          - group: gateway.networking.k8s.io
+            kind: Gateway
+            name: internal
+            namespace: kube-system
 
     datasources:
       datasources.yaml:
