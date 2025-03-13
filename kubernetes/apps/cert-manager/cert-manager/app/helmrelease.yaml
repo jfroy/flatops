@@ -25,6 +25,12 @@ spec:
     remediation:
       retries: 3
   values:
+    cainjector:
+      featureGates: CAInjectorMerging=true
+    config:
+      apiVersion: controller.config.cert-manager.io/v1alpha1
+      kind: ControllerConfiguration
+      enableGatewayAPI: true
     crds:
       enabled: true
       keep: true
@@ -34,5 +40,3 @@ spec:
       enabled: true
       servicemonitor:
         enabled: true
-    cainjector:
-      featureGates: CAInjectorMerging=true
