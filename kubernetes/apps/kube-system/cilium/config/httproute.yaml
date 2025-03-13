@@ -1,0 +1,20 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  labels:
+    app.kubernetes.io/name: hubble-ui
+    app.kubernetes.io/part-of: cilium
+  name: hubble-ui
+spec:
+  hostnames:
+    - hubble.kantai.xyz
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: internal
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: hubble-ui
+          port: 80
