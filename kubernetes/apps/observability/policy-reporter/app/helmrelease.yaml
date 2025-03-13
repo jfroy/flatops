@@ -37,14 +37,6 @@ spec:
         enabled: true
         callbackUrl: https://pr.kantai.xyz/callback
         secretRef: policy-reporter-oidc
-      ingress:
-        enabled: true
-        className: internal
-        hosts:
-          - host: pr.kantai.xyz
-            paths:
-              - path: /
-                pathType: Prefix
     plugin:
       kyverno:
         enabled: true
