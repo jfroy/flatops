@@ -23,7 +23,6 @@ spec:
   values:
     controllers:
       echo-server:
-        strategy: RollingUpdate
         containers:
           echo-server:
             image:
@@ -31,9 +30,6 @@ spec:
               tag: v1.10@sha256:43a68d10b9dfcfc3ffbfe4dd42100dc9aeaf29b3a5636c856337a5940f1b4f1c
             env:
               WHOAMI_NAME: *app
-            ports:
-              - name: http
-                containerPort: 80
             probes:
               liveness: &probe
                 enabled: true
@@ -50,21 +46,23 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 1000
+    route:
+      homepage:
+        hostnames:
+          - "{{ .Release.Name }}.kantai.xyz"
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: echo-server
+                port: &port 80
     service:
       echo-server:
         controller: echo-server
         ports:
           http:
-            port: 80
-    ingress:
-      echo-server:
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.kantai.xyz"
-            paths:
-              - path: /
-                service:
-                  identifier: echo-server
-                  port: http
+            port: *port
