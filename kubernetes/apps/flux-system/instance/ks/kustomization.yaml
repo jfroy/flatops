@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./alert.yaml
   - ./externalsecret.yaml
-  - ./ingress.yaml
+  - ./httproute.yaml
   - ./instance.yaml
   - ./podmonitor.yaml
   - ./prometheusrule.yaml
