@@ -54,7 +54,7 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     route:
-      homepage:
+      dozzle:
         hostnames:
           - dozzle.kantai.xyz
         parentRefs:
@@ -64,7 +64,7 @@ spec:
         rules:
           - backendRefs:
               - port: &port 8080
-                name: homepage
+                name: dozzle
     service:
       dozzle:
         controller: dozzle
