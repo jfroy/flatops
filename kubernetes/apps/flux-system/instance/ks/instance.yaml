@@ -7,6 +7,7 @@ metadata:
     fluxcd.controlplane.io/reconcile: "enabled"
     fluxcd.controlplane.io/reconcileEvery: "10m"
     fluxcd.controlplane.io/reconcileTimeout: "1m"
+    kustomize.toolkit.fluxcd.io/prune: disabled
 spec:
   distribution:
     # renovate: datasource=github-releases depName=controlplaneio-fluxcd/distribution
