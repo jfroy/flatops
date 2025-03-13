@@ -89,37 +89,6 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
-    service:
-      gatus:
-        controller: gatus
-        ports:
-          http:
-            port: *port
-    serviceMonitor:
-      gatus:
-        serviceName: gatus
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-            metricRelabelings:
-              - action: labeldrop
-                regex: (pod)
-    ingress:
-      gatus:
-        className: external
-        hosts:
-          - host: status.kantai.xyz
-            paths:
-              - path: /
-                service:
-                  identifier: gatus
-                  port: http
-    serviceAccount:
-      create: true
-      name: gatus
     persistence:
       config:
         type: emptyDir
@@ -130,3 +99,32 @@ spec:
           - path: /config/config.yaml
             subPath: config.yaml
             readOnly: true
+    route:
+      homepage:
+        hostnames:
+          - status.kantai.xyz
+        parentRefs:
+          - name: external
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: gatus
+                port: *port
+    service:
+      gatus:
+        controller: gatus
+        ports:
+          http:
+            port: *port
+    serviceAccount:
+      create: true
+      name: gatus
+    serviceMonitor:
+      gatus:
+        serviceName: gatus
+        endpoints:
+          - port: http
+            metricRelabelings:
+              - action: labeldrop
+                regex: (pod)
