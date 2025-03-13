@@ -13,6 +13,7 @@ spec:
     - group: gateway.networking.k8s.io
       kind: Gateway
       name: external
+      namespace: kube-system
       sectionName: https
   rules:
     - backendRefs:
