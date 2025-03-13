@@ -64,18 +64,20 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      svelocker-ui:
-        className: internal
-        hosts:
-          - host: ${APP_SUBDOMAIN:-${APP}}.kantai.xyz
-            paths:
-              - path: /
-                service:
-                  identifier: svelocker-ui
-                  port: http
     persistence:
       data:
         existingClaim: ${APP}
         globalMounts:
           - path: /app/data
+    route:
+      svelocker-ui:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: svelocker-ui

@@ -71,22 +71,12 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-    ingress:
-      dashbrr:
-        className: internal
-        hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-            paths:
-              - path: /
-                service:
-                  identifier: dashbrr
-                  port: http
     service:
       dashbrr:
         controller: dashbrr
         ports:
           http:
-            port: 8080
+            port: &port 8080
     serviceAccount:
       create: true
       name: dashbrr
@@ -97,3 +87,15 @@ spec:
       config:
         type: configMap
         name: dashbrr-config
+    route:
+      dashbrr:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: dashbrr

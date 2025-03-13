@@ -70,19 +70,9 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: 5000
+            port: &port 5000
           metrics:
             port: 5001
-    ingress:
-      registry:
-        className: internal
-        hosts:
-          - host: ${APP_SUBDOMAIN:-${APP}}.kantai.xyz
-            paths:
-              - path: /
-                service:
-                  identifier: registry
-                  port: http
     serviceMonitor:
       registry:
         enabled: true
@@ -107,3 +97,15 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /var/lib/registry
+    route:
+      registry:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: registry

@@ -57,13 +57,15 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       docker-registry-ui:
-        className: internal
-        hosts:
-          - host: ${APP_SUBDOMAIN:-${APP}}.kantai.xyz
-            paths:
-              - path: /
-                service:
-                  identifier: docker-registry-ui
-                  port: http
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: docker-registry-ui

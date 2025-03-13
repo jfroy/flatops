@@ -45,22 +45,12 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-    ingress:
-      glance:
-        className: internal
-        hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-            paths:
-              - path: /
-                service:
-                  identifier: glance
-                  port: http
     service:
       glance:
         controller: glance
         ports:
           http:
-            port: 8080
+            port: &port 8080
     serviceAccount:
       create: true
       name: glance
@@ -68,3 +58,15 @@ spec:
       config:
         type: configMap
         name: glance-config
+    route:
+      glance:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: glance

@@ -77,20 +77,18 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
-      autobrr:
-        className: internal
-        annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
-          nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
-        hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-            paths:
-              - path: /
-                service:
-                  identifier: autobrr
-                  port: http
     persistence:
       config:
         type: emptyDir
+    route:
+      autobrr:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: autobrr

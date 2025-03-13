@@ -53,21 +53,7 @@ spec:
         controller: pgadmin
         ports:
           http:
-            port: 80
-    ingress:
-      pgadmin:
-        className: internal
-        annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
-          nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
-        hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-            paths:
-              - path: /
-                service:
-                  identifier: pgadmin
-                  port: http
+            port: &port 80
     persistence:
       config:
         existingClaim: ${APP}
@@ -81,3 +67,15 @@ spec:
             subPath: tmp
           - path: /var/log
             subPath: log
+    route:
+      pgadmin:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: pgadmin

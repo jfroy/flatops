@@ -64,27 +64,9 @@ spec:
         controller: pocket-id
         ports:
           backend:
-            port: 8080
+            port: &backendPort 8080
           frontend:
-            port: 3000
-    ingress:
-      pocket-id:
-        className: internal
-        hosts:
-          - host: ${APP_SUBDOMAIN:-${APP}}.kantai.xyz
-            paths:
-              - path: /api/
-                service:
-                  identifier: pocket-id
-                  port: backend
-              - path: /.well-known/
-                service:
-                  identifier: pocket-id
-                  port: backend
-              - path: /
-                service:
-                  identifier: pocket-id
-                  port: frontend
+            port: &frontendPort 3000
     persistence:
       data:
         existingClaim: ${APP}
@@ -95,3 +77,30 @@ spec:
       var:
         type: emptyDir
         sizeLimit: 1Gi
+    route:
+      pocket-id:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - matches:
+              - path:
+                  value: /api/
+            backendRefs:
+              - port: *backendPort
+                name: pocket-id
+          - matches:
+              - path:
+                  value: /.well-known/
+            backendRefs:
+              - port: *backendPort
+                name: pocket-id
+          - matches:
+              - path:
+                  value: /
+            backendRefs:
+              - port: *frontendPort
+                name: pocket-id
