@@ -32,17 +32,6 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
-        hosts:
-          - alm.kantai.xyz
-        paths:
-          - /
-        pathType: Prefix
       alertmanagerSpec:
         replicas: 1
         alertmanagerConfiguration:
@@ -59,6 +48,17 @@ spec:
         resources:
           limits:
             memory: 200Mi # hardcoded in promtheus-operator
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - alm.kantai.xyz
+          parentRefs:
+            - group: gateway.networking.k8s.io
+              kind: Gateway
+              name: internal
+              namespace: kube-system
+              sectionName: https
 
     # managed by Robusta
     defaultRules:
