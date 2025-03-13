@@ -34,6 +34,15 @@ spec:
             env:
               DOZZLE_MODE: k8s
               TZ: America/Los_Angeles
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - /dozzle
+                      - healthcheck
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
