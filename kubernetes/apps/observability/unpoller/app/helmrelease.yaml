@@ -31,8 +31,7 @@ spec:
               tag: v2.14.1@sha256:9ba73b1793ef332ae9b4b719ef0fc09f231d6276bc7b721cbb47961ed7792961
             env:
               TZ: America/Los_Angeles
-              UP_UNIFI_DEFAULT_ROLE: home-ops
-              UP_UNIFI_DEFAULT_URL: https://udmpro-3014
+              UP_UNIFI_DEFAULT_URL: https://unifi.internal
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_INFLUXDB_DISABLE: true
             envFrom:
@@ -50,8 +49,8 @@ spec:
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
-        runAsUser: 65534
-        runAsGroup: 65534
+        runAsUser: 1000
+        runAsGroup: 1000
     service:
       unpoller:
         controller: unpoller
