@@ -7,7 +7,6 @@ resources:
   - ./cloudflared
   - ./echo-server/ks.yaml
   - ./external-dns/ks.yaml
-  - ./ingress-nginx/ks.yaml
   # - ./k8s-gateway/ks.yaml
   # - ./oauth2-proxy/ks.yaml
   - ./openspeedtest/ks.yaml
