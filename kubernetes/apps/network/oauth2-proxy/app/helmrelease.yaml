@@ -86,16 +86,6 @@ spec:
             port: *port
           metrics:
             port: 44180
-    ingress:
-      oauth2-proxy:
-        className: internal
-        hosts:
-          - host: oauth2-proxy.kantai.xyz
-            paths:
-              - path: /oauth2
-                service:
-                  identifier: oauth2-proxy
-                  port: http
     serviceMonitor:
       oauth2-proxy:
         enabled: true
