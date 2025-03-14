@@ -88,29 +88,29 @@ loki.process "pod_logs" {
 
 // PROMETHEUS OPERATOR
 
-// prometheus.operator.podmonitors "default" {
-// 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+prometheus.operator.podmonitors "default" {
+	forward_to = [prometheus.remote_write.victoriametrics.receiver]
 
-// 	clustering {
-// 		enabled = true
-// 	}
-// }
+	clustering {
+		enabled = true
+	}
+}
 
-// prometheus.operator.probes "default" {
-// 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+prometheus.operator.probes "default" {
+	forward_to = [prometheus.remote_write.victoriametrics.receiver]
 
-// 	clustering {
-// 		enabled = true
-// 	}
-// }
+	clustering {
+		enabled = true
+	}
+}
 
-// prometheus.operator.servicemonitors "default" {
-// 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+prometheus.operator.servicemonitors "default" {
+	forward_to = [prometheus.remote_write.victoriametrics.receiver]
 
-// 	clustering {
-// 		enabled = true
-// 	}
-// }
+	clustering {
+		enabled = true
+	}
+}
 
 // META
 
