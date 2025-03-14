@@ -26,7 +26,7 @@ spec:
         containers:
           openspeedtest:
             image:
-              repository: openspeedtest/latest
+              repository: docker.io/openspeedtest/latest
               tag: v2.0.6
             probes:
               liveness: &probe
@@ -35,25 +35,25 @@ spec:
                 spec:
                   httpGet:
                     path: /
-                    port: 3000
+                    port: &port 3000
               readiness: *probe
-              startup:
-                enabled: false
-
+    defaultPodOptions:
+      hostUsers: false
+    route:
+      openspeedtest:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: openspeedtest
+                port: *port
     service:
       openspeedtest:
         controller: openspeedtest
         ports:
           http:
-            port: 3000
-
-    ingress:
-      openspeedtest:
-        className: internal
-        hosts:
-          - host: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-            paths:
-              - path: /
-                service:
-                  identifier: openspeedtest
-                  port: http
+            port: *port
