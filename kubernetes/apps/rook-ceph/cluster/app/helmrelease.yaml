@@ -250,12 +250,3 @@ spec:
           parameters:
             region: us-west-1
             # endpoint: <hostname including port>
-        ingress:
-          enabled: true
-          annotations:
-            nginx.ingress.kubernetes.io/proxy-body-size: "0"
-            nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-          ingressClassName: internal
-          host:
-            name: objectstore.kantai.xyz
-            path: /
