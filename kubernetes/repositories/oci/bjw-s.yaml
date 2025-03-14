@@ -12,4 +12,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/bjw-s/helm/app-template
   ref:
-    tag: 3.7.2
+    tag: 3.7.3
