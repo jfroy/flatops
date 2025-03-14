@@ -28,9 +28,18 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    env:
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_PODMONITOR
+        value: "false"
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_SERVICESCRAPE
+        value: "false"
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_PROBE
+        value: "false"
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_ALERTMANAGERCONFIG
+        value: "false"
     fullnameOverride: vm-operator
     operator:
-      disable_prometheus_converter: true
+      disable_prometheus_converter: false
       enable_converter_ownership: true
     admissionWebhooks:
       enabled: true
