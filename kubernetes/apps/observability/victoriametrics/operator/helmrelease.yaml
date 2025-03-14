@@ -29,13 +29,15 @@ spec:
       retries: 3
   values:
     env:
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_PODMONITOR
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_ALERTMANAGERCONFIG
         value: "false"
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_SERVICESCRAPE
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_PODMONITOR
         value: "false"
       - name: VM_ENABLEDPROMETHEUSCONVERTER_PROBE
         value: "false"
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_ALERTMANAGERCONFIG
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_SCRAPECONFIG
+        value: "false"
+      - name: VM_ENABLEDPROMETHEUSCONVERTER_SERVICESCRAPE
         value: "false"
     fullnameOverride: vm-operator
     operator:
