@@ -32,4 +32,4 @@ spec:
       type: LoadBalancer
       port: 53
       externalTrafficPolicy: Cluster
-    watchedResources: ["Ingress", "Service"]
+    watchedResources: ["Service"]
