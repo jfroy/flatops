@@ -102,18 +102,6 @@ spec:
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501243f38d6
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501242cfd1b
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a0750123435a6b
-    ingress:
-      dashboard:
-        annotations:
-          nginx.ingress.kubernetes.io/auth-url: https://oauth2-proxy.kantai.xyz/oauth2/auth
-          nginx.ingress.kubernetes.io/auth-signin: https://oauth2-proxy.kantai.xyz/oauth2/start?rd=$scheme://$best_http_host$request_uri
-          nginx.ingress.kubernetes.io/auth-response-headers: "x-auth-request-email"
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          nginx.ingress.kubernetes.io/proxy-ssl-verify: "off"
-        hosts:
-          - host: rook.kantai.xyz
-            path: /
-        ingressClassName: internal
     cephBlockPools:
       # https://github.com/rook/rook/blob/master/deploy/examples/pool-builtin-mgr.yaml
       - name: builtin-mgr
