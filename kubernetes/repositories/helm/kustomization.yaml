@@ -19,7 +19,6 @@ resources:
   - ./harbor.yaml
   - ./headlamp.yaml
   - ./influxdata.yaml
-  - ./ingress-nginx.yaml
   - ./jetstack.yaml
   - ./k8s-gateway.yaml
   - ./metrics-server.yaml
