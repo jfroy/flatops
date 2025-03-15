@@ -46,14 +46,12 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=external
-      - --ignore-ingress-tls-spec
-      - --ingress-class=external
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-cloudflare-secret
     policy: sync
     serviceMonitor:
       enabled: true
-    sources: ["crd", "gateway-httproute", "ingress"]
+    sources: ["crd", "gateway-httproute"]
     triggerLoopOnEvent: true
     txtOwnerId: kantai
     txtPrefix: edns.

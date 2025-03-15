@@ -32,14 +32,12 @@ spec:
       repository: ghcr.io/buroa/external-dns
       tag: a6243325
     domainFilters: ["kantai.xyz", "kantai.wtf", "internal."]
-    extraArgs:
-      - '--ignore-ingress-tls-spec'
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi
     policy: sync
     serviceMonitor:
       enabled: true
-    sources: ["gateway-httproute", "ingress", "service"]
+    sources: ["gateway-httproute", "service"]
     triggerLoopOnEvent: true
     txtOwnerId: kantai
     txtPrefix: edns.
