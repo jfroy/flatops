@@ -24,8 +24,3 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: coredns-helm-values
-  values:
-    service:
-      clusterIP: "10.12.0.10"
-      clusterIPs: # By default Talos sets kubelet clusterDNS to the 10th address of every service CIDR.
-        - "10.12.0.10"
