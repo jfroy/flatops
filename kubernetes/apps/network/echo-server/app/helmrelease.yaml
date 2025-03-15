@@ -27,7 +27,7 @@ spec:
           echo-server:
             image:
               repository: traefik/whoami
-              tag: v1.10@sha256:43a68d10b9dfcfc3ffbfe4dd42100dc9aeaf29b3a5636c856337a5940f1b4f1c
+              tag: v1.11@sha256:200689790a0a0ea48ca45992e0450bc26ccab5307375b41c84dfc4f2475937ab
             env:
               WHOAMI_NAME: *app
             probes:
