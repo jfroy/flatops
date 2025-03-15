@@ -12,7 +12,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator
   ref:
-    tag: 0.42.5
+    tag: 0.43.0
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/ocirepository-source-v1beta2.json
 apiVersion: source.toolkit.fluxcd.io/v1beta2
