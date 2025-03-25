@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: external-dns
-      version: 1.15.2
+      version: 1.16.0
       sourceRef:
         kind: HelmRepository
         name: external-dns
@@ -27,10 +27,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    # TODO: switch back to upstream; https://github.com/kubernetes-sigs/external-dns/pull/5169
-    image:
-      repository: ghcr.io/buroa/external-dns
-      tag: a6243325
     domainFilters: ["kantai.xyz", "kantai.wtf", "internal."]
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi
