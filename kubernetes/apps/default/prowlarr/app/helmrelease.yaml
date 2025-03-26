@@ -29,8 +29,8 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/jfroy/postgres-init
-              tag: 16
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.4.0@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
             envFrom:
               - secretRef:
                   name: prowlarr-secret
@@ -39,8 +39,8 @@ spec:
         containers:
           prowlarr:
             image:
-              repository: ghcr.io/jfroy/prowlarr-develop
-              tag: 1.33.0.4994@sha256:25bd7ea67f81ef859e88839e9ee57a0598f77ea912cb64245b6487cb91a8725c
+              repository: ghcr.io/home-operations/prowlarr
+              tag: 1.33.0.4994@sha256:b1b4da4df605bec0ba810cf18abf91bc6569f5d8144a64da699cb78a7c2ec30c
             env:
               PROWLARR__APP__INSTANCENAME: Prowlarr
               PROWLARR__APP__THEME: auto

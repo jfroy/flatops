@@ -1,4 +1,23 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: rook-ceph-cluster
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: v1.16.5
+  url: oci://ghcr.io/home-operations/charts-mirror/rook-ceph-cluster
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: "^https://token.actions.githubusercontent.com$"
+        subject: "^https://github.com/home-operations/charts-mirror.*$"
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -7,14 +26,9 @@ metadata:
 spec:
   interval: 1h
   timeout: 5m
-  chart:
-    spec:
-      chart: rook-ceph-cluster
-      version: v1.16.5
-      sourceRef:
-        kind: HelmRepository
-        name: rook-ceph
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: rook-ceph-cluster
   driftDetection:
     mode: disabled
   install:
@@ -26,34 +40,42 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    configOverride: |
-      [global]
-      bdev_enable_discard = true
-      bdev_async_discard = true
-      osd_class_update_on_start = false
     toolbox:
       enabled: true
     monitoring:
       enabled: true
       createPrometheusRules: true
     cephClusterSpec:
-      mon:
-        count: 3
-        allowMultiplePerNode: true
-      mgr:
-        count: 2
-        allowMultiplePerNode: true
-        modules:
-          - name: pg_autoscaler
-            enabled: true
-          - name: rook
-            enabled: true
+      cephConfig:
+        global:
+          bdev_enable_discard: "true" # quote
+          bdev_async_discard_threads: "1" # quote
+          osd_class_update_on_start: "false" # quote
+          device_failure_prediction_mode: local # requires mgr module
+      csi:
+        readAffinity:
+          enabled: true
       dashboard:
         enabled: true
         urlPrefix: /
         port: 8080
         ssl: false
         prometheusEndpoint: http://vmsingle-stack.observability.svc:8429
+      mgr:
+        count: 2
+        allowMultiplePerNode: true
+        modules:
+          - name: diskprediction_local
+            enabled: true
+          - name: insights
+            enabled: true
+          - name: pg_autoscaler
+            enabled: true
+          - name: rook
+            enabled: true
+      mon:
+        count: 3
+        allowMultiplePerNode: true
       network:
         connections:
           # encryption:

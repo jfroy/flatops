@@ -29,8 +29,8 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/jfroy/postgres-init
-              tag: 16
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.4.0@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
             envFrom:
               - secretRef:
                   name: sonarr-secret
@@ -39,8 +39,8 @@ spec:
         containers:
           sonarr:
             image:
-              repository: ghcr.io/jfroy/sonarr-develop
-              tag: 4.0.14.2938@sha256:648ce735f5ebc38a96d042383720e15aacd0ca2d2e88b48191d5b7f4fd3d953b
+              repository: ghcr.io/home-operations/sonarr
+              tag: 4.0.14.2938@sha256:acd5416ab9c36d017687820a32f09d09a4e25a5754aa5ebeae2e7c63d7609c13
             env:
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__APP__THEME: auto

@@ -7,30 +7,25 @@ metadata:
 spec:
   interval: 1h
   timeout: 5m
-  chart:
-    spec:
-      chart: external-dns
-      version: 1.15.2
-      sourceRef:
-        kind: HelmRepository
-        name: external-dns
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: external-dns
   driftDetection:
     mode: enabled
   install:
+    crds: CreateReplace
+    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     remediation:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    crds: CreateReplace
+    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     remediation:
       strategy: rollback
       retries: 3
   values:
     fullnameOverride: *app
-    # TODO: switch back to upstream; https://github.com/kubernetes-sigs/external-dns/pull/5169
-    image:
-      repository: ghcr.io/buroa/external-dns
-      tag: a6243325
     domainFilters: ["kantai.xyz", "kantai.wtf", "internal."]
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi

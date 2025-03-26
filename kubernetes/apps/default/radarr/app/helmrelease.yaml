@@ -29,8 +29,8 @@ spec:
         initContainers:
           init-db:
             image:
-              repository: ghcr.io/jfroy/postgres-init
-              tag: 16
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.4.0@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
             envFrom:
               - secretRef:
                   name: radarr-secret
@@ -39,8 +39,8 @@ spec:
         containers:
           radarr:
             image:
-              repository: ghcr.io/jfroy/radarr-develop
-              tag: 5.21.1.9799@sha256:e1ddfad82c0279f5db33e703f5caedbd4dc6c7756b9c5bb4e31040077458b654
+              repository: ghcr.io/home-operations/radarr
+              tag: 5.21.1.9799@sha256:13171f1d476b4b0c9a44191ae60ddd0d1581b9cd89f9c5f7a82be602c0f95096
             env:
               RADARR__APP__INSTANCENAME: Radarr
               RADARR__APP__THEME: auto

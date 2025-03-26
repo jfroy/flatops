@@ -7,14 +7,9 @@ metadata:
 spec:
   interval: 1h
   timeout: 5m
-  chart:
-    spec:
-      chart: alloy
-      version: 0.12.5
-      sourceRef:
-        kind: HelmRepository
-        name: grafanalabs
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: alloy
   driftDetection:
     mode: enabled
   install:
