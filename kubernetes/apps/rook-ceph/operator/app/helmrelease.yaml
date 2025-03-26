@@ -42,8 +42,21 @@ spec:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableLiveness: true
+      pluginTolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+      provisionerTolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
       serviceMonitor:
         enabled: true
+    discover:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
     enableDiscoveryDaemon: true
     image:
       repository: ghcr.io/rook/ceph
@@ -54,3 +67,7 @@ spec:
         memory: 128Mi # unchangable
         cpu: 100m # unchangable
       limits: {}
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
