@@ -86,22 +86,11 @@ spec:
         ipFamily: IPv4
         # dualStack: true
       placement:
-        mon:
+        all:
           tolerations:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
-        mgr:
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-        cleanup:
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
-
       annotations:
         # Avoid duplicate metrics from the ServiceMonitor and scrape annotations.
         # "If no mgr annotations are set, prometheus scrape annotations will be set by default."
