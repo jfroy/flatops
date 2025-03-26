@@ -1,9 +1,4 @@
 {
-    "files.associations": {
-        "*.json5": "jsonc",
-        "./kubernetes/**/*.sops.toml": "plaintext"
-    },
-    "sops.defaults.ageKeyFile": "age.key",
     "yaml.schemas": {
         "Kubernetes": "./kubernetes/*.yaml"
     },
@@ -15,9 +10,6 @@
     },
     "githubPullRequests.remotes": [
         "origin",
-        "upstream",
-        "template-upstream"
     ],
     "git.rebaseWhenSync": true,
-    "sops.configPath": "./.sops.yaml"
 }
