@@ -6,7 +6,6 @@ metadata:
   name: vm-operator
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: victoria-metrics-operator

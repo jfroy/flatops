@@ -6,7 +6,6 @@ metadata:
   name: victoria-logs
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: victoria-logs-single

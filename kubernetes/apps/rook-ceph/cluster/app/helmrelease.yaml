@@ -25,7 +25,6 @@ metadata:
   name: rook-ceph-cluster
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster

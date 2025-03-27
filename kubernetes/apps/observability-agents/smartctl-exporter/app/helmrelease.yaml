@@ -6,7 +6,6 @@ metadata:
   name: &app smartctl-exporter
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: prometheus-smartctl-exporter

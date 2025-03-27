@@ -26,7 +26,6 @@ metadata:
   name: external-secrets
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: external-secrets

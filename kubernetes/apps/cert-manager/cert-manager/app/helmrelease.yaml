@@ -25,7 +25,6 @@ metadata:
   name: cert-manager
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: cert-manager

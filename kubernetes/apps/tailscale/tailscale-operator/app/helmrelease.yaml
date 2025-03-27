@@ -6,7 +6,6 @@ metadata:
   name: tailscale-operator
 spec:
   interval: 1h
-  timeout: 5m
   chart:
     spec:
       chart: tailscale-operator

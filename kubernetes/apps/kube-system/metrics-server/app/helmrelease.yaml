@@ -25,7 +25,6 @@ metadata:
   name: metrics-server
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: metrics-server

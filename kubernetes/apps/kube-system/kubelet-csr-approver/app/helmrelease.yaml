@@ -6,7 +6,6 @@ metadata:
   name: kubelet-csr-approver
 spec:
   interval: 1h
-  timeout: 5m
   chart:
     spec:
       chart: kubelet-csr-approver

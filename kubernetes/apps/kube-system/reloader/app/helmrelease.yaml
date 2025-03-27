@@ -6,7 +6,6 @@ metadata:
   name: reloader
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: stakater

@@ -6,7 +6,6 @@ metadata:
   name: robusta
 spec:
   interval: 1h
-  timeout: 5m
   chart:
     spec:
       chart: robusta

@@ -20,7 +20,6 @@ metadata:
   name: snapshot-controller
 spec:
   interval: 1h
-  timeout: 5m
   chartRef:
     kind: OCIRepository
     name: snapshot-controller
