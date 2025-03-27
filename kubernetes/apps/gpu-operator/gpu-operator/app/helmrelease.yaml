@@ -27,7 +27,6 @@ spec:
     crds: CreateReplace
     disableOpenAPIValidation: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     nfd:

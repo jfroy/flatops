@@ -22,7 +22,6 @@ spec:
     crds: CreateReplace
     disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
     remediation:
-      strategy: rollback
       retries: 3
   values:
     fullnameOverride: *app
