@@ -8,11 +8,10 @@ spec:
   groups:
     - name: dockerhub
       rules:
-        - alert: BootstrapRateLimitRisk
+        - alert: DockerhubRateLimitRisk
           annotations:
-            summary: Kubernetes cluster at risk of being rate limited by dockerhub on bootstrap
-          expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 100
-          for: 15m
+            summary: Kubernetes cluster Dockerhub rate limit risk
+          expr: count(time() - container_last_seen{image=~"(docker.io).*",container!=""} < 30) > 25
           labels:
             severity: critical
     - name: oom
