@@ -12,7 +12,6 @@ spec:
   targets:
     staticConfig:
       static:
-        - https://apple.com
         - https://cloudflare.com
         - https://google.com
         - https://github.com
@@ -37,11 +36,9 @@ spec:
   targets:
     staticConfig:
       static:
-        - apple.com
         - cloudflare.com
         - google.com
         - github.com
-        - microsoft.com
         - dynamodb.us-west-1.amazonaws.com
         - us-west2-5tkroniexa-wl.a.run.app
   interval: 1m
