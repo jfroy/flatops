@@ -34,7 +34,7 @@ spec:
           pocket-id:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v0.45.0@sha256:05a2dfb03d733ed762d5c23527d2fb8a4f9c5b27c50cb06d7e7547b5855234e1
+              tag: v0.46.0@sha256:f49fa8fb09b5d7f4ff4f3dc17bf8faa28683ed3b7349fc06581ea9ecefec6484
             command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
             env:
               CADDY_DISABLED: "true"
