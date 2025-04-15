@@ -35,11 +35,19 @@ spec:
   values:
     fullnameOverride: reloader
     reloader:
-      readOnlyRootFileSystem: true
+      deployment:
+        containerSecurityContext:
+          allowPrivilegeEscalation: false
+          capabilities: { drop: ["ALL"] }
+          readOnlyRootFilesystem: true
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
       podMonitor:
         enabled: true
         namespace: kube-system
-    tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
+      readOnlyRootFileSystem: true
