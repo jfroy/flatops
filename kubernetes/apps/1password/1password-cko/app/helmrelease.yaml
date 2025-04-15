@@ -40,6 +40,14 @@ spec:
         serviceMonitor:
           enabled: true
       serviceType: ClusterIP
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
     operator:
       create: true
       autoRestart: true
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule

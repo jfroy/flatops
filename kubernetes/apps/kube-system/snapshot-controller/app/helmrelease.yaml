@@ -39,9 +39,7 @@ spec:
       replicaCount: 2
       serviceMonitor:
         create: true
-    webhook:
-      tls:
-        certManagerIssuerRef:
-          name: cluster-ca
-          kind: ClusterIssuer
-          group: cert-manager.io
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule

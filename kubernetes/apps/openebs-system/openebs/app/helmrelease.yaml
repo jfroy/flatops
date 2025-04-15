@@ -49,6 +49,10 @@ spec:
     localpv-provisioner:
       localpv:
         basePath: /var/openebs/local
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
       hostpathClass:
         name: openebs-hostpath
       analytics:
@@ -60,6 +64,11 @@ spec:
     # https://github.com/openebs/zfs-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     zfs-localpv:
       enabled: true
+      zfsController:
+        tolerations:
+          - key: node-role.kubernetes.io/control-plane
+            operator: Exists
+            effect: NoSchedule
       zfsNode:
         encrKeysDir: "/var/zfs"
         tolerations:

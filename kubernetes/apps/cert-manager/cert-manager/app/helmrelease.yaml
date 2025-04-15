@@ -40,6 +40,10 @@ spec:
   values:
     cainjector:
       featureGates: CAInjectorMerging=true
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
     config:
       apiVersion: controller.config.cert-manager.io/v1alpha1
       kind: ControllerConfiguration
@@ -49,7 +53,24 @@ spec:
       keep: true
     dns01RecursiveNameservers: https://1.1.1.1:443/dns-query,https://1.0.0.1:443/dns-query
     dns01RecursiveNameserversOnly: true
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
     prometheus:
       enabled: true
       servicemonitor:
         enabled: true
+    startupapicheck:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+    webhook:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule

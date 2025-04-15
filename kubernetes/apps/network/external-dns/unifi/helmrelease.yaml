@@ -31,6 +31,10 @@ spec:
     serviceMonitor:
       enabled: true
     sources: ["gateway-httproute", "service"]
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
     triggerLoopOnEvent: true
     txtOwnerId: kantai
     txtPrefix: edns.

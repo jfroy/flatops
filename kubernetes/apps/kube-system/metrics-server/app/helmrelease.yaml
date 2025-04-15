@@ -50,3 +50,7 @@ spec:
         - action: drop
           sourceLabels: ["__name__"]
           regex: workqueue_(work|queue)_duration_seconds_bucket
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule

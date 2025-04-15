@@ -24,20 +24,24 @@ spec:
     remediation:
       retries: 3
   values:
-    crds:
-      enabled: true
-      keep: true
-    secretTargets:
-      enabled: true
-      authorizedSecrets:
-        - cluster-ca-secret
-        - operator-ca-tls-cluster-ca
     app:
       metrics:
         service:
           servicemonitor:
             enabled: true
             interval: 1m
+    crds:
+      enabled: true
+      keep: true
     defaultPackageImage:
       repository: quay.io/jetstack/trust-pkg-debian-bookworm
       tag: "20230311.0"
+    secretTargets:
+      enabled: true
+      authorizedSecrets:
+        - cluster-ca-secret
+        - operator-ca-tls-cluster-ca
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule

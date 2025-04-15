@@ -44,11 +44,15 @@ spec:
       retries: 3
   values:
     manageCRDs: true
-    replicaCount: 2
+    replicaCount: 1
     metrics:
       disableAuth: true
     resources:
       limits: null
+    tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
   postRenderers:
     - kustomize:
         patches:
