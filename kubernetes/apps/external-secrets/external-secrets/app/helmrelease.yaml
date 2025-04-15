@@ -39,9 +39,23 @@ spec:
     remediation:
       retries: 3
   values:
+    certController:
+      image:
+        repository: ghcr.io/external-secrets/external-secrets
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+    global:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: Exists
+          effect: NoSchedule
     image:
       repository: ghcr.io/external-secrets/external-secrets
     extendedMetricLabels: true
+    podDisruptionBudget:
+      enabled: true
+      minAvailable: 1
     serviceMonitor:
       enabled: true
       interval: 1m
@@ -55,9 +69,6 @@ spec:
     # Webhook crashloops when Cert-Manager is used with default values
     # https://github.com/external-secrets/external-secrets/issues/2519
     webhook:
-      image:
-        repository: ghcr.io/external-secrets/external-secrets
-      lookaheadInterval: 240h # 10d
       certManager:
         enabled: true
         cert:
@@ -66,6 +77,9 @@ spec:
             kind: ClusterIssuer
             group: cert-manager.io
           duration: 2160h # 90d
-    certController:
       image:
         repository: ghcr.io/external-secrets/external-secrets
+      lookaheadInterval: 240h # 10d
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
