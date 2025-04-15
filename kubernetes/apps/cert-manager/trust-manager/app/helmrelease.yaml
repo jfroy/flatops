@@ -1,4 +1,13 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: jetstack
+spec:
+  interval: 2h
+  url: https://charts.jetstack.io
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -13,7 +22,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: jetstack
-        namespace: flux-system
   driftDetection:
     mode: enabled
   install:

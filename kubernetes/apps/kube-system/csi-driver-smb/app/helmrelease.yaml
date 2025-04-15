@@ -1,4 +1,23 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: csi-driver-smb
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: v1.17.0
+  url: oci://ghcr.io/home-operations/charts-mirror/csi-driver-smb
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: "^https://token.actions.githubusercontent.com$"
+        subject: "^https://github.com/home-operations/charts-mirror.*$"
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -6,14 +25,9 @@ metadata:
   name: csi-driver-smb
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: csi-driver-smb
-      version: v1.17.0
-      sourceRef:
-        kind: HelmRepository
-        name: csi-driver-smb
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: csi-driver-smb
   driftDetection:
     mode: enabled
   install:

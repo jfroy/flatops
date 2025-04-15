@@ -1,4 +1,18 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/ocirepository-source-v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: victoria-logs-single
+spec:
+  interval: 2h
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-logs-single
+  ref:
+    tag: 0.9.5
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -9,7 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: victoria-logs-single
-    namespace: flux-system
   driftDetection:
     mode: enabled
   install:
