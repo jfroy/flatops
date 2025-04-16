@@ -34,6 +34,7 @@ nodes:
       - name: nvidia-uvm
       - name: nvidia-modeset
       - name: nvme-tcp
+      - name: vfio-pci
     machineSpec:
       secureboot: true
       useUKI: true
@@ -64,6 +65,8 @@ nodes:
             - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
             - siderolabs/glibc
+            - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
     patches:
       # sysctls
       - |-
@@ -74,7 +77,7 @@ nodes:
             net.ipv6.conf.all.forwarding: "0"
             vm.nr_hugepages: "1024"
 
-      # Encrypt disks
+      # Encrypt EPHEMERAL and STATE volumes
       - |-
         machine:
           systemDiskEncryption:
@@ -237,11 +240,18 @@ patches:
         net.ipv4.tcp_wmem: 4096 131072 33554432  # 1K, 128K, 32M; QUIC and 10 Gbps
         user.max_user_namespaces: "49152"        # C000; arbitrary
 
-  # Mount openebs-hostpath in kubelet
+  # Extra mounts for longhorn and openebs-hostpath
   - |-
     machine:
       kubelet:
         extraMounts:
+          - destination: /var/lib/longhorn
+            type: bind
+            source: /var/lib/longhorn
+            options:
+              - bind
+              - rshared
+              - rw
           - destination: /var/openebs/local
             type: bind
             source: /var/openebs/local
