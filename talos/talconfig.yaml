@@ -50,8 +50,6 @@ nodes:
         ignore: true
       - interface: enp66s0f1
         ignore: true
-    nodeLabels:
-      openebs.io/engine: mayastor
     schematic:
       customization:
         extraKernelArgs:
@@ -116,8 +114,6 @@ nodes:
     installDiskSelector:
       size: "> 50GB"
     controlPlane: true
-    kernelModules:
-      - name: nvme-tcp
     networkInterfaces:
       - interface: enxf243cb7739d7
         dhcp: true
@@ -149,7 +145,6 @@ nodes:
       - name: nvidia
       - name: nvidia-uvm
       - name: nvidia-modeset
-      - name: nvme-tcp
     networkInterfaces:
       - interface: enp1s0
         dhcp: true
