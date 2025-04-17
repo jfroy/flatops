@@ -45,7 +45,6 @@ spec:
         volumeSnapshots:
           enabled: false # snapshot-controller manages those CRDs
 
-    # https://github.com/openebs/dynamic-localpv-provisioner/blob/HEAD/deploy/helm/charts/values.yaml
     localpv-provisioner:
       localpv:
         basePath: /var/openebs/local
@@ -61,7 +60,6 @@ spec:
         image:
           registry: quay.io/
 
-    # https://github.com/openebs/zfs-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     zfs-localpv:
       enabled: true
       zfsController:
@@ -84,13 +82,32 @@ spec:
           volumeSnapshots:
             enabled: false
 
-    # https://github.com/openebs/lvm-localpv/blob/HEAD/deploy/helm/charts/values.yaml
     lvm-localpv:
       enabled: false
 
-    # https://github.com/openebs/mayastor-extensions/blob/v2.7.0/chart/values.yaml
     mayastor:
-      enabled: false
+      crds:
+        enabled: false
+      etcd:
+        enabled: false
+        externalUrl: openebs-etcd:2379
+      eventing:
+        enabled: false
+      io_engine:
+        cpuCount: "1"
+      localpv-provisioner:
+        enabled: false
+      loki-stack:
+        enabled: false
+      obs:
+        callhome:
+          enabled: false
+      storageClass:
+        enabled: false
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
 
     engines:
       local:
@@ -100,4 +117,4 @@ spec:
           enabled: true
       replicated:
         mayastor:
-          enabled: false
+          enabled: true
