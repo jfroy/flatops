@@ -125,6 +125,10 @@ nodes:
         extraKernelArgs:
           - lsm=landlock,lockdown,yama,apparmor,bpf
           - lsm.debug
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
     nodeTaints:
       node-role.kubernetes.io/control-plane: :NoSchedule
     patches:
@@ -168,6 +172,8 @@ nodes:
             - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
             - siderolabs/glibc
+            - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
     patches:
       # sysctls
       - |-

@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1beta2.json
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: longhorn
+spec:
+  interval: 5m
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.8.1
+  url: oci://ghcr.io/home-operations/charts-mirror/longhorn
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: "^https://token.actions.githubusercontent.com$"
+        subject: "^https://github.com/home-operations/charts-mirror.*$"
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: longhorn
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    csi:
+      attacherReplicaCount: 2
+      provisionerReplicaCount: 2
+      resizerReplicaCount: 2
+      snapshotterReplicaCount: 2
+    defaultSettings:
+      allowCollectingLonghornUsageMetrics: false
+      createDefaultDiskLabeledNodes: true
+      defaultDataLocality: best-effort
+      defaultReplicaCount: 2
+      storageMinimalAvailablePercentage: 10
+      v1DataEngine: false
+      v2DataEngine: true
+      v2DataEngineCPUMask: "0x01"
+    global:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    metrics:
+      serviceMonitor:
+        enabled: true
+    persistence:
+      defaultClass: false
