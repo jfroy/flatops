@@ -75,7 +75,7 @@ nodes:
             net.core.bpf_jit_harden: "1"
             net.ipv6.conf.all.accept_ra: "0"
             net.ipv6.conf.all.forwarding: "0"
-            vm.nr_hugepages: "1024"
+            vm.nr_hugepages: "2048"
 
       # Encrypt EPHEMERAL and STATE volumes
       - |-
@@ -176,7 +176,7 @@ nodes:
             net.core.bpf_jit_harden: "1"
             net.ipv6.conf.all.accept_ra: "0"
             net.ipv6.conf.all.forwarding: "0"
-            vm.nr_hugepages: "1024"
+            vm.nr_hugepages: "2048"
 
       # udev rules
       # - set all disks to no scheduler (optimal setting for Ceph and ZFS)
