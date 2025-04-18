@@ -60,7 +60,6 @@ spec:
       upgradeChecker: false
       v1DataEngine: false
       v2DataEngine: true
-      v2DataEngineCPUMask: "0x01"
       v2DataEngineLogLevel: Debug
     global:
       tolerations:
