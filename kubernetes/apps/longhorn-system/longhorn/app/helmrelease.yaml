@@ -45,10 +45,16 @@ spec:
       snapshotterReplicaCount: 2
     defaultSettings:
       allowCollectingLonghornUsageMetrics: false
+      autoCleanupSnapshotWhenDeleteBackup: true
       createDefaultDiskLabeledNodes: true
       defaultDataLocality: best-effort
       defaultReplicaCount: 2
+      detachManuallyAttachedVolumesWhenCordoned: true
+      fastReplicaRebuildEnabled: true
+      orphanAutoDeletion: true
+      removeSnapshotsDuringFilesystemTrim: true
       storageMinimalAvailablePercentage: 10
+      upgradeChecker: false
       v1DataEngine: false
       v2DataEngine: true
       v2DataEngineCPUMask: "0x01"
@@ -64,3 +70,5 @@ spec:
         enabled: true
     persistence:
       defaultClass: false
+    preUpgradeChecker:
+      jobEnabled: false
