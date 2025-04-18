@@ -57,6 +57,8 @@ spec:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
+    longhornUI:
+      replicas: 1
     metrics:
       serviceMonitor:
         enabled: true
