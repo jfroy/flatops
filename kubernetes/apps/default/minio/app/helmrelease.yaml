@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app minio
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      minio:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          minio:
+            image:
+              repository: quay.io/minio/minio
+              tag: RELEASE.2025-04-08T15-41-24Z
+            env:
+              MINIO_UPDATE: "off"
+              MINIO_BROWSER_REDIRECT_URL: "https://minio.kantai.xyz"
+              MINIO_SERVER_URL: "https://s3.kantai.xyz"
+              MINIO_API_CORS_ALLOW_ORIGIN: https://minio.kantai.xyz,https://s3.kantai.xyz
+              MINIO_PROMETHEUS_JOB_ID: minio
+              MINIO_PROMETHEUS_URL: http://vmsingle-stack.observability.svc:8429
+              MINIO_PROMETHEUS_AUTH_TYPE: public
+            envFrom:
+              - secretRef:
+                  name: minio-root
+            args: ["server", "/data", "--console-address", ":9001"]
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /minio/health/live
+                    port: 9000
+                  initialDelaySeconds: 30
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+                  failureThreshold: 6
+              readiness: *probes
+    persistence:
+      data:
+        type: persistentVolumeClaim
+        storageClass: longhorn-nvme-r2-enc
+        accessMode: ReadWriteOnce
+        retain: true
+        size: 1Ti
+    route:
+      app:
+        hostnames:
+          - minio.kantai.xyz
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: &port-console 9001
+      s3:
+        hostnames:
+          - s3.kantai.xyz
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: *app
+                port: &port-api 9000
+    service:
+      minio:
+        controller: minio
+        ports:
+          http:
+            port: *port-console
+          api:
+            port: *port-api
+    serviceMonitor:
+      minio:
+        serviceName: minio
+        endpoints:
+          - port: s3
+            scheme: http
+            path: /minio/v2/metrics/cluster
+            interval: 1m
+            scrapeTimeout: 10s

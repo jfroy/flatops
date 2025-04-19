@@ -10,6 +10,7 @@ resources:
   - ./gluetun/ks.yaml
   - ./homepage/ks.yaml
   - ./media-smb/ks.yaml
+  - ./minio/ks.yaml
   - ./namespace.yaml
   - ./pgadmin/ks.yaml
   - ./plex/ks.yaml
