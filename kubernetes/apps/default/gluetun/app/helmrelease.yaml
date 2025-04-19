@@ -55,4 +55,4 @@ spec:
         nameOverride: "-"
         size: 1Mi
         accessMode: ReadWriteOnce
-        storageClass: ceph-block
+        storageClass: longhorn-nvme-r2-enc
