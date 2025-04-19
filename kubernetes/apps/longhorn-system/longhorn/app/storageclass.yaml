@@ -3,6 +3,8 @@ kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
   name: longhorn-nvme-r2-enc
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
 allowVolumeExpansion: true
 provisioner: driver.longhorn.io
 reclaimPolicy: Delete
