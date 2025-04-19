@@ -53,14 +53,12 @@ spec:
       defaultReplicaCount: 2
       detachManuallyAttachedVolumesWhenCordoned: true
       fastReplicaRebuildEnabled: true
-      logLevel: Debug
       orphanAutoDeletion: true
       removeSnapshotsDuringFilesystemTrim: true
       storageMinimalAvailablePercentage: 10
       upgradeChecker: false
-      v1DataEngine: false
+      v1DataEngine: true
       v2DataEngine: true
-      v2DataEngineLogLevel: Debug
     global:
       tolerations:
         - key: node-role.kubernetes.io/control-plane
