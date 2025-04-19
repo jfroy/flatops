@@ -69,8 +69,23 @@ spec:
           effect: NoSchedule
     image:
       longhorn:
+        # https://github.com/longhorn/longhorn/issues/10313
+        # https://github.com/longhorn/longhorn/issues/10584
+        # https://github.com/longhorn/longhorn/issues/10605
+        # TODO: switch back to upstream when fixed
+        backingImageManager:
+          tag: v1.8.x-head
+        engine:
+          tag: v1.8.x-head
         instanceManager:
           repository: registry.etincelle.cloud/longhornio/longhorn-instance-manager
+          tag: v1.8.x-head
+        manager:
+          tag: v1.8.x-head
+        shareManager:
+          tag: v1.8.x-head
+        ui:
+          tag: v1.8.x-head
     longhornUI:
       replicas: 1
     metrics:
