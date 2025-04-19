@@ -68,7 +68,6 @@ spec:
       longhorn:
         instanceManager:
           repository: registry.etincelle.cloud/longhornio/longhorn-instance-manager
-          tag: v1.8.1-1
     longhornUI:
       replicas: 1
     metrics:
