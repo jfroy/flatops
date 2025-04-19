@@ -75,5 +75,9 @@ spec:
         enabled: true
     persistence:
       defaultClass: false
+      defaultClassReplicaCount: 2
+      defaultDataLocality: best-effort
+      defaultFsType: xfs
+      removeSnapshotsDuringFilesystemTrim: enabled
     preUpgradeChecker:
       jobEnabled: false
