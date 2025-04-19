@@ -7,3 +7,4 @@ resources:
   - ./helmrelease.yaml
   - ./httproute.yaml
   - ./storageclass.yaml
+  - ./volumesnapshotclass.yaml
