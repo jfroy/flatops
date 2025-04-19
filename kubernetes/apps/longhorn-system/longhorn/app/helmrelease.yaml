@@ -55,6 +55,9 @@ spec:
       fastReplicaRebuildEnabled: true
       orphanAutoDeletion: true
       removeSnapshotsDuringFilesystemTrim: true
+      replicaDiskSoftAntiAffinity: false
+      replicaSoftAntiAffinity: true
+      replicaZoneSoftAntiAffinity: true
       storageMinimalAvailablePercentage: 10
       upgradeChecker: false
       v1DataEngine: true
