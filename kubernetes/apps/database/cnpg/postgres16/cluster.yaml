@@ -9,8 +9,8 @@ spec:
   imageName: ghcr.io/cloudnative-pg/postgresql:16.3-1
   primaryUpdateStrategy: unsupervised
   storage:
-    size: 20Gi
-    storageClass: openebs-hostpath
+    size: 50Gi
+    storageClass: longhorn-nvme-r2-enc
   superuserSecret:
     name: postgres16-superuser-secret
   enableSuperuserAccess: true
@@ -33,12 +33,12 @@ spec:
         compression: bzip2
         maxParallel: 2
       destinationPath: s3://postgres16/
-      endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
+      endpointURL: https://s3.kantai.xyz
       # endpointCA:
       #   name: cluster-ca-secret
       #   key: ca.crt
       # NOTE: serverName version needs to be incremented when recovering from an existing cluster.
-      serverName: &currentCluster postgres16-v2
+      serverName: &currentCluster postgres16-v3
       s3Credentials:
         accessKeyId:
           name: postgres16-obc
@@ -51,7 +51,7 @@ spec:
     # NOTE: previousCluster needs to be set to the name of the previous cluster when recovering from
     # an existing cluster.
     recovery:
-      source: &previousCluster postgres16-v1
+      source: &previousCluster postgres16-v2
   # NOTE: externalClusters is needed when recovering from an existing cluster.
   externalClusters:
     - name: *previousCluster

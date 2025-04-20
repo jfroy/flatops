@@ -17,7 +17,7 @@ spec:
               workingDir: /data
               args:
                 - copy
-                - "ceph:postgres16"
+                - "minio:postgres16"
                 - "cloudflare:kantai-postgres16"
               env:
                 - name: RCLONE_VERBOSE
@@ -47,24 +47,24 @@ spec:
                   value: "private"
                 - name: RCLONE_CONFIG_CLOUDFLARE_NO_CHECK_BUCKET
                   value: "true"
-                - name: RCLONE_CONFIG_CEPH_TYPE
+                - name: RCLONE_CONFIG_MINIO_TYPE
                   value: "s3"
-                - name: RCLONE_CONFIG_CEPH_PROVIDER
-                  value: "Ceph"
-                - name: RCLONE_CONFIG_CEPH_ENV_AUTH
+                - name: RCLONE_CONFIG_MINIO_PROVIDER
+                  value: "Minio"
+                - name: RCLONE_CONFIG_MINIO_ENV_AUTH
                   value: "false"
-                - name: RCLONE_CONFIG_CEPH_ACCESS_KEY_ID
+                - name: RCLONE_CONFIG_MINIO_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
                       name: postgres16-obc
                       key: AWS_ACCESS_KEY_ID
-                - name: RCLONE_CONFIG_CEPH_SECRET_ACCESS_KEY
+                - name: RCLONE_CONFIG_MINIO_SECRET_ACCESS_KEY
                   valueFrom:
                     secretKeyRef:
                       name: postgres16-obc
                       key: AWS_SECRET_ACCESS_KEY
-                - name: RCLONE_CONFIG_CEPH_ENDPOINT
-                  value: "http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80"
+                - name: RCLONE_CONFIG_MINIO_ENDPOINT
+                  value: "https://s3.kantai.xyz"
               securityContext:
                 allowPrivilegeEscalation: false
                 capabilities: { drop: ["ALL"] }
