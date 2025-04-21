@@ -1,0 +1,29 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openebs-etcd
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: etcd
+    app.kubernetes.io/part-of: openebs
+  ##
+  ## Ideally we would use SRV records to do peer discovery for initialization.
+  ## Unfortunately discovery will not work without logic to wait for these to
+  ## populate in the container. This problem is relatively easy to overcome by
+  ## making changes to prevent the etcd process from starting until the records
+  ## have populated. The documentation on statefulsets briefly talk about it.
+  ##   https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-network-id
+  publishNotReadyAddresses: true
+  ##
+  ## The naming scheme of the client and server ports match the scheme that etcd
+  ## uses when doing discovery with SRV records.
+  ports:
+  - name: etcd-client
+    port: 2379
+  - name: etcd-server
+    port: 2380
+  - name: etcd-metrics
+    port: 8080
