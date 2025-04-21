@@ -74,17 +74,17 @@ spec:
         # https://github.com/longhorn/longhorn/issues/10605
         # TODO: switch back to upstream when fixed
         backingImageManager:
-          tag: v1.9.0-dev-20250420
+          tag: master-head
         engine:
-          tag: v1.9.0-dev-20250420
+          tag: master-head
         instanceManager:
-          tag: v1.9.0-dev-20250420
+          tag: master-head
         manager:
-          tag: v1.9.0-dev-20250420
+          tag: master-head
         shareManager:
-          tag: v1.9.0-dev-20250420
+          tag: master-head
         ui:
-          tag: v1.9.0-dev-20250420
+          tag: master-head
     longhornUI:
       replicas: 1
     metrics:
