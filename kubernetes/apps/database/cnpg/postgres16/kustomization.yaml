@@ -8,5 +8,6 @@ resources:
   - ./cronjob.yaml
   - ./externalsecret.yaml
   - ./gatus.yaml
+  - ./objectbucketclaim.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
