@@ -10,7 +10,7 @@ spec:
   primaryUpdateStrategy: unsupervised
   storage:
     size: 50Gi
-    storageClass: longhorn-nvme-r2
+    storageClass: openebs-hostpath
   superuserSecret:
     name: postgres16-superuser-secret
   enableSuperuserAccess: true
