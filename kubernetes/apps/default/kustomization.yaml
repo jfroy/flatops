@@ -23,7 +23,6 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
   - ./stash/ks.yaml
-  - ./svelocker-ui/ks.yaml
   - ./unpackerr/ks.yaml
 components:
   - ../../components/common
