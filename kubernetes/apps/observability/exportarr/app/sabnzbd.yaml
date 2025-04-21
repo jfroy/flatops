@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
         - name: sabnzbd-exporter
-          image: ghcr.io/onedr0p/exportarr:v2.1.0@sha256:ffe2065573db0f9717443143316eac6b335c37e6f6fea2f6a238ef3f134ee50a
+          image: ghcr.io/onedr0p/exportarr:v2.2.0@sha256:320b0ea7399f4b9af4741dcdddd7d40c05c36b0359679305d8a54df4e97065df
           imagePullPolicy: IfNotPresent
           args:
             - sabnzbd
