@@ -86,6 +86,7 @@ spec:
       enabled: false
 
     mayastor:
+      enabled: false
       crds:
         enabled: false
       etcd:
@@ -117,4 +118,4 @@ spec:
           enabled: true
       replicated:
         mayastor:
-          enabled: true
+          enabled: false
