@@ -24,3 +24,19 @@ parameters:
   csi.storage.k8s.io/node-stage-secret-namespace: "longhorn-system"
   csi.storage.k8s.io/node-expand-secret-name: "longhorn-nvme-r2-enc"
   csi.storage.k8s.io/node-expand-secret-namespace: "longhorn-system"
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: longhorn-nvme-r2
+allowVolumeExpansion: true
+provisioner: driver.longhorn.io
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+parameters:
+  dataEngine: v2
+  diskSelector: nvme
+  encrypted: "false"
+  fsType: xfs
+  numberOfReplicas: "2"
+  staleReplicaTimeout: "2880" # 48 hours in minutes
