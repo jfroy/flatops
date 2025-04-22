@@ -53,6 +53,6 @@ spec:
       gluetun:
         type: persistentVolumeClaim
         nameOverride: "-"
-        size: 300Mi
+        size: 1Mi
         accessMode: ReadWriteOnce
         storageClass: ceph-blockpool
