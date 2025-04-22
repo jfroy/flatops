@@ -37,7 +37,7 @@ spec:
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableCephfsDriver: false
       enableCephfsSnapshotter: false
-      enableCSIEncryption: true
+      enableCSIEncryption: false
       enableNFSSnapshotter: false
       enableLiveness: true
       pluginTolerations:
