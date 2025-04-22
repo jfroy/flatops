@@ -149,6 +149,35 @@ spec:
     cephFileSystems: []
     cephFileSystemVolumeSnapshotClass:
       enabled: false
+    cephObjectStores:
+      - name: ceph-objectstore
+        spec:
+          metadataPool:
+            failureDomain: osd
+            replicated:
+              size: 3
+          dataPool:
+            failureDomain: osd
+            erasureCoded:
+              dataChunks: 2
+              codingChunks: 1
+            parameters:
+              bulk: "true"
+              compression_algorithm: lz4
+              compression_mode: aggressive
+          preservePoolsOnDelete: true
+          gateway:
+            instances: 2
+            priorityClassName: system-cluster-critical
+            port: 80
+        storageClass:
+          enabled: true
+          name: ceph-bucket
+          reclaimPolicy: Delete
+          volumeBindingMode: Immediate
+          parameters:
+            region: us-west-1
+            # endpoint: <hostname including port>
     monitoring:
       enabled: true
       createPrometheusRules: true
