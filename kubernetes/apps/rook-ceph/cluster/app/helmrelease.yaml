@@ -102,7 +102,6 @@ spec:
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501242c0c2e
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501243f38d6
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501242cfd1b
-              - name: /dev/disk/by-id/nvme-eui.000000000000000100a0750123435a6b
     cephBlockPools:
       # https://github.com/rook/rook/blob/master/deploy/examples/pool-builtin-mgr.yaml
       - name: builtin-mgr
