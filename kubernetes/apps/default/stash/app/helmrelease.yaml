@@ -118,7 +118,7 @@ spec:
               - path: /config
       data:
         type: persistentVolumeClaim
-        storageClass: ceph-blockpool
+        storageClass: ceph-block
         accessMode: ReadWriteOnce
         retain: true
         size: 1Ti

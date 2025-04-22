@@ -143,11 +143,12 @@ spec:
             csi.storage.k8s.io/fstype: ext4
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
-      name: ceph-blockpool
+      name: ceph-block
       isDefault: false
       deletionPolicy: Delete
     cephFileSystems: []
-    cephFileSystemVolumeSnapshotClass: []
+    cephFileSystemVolumeSnapshotClass:
+      enabled: false
     monitoring:
       enabled: true
       createPrometheusRules: true

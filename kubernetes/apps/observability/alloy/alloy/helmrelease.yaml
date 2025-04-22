@@ -50,7 +50,7 @@ spec:
             name: alloy
           spec:
             accessModes: [ReadWriteOnce]
-            storageClassName: ceph-blockpool
+            storageClassName: ceph-block
             resources:
               requests:
                 storage: 5Gi
