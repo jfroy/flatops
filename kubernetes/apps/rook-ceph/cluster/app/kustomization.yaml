@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./certificate.yaml
   - ./helmrelease.yaml
+  - ./httproute.yaml
