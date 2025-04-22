@@ -118,7 +118,7 @@ spec:
               - path: /config
       data:
         type: persistentVolumeClaim
-        storageClass: longhorn-nvme-r2-enc
+        storageClass: ceph-blockpool
         accessMode: ReadWriteOnce
         retain: true
         size: 1Ti

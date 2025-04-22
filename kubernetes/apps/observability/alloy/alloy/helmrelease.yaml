@@ -50,7 +50,7 @@ spec:
             name: alloy
           spec:
             accessModes: [ReadWriteOnce]
-            storageClassName: longhorn-nvme-r2-enc
+            storageClassName: ceph-blockpool
             resources:
               requests:
                 storage: 5Gi
