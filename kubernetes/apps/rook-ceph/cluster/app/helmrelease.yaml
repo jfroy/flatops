@@ -107,6 +107,7 @@ spec:
       - name: builtin-mgr
         spec:
           name: .mgr
+          enableCrushUpdates: true
           failureDomain: osd
           replicated:
             size: 3
@@ -118,6 +119,7 @@ spec:
           enabled: false
       - name: ceph-blockpool
         spec:
+          enableCrushUpdates: true
           failureDomain: osd
           replicated:
             size: 3
@@ -153,10 +155,12 @@ spec:
       - name: ceph-objectstore
         spec:
           metadataPool:
+            enableCrushUpdates: true
             failureDomain: osd
             replicated:
               size: 3
           dataPool:
+            enableCrushUpdates: true
             failureDomain: osd
             erasureCoded:
               dataChunks: 2
