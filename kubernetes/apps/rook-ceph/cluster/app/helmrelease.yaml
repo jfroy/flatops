@@ -109,7 +109,7 @@ spec:
           name: .mgr
           failureDomain: osd
           replicated:
-            size: 3
+            size: 2
           parameters:
             compression_mode: none
         storageClass:
@@ -155,7 +155,7 @@ spec:
           metadataPool:
             failureDomain: osd
             replicated:
-              size: 3
+              size: 2
           dataPool:
             failureDomain: osd
             erasureCoded:
