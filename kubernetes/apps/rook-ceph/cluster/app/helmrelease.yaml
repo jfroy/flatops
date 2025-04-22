@@ -120,7 +120,7 @@ spec:
         spec:
           failureDomain: osd
           replicated:
-            size: 2
+            size: 3
           parameters:
             compression_algorithm: lz4
             compression_mode: aggressive
