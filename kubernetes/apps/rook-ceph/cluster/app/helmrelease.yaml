@@ -55,7 +55,6 @@ spec:
         urlPrefix: /
         port: 8080
         ssl: false
-        prometheusEndpoint: http://vmsingle-stack.observability.svc:8429
       mgr:
         count: 2
         allowMultiplePerNode: true
