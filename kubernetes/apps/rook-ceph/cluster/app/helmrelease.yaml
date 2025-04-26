@@ -96,9 +96,8 @@ spec:
           - name: kantai1
             devices:
               - name: /dev/disk/by-id/nvme-eui.000000000000000500a0750122eb5373
-              - name: /dev/disk/by-id/nvme-eui.000000000000000100a0750124a10bb6
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501243f60c5
-              - name: /dev/disk/by-id/nvme-eui.000000000000000100a0750124a11603
+              - name: /dev/disk/by-id/nvme-eui.000000000000000100a0750124a10bb6
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501242c0c2e
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501243f38d6
               - name: /dev/disk/by-id/nvme-eui.000000000000000100a07501242cfd1b
