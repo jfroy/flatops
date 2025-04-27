@@ -34,7 +34,7 @@ spec:
           compression: bzip2
           maxParallel: 2
         destinationPath: s3://postgres16/
-        endpointURL: https://s3.kantai.xyz
+        endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
         serverName: *recoveryCluster
         s3Credentials:
           accessKeyId:
