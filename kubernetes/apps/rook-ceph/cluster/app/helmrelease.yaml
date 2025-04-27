@@ -85,6 +85,23 @@ spec:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
+      resources:
+        cleanup:
+          limits: null
+        crashcollector:
+          limits: null
+        exporter:
+          limits: null
+        logcollector:
+          limits: null
+        mgr:
+          limits: null
+        mgr-sidecar:
+          limits: null
+        mon:
+          limits: null
+        osd:
+          limits: null
       storage:
         useAllNodes: false
         useAllDevices: false
@@ -172,6 +189,8 @@ spec:
             instances: 2
             priorityClassName: system-cluster-critical
             port: 80
+            resources:
+              limits: null
         storageClass:
           enabled: true
           name: ceph-bucket
@@ -185,3 +204,5 @@ spec:
       createPrometheusRules: true
     toolbox:
       enabled: true
+      resources:
+        limits: null
