@@ -35,10 +35,6 @@ spec:
           maxParallel: 2
         destinationPath: s3://postgres16/
         endpointURL: https://s3.kantai.xyz
-        # endpointCA:
-        #   name: cluster-ca-secret
-        #   key: ca.crt
-        # NOTE: serverName version needs to be incremented when recovering from an existing cluster.
         serverName: *recoveryCluster
         s3Credentials:
           accessKeyId:
@@ -51,10 +47,8 @@ spec:
     retentionPolicy: 30d
     barmanObjectStore:
       <<: *barmanObjectStore
-      serverName: postgres16-v3
+      serverName: postgres16-v4
   bootstrap:
     # initdb: {}
-    # NOTE: previousCluster needs to be set to the name of the previous cluster when recovering from
-    # an existing cluster.
     recovery:
       source: *recoveryCluster
