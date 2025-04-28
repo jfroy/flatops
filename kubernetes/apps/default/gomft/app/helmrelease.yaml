@@ -1,0 +1,87 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: gomft
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      gomft:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          gomft:
+            image:
+              repository: ghcr.io/starfleetcptn/gomft
+              tag: 0.2.11@sha256:1be2e1b174575a9b17b62a0f4d77d193bc154d493e191918bd0e3fa9f6a51d9d
+            env:
+              BACKUP_DIR: /app/backups
+              BASE_URL: https://gomft.kantai.xyz
+              DATA_DIR: /app/data
+              EMAIL_ENABLED: false
+              LOG_COMPRESS: true
+              LOG_LEVEL: info
+              LOG_MAX_AGE: 30
+              LOG_MAX_BACKUPS: 5
+              LOG_MAX_SIZE: 10
+              LOGS_DIR: /app/data/logs
+              SERVER_ADDRESS: :8080
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: gomft-secrets
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+    persistence:
+      data:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /app/backups
+            subPath: backups
+          - path: /app/data
+            subPath: data
+    route:
+      gomft:
+        hostnames:
+          - gomft.kantai.xyz
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: &port 8080
+                name: gomft
+    serviceAccount:
+      create: true
+      name: gomft
+    service:
+      gomft:
+        controller: gomft
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
