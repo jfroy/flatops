@@ -6,5 +6,4 @@ resources:
   - ./bitnami.yaml
   - ./cloudnative-pg.yaml
   - ./nvidia.yaml
-  - ./postfinance.yaml
   - ./robusta.yaml

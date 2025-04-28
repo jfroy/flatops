@@ -10,8 +10,6 @@ helmDefaults:
 repositories:
   - name: cilium
     url: https://helm.cilium.io
-  - name: postfinance
-    url: https://postfinance.github.io/kubelet-csr-approver
 
 releases:
   - name: prometheus-operator-crds
@@ -39,7 +37,7 @@ releases:
       - kube-system/cilium
   - name: kubelet-csr-approver
     namespace: kube-system
-    chart: postfinance/kubelet-csr-approver
+    chart: oci://ghcr.io/postfinance/charts/kubelet-csr-approver
     version: 1.2.7
     values:
       - ../apps/kube-system/kubelet-csr-approver/app/helm-values.yaml
