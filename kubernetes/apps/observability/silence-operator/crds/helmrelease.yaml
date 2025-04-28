@@ -3,26 +3,26 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: OCIRepository
 metadata:
-  name: silence-operator
+  name: silence-operator-crds
 spec:
   interval: 5m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.0.8
-  url: oci://ghcr.io/wiremind/wiremind-helm-charts/silence-operator
+    tag: 0.0.3
+  url: oci://ghcr.io/wiremind/wiremind-helm-charts/silence-operator-crds
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: silence-operator
+  name: silence-operator-crds
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: silence-operator
+    name: silence-operator-crds
   install:
     remediation:
       retries: -1
@@ -30,13 +30,3 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  values:
-    image:
-      name: quay.io/giantswarm/silence-operator
-    operator:
-      config:
-        alertmanager:
-          service:
-            address: http://alertmanager-operated.observability.svc.cluster.local:9093
-    rbac:
-      create: true
