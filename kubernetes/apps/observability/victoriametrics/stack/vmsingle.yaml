@@ -5,7 +5,6 @@ metadata:
   name: stack
 spec:
   extraArgs:
-    dedup.minScrapeInterval: 10s
     maxLabelsPerTimeseries: "40"
     search.minStalenessInterval: 5m
     vmalert.proxyURL: http://vmalert-stack.observability.svc:8080
