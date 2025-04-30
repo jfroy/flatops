@@ -10,8 +10,7 @@ metadata:
   name: nut-exporter-pikvm
 spec:
   endpoints:
-    - interval: 30s
-      metricRelabelings:
+    - metricRelabelings:
         - action: replace
           replacement: pikvm
           targetLabel: instance

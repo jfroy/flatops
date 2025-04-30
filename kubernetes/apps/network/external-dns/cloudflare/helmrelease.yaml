@@ -42,7 +42,6 @@ spec:
     policy: sync
     serviceMonitor:
       enabled: true
-      interval: 30s
     sources: ["crd", "gateway-httproute"]
     tolerations:
       - key: node-role.kubernetes.io/control-plane

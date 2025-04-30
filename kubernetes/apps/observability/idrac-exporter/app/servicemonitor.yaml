@@ -10,8 +10,7 @@ metadata:
   name: idrac-exporter-kantai1
 spec:
   endpoints:
-    - interval: 30s
-      metricRelabelings:
+    - metricRelabelings:
         - action: replace
           replacement: kantai1
           targetLabel: instance
