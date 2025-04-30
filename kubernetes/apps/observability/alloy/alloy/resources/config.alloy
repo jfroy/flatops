@@ -112,17 +112,18 @@ prometheus.operator.probes "default" {
 	}
 }
 
-prometheus.operator.scrapeconfigs "default" {
-	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+// EXPERIMENTAL: The `stability.level` flag must be set to `experimental` to use the component.
+// prometheus.operator.scrapeconfigs "default" {
+// 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
 
-	clustering {
-		enabled = true
-	}
+// 	clustering {
+// 		enabled = true
+// 	}
 
-	scrape {
-		default_scrape_interval = "30s"
-	}
-}
+// 	scrape {
+// 		default_scrape_interval = "30s"
+// 	}
+// }
 
 prometheus.operator.servicemonitors "default" {
 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
