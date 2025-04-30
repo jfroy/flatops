@@ -25,8 +25,6 @@ spec:
       app.kubernetes.io/instance: sonarr
   endpoints:
     - port: monitoring
-      interval: 5m
-      scrapeTimeout: 90s
       path: /metrics
       metricRelabelings:
         - action: replace

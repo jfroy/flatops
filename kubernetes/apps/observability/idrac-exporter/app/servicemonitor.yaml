@@ -22,7 +22,6 @@ spec:
       path: /metrics
       port: metrics
       scheme: http
-      scrapeTimeout: 5m
   jobLabel: app.kubernetes.io/instance
   namespaceSelector:
     matchNames:
