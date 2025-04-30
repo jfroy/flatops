@@ -30,6 +30,7 @@ spec:
     policy: sync
     serviceMonitor:
       enabled: true
+      interval: 30s
     sources: ["gateway-httproute", "service"]
     tolerations:
       - key: node-role.kubernetes.io/control-plane
@@ -64,3 +65,5 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
+        serviceMonitor:
+          interval: 30s
