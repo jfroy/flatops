@@ -4,40 +4,11 @@ kind: CronJob
 metadata:
   name: talos-backup
 spec:
-  schedule: "0 1 * * *"
+  schedule: "30 0 * * *"
   jobTemplate:
     spec:
       template:
         spec:
-          containers:
-            - name: talos-backup
-              image: ghcr.io/siderolabs/talos-backup:v0.1.0-beta.3
-              workingDir: /tmp
-              imagePullPolicy: IfNotPresent
-              env:
-                - name: AWS_REGION
-                  value: WNAM
-                - name: BUCKET
-                  value: kantai-talos-backup
-                - name: CLUSTER_NAME
-                  value: kantai
-              envFrom:
-                - secretRef:
-                    name: talos-backup-secret
-              securityContext:
-                runAsUser: 1000
-                runAsGroup: 1000
-                allowPrivilegeEscalation: false
-                runAsNonRoot: true
-                capabilities: { drop: ["ALL"] }
-              command:
-                - /talos-backup
-              volumeMounts:
-                - mountPath: /tmp
-                  name: tmp
-                - mountPath: /var/run/secrets/talos.dev
-                  name: talos-secrets
-          restartPolicy: OnFailure
           affinity:
             nodeAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -45,13 +16,46 @@ spec:
                   - matchExpressions:
                       - key: node-role.kubernetes.io/control-plane
                         operator: Exists
+          containers:
+            - name: talos-backup
+              image: ghcr.io/jfroy/siderolabs/talosctl:${TALOS_VERSION}
+              command:
+                - /talosctl
+                - etcd
+                - snapshot
+                - /data/etcd.boltdb
+                - --nodes=$(NODE_IP)
+              env:
+                - name: NODE_IP
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: status.hostIP
+              securityContext:
+                runAsUser: 1000
+                runAsGroup: 1000
+                allowPrivilegeEscalation: false
+                runAsNonRoot: true
+                capabilities: { drop: ["ALL"] }
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: tmp
+                  mountPath: /tmp
+                - name: talos-secrets
+                  mountPath: /var/run/secrets/talos.dev
+          restartPolicy: OnFailure
+          securityContext:
+            fsGroup: 1000
           tolerations:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
               effect: NoSchedule
           volumes:
-            - emptyDir: {}
-              name: tmp
+            - name: data
+              persistentVolumeClaim:
+                claimName: talos-backup
             - name: talos-secrets
               secret:
                 secretName: talos-backup-serviceaccount
+            - name: tmp
+              emptyDir: {}
