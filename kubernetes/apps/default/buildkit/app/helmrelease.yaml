@@ -39,6 +39,11 @@ spec:
             image:
               repository: moby/buildkit
               tag: v0.20.2@sha256:c457984bd29f04d6acc90c8d9e717afe3922ae14665f3187e0096976fe37b1c8
+            args:
+              - --addr
+              - unix:///run/buildkit/buildkitd.sock
+              - --addr
+              - tcp://0.0.0.0:9999
             ports:
               - name: grpc
                 containerPort: 9999
@@ -68,6 +73,8 @@ spec:
             resources:
               requests:
                 cpu: 16
+            securityContext:
+              privileged: true
     service:
       buildkit-amd64:
         controller: buildkit-amd64
@@ -143,6 +150,11 @@ spec:
             image:
               repository: moby/buildkit
               tag: v0.20.2@sha256:c457984bd29f04d6acc90c8d9e717afe3922ae14665f3187e0096976fe37b1c8
+            args:
+              - --addr
+              - unix:///run/buildkit/buildkitd.sock
+              - --addr
+              - tcp://0.0.0.0:9999
             ports:
               - name: grpc
                 containerPort: 9999
@@ -169,6 +181,11 @@ spec:
                       - workers
                   initialDelaySeconds: 5
                   periodSeconds: 30
+            resources:
+              requests:
+                cpu: 2
+            securityContext:
+              privileged: true
     service:
       buildkit-arm64:
         controller: buildkit-arm64
