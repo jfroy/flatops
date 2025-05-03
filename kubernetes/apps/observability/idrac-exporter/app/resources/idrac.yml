@@ -1,6 +1,6 @@
 address: 0.0.0.0
 port: 9348
-timeout: 10
+timeout: 30
 hosts:
   kantai1-ipmi:
     username: {{ .kantai1_username }}
@@ -9,7 +9,7 @@ metrics:
   system: true
   sensors: true
   power: true
-  events: true
-  storage: true
-  memory: true
-  network: true
+  events: false
+  storage: false
+  memory: false
+  network: false

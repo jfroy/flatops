@@ -39,12 +39,14 @@ spec:
             command:
               - /app/bin/idrac_exporter
               - --config=/config/idrac.yml
-            env:
-              TZ: America/Los_Angeles
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+    persistence:
+      config:
+        type: secret
+        name: idrac-exporter
     service:
       idrac-exporter:
         controller: idrac-exporter
@@ -52,7 +54,3 @@ spec:
           metrics:
             protocol: HTTP
             port: 9348
-    persistence:
-      config:
-        type: secret
-        name: idrac-exporter
