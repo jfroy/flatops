@@ -10,3 +10,4 @@ resources:
   - ./gateway.yaml
   - ./httproute.yaml
   - ./loadbalancerippool.yaml
+  - ./service.yaml

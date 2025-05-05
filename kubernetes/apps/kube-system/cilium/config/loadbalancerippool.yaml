@@ -7,16 +7,3 @@ spec:
   blocks:
     - start: 10.10.0.2
       stop: 10.10.255.254
----
-apiVersion: cilium.io/v2alpha1
-kind: CiliumLoadBalancerIPPool
-metadata:
-  name: external-kube-apiserver
-spec:
-  blocks:
-    - start: 10.1.1.0
-      stop: 10.1.1.0
-  serviceSelector:
-    matchLabels:
-      "io.kubernetes.service.namespace": "kube-system"
-      "io.kubernetes.service.name": "external-kube-apiserver"
