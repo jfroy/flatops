@@ -156,7 +156,8 @@ spec:
           # renovate: depName="Node Exporter Full"
           gnetId: 1860
           revision: 39
-          datasource: Prometheus
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
         nut-exporter:
           # renovate: depName="Prometheus NUT Exporter for DRuggeri"
           gnetId: 19308
