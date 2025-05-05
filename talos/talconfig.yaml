@@ -6,13 +6,14 @@ talosVersion: v1.9.14005
 kubernetesVersion: v1.32.1
 
 clusterName: "kantai"
-endpoint: https://10.1.1.0:6443
+endpoint: https://k8s.kantai.xyz:6443
 clusterPodNets:
   - "10.11.0.0/16"
 clusterSvcNets:
   - "10.12.0.0/16"
 additionalApiServerCertSans: &sans
-  - "10.1.1.0"
+  - "k8s.kantai.xyz"
+  - "10.10.10.10"
   - "127.0.0.1" # KubePrism
 additionalMachineCertSans: *sans
 
@@ -42,8 +43,6 @@ nodes:
       - interface: enp129s0f0np0
         dhcp: true
         mtu: 1500
-        vip:
-          ip: "10.1.1.0"
       - interface: enp129s0f1np1
         ignore: true
       - interface: enp66s0f0
@@ -122,8 +121,6 @@ nodes:
       - interface: enxf243cb7739d7
         dhcp: true
         mtu: 1500
-        vip:
-          ip: "10.1.1.0"
     schematic:
       customization:
         extraKernelArgs:
@@ -159,8 +156,6 @@ nodes:
       - interface: enp1s0
         dhcp: true
         mtu: 1500
-        vip:
-          ip: "10.1.1.0"
     nodeTaints:
       node-role.kubernetes.io/control-plane: :NoSchedule
     schematic:
