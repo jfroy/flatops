@@ -23,4 +23,5 @@ spec:
     retain:
       daily: 7
     storageClassName: "${VOLSYNC_STORAGECLASS:=ceph-block}"
+    unlock: u1
     volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=ceph-block}"
