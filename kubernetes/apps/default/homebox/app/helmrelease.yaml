@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: homebox
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      homebox:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.4.0@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
+            envFrom:
+              - secretRef:
+                  name: homebox
+              - secretRef:
+                  name: homebox-initdb
+        containers:
+          homebox:
+            image:
+              repository: ghcr.io/sysadminsmedia/homebox
+              tag: 0.19.0@sha256:55b97a62f2a6a834d3f4ab66ab362ed23ed32efe312a0973830a318344a5781e
+            env:
+              HBOX_OPTIONS_CHECK_GITHUB_RELEASE: "false"
+              HBOX_DATABASE_DRIVER: postgres
+              HBOX_LOG_FORMAT: json
+              HBOX_LOG_LEVEL: info
+              HBOX_WEB_PORT: &port "7745"
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: homebox
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+    persistence:
+      data:
+        existingClaim: ${APP}
+    route:
+      homebox:
+        hostnames:
+          - ${APP}.kantai.xyz
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: homebox
+    serviceAccount:
+      create: true
+      name: homebox
+    service:
+      homebox:
+        controller: homebox
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
