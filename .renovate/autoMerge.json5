@@ -10,7 +10,7 @@
       matchDatasources: ["docker"],
       automerge: true,
       matchUpdateTypes: ["digest"],
-      matchPackageNames: ["/home-operations/"],
+      matchPackageNames: ["/home-operations/", "/jfroy/vuetorrent"],
     },
   ]
 }
