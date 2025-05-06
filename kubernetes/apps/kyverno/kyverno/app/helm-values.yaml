@@ -9,16 +9,16 @@ global:
       effect: NoSchedule
 webhooksCleanup:
   image:
-    registry: docker.io
-    repository: bitnami/kubectl
-    # renovate: datasource=docker depName=docker.io/bitnami/kubectl
-    tag: "1.33.0"
+    registry: ghcr.io
+    repository: jfroy/kubectl-bash
+    # renovate: datasource=docker depName=ghcr.io/jfroy/kubectl-bash
+    tag: 1.33.0@sha256:3676a2eaa0a06aad48a0a0745748747fa31d0a5df41909cdb3a31e2113cacff6
 policyReportsCleanup:
   image:
-    registry: docker.io
-    repository: bitnami/kubectl
-    # renovate: datasource=docker depName=docker.io/bitnami/kubectl
-    tag: "1.33.0"
+    registry: ghcr.io
+    repository: jfroy/kubectl-bash
+    # renovate: datasource=docker depName=ghcr.io/jfroy/kubectl-bash
+    tag: 1.33.0@sha256:3676a2eaa0a06aad48a0a0745748747fa31d0a5df41909cdb3a31e2113cacff6
 features:
   backgroundScan:
     skipResourceFilters: false
