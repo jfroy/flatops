@@ -8,6 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/volsync
   path: ./kubernetes/apps/talos-admin/talos-backup/app
   prune: true
   sourceRef:
