@@ -4,7 +4,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: robusta
-  namespace: flux-system
 spec:
   interval: 2h
   url: https://robusta-charts.storage.googleapis.com
@@ -23,7 +22,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: robusta
-        namespace: flux-system
   driftDetection:
     mode: enabled
   install:

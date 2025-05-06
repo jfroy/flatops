@@ -4,7 +4,6 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: nvidia
-  namespace: flux-system
 spec:
   interval: 2h
   url: https://helm.ngc.nvidia.com/nvidia
@@ -23,7 +22,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: nvidia
-        namespace: flux-system
   driftDetection:
     mode: enabled
   install:
