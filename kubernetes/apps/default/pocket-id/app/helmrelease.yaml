@@ -47,8 +47,8 @@ spec:
                     port: 3000
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -61,14 +61,6 @@ spec:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
-    service:
-      pocket-id:
-        controller: pocket-id
-        ports:
-          backend:
-            port: &backendPort 8080
-          frontend:
-            port: &frontendPort 3000
     persistence:
       data:
         existingClaim: ${APP}
@@ -92,7 +84,7 @@ spec:
               - path:
                   value: /api/
             backendRefs:
-              - port: *backendPort
+              - port: &backendPort 8080
                 name: pocket-id
           - matches:
               - path:
@@ -104,18 +96,13 @@ spec:
               - path:
                   value: /
             backendRefs:
-              - port: *frontendPort
+              - port: &frontendPort 3000
                 name: pocket-id
-  # TODO: remove after app-template fix is released; https://github.com/bjw-s/helm-charts/pull/393
-  postRenderers:
-    - kustomize:
-        patches:
-          - target:
-              group: gateway.networking.k8s.io
-              version: v1
-              kind: HTTPRoute
-              name: pocket-id
-            patch: |
-              - op: replace
-                path: /spec/rules/2/backendRefs/0/port
-                value: 3000
+    service:
+      pocket-id:
+        controller: pocket-id
+        ports:
+          backend:
+            port: *backendPort
+          frontend:
+            port: *frontendPort

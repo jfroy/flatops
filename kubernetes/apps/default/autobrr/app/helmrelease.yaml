@@ -59,8 +59,8 @@ spec:
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

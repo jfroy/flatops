@@ -20,13 +20,6 @@ spec:
     remediation:
       retries: 3
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     controllers:
       registry:
         annotations:
@@ -45,8 +38,8 @@ spec:
               TZ: America/Los_Angeles
             securityContext: &securityContext
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
       gc:
         type: cronjob
         annotations:
@@ -62,28 +55,13 @@ spec:
               - /etc/distribution/config.yml
             env: *env
             securityContext: *securityContext
-    service:
-      registry:
-        controller: registry
-        type: ClusterIP
-        ports:
-          http:
-            port: &port 5000
-          metrics:
-            port: 5001
-    serviceMonitor:
-      registry:
-        enabled: true
-        serviceName: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}'
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
-            metricRelabelings:
-              - action: labeldrop
-                regex: (pod)
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
       config:
         type: configMap
@@ -105,5 +83,27 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - port: *port
+              - port: &port 5000
                 name: registry
+    service:
+      registry:
+        controller: registry
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+          metrics:
+            port: 5001
+    serviceMonitor:
+      registry:
+        enabled: true
+        serviceName: '{{ include "bjw-s.common.lib.chart.names.fullname" $ }}'
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+            interval: 1m
+            scrapeTimeout: 10s
+            metricRelabelings:
+              - action: labeldrop
+                regex: (pod)

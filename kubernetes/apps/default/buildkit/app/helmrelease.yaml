@@ -18,19 +18,6 @@ spec:
     remediation:
       retries: 3
   values:
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - amd64
-      annotations:
-        reloader.stakater.com/auto: "true"
-      hostUsers: false
     controllers:
       buildkit-amd64:
         replicas: 1
@@ -75,14 +62,19 @@ spec:
                 cpu: 16
             securityContext:
               privileged: true
-    service:
-      buildkit-amd64:
-        controller: buildkit-amd64
-        ports:
-          grpc:
-            enabled: true
-            port: 9999
-            protocol: TCP
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
+      annotations:
+        reloader.stakater.com/auto: "true"
+      hostUsers: false
     persistence:
       config:
         type: configMap
@@ -104,6 +96,14 @@ spec:
         globalMounts:
           - path: /run
           - path: /var/run
+    service:
+      buildkit-amd64:
+        controller: buildkit-amd64
+        ports:
+          grpc:
+            enabled: true
+            port: 9999
+            protocol: TCP
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -124,24 +124,6 @@ spec:
     remediation:
       retries: 3
   values:
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-      annotations:
-        reloader.stakater.com/auto: "true"
-      hostUsers: false
-      tolerations:
-        # The only arm64 node in the cluster is a control plane node
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     controllers:
       buildkit-arm64:
         replicas: 1
@@ -186,14 +168,24 @@ spec:
                 cpu: 2
             securityContext:
               privileged: true
-    service:
-      buildkit-arm64:
-        controller: buildkit-arm64
-        ports:
-          grpc:
-            enabled: true
-            port: 9999
-            protocol: TCP
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - arm64
+      annotations:
+        reloader.stakater.com/auto: "true"
+      hostUsers: false
+      tolerations:
+        # The only arm64 node in the cluster is a control plane node
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
     persistence:
       config:
         type: configMap
@@ -215,3 +207,11 @@ spec:
         globalMounts:
           - path: /run
           - path: /var/run
+    service:
+      buildkit-arm64:
+        controller: buildkit-arm64
+        ports:
+          grpc:
+            enabled: true
+            port: 9999
+            protocol: TCP

@@ -62,8 +62,8 @@ spec:
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -72,12 +72,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [4000]
-    service:
-      sonarr:
-        controller: sonarr
-        ports:
-          http:
-            port: *port
     persistence:
       config:
         existingClaim: ${APP}
@@ -110,3 +104,9 @@ spec:
           - backendRefs:
               - port: *port
                 name: sonarr
+    service:
+      sonarr:
+        controller: sonarr
+        ports:
+          http:
+            port: *port

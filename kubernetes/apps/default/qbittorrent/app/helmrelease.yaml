@@ -45,8 +45,8 @@ spec:
                     port: *port
             securityContext: &securityContext
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         initContainers:
           gluetun:
             image:
@@ -98,10 +98,10 @@ spec:
             restartPolicy: Always
             securityContext:
               <<: *securityContext
+              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
               readOnlyRootFilesystem: false
               runAsNonRoot: false
               runAsUser: 0
-              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
           vuetorrent:
             image:
               repository: ghcr.io/jfroy/vuetorrent
@@ -135,13 +135,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [4000]
-    service:
-      qbittorrent:
-        controller: qbittorrent
-        type: ClusterIP
-        ports:
-          http:
-            port: *port
     persistence:
       config:
         existingClaim: ${APP}
@@ -201,6 +194,13 @@ spec:
           - backendRefs:
               - port: *port
                 name: qbittorrent
+    service:
+      qbittorrent:
+        controller: qbittorrent
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
   postRenderers:
     - kustomize:
         patches:

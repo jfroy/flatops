@@ -20,8 +20,6 @@ spec:
     remediation:
       retries: 3
   values:
-    defaultPodOptions:
-      hostUsers: false
     controllers:
       docker-registry-ui:
         annotations:
@@ -49,12 +47,8 @@ spec:
                     path: /
                     port: &port 80
               readiness: *probe
-    service:
-      docker-registry-ui:
-        controller: docker-registry-ui
-        ports:
-          http:
-            port: *port
+    defaultPodOptions:
+      hostUsers: false
     route:
       docker-registry-ui:
         hostnames:
@@ -67,3 +61,9 @@ spec:
           - backendRefs:
               - port: *port
                 name: docker-registry-ui
+    service:
+      docker-registry-ui:
+        controller: docker-registry-ui
+        ports:
+          http:
+            port: *port

@@ -53,8 +53,8 @@ spec:
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
             resources:
               limits:
                 nvidia.com/gpu: 1
@@ -97,12 +97,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [4000]
-    service:
-      stash:
-        controller: stash
-        ports:
-          http:
-            port: *port
     persistence:
       cache:
         type: emptyDir
@@ -181,3 +175,9 @@ spec:
           - backendRefs:
               - port: *port
                 name: stash
+    service:
+      stash:
+        controller: stash
+        ports:
+          http:
+            port: *port

@@ -48,8 +48,8 @@ spec:
                   periodSeconds: 10
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
             resources:
               limits:
                 nvidia.com/gpu: 1
@@ -67,13 +67,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [44, 4000]
-    service:
-      plex:
-        controller: plex
-        type: LoadBalancer
-        ports:
-          https:
-            port: 32400
     persistence:
       config:
         existingClaim: ${APP}
@@ -103,3 +96,10 @@ spec:
           - path: /media2/library
             subPath: library
             readOnly: true
+    service:
+      plex:
+        controller: plex
+        type: LoadBalancer
+        ports:
+          https:
+            port: 32400

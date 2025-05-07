@@ -18,11 +18,6 @@ spec:
     remediation:
       retries: 3
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
     controllers:
       dashbrr:
         annotations:
@@ -67,17 +62,15 @@ spec:
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-    service:
-      dashbrr:
-        controller: dashbrr
-        ports:
-          http:
-            port: &port 8080
-    serviceAccount:
-      create: true
-      name: dashbrr
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
       cache:
         type: emptyDir
@@ -95,5 +88,14 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - port: *port
+              - port: &port 8080
                 name: dashbrr
+    service:
+      dashbrr:
+        controller: dashbrr
+        ports:
+          http:
+            port: *port
+    serviceAccount:
+      create: true
+      name: dashbrr

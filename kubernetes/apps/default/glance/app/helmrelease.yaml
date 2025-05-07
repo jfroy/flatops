@@ -41,17 +41,8 @@ spec:
               TZ: America/Los_Angeles
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-    service:
-      glance:
-        controller: glance
-        ports:
-          http:
-            port: &port 8080
-    serviceAccount:
-      create: true
-      name: glance
+              readOnlyRootFilesystem: true
     persistence:
       config:
         type: configMap
@@ -66,5 +57,14 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - port: *port
+              - port: &port 8080
                 name: glance
+    service:
+      glance:
+        controller: glance
+        ports:
+          http:
+            port: *port
+    serviceAccount:
+      create: true
+      name: glance

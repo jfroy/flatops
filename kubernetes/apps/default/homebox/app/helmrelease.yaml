@@ -59,13 +59,14 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
     persistence:
       data:
         existingClaim: ${APP}
     route:
       homebox:
         hostnames:
-          - ${APP}.kantai.xyz
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
         parentRefs:
           - name: internal
             namespace: kube-system
@@ -74,9 +75,6 @@ spec:
           - backendRefs:
               - port: *port
                 name: homebox
-    serviceAccount:
-      create: true
-      name: homebox
     service:
       homebox:
         controller: homebox
@@ -84,3 +82,6 @@ spec:
         ports:
           http:
             port: *port
+    serviceAccount:
+      create: true
+      name: homebox
