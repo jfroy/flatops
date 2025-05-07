@@ -1,0 +1,103 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: changedetection
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      changedetection:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          changedetection:
+            image:
+              repository: ghcr.io/dgtlmoon/changedetection.io
+              tag: 0.49.16@sha256:3bf8961f735c5a6152270c4000eedae40786ce385184d41b370d2db710584c7a
+            env:
+              BASE_URL: "https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+              DISABLE_VERSION_CHECK: "true"
+              PORT: &port 5000
+              USE_X_SETTINGS: 1
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: changedetection
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+          browser:
+            image:
+              repository: ghcr.io/browserless/chromium
+              tag: v2.29.0@sha256:22578737b1172ac4e16ecf810b4304add771c074236ca1056749a80354653a6b
+            env:
+              CONCURRENT: "10"
+              DATA_DIR: /profile
+              DOWNLOAD_DIR: /downloads
+            envFrom:
+              - secretRef:
+                  name: changedetection
+            securityContext:
+              allowPrivilegeEscalation: false
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: ${APP}
+        advancedMounts:
+          changedetection:
+            changedetection:
+              - path: /datastore
+                subPath: changedetection
+            browser:
+              - path: /downloads
+                subPath: downloads
+              - path: /profile
+                subPath: profile
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+    route:
+      changedetection:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: changedetection
+                port: *port
+    service:
+      changedetection:
+        controller: changedetection
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+    serviceAccount:
+      create: true
+      name: changedetection
