@@ -14,6 +14,7 @@ resources:
   - ./homepage/ks.yaml
   - ./media-smb/ks.yaml
   - ./namespace.yaml
+  - ./octoeverywhere-bambu-connect/ks.yaml
   - ./pgadmin/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
