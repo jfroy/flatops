@@ -40,6 +40,9 @@ spec:
     envFromSecret: grafana-secrets
     persistence:
       enabled: false
+      inMemory:
+        enabled: true
+        sizeLimit: 300Mi
     plugins:
       - grafana-clock-panel
       - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.16.3/victoriametrics-logs-datasource-v0.16.3.zip;victorialogs-datasource
