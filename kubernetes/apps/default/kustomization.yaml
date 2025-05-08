@@ -25,6 +25,7 @@ resources:
   - ./registry/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./sonarr/ks.yaml
+  - ./spoolman/ks.yaml
   - ./stash/ks.yaml
 components:
   - ../../components/common
