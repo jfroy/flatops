@@ -28,7 +28,7 @@ spec:
           stash:
             image:
               repository: ghcr.io/jfroy/stash
-              tag: v0.27.2-cudajellyfin.3@sha256:36780ea07cb9a6da564a0494e2949bda8ffed6146310ba6de9200c4986952b67
+              tag: v0.28.1-cudajellyfin.3@sha256:4f11d488e2986bf6968dbcdf8226787038d59ac3379499b781d280fba599ca8c
             env:
               HOME: /config
               NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
