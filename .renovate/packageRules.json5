@@ -3,17 +3,17 @@
   "packageRules": [
     {
       "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["gluetun"],
+      "matchPackageNames": ["ghcr.io/jfroy/gluetun"],
       "versioning": "semver"
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["plex"],
+      "matchPackageNames": ["ghcr.io/home-operations/plex"],
       "versioning": "loose"
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackagePrefixes": ["registry.kantai.xyz/"],
+      "matchPackageNames": ["registry.kantai.xyz**/*"],
       "enabled": false
     }
   ]

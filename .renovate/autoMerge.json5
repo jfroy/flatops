@@ -4,13 +4,13 @@
     {
       matchDatasources: ["docker"],
       automerge: false,
-      matchPackagePatterns: ["ghcr.io/jfroy/siderolabs/imager"],
+      matchPackageNames: ["ghcr.io/jfroy/siderolabs/imager", "ghcr.io/siderolabs/kubelet"],
     },
     {
       matchDatasources: ["docker"],
       automerge: true,
       matchUpdateTypes: ["digest"],
-      matchPackageNames: ["/home-operations/", "/jfroy/vuetorrent"],
+      matchPackageNames: ["ghcr.io/home-operations**/*", "ghcr.io/jfroy/vuetorrent"],
     },
   ]
 }
