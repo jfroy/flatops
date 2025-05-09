@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
 # renovate: datasource=docker depName=ghcr.io/jfroy/siderolabs/imager
-talosVersion: v1.9.14005
+talosVersion: v1.10.1
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.32.1
+kubernetesVersion: v1.33.0
 
 clusterName: "kantai"
 endpoint: https://k8s.kantai.xyz:6443
@@ -54,6 +54,7 @@ nodes:
     schematic:
       customization:
         extraKernelArgs:
+          - -selinux
           - lsm=landlock,lockdown,yama,apparmor,bpf
           - lsm.debug
           - amd_pstate=active
@@ -117,6 +118,9 @@ nodes:
     controlPlane: true
     kernelModules:
       - name: nvme-tcp
+    machineSpec:
+      secureboot: true
+      useUKI: true
     networkInterfaces:
       - interface: enxf243cb7739d7
         dhcp: true
@@ -124,6 +128,7 @@ nodes:
     schematic:
       customization:
         extraKernelArgs:
+          - -selinux
           - lsm=landlock,lockdown,yama,apparmor,bpf
           - lsm.debug
         systemExtensions:
@@ -145,13 +150,16 @@ nodes:
   - hostname: "kantai3"
     ipAddress: "10.1.1.3"
     installDiskSelector:
-      wwid: eui.e8238fa6bf530001001b448b4e89de82
+      wwid: eui.0025385691b1844a
     controlPlane: true
     kernelModules:
       - name: nvidia
       - name: nvidia-uvm
       - name: nvidia-modeset
       - name: nvme-tcp
+    machineSpec:
+      secureboot: false
+      useUKI: true
     networkInterfaces:
       - interface: enp1s0
         dhcp: true
@@ -161,6 +169,7 @@ nodes:
     schematic:
       customization:
         extraKernelArgs:
+          - -selinux
           - lsm=landlock,lockdown,yama,apparmor,bpf
           - lsm.debug
           - amd_pstate=active
@@ -319,19 +328,6 @@ patches:
               runtime_type = "io.containerd.runc.v2"
               [plugins.'io.containerd.cri.v1.runtime'.containerd.runtimes.nvidia-legacy.options]
                 BinaryName = "/var/nvidia/toolkit/nvidia-container-runtime.legacy"
-
-  # NFS mount options
-  - |
-    machine:
-      files:
-        - op: overwrite
-          path: /etc/nfsmount.conf
-          permissions: 0o644
-          content: |
-            [ NFSMount_Global_Options ]
-            hard=True
-            noatime=True
-            nodiratime=True
 
 controlPlane:
   patches:
