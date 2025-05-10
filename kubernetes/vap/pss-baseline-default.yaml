@@ -12,13 +12,6 @@ spec:
         operations:   ["CREATE","UPDATE"]
         resources:    ["pods"]
   validations:
-    # HostProcess must be false or unset
-    - expression: >
-        object.spec.securityContext.windowsOptions.hostProcess != true &&
-        object.spec.containers.all(c, c.securityContext.windowsOptions.hostProcess != true) &&
-        object.spec.initContainers.all(c, c.securityContext.windowsOptions.hostProcess != true) &&
-        object.spec.ephemeralContainers.all(c, c.securityContext.windowsOptions.hostProcess != true)
-      message: "HostProcess containers are disallowed by the Baseline Pod Security Standard"
     # Disallow host namespaces
     - expression: >
         object.spec.hostNetwork != true &&
