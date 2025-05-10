@@ -1,0 +1,200 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: pss-baseline-default
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups:    [""]
+        apiVersions:  ["v1"]
+        operations:   ["CREATE","UPDATE"]
+        resources:    ["pods"]
+  validations:
+    # HostProcess must be false or unset
+    - expression: >
+        object.spec.securityContext.windowsOptions.hostProcess != true &&
+        object.spec.containers.all(c, c.securityContext.windowsOptions.hostProcess != true) &&
+        object.spec.initContainers.all(c, c.securityContext.windowsOptions.hostProcess != true) &&
+        object.spec.ephemeralContainers.all(c, c.securityContext.windowsOptions.hostProcess != true)
+      message: "HostProcess containers are disallowed by the Baseline Pod Security Standard"
+    # Disallow host namespaces
+    - expression: >
+        object.spec.hostNetwork != true &&
+        object.spec.hostPID     != true &&
+        object.spec.hostIPC     != true
+      message: "Sharing host namespaces (HostNetwork, HostPID, HostIPC) is disallowed"
+    # Disallow privileged containers
+    - expression: >
+        object.spec.containers.all(c, c.securityContext.privileged != true) &&
+        object.spec.initContainers.all(c, c.securityContext.privileged != true) &&
+        object.spec.ephemeralContainers.all(c, c.securityContext.privileged != true)
+      message: "Privileged containers are disallowed"
+    # Only allow a safe subset of added capabilities
+    - expression: >
+        object.spec.containers.all(c,
+          c.securityContext.capabilities.add == null ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in [
+              "AUDIT_WRITE","CHOWN","DAC_OVERRIDE","FOWNER","FSETID","KILL",
+              "MKNOD","NET_BIND_SERVICE","SETFCAP","SETGID","SETPCAP","SETUID","SYS_CHROOT"
+            ]
+          )
+        ) &&
+        object.spec.initContainers.all(c,
+          c.securityContext.capabilities.add == null ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in [
+              "AUDIT_WRITE","CHOWN","DAC_OVERRIDE","FOWNER","FSETID","KILL",
+              "MKNOD","NET_BIND_SERVICE","SETFCAP","SETGID","SETPCAP","SETUID","SYS_CHROOT"
+            ]
+          )
+        ) &&
+        object.spec.ephemeralContainers.all(c,
+          c.securityContext.capabilities.add == null ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in [
+              "AUDIT_WRITE","CHOWN","DAC_OVERRIDE","FOWNER","FSETID","KILL",
+              "MKNOD","NET_BIND_SERVICE","SETFCAP","SETGID","SETPCAP","SETUID","SYS_CHROOT"
+            ]
+          )
+        )
+      message: "Adding capabilities beyond the Baseline-approved list is disallowed"
+    # Disallow HostPath volumes
+    - expression: >
+        object.spec.volumes.all(v, v.hostPath == null)
+      message: "HostPath volumes are disallowed"
+    # Disallow host ports (only 0 or unset permitted)
+    - expression: >
+        object.spec.containers.all(c,
+          c.ports == null ||
+          c.ports.all(p, p.hostPort == null || p.hostPort == 0)
+        ) &&
+        object.spec.initContainers.all(c,
+          c.ports == null ||
+          c.ports.all(p, p.hostPort == null || p.hostPort == 0)
+        ) &&
+        object.spec.ephemeralContainers.all(c,
+          c.ports == null ||
+          c.ports.all(p, p.hostPort == null || p.hostPort == 0)
+        )
+      message: "HostPort usage is disallowed (must be 0 or unset)"
+    # AppArmor profile must be RuntimeDefault or Localhost, annotation likewise
+    - expression: >
+        (object.spec.securityContext.appArmorProfile.type == null ||
+         object.spec.securityContext.appArmorProfile.type in ["RuntimeDefault","Localhost"]) &&
+        object.spec.containers.all(c,
+          c.securityContext.appArmorProfile.type == null ||
+          c.securityContext.appArmorProfile.type in ["RuntimeDefault","Localhost"]
+        ) &&
+        object.spec.initContainers.all(c,
+          c.securityContext.appArmorProfile.type == null ||
+          c.securityContext.appArmorProfile.type in ["RuntimeDefault","Localhost"]
+        ) &&
+        object.spec.ephemeralContainers.all(c,
+          c.securityContext.appArmorProfile.type == null ||
+          c.securityContext.appArmorProfile.type in ["RuntimeDefault","Localhost"]
+        ) &&
+        (
+          object.metadata.annotations == null ||
+          object.metadata.annotations.all(k,
+            !k.startsWith("container.apparmor.security.beta.kubernetes.io/") ||
+            object.metadata.annotations[k] == "runtime/default" ||
+            object.metadata.annotations[k].startsWith("localhost/")
+          )
+        )
+      message: "AppArmor overrides are disallowed (only RuntimeDefault or localhost/* permitted)"
+    # SELinux type must be one of the allowed; user and role must be unset
+    - expression: >
+        (object.spec.securityContext.seLinuxOptions.type == null ||
+         object.spec.securityContext.seLinuxOptions.type in [
+           "container_t","container_init_t","container_kvm_t","container_engine_t"
+         ]) &&
+        object.spec.containers.all(c,
+          c.securityContext.seLinuxOptions.type == null ||
+          c.securityContext.seLinuxOptions.type in [
+            "container_t","container_init_t","container_kvm_t","container_engine_t"
+          ]
+        ) &&
+        object.spec.initContainers.all(c,
+          c.securityContext.seLinuxOptions.type == null ||
+          c.securityContext.seLinuxOptions.type in [
+            "container_t","container_init_t","container_kvm_t","container_engine_t"
+          ]
+        ) &&
+        object.spec.ephemeralContainers.all(c,
+          c.securityContext.seLinuxOptions.type == null ||
+          c.securityContext.seLinuxOptions.type in [
+            "container_t","container_init_t","container_kvm_t","container_engine_t"
+          ]
+        ) &&
+        object.spec.securityContext.seLinuxOptions.user == null &&
+        object.spec.securityContext.seLinuxOptions.role == null
+      message: "Custom SELinux user/role/type settings are disallowed"
+    # /proc mount must be Default or unset
+    - expression: >
+        (object.spec.securityContext.procMount == null ||
+         object.spec.securityContext.procMount == "Default") &&
+        object.spec.containers.all(c,
+          c.securityContext.procMount == null ||
+          c.securityContext.procMount == "Default"
+        ) &&
+        object.spec.initContainers.all(c,
+          c.securityContext.procMount == null ||
+          c.securityContext.procMount == "Default"
+        ) &&
+        object.spec.ephemeralContainers.all(c,
+          c.securityContext.procMount == null ||
+          c.securityContext.procMount == "Default"
+        )
+      message: "/proc mount overrides are disallowed (must be Default or unset)"
+    # Seccomp profile must be RuntimeDefault or Localhost
+    - expression: >
+        (object.spec.securityContext.seccompProfile.type == null ||
+         object.spec.securityContext.seccompProfile.type in ["RuntimeDefault","Localhost"]) &&
+        object.spec.containers.all(c,
+          c.securityContext.seccompProfile.type == null ||
+          c.securityContext.seccompProfile.type in ["RuntimeDefault","Localhost"]
+        ) &&
+        object.spec.initContainers.all(c,
+          c.securityContext.seccompProfile.type == null ||
+          c.securityContext.seccompProfile.type in ["RuntimeDefault","Localhost"]
+        ) &&
+        object.spec.ephemeralContainers.all(c,
+          c.securityContext.seccompProfile.type == null ||
+          c.securityContext.seccompProfile.type in ["RuntimeDefault","Localhost"]
+        )
+      message: "Seccomp profile must be RuntimeDefault or localhost"
+    # Only a safe subset of sysctls is allowed
+    - expression: >
+        object.spec.securityContext.sysctls == null ||
+        object.spec.securityContext.sysctls.all(s,
+          s.name in [
+            "kernel.shm_rmid_forced","net.ipv4.ip_local_port_range",
+            "net.ipv4.ip_unprivileged_port_start","net.ipv4.tcp_syncookies",
+            "net.ipv4.ping_group_range","net.ipv4.ip_local_reserved_ports",
+            "net.ipv4.tcp_keepalive_time","net.ipv4.tcp_fin_timeout",
+            "net.ipv4.tcp_keepalive_intvl","net.ipv4.tcp_keepalive_probes"
+          ]
+        )
+      message: "Only the Baseline-approved sysctls are permitted"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: pss-baseline-default-binding
+spec:
+  policyName: pss-baseline-default
+  validationActions: ["Deny"]
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+        - key: "pod-security.kubernetes.io/enforce"
+          operator: NotIn
+          values: ["privileged"]
+    resourceRules:
+      - apiGroups:   [""]
+        apiVersions: ["v1"]
+        operations:  ["CREATE","UPDATE"]
+        resources:   ["pods"]
