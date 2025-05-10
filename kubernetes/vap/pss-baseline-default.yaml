@@ -1,0 +1,134 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: baseline-pss-policy
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  validations:
+    # 1. Disallow hostNetwork
+    - expression: |
+        !has(object.spec.hostNetwork) ||
+        object.spec.hostNetwork == false
+      message: "spec.hostNetwork must be false"
+
+    # 2. Disallow hostPID
+    - expression: |
+        !has(object.spec.hostPID) ||
+        object.spec.hostPID == false
+      message: "spec.hostPID must be false"
+
+    # 3. Disallow hostIPC
+    - expression: |
+        !has(object.spec.hostIPC) ||
+        object.spec.hostIPC == false
+      message: "spec.hostIPC must be false"
+
+    # 4. Disallow privileged containers
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.privileged) ||
+          c.securityContext.privileged == false
+        )
+      message: "All containers must not be privileged"
+
+    # 5. Disallow privileged initContainers
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.privileged) ||
+          c.securityContext.privileged == false
+        )
+      message: "All initContainers must not be privileged"
+
+    # 6. Disallow privileged ephemeralContainers
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.privileged) ||
+          c.securityContext.privileged == false
+        )
+      message: "All ephemeralContainers must not be privileged"
+
+    # 7. Restrict added capabilities to the allowed list
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.capabilities) ||
+          !has(c.securityContext.capabilities.add) ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in [
+              "AUDIT_WRITE", "CHOWN", "DAC_OVERRIDE", "FOWNER",
+              "FSETID", "KILL", "MKNOD", "NET_BIND_SERVICE",
+              "SETFCAP", "SETGID", "SETPCAP", "SETUID", "SYS_CHROOT"
+            ]
+          )
+        )
+      message: "Adding capabilities outside the allowed baseline list is not permitted"
+
+    # 8. Forbid HostPath volumes
+    - expression: |
+        !has(object.spec.volumes) ||
+        object.spec.volumes.all(v,
+          !has(v.hostPath)
+        )
+      message: "HostPath volumes are not allowed"
+
+    # 9. Disallow hostPort usage (only zero is permitted)
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.ports) ||
+          c.ports.all(p,
+            !has(p.hostPort) || p.hostPort == 0
+          )
+        )
+      message: "HostPort usage must be 0 or unset"
+
+    # 10. Prevent AppArmor profile overrides at pod level
+    - expression: |
+        !has(object.spec.securityContext) ||
+        !has(object.spec.securityContext.appArmorProfile) ||
+        !has(object.spec.securityContext.appArmorProfile.type) ||
+        object.spec.securityContext.appArmorProfile.type == "RuntimeDefault"
+      message: "Pod-level AppArmor profile must be RuntimeDefault or unset"
+
+    # 11. Prevent AppArmor profile overrides at container level
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.appArmorProfile) ||
+          !has(c.securityContext.appArmorProfile.type) ||
+          c.securityContext.appArmorProfile.type == "RuntimeDefault"
+        )
+      message: "Container AppArmor profile must be RuntimeDefault or unset"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: baseline-pss-binding
+spec:
+  policyName: baseline-pss-policy
+  validationActions: ["Deny"]
+  matchResources:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+    namespaceSelector:
+      matchExpressions:
+        - key: pod-security.kubernetes.io/enforce
+          operator: NotIn
+          values: ["privileged"]

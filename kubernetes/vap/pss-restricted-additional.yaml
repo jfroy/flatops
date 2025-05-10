@@ -1,0 +1,102 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: restricted-pss-policy
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  validations:
+    # 1. Enforce runAsNonRoot at Pod level
+    - expression: |
+        has(object.spec.securityContext) &&
+        has(object.spec.securityContext.runAsNonRoot) &&
+        object.spec.securityContext.runAsNonRoot == true
+      message: "Pod must set spec.securityContext.runAsNonRoot=true"
+
+    # 2. Disallow privilege escalation in all containers
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.allowPrivilegeEscalation) &&
+          c.securityContext.allowPrivilegeEscalation == false
+        )
+      message: "All containers must set securityContext.allowPrivilegeEscalation=false"
+
+    # 3. Disallow privilege escalation in initContainers
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.allowPrivilegeEscalation) &&
+          c.securityContext.allowPrivilegeEscalation == false
+        )
+      message: "All initContainers must set securityContext.allowPrivilegeEscalation=false"
+
+    # 4. Require dropCapabilities=ALL in all containers
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.capabilities) &&
+          has(c.securityContext.capabilities.drop) &&
+          c.securityContext.capabilities.drop.exists(cap, cap == "ALL")
+        )
+      message: "All containers must drop all capabilities (capabilities.drop must include \"ALL\")"
+
+    # 5. Enforce readOnlyRootFilesystem in all containers
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.readOnlyRootFilesystem) &&
+          c.securityContext.readOnlyRootFilesystem == true
+        )
+      message: "All containers must set securityContext.readOnlyRootFilesystem=true"
+
+    # 6. Require a seccompProfile at Pod level
+    - expression: |
+        has(object.spec.securityContext) &&
+        has(object.spec.securityContext.seccompProfile) &&
+        has(object.spec.securityContext.seccompProfile.type) &&
+        ( object.spec.securityContext.seccompProfile.type == "RuntimeDefault" ||
+          object.spec.securityContext.seccompProfile.type == "Localhost"
+        )
+      message: "Pod must set spec.securityContext.seccompProfile.type to RuntimeDefault or Localhost"
+
+    # 7. Require a seccompProfile on each container
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.seccompProfile) &&
+          has(c.securityContext.seccompProfile.type) &&
+          ( c.securityContext.seccompProfile.type == "RuntimeDefault" ||
+            c.securityContext.seccompProfile.type == "Localhost"
+          )
+        )
+      message: "Each container must set securityContext.seccompProfile.type to RuntimeDefault or Localhost"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: restricted-pss-binding
+spec:
+  policyName: restricted-pss-policy
+  validationActions: ["Deny"]
+  matchResources:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+    namespaceSelector:
+      matchExpressions:
+        - key: pod-security.kubernetes.io/enforce
+          operator: In
+          values: ["restricted"]
