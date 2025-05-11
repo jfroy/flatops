@@ -13,10 +13,23 @@ spec:
   validations:
     # 1. Enforce runAsNonRoot at Pod level
     - expression: |
-        has(object.spec.securityContext) &&
-        has(object.spec.securityContext.runAsNonRoot) &&
-        object.spec.securityContext.runAsNonRoot == true
-      message: "Pod must set spec.securityContext.runAsNonRoot=true"
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          ( has(c.securityContext) &&
+            has(c.securityContext.runAsNonRoot) &&
+            c.securityContext.runAsNonRoot
+          ) ||
+          (
+            ( !has(c.securityContext) ||
+              !has(c.securityContext.runAsNonRoot)
+            ) &&
+            ( has(object.spec.securityContext) &&
+              has(object.spec.securityContext.runAsNonRoot) &&
+              object.spec.securityContext.runAsNonRoot
+            )
+          )
+        )
+      message: "Each container must set securityContext.runAsNonRoot to true, unless Pod securityContext.runAsNonRoot is set to true"
 
     # 2. Disallow privilege escalation in all containers
     - expression: |
