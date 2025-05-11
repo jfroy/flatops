@@ -59,28 +59,32 @@ spec:
         )
       message: "All containers must set securityContext.readOnlyRootFilesystem=true"
 
-    # 6. Require a seccompProfile at Pod level
-    - expression: |
-        has(object.spec.securityContext) &&
-        has(object.spec.securityContext.seccompProfile) &&
-        has(object.spec.securityContext.seccompProfile.type) &&
-        ( object.spec.securityContext.seccompProfile.type == "RuntimeDefault" ||
-          object.spec.securityContext.seccompProfile.type == "Localhost"
-        )
-      message: "Pod must set spec.securityContext.seccompProfile.type to RuntimeDefault or Localhost"
-
-    # 7. Require a seccompProfile on each container
+    # 6. Enforce seccomp profile
     - expression: |
         !has(object.spec.containers) ||
         object.spec.containers.all(c,
-          has(c.securityContext) &&
-          has(c.securityContext.seccompProfile) &&
-          has(c.securityContext.seccompProfile.type) &&
-          ( c.securityContext.seccompProfile.type == "RuntimeDefault" ||
-            c.securityContext.seccompProfile.type == "Localhost"
+          ( has(c.securityContext) &&
+            has(c.securityContext.seccompProfile) &&
+            has(c.securityContext.seccompProfile.type) &&
+            ( c.securityContext.seccompProfile.type == "RuntimeDefault" ||
+              c.securityContext.seccompProfile.type == "Localhost"
+            )
+          ) ||
+          (
+            ( !has(c.securityContext) ||
+              !has(c.securityContext.seccompProfile) ||
+              !has(c.securityContext.seccompProfile.type)
+            ) &&
+            ( has(object.spec.securityContext) &&
+              has(object.spec.securityContext.seccompProfile) &&
+              has(object.spec.securityContext.seccompProfile.type) &&
+              ( object.spec.securityContext.seccompProfile.type == "RuntimeDefault" ||
+                object.spec.securityContext.seccompProfile.type == "Localhost"
+              )
+            )
           )
         )
-      message: "Each container must set securityContext.seccompProfile.type to RuntimeDefault or Localhost"
+      message: "Each container must set securityContext.seccompProfile.type to RuntimeDefault or Localhost, unless Pod securityContext.seccompProfile.type is set to RuntimeDefault or Localhost"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
