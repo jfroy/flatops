@@ -15,7 +15,6 @@ resources:
   - ./idrac-exporter/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./nut-exporter/ks.yaml
-  - ./policy-reporter/ks.yaml
   - ./prometheus-operator-crds/ks.yaml
   - ./robusta/ks.yaml
   - ./silence-operator/ks.yaml
