@@ -39,7 +39,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
-                drop: ["ALL"]
                 add: ["CAP_NET_RAW"]
         pod:
           hostNetwork: true
