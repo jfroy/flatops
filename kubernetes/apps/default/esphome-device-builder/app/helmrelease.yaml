@@ -39,7 +39,7 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities:
-                add: ["CAP_NET_RAW"]
+                add: ["CAP_NET_RAW", "CAP_NET_ADMIN"]
         pod:
           hostNetwork: true
           securityContext:
