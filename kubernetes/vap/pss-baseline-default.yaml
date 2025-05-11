@@ -132,3 +132,8 @@ spec:
         - key: pod-security.kubernetes.io/enforce
           operator: NotIn
           values: ["privileged"]
+    objectSelector:
+      matchExpressions:
+        - key: app.kubernetes.io/name
+          operator: NotIn
+          values: ["esphome-device-builder"]
