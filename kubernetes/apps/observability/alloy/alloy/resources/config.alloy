@@ -94,10 +94,6 @@ prometheus.operator.podmonitors "default" {
 	clustering {
 		enabled = true
 	}
-
-	scrape {
-		default_scrape_interval = "30s"
-	}
 }
 
 prometheus.operator.probes "default" {
@@ -105,10 +101,6 @@ prometheus.operator.probes "default" {
 
 	clustering {
 		enabled = true
-	}
-
-	scrape {
-		default_scrape_interval = "30s"
 	}
 }
 
@@ -119,10 +111,6 @@ prometheus.operator.probes "default" {
 // 	clustering {
 // 		enabled = true
 // 	}
-
-// 	scrape {
-// 		default_scrape_interval = "30s"
-// 	}
 // }
 
 prometheus.operator.servicemonitors "default" {
@@ -130,10 +118,6 @@ prometheus.operator.servicemonitors "default" {
 
 	clustering {
 		enabled = true
-	}
-
-	scrape {
-		default_scrape_interval = "30s"
 	}
 }
 
@@ -144,7 +128,6 @@ prometheus.exporter.self "default" { }
 prometheus.scrape "metamonitoring" {
 	targets         = prometheus.exporter.self.default.targets
 	forward_to      = [prometheus.remote_write.victoriametrics.receiver]
-	scrape_interval = "30s"
 }
 
 // WRITES
