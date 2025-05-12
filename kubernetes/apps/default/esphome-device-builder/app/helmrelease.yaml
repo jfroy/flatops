@@ -36,9 +36,9 @@ spec:
                 cpu: 5m
                 memory: 512Mi
             securityContext:
+              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                add: ["CAP_NET_RAW", "CAP_NET_ADMIN"]
+              capabilities: { drop: ["ALL"] }
         pod:
           hostNetwork: true
           securityContext:
