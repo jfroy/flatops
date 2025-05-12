@@ -513,3 +513,61 @@ spec:
         - key: pod-security.kubernetes.io/enforce
           operator: NotIn
           values: ["privileged"]
+---
+# /proc Mount Type
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: restrict-proc-mount-type
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  validations:
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.procMount) ||
+          c.securityContext.procMount == "Default"
+        )
+      message: "Container /proc mount type must be 'Default' or unset"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.procMount) ||
+          c.securityContext.procMount == "Default"
+        )
+      message: "Init container /proc mount type must be 'Default' or unset"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.procMount) ||
+          c.securityContext.procMount == "Default"
+        )
+      message: "Ephemeral container /proc mount type must be 'Default' or unset"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: restrict-proc-mount-type-binding
+spec:
+  policyName: restrict-proc-mount-type
+  validationActions: ["Deny"]
+  matchResources:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+    namespaceSelector:
+      matchExpressions:
+        - key: pod-security.kubernetes.io/enforce
+          operator: NotIn
+          values: ["privileged"]
