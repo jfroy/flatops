@@ -194,6 +194,12 @@ spec:
         - key: pod-security.kubernetes.io/enforce
           operator: NotIn
           values: ["privileged"]
+    objectSelector:
+      matchExpressions:
+        - key: gluetun
+          operator: NotIn
+          values:
+            - "true"
 ---
 # HostPath Volumes
 apiVersion: admissionregistration.k8s.io/v1
