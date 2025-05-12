@@ -35,9 +35,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: blackbox-exporter
-    securityContext:
-      capabilities:
-        add: ["NET_RAW"]
     config:
       modules:
         http_2xx:
