@@ -11,7 +11,48 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
   validations:
-    # 1. Enforce runAsNonRoot at Pod level
+    # Volume Types
+    - expression: |
+        !has(object.spec.volumes) ||
+        object.spec.volumes.all(v,
+          has(v.configMap) ||
+          has(v.csi) ||
+          has(v.downwardAPI) ||
+          has(v.emptyDir) ||
+          has(v.ephemeral) ||
+          has(v.persistentVolumeClaim) ||
+          has(v.projected) ||
+          has(v.secret)
+        )
+      message: "Volume types must be in the restricted allowed list"
+
+    # Privilege Escalation
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.allowPrivilegeEscalation) &&
+          c.securityContext.allowPrivilegeEscalation == false
+        )
+      message: "All containers must set securityContext.allowPrivilegeEscalation=false"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.allowPrivilegeEscalation) &&
+          c.securityContext.allowPrivilegeEscalation == false
+        )
+      message: "All init containers must set securityContext.allowPrivilegeEscalation=false"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.allowPrivilegeEscalation) &&
+          c.securityContext.allowPrivilegeEscalation == false
+        )
+      message: "All ephemeral containers must set securityContext.allowPrivilegeEscalation=false"
+
+    # Running as Non-root
     - expression: |
         !has(object.spec.containers) ||
         object.spec.containers.all(c,
@@ -29,59 +70,82 @@ spec:
             )
           )
         )
-      message: "Each container must set securityContext.runAsNonRoot to true, unless Pod securityContext.runAsNonRoot is set to true"
-
-    # 2. Disallow privilege escalation in all containers
-    - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          has(c.securityContext) &&
-          has(c.securityContext.allowPrivilegeEscalation) &&
-          c.securityContext.allowPrivilegeEscalation == false
-        )
-      message: "All containers must set securityContext.allowPrivilegeEscalation=false"
-
-    # 3. Disallow privilege escalation in initContainers
+      message: "All containers must set securityContext.runAsNonRoot to true, unless Pod securityContext.runAsNonRoot is set to true"
     - expression: |
         !has(object.spec.initContainers) ||
         object.spec.initContainers.all(c,
-          has(c.securityContext) &&
-          has(c.securityContext.allowPrivilegeEscalation) &&
-          c.securityContext.allowPrivilegeEscalation == false
+          ( has(c.securityContext) &&
+            has(c.securityContext.runAsNonRoot) &&
+            c.securityContext.runAsNonRoot
+          ) ||
+          (
+            ( !has(c.securityContext) ||
+              !has(c.securityContext.runAsNonRoot)
+            ) &&
+            ( has(object.spec.securityContext) &&
+              has(object.spec.securityContext.runAsNonRoot) &&
+              object.spec.securityContext.runAsNonRoot
+            )
+          )
         )
-      message: "All initContainers must set securityContext.allowPrivilegeEscalation=false"
+      message: "All init containers must set securityContext.runAsNonRoot to true, unless Pod securityContext.runAsNonRoot is set to true"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          ( has(c.securityContext) &&
+            has(c.securityContext.runAsNonRoot) &&
+            c.securityContext.runAsNonRoot
+          ) ||
+          (
+            ( !has(c.securityContext) ||
+              !has(c.securityContext.runAsNonRoot)
+            ) &&
+            ( has(object.spec.securityContext) &&
+              has(object.spec.securityContext.runAsNonRoot) &&
+              object.spec.securityContext.runAsNonRoot
+            )
+          )
+        )
+      message: "All ephemeral containers must set securityContext.runAsNonRoot to true, unless Pod securityContext.runAsNonRoot is set to true"
 
-    # 4. Require dropCapabilities=ALL in all containers
+    # Running as Non-root user
+    - expression: |
+        !has(object.spec.securityContext) ||
+        object.spec.securityContext.runAsUser != 0
+      message: "Pod must set securityContext.runAsUser to a non-zero value or leave it unset"
     - expression: |
         !has(object.spec.containers) ||
         object.spec.containers.all(c,
-          has(c.securityContext) &&
-          has(c.securityContext.capabilities) &&
-          has(c.securityContext.capabilities.drop) &&
-          c.securityContext.capabilities.drop.exists(cap, cap == "ALL")
+          !has(c.securityContext) ||
+          !has(c.securityContext.runAsUser) ||
+          c.securityContext.runAsUser != 0
         )
-      message: "All containers must drop all capabilities (capabilities.drop must include \"ALL\")"
-
-    # 5. Enforce readOnlyRootFilesystem in all containers
+      message: "All containers must set securityContext.runAsUser to a non-zero value or leave it unset"
     - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          has(c.securityContext) &&
-          has(c.securityContext.readOnlyRootFilesystem) &&
-          c.securityContext.readOnlyRootFilesystem == true
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.runAsUser) ||
+          c.securityContext.runAsUser != 0
         )
-      message: "All containers must set securityContext.readOnlyRootFilesystem=true"
+      message: "All init containers must set securityContext.runAsUser to a non-zero value or leave it unset"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.runAsUser) ||
+          c.securityContext.runAsUser != 0
+        )
+      message: "All ephemeral containers must set securityContext.runAsUser to a non-zero value or leave it unset"
 
-    # 6. Enforce seccomp profile
+    # Seccomp
     - expression: |
         !has(object.spec.containers) ||
         object.spec.containers.all(c,
           ( has(c.securityContext) &&
             has(c.securityContext.seccompProfile) &&
             has(c.securityContext.seccompProfile.type) &&
-            ( c.securityContext.seccompProfile.type == "RuntimeDefault" ||
-              c.securityContext.seccompProfile.type == "Localhost"
-            )
+            c.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
           ) ||
           (
             ( !has(c.securityContext) ||
@@ -91,13 +155,115 @@ spec:
             ( has(object.spec.securityContext) &&
               has(object.spec.securityContext.seccompProfile) &&
               has(object.spec.securityContext.seccompProfile.type) &&
-              ( object.spec.securityContext.seccompProfile.type == "RuntimeDefault" ||
-                object.spec.securityContext.seccompProfile.type == "Localhost"
-              )
+              object.spec.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
             )
           )
         )
-      message: "Each container must set securityContext.seccompProfile.type to RuntimeDefault or Localhost, unless Pod securityContext.seccompProfile.type is set to RuntimeDefault or Localhost"
+      message: "All containers must set securityContext.seccompProfile.type to RuntimeDefault or Localhost, unless Pod securityContext.seccompProfile.type is set to RuntimeDefault or Localhost"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          ( has(c.securityContext) &&
+            has(c.securityContext.seccompProfile) &&
+            has(c.securityContext.seccompProfile.type) &&
+            c.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
+          ) ||
+          (
+            ( !has(c.securityContext) ||
+              !has(c.securityContext.seccompProfile) ||
+              !has(c.securityContext.seccompProfile.type)
+            ) &&
+            ( has(object.spec.securityContext) &&
+              has(object.spec.securityContext.seccompProfile) &&
+              has(object.spec.securityContext.seccompProfile.type) &&
+              object.spec.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
+            )
+          )
+        )
+      message: "All init containers must set securityContext.seccompProfile.type to RuntimeDefault or Localhost, unless Pod securityContext.seccompProfile.type is set to RuntimeDefault or Localhost"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          ( has(c.securityContext) &&
+            has(c.securityContext.seccompProfile) &&
+            has(c.securityContext.seccompProfile.type) &&
+            c.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
+          ) ||
+          (
+            ( !has(c.securityContext) ||
+              !has(c.securityContext.seccompProfile) ||
+              !has(c.securityContext.seccompProfile.type)
+            ) &&
+            ( has(object.spec.securityContext) &&
+              has(object.spec.securityContext.seccompProfile) &&
+              has(object.spec.securityContext.seccompProfile.type) &&
+              object.spec.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
+            )
+          )
+        )
+      message: "All ephemeral containers must set securityContext.seccompProfile.type to RuntimeDefault or Localhost, unless Pod securityContext.seccompProfile.type is set to RuntimeDefault or Localhost"
+
+    # Capabilities
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.capabilities) &&
+          has(c.securityContext.capabilities.drop) &&
+          c.securityContext.capabilities.drop.exists(cap, cap == "ALL")
+        )
+      message: "All containers must drop all capabilities (capabilities.drop must include \"ALL\")"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.capabilities) &&
+          has(c.securityContext.capabilities.drop) &&
+          c.securityContext.capabilities.drop.exists(cap, cap == "ALL")
+        )
+      message: "All init containers must drop all capabilities (capabilities.drop must include \"ALL\")"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          has(c.securityContext) &&
+          has(c.securityContext.capabilities) &&
+          has(c.securityContext.capabilities.drop) &&
+          c.securityContext.capabilities.drop.exists(cap, cap == "ALL")
+        )
+      message: "All ephemeral containers must drop all capabilities (capabilities.drop must include \"ALL\")"
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.capabilities) ||
+          !has(c.securityContext.capabilities.add) ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in ["NET_BIND_SERVICE"]
+          )
+        )
+      message: "Adding capabilities outside the allowed restricted list is not permitted"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.capabilities) ||
+          !has(c.securityContext.capabilities.add) ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in ["NET_BIND_SERVICE"]
+          )
+        )
+      message: "Adding capabilities outside the allowed restricted list is not permitted"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.capabilities) ||
+          !has(c.securityContext.capabilities.add) ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in ["NET_BIND_SERVICE"]
+          )
+        )
+      message: "Adding capabilities outside the allowed restricted list is not permitted"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
