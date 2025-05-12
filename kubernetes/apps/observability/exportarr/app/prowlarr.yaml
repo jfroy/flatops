@@ -26,6 +26,8 @@ spec:
   endpoints:
     - port: monitoring
       path: /metrics
+      interval: 5m
+      scrapeTimeout: 2m
       metricRelabelings:
         - action: replace
           replacement: prowlarr.default
