@@ -145,6 +145,36 @@ spec:
           )
         )
       message: "Adding capabilities outside the allowed baseline list is not permitted"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.capabilities) ||
+          !has(c.securityContext.capabilities.add) ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in [
+              "AUDIT_WRITE", "CHOWN", "DAC_OVERRIDE", "FOWNER",
+              "FSETID", "KILL", "MKNOD", "NET_BIND_SERVICE",
+              "SETFCAP", "SETGID", "SETPCAP", "SETUID", "SYS_CHROOT"
+            ]
+          )
+        )
+      message: "Adding capabilities outside the allowed baseline list is not permitted"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.capabilities) ||
+          !has(c.securityContext.capabilities.add) ||
+          c.securityContext.capabilities.add.all(cap,
+            cap in [
+              "AUDIT_WRITE", "CHOWN", "DAC_OVERRIDE", "FOWNER",
+              "FSETID", "KILL", "MKNOD", "NET_BIND_SERVICE",
+              "SETFCAP", "SETGID", "SETPCAP", "SETUID", "SYS_CHROOT"
+            ]
+          )
+        )
+      message: "Adding capabilities outside the allowed baseline list is not permitted"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -228,6 +258,24 @@ spec:
           )
         )
       message: "HostPort usage must be 0 or unset"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.ports) ||
+          c.ports.all(p,
+            !has(p.hostPort) || p.hostPort == 0
+          )
+        )
+      message: "HostPort usage must be 0 or unset"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.ports) ||
+          c.ports.all(p,
+            !has(p.hostPort) || p.hostPort == 0
+          )
+        )
+      message: "HostPort usage must be 0 or unset"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -283,6 +331,24 @@ spec:
           c.securityContext.appArmorProfile.type in ["RuntimeDefault", "Localhost"]
         )
       message: "Container AppArmor profile must be RuntimeDefault, Localhost, or unset"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.appArmorProfile) ||
+          !has(c.securityContext.appArmorProfile.type) ||
+          c.securityContext.appArmorProfile.type in ["RuntimeDefault", "Localhost"]
+        )
+      message: "Init container AppArmor profile must be RuntimeDefault, Localhost, or unset"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.appArmorProfile) ||
+          !has(c.securityContext.appArmorProfile.type) ||
+          c.securityContext.appArmorProfile.type in ["RuntimeDefault", "Localhost"]
+        )
+      message: "Ephemeral container AppArmor profile must be RuntimeDefault, Localhost, or unset"
     - expression: |
         !has(object.metadata.annotations) ||
         !has(object.metadata.annotations["container.apparmor.security.beta.kubernetes.io"])
