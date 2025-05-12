@@ -372,3 +372,144 @@ spec:
         - key: pod-security.kubernetes.io/enforce
           operator: NotIn
           values: ["privileged"]
+---
+# SELinux
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: restrict-selinux-options
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  validations:
+    - expression: |
+        !has(object.spec.securityContext) ||
+        !has(object.spec.securityContext.seLinuxOptions) ||
+        !has(object.spec.securityContext.seLinuxOptions.type) ||
+        object.spec.securityContext.seLinuxOptions.type in [
+          "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
+        ]
+      message: "Pod SELinux type must be in the baseline allowed list or unset"
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.type) ||
+          c.securityContext.seLinuxOptions.type in [
+            "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
+          ]
+        )
+      message: "Container SELinux type must be in the baseline allowed list or unset"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.type) ||
+          c.securityContext.seLinuxOptions.type in [
+           "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
+          ]
+        )
+      message: "Init container SELinux type must be in the baseline allowed list or unset"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.type) ||
+          c.securityContext.seLinuxOptions.type in [
+            "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
+          ]
+        )
+      message: "Ephemeral container SELinux type must be in the baseline allowed list or unset"
+    - expression: |
+        !has(object.spec.securityContext) ||
+        !has(object.spec.securityContext.seLinuxOptions) ||
+        !has(object.spec.securityContext.seLinuxOptions.user) ||
+        object.spec.securityContext.seLinuxOptions.user == ""
+      message: "Pod SELinux user must be empty or unset"
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.user) ||
+          c.securityContext.seLinuxOptions.user == ""
+        )
+      message: "Container SELinux user must be empty or unset"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.user) ||
+          c.securityContext.seLinuxOptions.user == ""
+        )
+      message: "Init container SELinux user must be empty or unset"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.user) ||
+          c.securityContext.seLinuxOptions.user == ""
+        )
+      message: "Ephemeral container SELinux user must be empty or unset"
+    - expression: |
+        !has(object.spec.securityContext) ||
+        !has(object.spec.securityContext.seLinuxOptions) ||
+        !has(object.spec.securityContext.seLinuxOptions.role) ||
+        object.spec.securityContext.seLinuxOptions.role == ""
+      message: "Pod SELinux role must be empty or unset"
+    - expression: |
+        !has(object.spec.containers) ||
+        object.spec.containers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.role) ||
+          c.securityContext.seLinuxOptions.role == ""
+        )
+      message: "Container SELinux role must be empty or unset"
+    - expression: |
+        !has(object.spec.initContainers) ||
+        object.spec.initContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.role) ||
+          c.securityContext.seLinuxOptions.role == ""
+        )
+      message: "Init container SELinux role must be empty or unset"
+    - expression: |
+        !has(object.spec.ephemeralContainers) ||
+        object.spec.ephemeralContainers.all(c,
+          !has(c.securityContext) ||
+          !has(c.securityContext.seLinuxOptions) ||
+          !has(c.securityContext.seLinuxOptions.role) ||
+          c.securityContext.seLinuxOptions.role == ""
+        )
+      message: "Ephemeral container SELinux role must be empty or unset"
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: restrict-selinux-options-binding
+spec:
+  policyName: restrict-selinux-options
+  validationActions: ["Deny"]
+  matchResources:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+    namespaceSelector:
+      matchExpressions:
+        - key: pod-security.kubernetes.io/enforce
+          operator: NotIn
+          values: ["privileged"]
