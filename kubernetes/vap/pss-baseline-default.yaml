@@ -351,7 +351,7 @@ spec:
       message: "Ephemeral container AppArmor profile must be RuntimeDefault, Localhost, or unset"
     - expression: |
         !has(object.metadata.annotations) ||
-        !has(object.metadata.annotations["container.apparmor.security.beta.kubernetes.io"])
+        !object.metadata.annotations.exists(a, a == "container.apparmor.security.beta.kubernetes.io")
       message: "Pods must not have the 'container.apparmor.security.beta.kubernetes.io' annotation"
 ---
 apiVersion: admissionregistration.k8s.io/v1
