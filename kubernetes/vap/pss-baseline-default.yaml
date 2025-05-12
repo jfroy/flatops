@@ -136,4 +136,7 @@ spec:
       matchExpressions:
         - key: app.kubernetes.io/name
           operator: NotIn
-          values: ["esphome-device-builder"]
+          values:
+            - buildkit-amd64
+            - buildkit-arm64
+            - esphome-device-builder
