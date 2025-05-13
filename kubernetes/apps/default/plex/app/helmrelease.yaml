@@ -31,6 +31,11 @@ spec:
               NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
               TZ: America/Los_Angeles
               PLEX_NO_AUTH_NETWORKS: 10.1.0.0/16
+            ports:
+              - containerPort: 32400
+                hostPort: 32400
+                name: plex
+                protocol: TCP
             probes:
               liveness: &probe
                 enabled: true
@@ -98,8 +103,11 @@ spec:
             readOnly: true
     service:
       plex:
+        annotations:
+          external-dns.alpha.kubernetes.io/endpoints-type: HostIP
+          external-dns.alpha.kubernetes.io/hostname: plex.internal.
+        clusterIP: None
         controller: plex
-        type: LoadBalancer
         ports:
-          https:
+          plex:
             port: 32400
