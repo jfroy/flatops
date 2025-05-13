@@ -29,14 +29,20 @@ spec:
               tag: 1.41.6.9685@sha256:37d36646471fb905a0080daaaa1f09ad3370b06149ed5f94dad73ead591cad0e
             env:
               NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
-              PLEX_NO_AUTH_NETWORKS: 10.1.0.0/16
+              PLEX_ADVERTISE_URL: http://plex.internal:22400
+              PLEX_NO_AUTH_NETWORKS: 10.1.0.0/16,10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
+              PLEX_PREFERENCE_0: TreatWanIpAsLocal=0
+              PLEX_PREFERENCE_1: RelayEnabled=0
+              PLEX_PREFERENCE_2: LanNetworksBandwidth=10.1.0.0/16,10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
+              PLEX_PREFERENCE_3: GdmEnabled=0
+              PLEX_PREFERENCE_4: EnableIPv6=0
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
                   name: plex-claim
             ports:
               - containerPort: 32400
-                hostPort: 32400
+                hostPort: 22400
                 name: plex
                 protocol: TCP
             probes:
