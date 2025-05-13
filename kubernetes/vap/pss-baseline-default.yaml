@@ -14,17 +14,14 @@ spec:
         resources: ["pods"]
   validations:
     - expression: |
-        !has(object.spec.hostNetwork) ||
-        object.spec.hostNetwork == false
-      message: "spec.hostNetwork must be false"
+        !object.spec.?hostNetwork.orValue(false)
+      message: "spec.hostNetwork must be false or unset"
     - expression: |
-        !has(object.spec.hostPID) ||
-        object.spec.hostPID == false
-      message: "spec.hostPID must be false"
+        !object.spec.?hostPID.orValue(false)
+      message: "spec.hostPID must be false or unset"
     - expression: |
-        !has(object.spec.hostIPC) ||
-        object.spec.hostIPC == false
-      message: "spec.hostIPC must be false"
+        !object.spec.?hostIPC.orValue(false)
+      message: "spec.hostIPC must be false or unset"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -64,31 +61,16 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  variables:
+    - name: containers
+      expression: |
+        object.spec.?containers.orValue([]).map(c, c) +
+        object.spec.?initContainers.orValue([]).map(c, c) +
+        object.spec.?ephemeralContainers.orValue([]).map(c, c)
   validations:
     - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.privileged) ||
-          c.securityContext.privileged == false
-        )
+        variables.containers.all(c, c.?securityContext.?privileged.orValue(false) == false)
       message: "All containers must not be privileged"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.privileged) ||
-          c.securityContext.privileged == false
-        )
-      message: "All initContainers must not be privileged"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.privileged) ||
-          c.securityContext.privileged == false
-        )
-      message: "All ephemeralContainers must not be privileged"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -129,51 +111,16 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  variables:
+    - name: containers
+      expression: |
+        object.spec.?containers.orValue([]).map(c, c) +
+        object.spec.?initContainers.orValue([]).map(c, c) +
+        object.spec.?ephemeralContainers.orValue([]).map(c, c)
   validations:
     - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.capabilities) ||
-          !has(c.securityContext.capabilities.add) ||
-          c.securityContext.capabilities.add.all(cap,
-            cap in [
-              "AUDIT_WRITE", "CHOWN", "DAC_OVERRIDE", "FOWNER",
-              "FSETID", "KILL", "MKNOD", "NET_BIND_SERVICE",
-              "SETFCAP", "SETGID", "SETPCAP", "SETUID", "SYS_CHROOT"
-            ]
-          )
-        )
-      message: "Adding capabilities outside the allowed baseline list is not permitted"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.capabilities) ||
-          !has(c.securityContext.capabilities.add) ||
-          c.securityContext.capabilities.add.all(cap,
-            cap in [
-              "AUDIT_WRITE", "CHOWN", "DAC_OVERRIDE", "FOWNER",
-              "FSETID", "KILL", "MKNOD", "NET_BIND_SERVICE",
-              "SETFCAP", "SETGID", "SETPCAP", "SETUID", "SYS_CHROOT"
-            ]
-          )
-        )
-      message: "Adding capabilities outside the allowed baseline list is not permitted"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.capabilities) ||
-          !has(c.securityContext.capabilities.add) ||
-          c.securityContext.capabilities.add.all(cap,
-            cap in [
-              "AUDIT_WRITE", "CHOWN", "DAC_OVERRIDE", "FOWNER",
-              "FSETID", "KILL", "MKNOD", "NET_BIND_SERVICE",
-              "SETFCAP", "SETGID", "SETPCAP", "SETUID", "SYS_CHROOT"
-            ]
-          )
-        )
+        variables.containers.all(c, c.?securityContext.?capabilities.?add.orValue([]).all(cap, cap in
+          ["AUDIT_WRITE", "CHOWN", "DAC_OVERRIDE", "FOWNER", "FSETID", "KILL", "MKNOD", "NET_BIND_SERVICE", "SETFCAP", "SETGID", "SETPCAP", "SETUID", "SYS_CHROOT"]))
       message: "Adding capabilities outside the allowed baseline list is not permitted"
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -216,10 +163,7 @@ spec:
         resources: ["pods"]
   validations:
     - expression: |
-        !has(object.spec.volumes) ||
-        object.spec.volumes.all(v,
-          !has(v.hostPath)
-        )
+        object.spec.?volumes.orValue([]).all(v, v.?hostPath == optional.none())
       message: "HostPath volumes are not allowed"
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -254,33 +198,15 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  variables:
+    - name: containers
+      expression: |
+        object.spec.?containers.orValue([]).map(c, c) +
+        object.spec.?initContainers.orValue([]).map(c, c) +
+        object.spec.?ephemeralContainers.orValue([]).map(c, c)
   validations:
     - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.ports) ||
-          c.ports.all(p,
-            !has(p.hostPort) || p.hostPort == 0
-          )
-        )
-      message: "HostPort usage must be 0 or unset"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.ports) ||
-          c.ports.all(p,
-            !has(p.hostPort) || p.hostPort == 0
-          )
-        )
-      message: "HostPort usage must be 0 or unset"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.ports) ||
-          c.ports.all(p,
-            !has(p.hostPort) || p.hostPort == 0
-          )
-        )
+        variables.containers.all(c, c.?ports.orValue([]).all(p, p.?hostPort.orValue(0) == 0))
       message: "HostPort usage must be 0 or unset"
 ---
 apiVersion: admissionregistration.k8s.io/v1
@@ -322,40 +248,19 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  variables:
+    - name: containers
+      expression: |
+        object.spec.?containers.orValue([]).map(c, c) +
+        object.spec.?initContainers.orValue([]).map(c, c) +
+        object.spec.?ephemeralContainers.orValue([]).map(c, c)
   validations:
     - expression: |
-        !has(object.spec.securityContext) ||
-        !has(object.spec.securityContext.appArmorProfile) ||
-        !has(object.spec.securityContext.appArmorProfile.type) ||
-        object.spec.securityContext.appArmorProfile.type in ["RuntimeDefault", "Localhost"]
-      message: "Pod-level AppArmor profile must be RuntimeDefault, Localhost, or unset"
+        object.spec.?securityContext.?appArmorProfile.?type.orValue("") in ["RuntimeDefault", "Localhost", ""]
+      message: "AppArmor profile must be RuntimeDefault, Localhost, or unset"
     - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.appArmorProfile) ||
-          !has(c.securityContext.appArmorProfile.type) ||
-          c.securityContext.appArmorProfile.type in ["RuntimeDefault", "Localhost"]
-        )
-      message: "Container AppArmor profile must be RuntimeDefault, Localhost, or unset"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.appArmorProfile) ||
-          !has(c.securityContext.appArmorProfile.type) ||
-          c.securityContext.appArmorProfile.type in ["RuntimeDefault", "Localhost"]
-        )
-      message: "Init container AppArmor profile must be RuntimeDefault, Localhost, or unset"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.appArmorProfile) ||
-          !has(c.securityContext.appArmorProfile.type) ||
-          c.securityContext.appArmorProfile.type in ["RuntimeDefault", "Localhost"]
-        )
-      message: "Ephemeral container AppArmor profile must be RuntimeDefault, Localhost, or unset"
+        variables.containers.all(c, c.?securityContext.?appArmorProfile.?type.orValue("") in ["RuntimeDefault", "Localhost", ""])
+      message: "AppArmor profile must be RuntimeDefault, Localhost, or unset"
     - expression: |
         !has(object.metadata.annotations) ||
         !object.metadata.annotations.exists(a, a == "container.apparmor.security.beta.kubernetes.io")
@@ -393,114 +298,26 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  variables:
+    - name: containers
+      expression: |
+        object.spec.?containers.orValue([]).map(c, c) +
+        object.spec.?initContainers.orValue([]).map(c, c) +
+        object.spec.?ephemeralContainers.orValue([]).map(c, c)
+    - name: seLinuxOptions
+      expression: |
+        [object.spec.?securityContext.?seLinuxOptions] +
+        variables.containers.map(c, c.?securityContext.?seLinuxOptions)
   validations:
     - expression: |
-        !has(object.spec.securityContext) ||
-        !has(object.spec.securityContext.seLinuxOptions) ||
-        !has(object.spec.securityContext.seLinuxOptions.type) ||
-        object.spec.securityContext.seLinuxOptions.type in [
-          "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
-        ]
-      message: "Pod SELinux type must be in the baseline allowed list or unset"
+        variables.seLinuxOptions.all(o, o.?type.orValue("") in
+          ["", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"])
+      message: "SELinux type must be in the baseline allowed list or unset"
     - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.type) ||
-          c.securityContext.seLinuxOptions.type in [
-            "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
-          ]
-        )
-      message: "Container SELinux type must be in the baseline allowed list or unset"
+        variables.seLinuxOptions.all(o, o.?user.orValue("") == "")
+      message: "SELinux user must be empty or unset"
     - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.type) ||
-          c.securityContext.seLinuxOptions.type in [
-           "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
-          ]
-        )
-      message: "Init container SELinux type must be in the baseline allowed list or unset"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.type) ||
-          c.securityContext.seLinuxOptions.type in [
-            "", "container_t", "container_init_t", "container_kvm_t", "container_engine_t"
-          ]
-        )
-      message: "Ephemeral container SELinux type must be in the baseline allowed list or unset"
-    - expression: |
-        !has(object.spec.securityContext) ||
-        !has(object.spec.securityContext.seLinuxOptions) ||
-        !has(object.spec.securityContext.seLinuxOptions.user) ||
-        object.spec.securityContext.seLinuxOptions.user == ""
-      message: "Pod SELinux user must be empty or unset"
-    - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.user) ||
-          c.securityContext.seLinuxOptions.user == ""
-        )
-      message: "Container SELinux user must be empty or unset"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.user) ||
-          c.securityContext.seLinuxOptions.user == ""
-        )
-      message: "Init container SELinux user must be empty or unset"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.user) ||
-          c.securityContext.seLinuxOptions.user == ""
-        )
-      message: "Ephemeral container SELinux user must be empty or unset"
-    - expression: |
-        !has(object.spec.securityContext) ||
-        !has(object.spec.securityContext.seLinuxOptions) ||
-        !has(object.spec.securityContext.seLinuxOptions.role) ||
-        object.spec.securityContext.seLinuxOptions.role == ""
-      message: "Pod SELinux role must be empty or unset"
-    - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.role) ||
-          c.securityContext.seLinuxOptions.role == ""
-        )
-      message: "Container SELinux role must be empty or unset"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.role) ||
-          c.securityContext.seLinuxOptions.role == ""
-        )
-      message: "Init container SELinux role must be empty or unset"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seLinuxOptions) ||
-          !has(c.securityContext.seLinuxOptions.role) ||
-          c.securityContext.seLinuxOptions.role == ""
-        )
-      message: "Ephemeral container SELinux role must be empty or unset"
+        variables.seLinuxOptions.all(o, o.?role.orValue("") == "")
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -534,31 +351,16 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  variables:
+    - name: containers
+      expression: |
+        object.spec.?containers.orValue([]).map(c, c) +
+        object.spec.?initContainers.orValue([]).map(c, c) +
+        object.spec.?ephemeralContainers.orValue([]).map(c, c)
   validations:
     - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.procMount) ||
-          c.securityContext.procMount == "Default"
-        )
+        variables.containers.all(c, c.?securityContext.?procMount.orValue("Default") == "Default")
       message: "Container /proc mount type must be 'Default' or unset"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.procMount) ||
-          c.securityContext.procMount == "Default"
-        )
-      message: "Init container /proc mount type must be 'Default' or unset"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.procMount) ||
-          c.securityContext.procMount == "Default"
-        )
-      message: "Ephemeral container /proc mount type must be 'Default' or unset"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -592,36 +394,20 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+  variables:
+    - name: containers
+      expression: |
+        object.spec.?containers.orValue([]).map(c, c) +
+        object.spec.?initContainers.orValue([]).map(c, c) +
+        object.spec.?ephemeralContainers.orValue([]).map(c, c)
+    - name: seccompProfiles
+      expression: |
+        [object.spec.?securityContext.?seccompProfile] +
+        variables.containers.map(c, c.?securityContext.?seccompProfile)
   validations:
     - expression: |
-        !has(object.spec.securityContext) ||
-        !has(object.spec.securityContext.seccompProfile) ||
-        object.spec.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
-      message: "Pod-level seccomp profile must be RuntimeDefault, Localhost, or unset"
-    - expression: |
-        !has(object.spec.containers) ||
-        object.spec.containers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seccompProfile) ||
-          c.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
-        )
-      message: "Container seccomp profile must be RuntimeDefault, Localhost, or unset"
-    - expression: |
-        !has(object.spec.initContainers) ||
-        object.spec.initContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seccompProfile) ||
-          c.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
-        )
-      message: "Init container seccomp profile must be RuntimeDefault, Localhost, or unset"
-    - expression: |
-        !has(object.spec.ephemeralContainers) ||
-        object.spec.ephemeralContainers.all(c,
-          !has(c.securityContext) ||
-          !has(c.securityContext.seccompProfile) ||
-          c.securityContext.seccompProfile.type in ["RuntimeDefault", "Localhost"]
-        )
-      message: "Ephemeral container seccomp profile must be RuntimeDefault, Localhost, or unset"
+        variables.seccompProfiles.all(p, p.?type.orValue("RuntimeDefault") in ['RuntimeDefault', 'Localhost'])
+      message: "seccomp profile must be RuntimeDefault, Localhost, or unset"
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingAdmissionPolicyBinding
@@ -657,22 +443,17 @@ spec:
         resources: ["pods"]
   validations:
     - expression: |
-        !has(object.spec.securityContext) ||
-        !has(object.spec.securityContext.sysctls) ||
-        object.spec.securityContext.sysctls.all(s,
-          s.name in [
-            "kernel.shm_rmid_forced",
-            "net.ipv4.ip_local_port_range",
-            "net.ipv4.ip_local_reserved_ports",
-            "net.ipv4.ip_unprivileged_port_start",
-            "net.ipv4.ping_group_range",
-            "net.ipv4.tcp_fin_timeout",
-            "net.ipv4.tcp_keepalive_intvl",
-            "net.ipv4.tcp_keepalive_probes",
-            "net.ipv4.tcp_keepalive_time",
-            "net.ipv4.tcp_syncookies"
-          ]
-        )
+        object.spec.?securityContext.?sysctls.orValue([]).all(s, s.name in [
+          "kernel.shm_rmid_forced",
+          "net.ipv4.ip_local_port_range",
+          "net.ipv4.ip_local_reserved_ports",
+          "net.ipv4.ip_unprivileged_port_start",
+          "net.ipv4.ping_group_range",
+          "net.ipv4.tcp_fin_timeout",
+          "net.ipv4.tcp_keepalive_intvl",
+          "net.ipv4.tcp_keepalive_probes",
+          "net.ipv4.tcp_keepalive_time",
+          "net.ipv4.tcp_syncookies"])
       message: "sysctls must be within the allowed baseline list or unset"
 ---
 apiVersion: admissionregistration.k8s.io/v1
