@@ -9,10 +9,6 @@ metadata:
     app.kubernetes.io/created-by: dragonfly-operator
   name: dragonfly
 spec:
-  authentication:
-    passwordFromSecret:
-      name: dragonfly-auth
-      key: password
   replicas: 1
   resources:
     requests:
