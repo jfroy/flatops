@@ -13,6 +13,7 @@ resources:
   - ./gomft/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
+  - ./maybe/ks.yaml
   - ./media-smb/ks.yaml
   - ./namespace.yaml
   - ./octoeverywhere-bambu-connect/ks.yaml

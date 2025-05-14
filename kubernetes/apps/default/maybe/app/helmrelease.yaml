@@ -1,0 +1,117 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: maybe
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      maybe:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.4.0@sha256:a9f405688344a8a6f718e2c344438342ad21540986aeb5ab5fa781831eb2c597
+            envFrom:
+              - secretRef:
+                  name: maybe
+              - secretRef:
+                  name: maybe-initdb
+        containers:
+          web:
+            image:
+              repository: ghcr.io/maybe-finance/maybe
+              tag: sha-3f48992aea5ca37bb79a028d5c6dee2d3a2ecefd
+            env:
+              APP_DOMAIN: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+              DISABLE_SSL: "true"
+              RAILS_ASSUME_SSL: "false"
+              RAILS_FORCE_SSL: "false"
+              REDIS_URL: rediss://dragonfly.database.svc.cluster.local:6379/0
+              SELF_HOSTED: "true"
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: maybe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+          worker:
+            image:
+              repository: ghcr.io/maybe-finance/maybe
+              tag: sha-3f48992aea5ca37bb79a028d5c6dee2d3a2ecefd
+            command:
+              - bundle
+              - exec
+              - sidekiq
+            env:
+              APP_DOMAIN: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+              DISABLE_SSL: "true"
+              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
+              SELF_HOSTED: "true"
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: maybe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /rails/storage
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 200Mi
+        globalMounts:
+          - path: /tmp
+            subPath: tmp
+          - path: /rails/tmp
+            subPath: rails-tmp
+    route:
+      maybe:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: &port 3000
+                name: maybe
+    service:
+      maybe:
+        controller: maybe
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
