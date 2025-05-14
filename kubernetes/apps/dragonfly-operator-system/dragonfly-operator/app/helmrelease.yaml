@@ -41,6 +41,7 @@ spec:
       runAsGroup: 1000
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
+      seccompProfile: { type: RuntimeDefault }
     serviceMonitor:
       enabled: true
     grafanaDashboard:
