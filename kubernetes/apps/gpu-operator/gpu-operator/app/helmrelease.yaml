@@ -18,7 +18,7 @@ spec:
   chart:
     spec:
       chart: gpu-operator
-      version: v24.9.2
+      version: v25.3.0
       sourceRef:
         kind: HelmRepository
         name: nvidia
@@ -41,25 +41,6 @@ spec:
     cdi:
       enabled: true
       default: true
-    operator:
-      repository: ghcr.io/jfroy
-      version: v24.9.1
-      defaultRuntime: containerd
-      resources:
-        limits: null
-    driver:
-      enabled: false
-    toolkit:
-      repository: ghcr.io/jfroy
-      version: 1.17.4-ubuntu20.04
-      env:
-        - name: CONTAINERD_CONFIG
-          value: /var/nvidia/etc/containerd.toml
-        # talos does not recover if containerd is restarted with SIGHUP
-        # https://github.com/siderolabs/talos/issues/9271
-        - name: CONTAINERD_RESTART_MODE
-          value: none
-      installDir: "/var/nvidia"
     devicePlugin:
       config:
         name: time-slicing-config-all
@@ -74,13 +55,39 @@ spec:
             targetLabel: instance
             replacement: $1
             action: replace
+    driver:
+      enabled: false
     migManager:
       enabled: false
-    vgpuDeviceManager:
+    operator:
+      repository: ghcr.io/jfroy
+      defaultRuntime: containerd
+      resources:
+        limits: null
+    sandboxDevicePlugin:
       enabled: false
+    toolkit:
+      repository: ghcr.io/jfroy
+      version: 1.17.6-ubuntu20.04
+      # These environment variables are stored in the cluster policy CR. The operator uses them to
+      # create the toolkit daemonset resource.
+      env:
+        # Talos /etc is read-only. `CONTAINERD_CONFIG` is read by the operator to override the
+        # config file path (which is ultimately passed via the `RUNTIME_CONFIG` environment
+        # variable).
+        - name: CONTAINERD_CONFIG
+          value: /var/nvidia/etc/containerd.toml
+        # Talos does not recover if containerd is restarted with SIGHUP.
+        # https://github.com/siderolabs/talos/issues/9271
+        # https://github.com/siderolabs/talos/issues/10980
+        - name: RUNTIME_RESTART_MODE
+          value: none
+      installDir: "/var/nvidia"
+    validator:
+      repository: ghcr.io/jfroy/gpu-operator
     vfioManager:
       enabled: false
-    sandboxDevicePlugin:
+    vgpuDeviceManager:
       enabled: false
   postRenderers:
     - kustomize:
