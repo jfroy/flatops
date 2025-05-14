@@ -65,3 +65,39 @@ spec:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: onepassword-connect
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext/capabilities
+                value: {"drop": ["ALL"]}
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext/runAsNonRoot
+                value: true
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext/seccompProfile
+                value: {"type": "RuntimeDefault"}
+              - op: add
+                path: /spec/template/spec/containers/1/securityContext/capabilities
+                value: {"drop": ["ALL"]}
+              - op: add
+                path: /spec/template/spec/containers/1/securityContext/runAsNonRoot
+                value: true
+              - op: add
+                path: /spec/template/spec/containers/1/securityContext/seccompProfile
+                value: {"type": "RuntimeDefault"}
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: onepassword-connect-operator
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext/runAsNonRoot
+                value: true
