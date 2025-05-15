@@ -30,7 +30,7 @@ spec:
               repository: ghcr.io/gethomepage/homepage
               tag: v1.2.0@sha256:5e6bcbb595c4e857540577135e0f8b3ffc2e97c23d6e0ddc7df183de5bfdd442
             env:
-              HOMEPAGE_ALLOWED_HOSTS: &hostname "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+              HOMEPAGE_ALLOWED_HOSTS: "*"
               PUID: 1000
               PGID: 1000
               TZ: America/Los_Angeles
@@ -69,7 +69,7 @@ spec:
     route:
       homepage:
         hostnames:
-          - *hostname
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
         parentRefs:
           - name: internal
             namespace: kube-system
