@@ -54,9 +54,9 @@ spec:
               tag: v3.39.1-jfroy.4@sha256:236f04803c9c52efd1431a6bc9103c07bd454009b97582e0b9f22d9c130e1ee2
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
-              DOT: off
               DOT_CACHING: off
               DOT_IPV6: off
+              DOT: off
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "80,9999"
               HEALTH_SERVER_ADDRESS: ":9999"
@@ -64,15 +64,23 @@ spec:
               LOG_LEVEL: debug
               PUBLICIP_API: cloudflare
               STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
+              TZ: America/Los_Angeles
               UPDATER_PERIOD: 24h
               VERSION_INFORMATION: off
               VPN_INTERFACE: wg0
               VPN_IPV6_SERVER: off
               VPN_TYPE: wireguard
-              TZ: America/Los_Angeles
             envFrom:
               - secretRef:
                   name: gluetun-qbittorrent-secret
+            # https://github.com/qdm12/gluetun-wiki/blob/main/setup/advanced/kubernetes.md#adding-ipv6-rule--file-exists
+            lifecycle:
+              postStart:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -c
+                    - (ip rule del table 51820; ip -6 rule del table 51820) || true
             probes:
               liveness:
                 enabled: true
