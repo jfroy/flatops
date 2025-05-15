@@ -4,7 +4,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./namespace.yaml
-  - ./kube-guardian/ks.yaml
+  # TODO(jfroy): https://github.com/xentra-ai/kube-guardian/issues/284
+  # - ./kube-guardian/ks.yaml
 components:
   - ../../components/common
 transformers:
