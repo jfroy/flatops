@@ -51,6 +51,8 @@ spec:
                   name: maybe
               - secretRef:
                   name: maybe-df
+              - secretRef:
+                  name: maybe-key-base
             securityContext: &sc
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
