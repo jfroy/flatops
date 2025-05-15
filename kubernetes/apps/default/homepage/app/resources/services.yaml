@@ -91,8 +91,7 @@
         widget:
           type: unifi
           url: https://unifi.internal
-          username: homeassistant
-          password: {{HOMEPAGE_VAR_UNIFI_PASSWORD}}
+          key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
     - victorialogs:
         icon: sh-victoriametrics-light.webp
         href: https://val.kantai.xyz/
