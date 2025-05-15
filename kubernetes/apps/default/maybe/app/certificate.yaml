@@ -1,0 +1,19 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: maybe-df
+spec:
+  secretName: maybe-df-tls
+  duration: 2160h  # 90d
+  renewBefore: 360h # 15d
+  subject:
+    organizations:
+      - maybe-df
+  issuerRef:
+    name: cluster-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: maybe-df.default.svc.cluster.local
+  dnsNames:
+    - maybe-df.default.svc.cluster.local

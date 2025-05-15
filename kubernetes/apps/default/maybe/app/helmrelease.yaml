@@ -36,45 +36,34 @@ spec:
                   name: maybe-initdb
         containers:
           web:
-            image:
+            image: &image
               repository: ghcr.io/maybe-finance/maybe
               tag: sha-3f48992aea5ca37bb79a028d5c6dee2d3a2ecefd
-            env:
+            env: &env
               APP_DOMAIN: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
               DISABLE_SSL: "true"
               RAILS_ASSUME_SSL: "false"
               RAILS_FORCE_SSL: "false"
-              REDIS_URL: rediss://dragonfly.database.svc.cluster.local:6379/0
               SELF_HOSTED: "true"
               TZ: America/Los_Angeles
-            envFrom:
+            envFrom: &envFrom
               - secretRef:
                   name: maybe
-            securityContext:
+              - secretRef:
+                  name: maybe-df
+            securityContext: &sc
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
           worker:
-            image:
-              repository: ghcr.io/maybe-finance/maybe
-              tag: sha-3f48992aea5ca37bb79a028d5c6dee2d3a2ecefd
+            image: *image
             command:
               - bundle
               - exec
               - sidekiq
-            env:
-              APP_DOMAIN: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-              DISABLE_SSL: "true"
-              REDIS_URL: redis://dragonfly.database.svc.cluster.local:6379
-              SELF_HOSTED: "true"
-              TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: maybe
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-              readOnlyRootFilesystem: true
+            env: *env
+            envFrom: *envFrom
+            securityContext: *sc
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -83,6 +72,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     persistence:
+      ca-certificates:
+        type: configMap
+        name: ca-certificates.crt
+        advancedMounts:
+          maybe:
+            worker:
+              - path: /etc/ssl/certs
       data:
         existingClaim: ${APP}
         globalMounts:
