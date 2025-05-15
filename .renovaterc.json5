@@ -1,36 +1,46 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "docker:enableMajor",
-    ":automergeBranch",
-    ":automergeMinor",
-    ":dependencyDashboard",
-    ":disableRateLimiting",
-    ":semanticCommits",
-    ":timezone(America/Los_Angeles)",
-    "github>jfroy/flatops//.renovate/autoMerge.json5",
-    "github>jfroy/flatops//.renovate/customManagers.json5",
-    "github>jfroy/flatops//.renovate/grafanaDashboards.json5",
-    "github>jfroy/flatops//.renovate/groups.json5",
-    "github>jfroy/flatops//.renovate/labels.json5",
-    "github>jfroy/flatops//.renovate/packageRules.json5",
-    "github>jfroy/flatops//.renovate/semanticCommits.json5"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    'docker:enableMajor',
+    ':automergeBranch',
+    ':automergeMinor',
+    ':dependencyDashboard',
+    ':disableRateLimiting',
+    ':semanticCommits',
+    ':timezone(America/Los_Angeles)',
+    'github>jfroy/flatops//.renovate/autoMerge.json5',
+    'github>jfroy/flatops//.renovate/customManagers.json5',
+    'github>jfroy/flatops//.renovate/grafanaDashboards.json5',
+    'github>jfroy/flatops//.renovate/groups.json5',
+    'github>jfroy/flatops//.renovate/labels.json5',
+    'github>jfroy/flatops//.renovate/packageRules.json5',
+    'github>jfroy/flatops//.renovate/semanticCommits.json5',
   ],
-  "dependencyDashboardTitle": "Renovate Dashboard 🤖",
-  "flux": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.yaml$"]
+  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
+  flux: {
+    managerFilePatterns: [
+      '/(^|/)kubernetes/.+\\.yaml$/',
+    ],
   },
-  "helm-values": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.yaml$"]
+  'helm-values': {
+    managerFilePatterns: [
+      '/(^|/)kubernetes/.+\\.yaml$/',
+    ],
   },
-  "helmfile": {
-    "fileMatch": ["(^|/)helmfile\\.yaml$"]
+  helmfile: {
+    managerFilePatterns: [
+      '/(^|/)helmfile\\.yaml$/',
+    ],
   },
-  "kubernetes": {
-    "fileMatch": ["(^|/)kubernetes/.+\\.yaml$"]
+  kubernetes: {
+    managerFilePatterns: [
+      '/(^|/)kubernetes/.+\\.yaml$/',
+    ],
   },
-  "kustomize": {
-    "fileMatch": ["(^|/)kustomization\\.yaml$"]
-  }
+  kustomize: {
+    managerFilePatterns: [
+      '/(^|/)kustomization\\.yaml$/',
+    ],
+  },
 }
