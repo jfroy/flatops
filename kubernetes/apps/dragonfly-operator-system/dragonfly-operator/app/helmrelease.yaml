@@ -46,3 +46,19 @@ spec:
       enabled: true
     grafanaDashboard:
       enabled: true
+  postRenderers:
+    - kustomize:
+        patches:
+          # TODO: remove when upstream fix is released
+          # https://github.com/dragonflydb/dragonfly-operator/pull/305
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: dragonfly-operator
+              namespace: dragonfly-operator-system
+            patch: |
+              - op: remove
+                path: /spec/template/spec/containers/1/args/0
+              - op: remove
+                path: /spec/template/spec/containers/1/args/0
