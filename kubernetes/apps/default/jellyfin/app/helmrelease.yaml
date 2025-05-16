@@ -67,6 +67,30 @@ spec:
             resources:
               limits:
                 nvidia.com/gpu: 1
+          vue:
+            image:
+              repository: ghcr.io/jellyfin/jellyfin-vue
+              tag: unstable.2025-05-15.f3ced5d
+            env:
+              DEFAULT_SERVERS: localhost:8096
+              DISABLE_SERVER_SELECTION: "true"
+              TZ: America/Los_Angeles
+            ports:
+              - containerPort: 80
+                name: http
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: http
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         pod:
           runtimeClassName: nvidia
           tolerations:
@@ -93,8 +117,6 @@ spec:
         existingClaim: ${APP}
       tmp:
         type: emptyDir
-      transcode:
-        type: emptyDir
       media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
@@ -114,12 +136,25 @@ spec:
           - backendRefs:
               - name: jellyfin
                 port: 8096
+      vue:
+        hostnames:
+          - "jellyvue.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - name: jellyfin
+                port: 80
     service:
       jellyfin:
         controller: jellyfin
         ports:
           http:
             port: 8096
+          vue:
+            port: 80
     # TODO: enable metrics after upstream PR is merged and released
     # https://github.com/jellyfin/jellyfin/pull/14052
     # serviceMonitor:
