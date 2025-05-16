@@ -53,14 +53,11 @@ spec:
           limits: {}
         serviceMonitor:
           enabled: true
+      pdb:
+        enabled: true
+        minAvailable: 1
+      replicas: 2
       serviceType: ClusterIP
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-    operator:
-      create: true
-      autoRestart: true
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
@@ -92,12 +89,3 @@ spec:
               - op: add
                 path: /spec/template/spec/containers/1/securityContext/seccompProfile
                 value: {"type": "RuntimeDefault"}
-          - target:
-              group: apps
-              version: v1
-              kind: Deployment
-              name: onepassword-connect-operator
-            patch: |
-              - op: add
-                path: /spec/template/spec/containers/0/securityContext/runAsNonRoot
-                value: true
