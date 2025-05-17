@@ -31,7 +31,7 @@ spec:
           gluetun-update:
             image:
               repository: ghcr.io/jfroy/gluetun
-              tag: v3.39.1-jfroy.4@sha256:236f04803c9c52efd1431a6bc9103c07bd454009b97582e0b9f22d9c130e1ee2
+              tag: v3.40.0@sha256:3785caf1e672840f226ad963060a9eda4189ff8c78ecdb1726d3832da5236d53
             args:
               - update
               - -enduser

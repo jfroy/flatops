@@ -51,7 +51,7 @@ spec:
           gluetun:
             image:
               repository: ghcr.io/jfroy/gluetun
-              tag: v3.39.1-jfroy.4@sha256:236f04803c9c52efd1431a6bc9103c07bd454009b97582e0b9f22d9c130e1ee2
+              tag: v3.40.0@sha256:3785caf1e672840f226ad963060a9eda4189ff8c78ecdb1726d3832da5236d53
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DOT_CACHING: off
