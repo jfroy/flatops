@@ -70,6 +70,3 @@ spec:
           smb:
             port: *port
             protocol: TCP
-    serviceAccount:
-      create: true
-      name: esphome-device-builder

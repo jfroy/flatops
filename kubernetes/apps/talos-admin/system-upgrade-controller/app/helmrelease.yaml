@@ -46,6 +46,8 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+        serviceAccount:
+          identifier: system-upgrade
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -56,5 +58,4 @@ spec:
           operator: Exists
           effect: NoSchedule
     serviceAccount:
-      create: true
-      name: system-upgrade
+      system-upgrade: {}

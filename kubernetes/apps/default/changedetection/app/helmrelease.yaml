@@ -98,6 +98,3 @@ spec:
         ports:
           http:
             port: *port
-    serviceAccount:
-      create: true
-      name: changedetection
