@@ -20,11 +20,6 @@ spec:
     remediation:
       retries: 3
   values:
-    defaultPodOptions:
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     controllers:
       kantai3-samba:
         type: statefulset
@@ -32,10 +27,10 @@ spec:
           reloader.stakater.com/auto: "true"
         replicas: 1 # do not scale up
         containers:
-          samba-server:
+          smbd:
             image:
-              repository: registry.kantai.xyz/jfroy/samba-server
-              tag: fedora-latest
+              repository: ghcr.io/jfroy/samba
+              tag: 4.22.1
             env:
               SAMBACC_CONFIG: /config/config.yaml:/config/users.json
               SAMBA_CONTAINER_ID: default
@@ -63,14 +58,11 @@ spec:
               # NOTE: io_uring is blocked by the default containerd v2 seccomp profile
               # https://github.com/containerd/containerd/pull/9320
               seccompProfile: { type: Unconfined }
-    service:
-      kantai3-samba:
-        controller: kantai3-samba
-        clusterIP: None
-        ports:
-          smb:
-            port: 445
-            protocol: TCP
+    defaultPodOptions:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
     persistence:
       config:
         type: custom
@@ -107,3 +99,11 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 10Mi
+    service:
+      kantai3-samba:
+        controller: kantai3-samba
+        clusterIP: None
+        ports:
+          smb:
+            port: 445
+            protocol: TCP
