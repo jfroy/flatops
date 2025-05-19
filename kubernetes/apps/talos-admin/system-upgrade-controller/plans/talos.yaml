@@ -14,7 +14,7 @@ spec:
         values: ["talos"]
   postCompleteDelay: 2m
   secrets:
-    - name: talos
+    - name: system-upgrade
       path: /var/run/secrets/talos.dev
       ignoreUpdates: true
   serviceAccountName: system-upgrade
