@@ -48,6 +48,8 @@ spec:
             securityContext: &securityContext
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+        serviceAccount:
+          identifier: homepage
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -86,5 +88,4 @@ spec:
           http:
             port: *port
     serviceAccount:
-      create: true
-      name: homepage
+      homepage: {}

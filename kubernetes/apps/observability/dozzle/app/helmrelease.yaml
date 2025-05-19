@@ -44,6 +44,8 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+        serviceAccount:
+          identifier: dozzle
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -71,5 +73,4 @@ spec:
           http:
             port: *port
     serviceAccount:
-      create: true
-      name: dozzle
+      dozzle: {}

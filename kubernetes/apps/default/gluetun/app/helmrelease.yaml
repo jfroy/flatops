@@ -50,9 +50,10 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     persistence:
-      gluetun:
+      gluetun-update:
         type: persistentVolumeClaim
-        nameOverride: "-"
         size: 1Mi
         accessMode: ReadWriteOnce
         storageClass: ceph-block
+        globalMounts:
+          - path: /gluetun
