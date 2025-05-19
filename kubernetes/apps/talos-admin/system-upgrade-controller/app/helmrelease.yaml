@@ -58,4 +58,5 @@ spec:
           operator: Exists
           effect: NoSchedule
     serviceAccount:
-      system-upgrade: {}
+      system-upgrade:
+        forceRename: system-upgrade
