@@ -11,6 +11,7 @@ spec:
       "plugins": [
         {
           "type": "macvlan",
+          "capabilities": { "ips": true },
           "mode": "bridge",
           "ipam": {
             "type": "static",
