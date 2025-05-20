@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app multus
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      multus:
+        type: daemonset
+        initContainers:
+          cni-plugins:
+            image:
+              repository: ghcr.io/home-operations/cni-plugins
+              tag: 1.7.1@sha256:a2b59b11a9cd50b5e699d7162a899a81c9b30a9386378b1deb01c054eedb38fe
+        containers:
+          multus:
+            image:
+              repository: ghcr.io/k8snetworkplumbingwg/multus-cni
+              tag: latest@sha256:e30a3a8130d82b72d8c195b26ce55f318f28ca7f9446ab6e2cae8d8283eeeabb
+            args:
+              - --cleanup-config-on-exit
+            resources:
+              requests:
+                cpu: 10m
+            securityContext:
+              privileged: true
+        serviceAccount:
+          identifier: multus
+    defaultPodOptions:
+      hostNetwork: true
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    persistence:
+      etc-cni-net-d:
+        type: hostPath
+        hostPath: /etc/cni/net.d
+        globalMounts:
+          - path: /host/etc/cni/net.d
+      opt-cni-bin:
+        type: hostPath
+        hostPath: /opt/cni/bin
+        globalMounts:
+          - path: /host/opt/cni/bin
+    serviceAccount:
+      multus: {}
