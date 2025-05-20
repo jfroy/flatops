@@ -18,7 +18,7 @@ globals:
       ea support: "true"
       guest account: nobody
       host msdfs: "false"
-      interfaces: net0
+      interfaces: net1
       load printers: "false"
       local master: "true"
       log level: "1"
