@@ -8,11 +8,14 @@ resources:
   - ./networkpolicy.yaml
   - ./pvc.yaml
 configMapGenerator:
-  - name: kantai3-samba
-    files:
-      - ./configs/samba/config.yaml
   - name: kantai3-avahi
     files:
       - ./configs/avahi/avahi-daemon.conf
+  - name: kantai3-dbus
+    files:
+      - ./configs/dbus/pod.conf
+  - name: kantai3-samba
+    files:
+      - ./configs/samba/config.yaml
 generatorOptions:
   disableNameSuffixHash: true

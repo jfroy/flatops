@@ -27,18 +27,6 @@ spec:
           reloader.stakater.com/auto: "true"
         replicas: 1 # do not scale up
         containers:
-          avahi:
-            image:
-              repository: ghcr.io/jfroy/avahi
-              tag: "0.8"
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities:
-                drop: ["ALL"]
-                add:
-                  - CHOWN
-                  - NET_BIND_SERVICE
-              seccompProfile: { type: RuntimeDefault }
           smbd:
             image:
               repository: ghcr.io/jfroy/samba
@@ -66,6 +54,47 @@ spec:
               # NOTE: io_uring is blocked by the default containerd v2 seccomp profile
               # https://github.com/containerd/containerd/pull/9320
               seccompProfile: { type: Unconfined }
+        initContainers:
+          avahi:
+            dependsOn:
+              - dbus
+            image:
+              repository: ghcr.io/jfroy/avahi
+              tag: "0.8"
+            restartPolicy: Always
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+                add:
+                  - CHOWN
+                  - NET_BIND_SERVICE
+              seccompProfile: { type: RuntimeDefault }
+          dbus:
+            image:
+              repository: ghcr.io/jfroy/dbus-daemon
+              tag: 1.16.2@sha256:7366af014cb8884fe2caa0b64b56343b5d22f2ae1540465145ee538d895e3179
+            args:
+              - --config-file
+              - /etc/dbus/pod.conf
+            dependsOn:
+              - setup
+            restartPolicy: Always
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+              seccompProfile: { type: RuntimeDefault }
+          setup:
+            image:
+              repository: docker.io/library/alpine
+              tag: latest
+            command: [/bin/sh, -c, mkdir -p /run/dbus]
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop: ["ALL"]
+              seccompProfile: { type: RuntimeDefault }
     defaultPodOptions:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
@@ -74,6 +103,7 @@ spec:
             "namespace": "kube-system",
             "ips": ["10.1.2.1/16"]
           }]
+      shareProcessNamespace: true
       tolerations:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
@@ -85,8 +115,16 @@ spec:
         advancedMounts:
           kantai3-samba:
             avahi:
-            - path: /etc/avahi
-              readOnly: true
+              - path: /etc/avahi
+                readOnly: true
+      dbus-config:
+        type: configMap
+        name: kantai3-dbus
+        advancedMounts:
+          kantai3-samba:
+            dbus:
+              - path: /etc/dbus
+                readOnly: true
       homeassistant-backup:
         type: persistentVolumeClaim
         existingClaim: homeassistant-backup
@@ -132,8 +170,8 @@ spec:
         advancedMounts:
           kantai3-samba:
             smbd:
-            - path: /config
-              readOnly: true
+              - path: /config
+                readOnly: true
       tmp:
         type: emptyDir
         medium: Memory
