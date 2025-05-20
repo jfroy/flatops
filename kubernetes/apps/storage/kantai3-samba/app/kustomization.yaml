@@ -10,6 +10,9 @@ resources:
 configMapGenerator:
   - name: kantai3-samba
     files:
-      - ./configs/config.yaml
+      - ./configs/samba/config.yaml
+  - name: kantai3-avahi
+    files:
+      - ./configs/avahi/avahi-daemon.conf
 generatorOptions:
   disableNameSuffixHash: true
