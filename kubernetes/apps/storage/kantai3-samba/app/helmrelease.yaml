@@ -101,7 +101,7 @@ spec:
           [{
             "name": "multus-default",
             "namespace": "kube-system",
-            "ips": ["10.1.2.1/16"]
+            "ips": ["10.1.2.2/16"]
           }]
       shareProcessNamespace: true
       tolerations:
