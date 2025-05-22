@@ -29,11 +29,11 @@ spec:
         containers:
           smbd:
             image:
-              repository: ghcr.io/jfroy/samba
-              tag: 4.22.1@sha256:931d7771712a53040f7c3165a49be7e7acac8b4d5734be1879639c81df01b681
+              repository: registry.kantai.xyz/jfroy/samba-server
+              tag: fedora-latest
             env:
               SAMBA_CONTAINER_ID: default
-              SAMBA_SPECIFICS: daemon_cli_debug_output
+              # SAMBA_SPECIFICS: daemon_cli_debug_output
               SAMBACC_CONFIG: /config/config.yaml:/config/users.json
             securityContext:
               allowPrivilegeEscalation: false
