@@ -125,6 +125,14 @@ spec:
             dbus:
               - path: /config
                 readOnly: true
+      config-dbus-system-d:
+        type: configMap
+        name: kantai3-dbus-system-d
+        advancedMounts:
+          kantai3-samba:
+            dbus:
+              - path: /config/system.d
+                readOnly: true
       config-samba:
         type: custom
         volumeSpec:

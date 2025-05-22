@@ -14,6 +14,9 @@ configMapGenerator:
   - name: kantai3-dbus
     files:
       - ./configs/dbus/dbus.conf
+  - name: kantai3-dbus-system-d
+    files:
+      - ./configs/dbus/system.d/avahi.conf
   - name: kantai3-samba
     files:
       - ./configs/samba/config.yaml
