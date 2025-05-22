@@ -76,7 +76,7 @@ spec:
               tag: 1.16.2@sha256:7366af014cb8884fe2caa0b64b56343b5d22f2ae1540465145ee538d895e3179
             args:
               - --config-file
-              - /etc/dbus/pod.conf
+              - /config/dbus.conf
             dependsOn:
               - setup
             restartPolicy: Always
@@ -109,7 +109,7 @@ spec:
           operator: Exists
           effect: NoSchedule
     persistence:
-      avahi-config:
+      config-avahi:
         type: configMap
         name: kantai3-avahi
         advancedMounts:
@@ -117,13 +117,33 @@ spec:
             avahi:
               - path: /etc/avahi
                 readOnly: true
-      dbus-config:
+      config-dbus:
         type: configMap
         name: kantai3-dbus
         advancedMounts:
           kantai3-samba:
             dbus:
-              - path: /etc/dbus
+              - path: /config
+                readOnly: true
+      config-samba:
+        type: custom
+        volumeSpec:
+          projected:
+            sources:
+              - configMap:
+                  name: kantai3-samba
+                  items:
+                    - key: config.yaml
+                      path: config.yaml
+              - secret:
+                  name: kantai3-samba
+                  items:
+                    - key: users.json
+                      path: users.json
+        advancedMounts:
+          kantai3-samba:
+            smbd:
+              - path: /config
                 readOnly: true
       homeassistant-backup:
         type: persistentVolumeClaim
@@ -152,26 +172,6 @@ spec:
         globalMounts:
           - path: /run
           - path: /var/run
-      samba-config:
-        type: custom
-        volumeSpec:
-          projected:
-            sources:
-              - configMap:
-                  name: kantai3-samba
-                  items:
-                    - key: config.yaml
-                      path: config.yaml
-              - secret:
-                  name: kantai3-samba
-                  items:
-                    - key: users.json
-                      path: users.json
-        advancedMounts:
-          kantai3-samba:
-            smbd:
-              - path: /config
-                readOnly: true
       tmp:
         type: emptyDir
         medium: Memory

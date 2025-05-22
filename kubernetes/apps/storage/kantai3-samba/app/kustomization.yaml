@@ -13,7 +13,7 @@ configMapGenerator:
       - ./configs/avahi/avahi-daemon.conf
   - name: kantai3-dbus
     files:
-      - ./configs/dbus/pod.conf
+      - ./configs/dbus/dbus.conf
   - name: kantai3-samba
     files:
       - ./configs/samba/config.yaml
