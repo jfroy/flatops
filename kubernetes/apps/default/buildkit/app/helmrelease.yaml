@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: buildkit-amd64
+  name: buildkit
 spec:
   interval: 1h
   chartRef:
@@ -35,7 +35,7 @@ spec:
               - name: grpc
                 containerPort: 9999
             probes:
-              liveness:
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
@@ -46,32 +46,61 @@ spec:
                       - workers
                   initialDelaySeconds: 5
                   periodSeconds: 30
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - buildctl
-                      - debug
-                      - workers
-                  initialDelaySeconds: 5
-                  periodSeconds: 30
+              readiness: *probe
             resources:
               requests:
                 cpu: 16
             securityContext:
               privileged: true
+        pod:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values:
+                          - amd64
+      buildkit-arm64:
+        replicas: 1
+        containers:
+          buildkitd:
+            image:
+              repository: moby/buildkit
+              tag: v0.20.2@sha256:c457984bd29f04d6acc90c8d9e717afe3922ae14665f3187e0096976fe37b1c8
+            args:
+              - --addr
+              - unix:///run/buildkit/buildkitd.sock
+              - --addr
+              - tcp://0.0.0.0:9999
+            ports:
+              - name: grpc
+                containerPort: 9999
+            probes:
+              liveness: *probe
+              readiness: *probe
+            resources:
+              requests:
+                cpu: 2
+            securityContext:
+              privileged: true
+        pod:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: kubernetes.io/arch
+                        operator: In
+                        values:
+                          - arm64
+          tolerations:
+            # The only arm64 node in the cluster is a control plane node
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
     defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - amd64
       annotations:
         reloader.stakater.com/auto: "true"
       hostUsers: false
@@ -104,110 +133,6 @@ spec:
             enabled: true
             port: 9999
             protocol: TCP
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
-apiVersion: helm.toolkit.fluxcd.io/v2
-kind: HelmRelease
-metadata:
-  name: buildkit-arm64
-spec:
-  interval: 1h
-  chartRef:
-    kind: OCIRepository
-    name: app-template
-    namespace: flux-system
-  install:
-    remediation:
-      retries: 3
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
-  values:
-    controllers:
-      buildkit-arm64:
-        replicas: 1
-        containers:
-          buildkitd:
-            image:
-              repository: moby/buildkit
-              tag: v0.20.2@sha256:c457984bd29f04d6acc90c8d9e717afe3922ae14665f3187e0096976fe37b1c8
-            args:
-              - --addr
-              - unix:///run/buildkit/buildkitd.sock
-              - --addr
-              - tcp://0.0.0.0:9999
-            ports:
-              - name: grpc
-                containerPort: 9999
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - buildctl
-                      - debug
-                      - workers
-                  initialDelaySeconds: 5
-                  periodSeconds: 30
-              readiness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - buildctl
-                      - debug
-                      - workers
-                  initialDelaySeconds: 5
-                  periodSeconds: 30
-            resources:
-              requests:
-                cpu: 2
-            securityContext:
-              privileged: true
-    defaultPodOptions:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                      - arm64
-      annotations:
-        reloader.stakater.com/auto: "true"
-      hostUsers: false
-      tolerations:
-        # The only arm64 node in the cluster is a control plane node
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-    persistence:
-      config:
-        type: configMap
-        name: buildkit-config
-        globalMounts:
-          - path: /etc/buildkit
-      root:
-        type: persistentVolumeClaim
-        storageClass: openebs-hostpath
-        accessMode: ReadWriteOnce
-        retain: true
-        size: 100Gi
-        globalMounts:
-          - path: /var/lib/buildkit
-      run:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 10Mi
-        globalMounts:
-          - path: /run
-          - path: /var/run
-    service:
       buildkit-arm64:
         controller: buildkit-arm64
         ports:
