@@ -64,7 +64,7 @@ spec:
         clusterIP: None
         annotations:
           external-dns.alpha.kubernetes.io/endpoints-type: HostIP
-          external-dns.alpha.kubernetes.io/hostname: smb.media2.internal.
+          external-dns.alpha.kubernetes.io/hostname: smb.media2.internal
         ports:
           smb:
             port: 445

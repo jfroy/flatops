@@ -5,6 +5,6 @@ metadata:
   name: media1-smb-internal
 spec:
   endpoints:
-    - dnsName: media1.smb.internal.
+    - dnsName: media1.smb.internal
       recordType: A
       targets: ["10.1.2.2"]

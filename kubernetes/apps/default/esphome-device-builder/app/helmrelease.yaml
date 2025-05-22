@@ -65,7 +65,7 @@ spec:
         clusterIP: None
         annotations:
           external-dns.alpha.kubernetes.io/endpoints-type: HostIP
-          external-dns.alpha.kubernetes.io/hostname: esphdb.internal.
+          external-dns.alpha.kubernetes.io/hostname: esphdb.internal
         ports:
           smb:
             port: *port
