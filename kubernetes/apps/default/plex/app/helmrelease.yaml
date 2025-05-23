@@ -25,8 +25,8 @@ spec:
         containers:
           plex:
             image:
-              repository: ghcr.io/home-operations/plex
-              tag: 1.41.7.9799@sha256:0c31ee1ebee0b63ead2de2accc6c52b1e65e9322b39118715eeac8b2f2bb786f
+              repository: registry.kantai.xyz/jfroy/plex
+              tag: 1.41.7.9799@sha256:92a37c4af900ec661dc1c26f9c76a99bd79e5ad2932d7cf362f88cd7d6ae79fa
             env:
               NVIDIA_DRIVER_CAPABILITIES: all
               PLEX_ADVERTISE_URL: http://plex.internal:22400,http://10.1.1.1:22400
