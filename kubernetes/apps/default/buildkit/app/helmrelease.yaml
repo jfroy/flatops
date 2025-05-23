@@ -19,7 +19,7 @@ spec:
       retries: 3
   values:
     controllers:
-      buildkit-amd64:
+      amd64:
         replicas: 1
         containers:
           buildkitd:
@@ -62,7 +62,7 @@ spec:
                         operator: In
                         values:
                           - amd64
-      buildkit-arm64:
+      arm64:
         replicas: 1
         containers:
           buildkitd:
@@ -126,15 +126,15 @@ spec:
           - path: /run
           - path: /var/run
     service:
-      buildkit-amd64:
-        controller: buildkit-amd64
+      amd64:
+        controller: amd64
         ports:
           grpc:
             enabled: true
             port: 9999
             protocol: TCP
-      buildkit-arm64:
-        controller: buildkit-arm64
+      arm64:
+        controller: arm64
         ports:
           grpc:
             enabled: true
