@@ -110,14 +110,24 @@ spec:
         name: buildkit-config
         globalMounts:
           - path: /etc/buildkit
-      root:
+      root-amd64:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
-        retain: true
         size: 100Gi
-        globalMounts:
-          - path: /var/lib/buildkit
+        advancedMounts:
+          amd64:
+            buildkitd:
+              - path: /var/lib/buildkit
+      root-arm64:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        advancedMounts:
+          arm64:
+            buildkitd:
+              - path: /var/lib/buildkit
       run:
         type: emptyDir
         medium: Memory
