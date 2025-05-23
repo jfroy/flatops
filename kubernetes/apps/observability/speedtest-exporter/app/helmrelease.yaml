@@ -20,18 +20,21 @@ spec:
     remediation:
       retries: 3
   values:
+    configMaps:
+      config:
+        data:
+          config.yaml: |
+            cache: "24h"
     controllers:
       speedtest-exporter:
-        pod:
-          securityContext:
-            runAsGroup: 1000
-            runAsUser: 1000
-            runAsNonRoot: true
         containers:
           speedtest-exporter:
             image:
               repository: ghcr.io/heathcliff26/speedtest-exporter
               tag: v1.0.10
+            args:
+              - -config
+              - /config/config.yaml
             probes:
               liveness:
                 enabled: false
@@ -42,6 +45,15 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+        pod:
+          securityContext:
+            runAsGroup: 1000
+            runAsUser: 1000
+            runAsNonRoot: true
+    persistence:
+      config:
+        type: configMap
+        identifier: config
     service:
       speedtest-exporter:
         controller: speedtest-exporter
@@ -55,8 +67,6 @@ spec:
           - port: http
             scheme: http
             path: /metrics
-            interval: 75m
-            scrapeTimeout: 30s
             metricRelabelings:
               - action: labeldrop
                 regex: (pod)
