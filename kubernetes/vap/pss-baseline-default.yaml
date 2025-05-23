@@ -95,8 +95,7 @@ spec:
         - key: app.kubernetes.io/name
           operator: NotIn
           values:
-            - buildkit-amd64
-            - buildkit-arm64
+            - buildkit
 ---
 # Capabilities
 apiVersion: admissionregistration.k8s.io/v1
