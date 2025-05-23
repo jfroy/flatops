@@ -28,7 +28,7 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.41.7.9799@sha256:0c31ee1ebee0b63ead2de2accc6c52b1e65e9322b39118715eeac8b2f2bb786f
             env:
-              NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
+              NVIDIA_DRIVER_CAPABILITIES: all
               PLEX_ADVERTISE_URL: http://plex.internal:22400,http://10.1.1.1:22400
               PLEX_NO_AUTH_NETWORKS: 10.1.0.0/16,10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
               PLEX_PREFERENCE_0: TreatWanIpAsLocal=0
