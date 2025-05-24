@@ -1,10 +1,10 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "customManagers": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  customManagers: [
     {
-      "customType": "regex",
-      "fileMatch": ["(^|/)kubernetes/.+\\.ya?ml$"],
-      "matchStrings": [
+      customType: "regex",
+      fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
+      matchStrings: [
         // # renovate: datasource=github-releases depName=org/repo versioning=loose
         // version: 1.2.3
         // # renovate: datasource=helm depName=project repository=https://helm.project.com versioning=loose
@@ -14,8 +14,8 @@
         // https://github.com/org/repo/releases/download/v1.2.3/artifact
         "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+?)(?: versioning=(?<versioning>\\S+?))?\\n.+\\/(?<currentValue>v?\\d[-a-zA-Z0-9._+]*)\\/?"
       ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}"
+      datasourceTemplate: "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
+      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver-coerced{{/if}}"
     }
   ]
 }

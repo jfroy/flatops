@@ -1,16 +1,22 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
       matchDatasources: ["docker"],
-      automerge: false,
       matchPackageNames: ["ghcr.io/jfroy/siderolabs/imager", "ghcr.io/siderolabs/kubelet"],
+      automerge: false,
     },
     {
       matchDatasources: ["docker"],
-      automerge: true,
       matchUpdateTypes: ["digest"],
       matchPackageNames: ["ghcr.io/home-operations**/*", "ghcr.io/jfroy/vuetorrent"],
+      automerge: true,
+    },
+    {
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["major"],
+      matchPackageNames: ["ghcr.io/mendhak/http-https-echo"],
+      automerge: true,
     },
   ]
 }

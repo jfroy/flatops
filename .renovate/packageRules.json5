@@ -1,38 +1,24 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "packageRules": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/jfroy/gluetun"
-      ],
-      "versioning": "semver"
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/jfroy/gluetun"],
+      versioning: "semver"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "ghcr.io/home-operations/plex"
-      ],
-      "versioning": "loose"
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/home-operations/plex"],
+      versioning: "loose"
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackageNames": [
-        "registry.kantai.xyz**/*"
-      ],
-      "enabled": false
+      matchDatasources: ["docker"],
+      matchPackageNames: ["registry.kantai.xyz**/*"],
+      enabled: false
     },
     {
-      "matchPackageNames": [
-        "ghcr.io/home-operations/charts-mirror/cilium"
-      ],
-      "allowedVersions": "!/1.7.4/"
+      matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium"],
+      allowedVersions: "!/1.7.4/"
     },
   ]
 }
