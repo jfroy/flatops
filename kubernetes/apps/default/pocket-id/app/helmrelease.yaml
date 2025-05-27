@@ -32,7 +32,7 @@ spec:
               DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
               KEYS_PATH: /data/keys
               METRICS_ENABLED: "true"
-              OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy.observability.svc.cluster.local:4317
+              OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy-cluster.observability.svc.cluster.local:4317
               OTEL_EXPORTER_OTLP_PROTOCOL: grpc
               TRUST_PROXY: true
               TZ: America/Los_Angeles
