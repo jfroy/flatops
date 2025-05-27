@@ -26,14 +26,14 @@ spec:
           pocket-id:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v0.53.0@sha256:7224174546de6a378fb705f763d11b604e3031b62efdc707cf1757b1b09705f5
-            command: ["/bin/sh", "/app/scripts/docker/entrypoint.sh"]
+              tag: v1.0.0@sha256:bb4b1debee6fa1245a36a0d8a0bd23794033028b803d7639c898bc11697f155f
             env:
-              CADDY_DISABLED: "true"
-              DB_PATH: /data/pocket-id.db
-              HOST: "0.0.0.0"
-              PUBLIC_APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
-              SQLITE_DB_PATH: /data/pocket-id.db
+              APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
+              DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+              KEYS_PATH: /data/keys
+              METRICS_ENABLED: "true"
+              OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy.observability.svc.cluster.local:4317
+              OTEL_EXPORTER_OTLP_PROTOCOL: grpc
               TRUST_PROXY: true
               TZ: America/Los_Angeles
               UPLOAD_PATH: /data/uploads
@@ -44,7 +44,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: 3000
+                    port: &port 1411
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
@@ -80,29 +80,12 @@ spec:
             namespace: kube-system
             sectionName: https
         rules:
-          - matches:
-              - path:
-                  value: /api/
-            backendRefs:
-              - port: &backendPort 8080
-                name: pocket-id
-          - matches:
-              - path:
-                  value: /.well-known/
-            backendRefs:
-              - port: *backendPort
-                name: pocket-id
-          - matches:
-              - path:
-                  value: /
-            backendRefs:
-              - port: &frontendPort 3000
+          - backendRefs:
+              - port: *port
                 name: pocket-id
     service:
       pocket-id:
         controller: pocket-id
         ports:
-          backend:
-            port: *backendPort
-          frontend:
-            port: *frontendPort
+          http:
+            port: *port
