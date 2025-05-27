@@ -63,10 +63,10 @@ nodes:
           - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
+            - jfroy/siderolabs/glibc
             - jfroy/siderolabs/nvidia-driver-production
             - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
-            - siderolabs/glibc
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
     patches:
@@ -178,10 +178,10 @@ nodes:
           - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
+            - jfroy/siderolabs/glibc
             - jfroy/siderolabs/nvidia-driver-production
             - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
-            - siderolabs/glibc
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
     patches:
