@@ -34,6 +34,7 @@ spec:
               METRICS_ENABLED: "true"
               OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy-cluster.observability.svc.cluster.local:4317
               OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+              OTEL_LOG_LEVEL: debug
               TRUST_PROXY: true
               TZ: America/Los_Angeles
               UPLOAD_PATH: /data/uploads
