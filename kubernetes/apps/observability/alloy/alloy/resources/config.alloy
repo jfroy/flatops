@@ -4,6 +4,10 @@ logging {
 	write_to = [loki.write.victorialogs.receiver]
 }
 
+livedebugging {
+	enabled = true
+}
+
 // DISCOVERY
 
 discovery.kubernetes "pod" {
