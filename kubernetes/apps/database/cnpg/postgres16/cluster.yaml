@@ -33,22 +33,11 @@ spec:
   # NOTE: externalClusters is needed when recovering from an existing cluster.
   externalClusters:
     - name: &recoveryCluster postgres16-v2
-      barmanObjectStore: &barmanObjectStore
-        data:
-          compression: bzip2
-        wal:
-          compression: bzip2
-          maxParallel: 2
-        destinationPath: s3://postgres16/
-        endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
-        serverName: *recoveryCluster
-        s3Credentials:
-          accessKeyId:
-            name: postgres16-obc
-            key: AWS_ACCESS_KEY_ID
-          secretAccessKey:
-            name: postgres16-obc
-            key: AWS_SECRET_ACCESS_KEY
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: local-ceph
+          serverName: postgres16-v2
   bootstrap:
     # initdb: {}
     recovery:
