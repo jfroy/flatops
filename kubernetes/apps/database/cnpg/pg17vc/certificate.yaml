@@ -1,0 +1,17 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: pg17vc
+spec:
+  secretName: pg17vc-tls
+  duration: 2160h  # 90d
+  issuerRef:
+    name: cluster-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: pg17vc-r.database.svc.cluster.local
+  dnsNames:
+    - pg17vc-r.database.svc.cluster.local
+    - pg17vc-ro.database.svc.cluster.local
+    - pg17vc-rw.database.svc.cluster.local

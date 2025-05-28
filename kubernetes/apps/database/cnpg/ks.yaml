@@ -21,3 +21,26 @@ spec:
   interval: 1h
   retryInterval: 2m
   timeout: 5m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app pg17vc
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cnpg
+      app.kubernetes.io/instance: pg17vc
+  dependsOn:
+    - name: cloudnative-pg
+      namespace: cnpg-system
+  path: ./kubernetes/apps/database/cnpg/pg17vc
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
