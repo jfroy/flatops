@@ -9,5 +9,6 @@ resources:
   - ./externalsecret.yaml
   - ./gatus.yaml
   - ./objectbucketclaim.yaml
+  - ./objectstore.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
