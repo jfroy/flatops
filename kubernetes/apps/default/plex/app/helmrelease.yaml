@@ -68,11 +68,9 @@ spec:
               limits:
                 nvidia.com/gpu: 1
         pod:
+          nodeSelector:
+            nvidia.com/gpu.present: "true"
           runtimeClassName: nvidia
-          tolerations:
-            - key: nvidia.com/gpu
-              operator: Exists
-              effect: NoSchedule
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
