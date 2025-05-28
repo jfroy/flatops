@@ -12,11 +12,6 @@
       versioning: "loose"
     },
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["registry.kantai.xyz**/*"],
-      enabled: false
-    },
-    {
       matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium"],
       allowedVersions: "!/1.7.4/"
     },
