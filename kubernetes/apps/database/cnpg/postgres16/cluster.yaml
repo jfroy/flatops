@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/postgresql.cnpg.io/cluster_v1.json
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
@@ -14,6 +14,12 @@ spec:
   superuserSecret:
     name: postgres16-superuser-secret
   enableSuperuserAccess: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: local-ceph
+        serverName: postgres16-v4
   postgresql:
     parameters:
       max_connections: "100"
@@ -43,11 +49,6 @@ spec:
           secretAccessKey:
             name: postgres16-obc
             key: AWS_SECRET_ACCESS_KEY
-  backup:
-    retentionPolicy: 30d
-    barmanObjectStore:
-      <<: *barmanObjectStore
-      serverName: postgres16-v4
   bootstrap:
     # initdb: {}
     recovery:
