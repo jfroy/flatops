@@ -1,0 +1,29 @@
+---
+apiVersion: dragonflydb.io/v1alpha1
+kind: Dragonfly
+metadata:
+  labels:
+    app.kubernetes.io/component: cache
+    app.kubernetes.io/instance: immich-df
+    app.kubernetes.io/managed-by: dragonfly-operator
+    app.kubernetes.io/name: dragonfly
+    app.kubernetes.io/part-of: immich
+  name: immich-df
+spec:
+  authentication:
+    passwordFromSecret:
+      name: immich-df
+      key: REDIS_PASSWORD
+  replicas: 1
+  resources:
+    requests:
+      memory: 500Mi
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities: { drop: ["ALL"] }
+    runAsNonRoot: true
+    runAsUser: 999
+    runAsGroup: 999
+    seccompProfile: { type: RuntimeDefault }
+  tlsSecretRef:
+    name: immich-df-tls

@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: immich
+data:
+  IMMICH_MEDIA_LOCATION: /library
+  IMMICH_TELEMETRY_INCLUDE: all
+  IMMICH_TRUSTED_PROXIES: 10.11.1.251,10.11.2.91,10.11.3.59

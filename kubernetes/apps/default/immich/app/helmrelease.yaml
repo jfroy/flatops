@@ -1,0 +1,246 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      machine-learning:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          machine-learning:
+            image:
+              repository: ghcr.io/immich-app/immich-machine-learning
+              tag: v1.134.0-cuda@sha256:0a0b9a3769a55bd6f725577902b34123268a74b3affee33536f9b1ac9fe67ddb
+            env:
+              MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-B-16-SigLIP__webli
+              MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-B-16-SigLIP__webli
+              MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__RECOGNITION: buffalo_l
+              MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__DETECTION: buffalo_l
+            probes:
+              liveness: &mlprobe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: &mlport 3003
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 5
+              readiness: *mlprobe
+              startup:
+                enabled: false
+            resources:
+              requests:
+                nvidia.com/gpu: 1
+              limits:
+                nvidia.com/gpu: 1
+        pod:
+          nodeSelector:
+            nvidia.com/gpu.present: "true"
+          runtimeClassName: nvidia
+      microservices:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          microservices:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.134.0@sha256:073fc04c7e3d18ace466c20763809cf17aa55765ed610f12971b392a6a80b50c
+            envFrom:
+              - secretRef:
+                  name: immich
+              - secretRef:
+                  name: immich-df
+              - configMapRef:
+                  name: immich
+            env:
+              IMMICH_WORKERS_EXCLUDE: api
+              NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
+            resources:
+              requests:
+                nvidia.com/gpu: 1
+                cpu: 100m
+                memory: 250Mi
+              limits:
+                nvidia.com/gpu: 1
+        pod:
+          nodeSelector:
+            nvidia.com/gpu.present: "true"
+          runtimeClassName: nvidia
+      server:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          server:
+            image:
+              repository: ghcr.io/immich-app/immich-server
+              tag: v1.134.0@sha256:073fc04c7e3d18ace466c20763809cf17aa55765ed610f12971b392a6a80b50c
+            envFrom:
+              - secretRef:
+                  name: immich
+              - secretRef:
+                  name: immich-df
+              - configMapRef:
+                  name: immich
+            env:
+              IMMICH_WORKERS_INCLUDE: api
+              NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/server/ping
+                    port: &serverport 2283
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 100m
+                memory: 250Mi
+        initContainers:
+          initdb:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.5.0@sha256:894a38169bf4135fb1e85a1112c64fc24a267d1191887cbf6fb8c0a17893770d
+            envFrom:
+              - secretRef:
+                  name: immich
+              - secretRef:
+                  name: immich-initdb
+    defaultPodOptions:
+          enableServiceLinks: false
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      ca-certificates:
+        type: configMap
+        name: ca-certificates.crt
+        globalMounts:
+          - path: /certs
+      geocoding-dump:
+        type: emptyDir
+        advancedMounts:
+          server:
+            server:
+              - path: /usr/src/app/.reverse-geocoding-dump
+          microservices:
+            microservices:
+              - path: /usr/src/app/.reverse-geocoding-dump
+      geoname-dump:
+        type: emptyDir
+        advancedMounts:
+          microservices:
+            microservices:
+              - path: /usr/src/app/node_modules/local-reverse-geocoder/geonames_dump
+      initdb:
+        type: configMap
+        name: immich-initdb
+        advancedMounts:
+          server:
+            initdb:
+              - path: /initdb
+      model-cache:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        storageClass: ceph-block
+        size: 100Gi
+        advancedMounts:
+          machine-learning:
+            machine-learning:
+              - path: /cache
+                subPath: cache
+              - path: /.cache
+                subPath: dotCache
+      tmpfs:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 32Mi
+        advancedMounts:
+          machine-learning:
+            machine-learning:
+              - path: /.config
+                subPath: machine-learning/.config
+      transformers-cache:
+        type: emptyDir
+        advancedMounts:
+          server:
+            server:
+              - path: /usr/src/app/.transformers_cache
+          microservices:
+            microservices:
+              - path: /usr/src/app/.transformers_cache
+    route:
+      server:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *serverport
+                name: server
+    service:
+      machine-learning:
+        controller: machine-learning
+        ports:
+          http:
+            port: *mlport
+      microservices:
+        controller: microservices
+        ports:
+          metrics:
+            port: 8082
+      server:
+        controller: server
+        ports:
+          http:
+            port: *serverport
+          metrics:
+            port: 8081
+    serviceMonitor:
+      server:
+        serviceName: server
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
+      microservices:
+        serviceName: microservices
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /metrics
