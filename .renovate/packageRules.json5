@@ -3,17 +3,13 @@
   packageRules: [
     {
       matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/jfroy/gluetun"],
-      versioning: "semver"
-    },
-    {
-      matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/home-operations/plex"],
       versioning: "loose"
     },
     {
-      matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium"],
-      allowedVersions: "!/1.7.4/"
+      matchDatasources: ["docker"],
+      matchPackageNames: ["registry.kantai.xyz**/*"],
+      enabled: false
     },
   ]
 }
