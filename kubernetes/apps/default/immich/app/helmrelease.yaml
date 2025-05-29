@@ -72,7 +72,7 @@ spec:
               tag: v1.134.0@sha256:073fc04c7e3d18ace466c20763809cf17aa55765ed610f12971b392a6a80b50c
             envFrom:
               - secretRef:
-                  name: immich
+                  name: immich-db
               - secretRef:
                   name: immich-df
             env:
@@ -103,7 +103,7 @@ spec:
               tag: v1.134.0@sha256:073fc04c7e3d18ace466c20763809cf17aa55765ed610f12971b392a6a80b50c
             envFrom:
               - secretRef:
-                  name: immich
+                  name: immich-db
               - secretRef:
                   name: immich-df
             env:
@@ -139,7 +139,7 @@ spec:
               tag: 17.5.0@sha256:894a38169bf4135fb1e85a1112c64fc24a267d1191887cbf6fb8c0a17893770d
             envFrom:
               - secretRef:
-                  name: immich
+                  name: immich-db
               - secretRef:
                   name: immich-initdb
     defaultPodOptions:
