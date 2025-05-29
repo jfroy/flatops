@@ -75,9 +75,10 @@ spec:
                   name: immich
               - secretRef:
                   name: immich-df
-              - configMapRef:
-                  name: immich
             env:
+              IMMICH_MEDIA_LOCATION: /photos
+              IMMICH_TELEMETRY_INCLUDE: all
+              IMMICH_TRUSTED_PROXIES: 10.11.1.251,10.11.2.91,10.11.3.59
               IMMICH_WORKERS_EXCLUDE: api
               NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
             resources:
@@ -105,9 +106,10 @@ spec:
                   name: immich
               - secretRef:
                   name: immich-df
-              - configMapRef:
-                  name: immich
             env:
+              IMMICH_MEDIA_LOCATION: /photos
+              IMMICH_TELEMETRY_INCLUDE: all
+              IMMICH_TRUSTED_PROXIES: 10.11.1.251,10.11.2.91,10.11.3.59
               IMMICH_WORKERS_INCLUDE: api
               NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
             probes:
@@ -189,6 +191,9 @@ spec:
                 subPath: cache
               - path: /.cache
                 subPath: dotCache
+      photos:
+        type: persistentVolumeClaim
+        existingClaim: photos
       tmpfs:
         type: emptyDir
         medium: Memory

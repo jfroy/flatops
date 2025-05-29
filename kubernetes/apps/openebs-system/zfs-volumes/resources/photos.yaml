@@ -1,0 +1,46 @@
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: photos
+  finalizers:
+    - cluster.local/data-protection
+spec:
+  capacity: "175921860444160"
+  compression: "off"
+  dedup: "off"
+  fsType: zfs
+  ownerNodeID: kantai1
+  poolName: reservoir
+  recordsize: 1M
+  shared: "yes"
+  thinProvision: "yes"
+  volumeType: DATASET
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: photos
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 160Ti
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/cas-type: localpv-zfs
+      openebs.io/poolname: reservoir
+    volumeHandle: photos
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: openebs.io/nodeid
+              operator: In
+              values:
+                - kantai1
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem

@@ -6,3 +6,4 @@ resources:
   - ./homeassistant-backup.yaml
   - ./media1.yaml
   - ./media2.yaml
+  - ./photos.yaml
