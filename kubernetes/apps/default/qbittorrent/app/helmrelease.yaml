@@ -89,9 +89,8 @@ spec:
                   httpGet:
                     path: /check/
                     port: 9999
-                  periodSeconds: 10
-                  timeoutSeconds: 8
-                  failureThreshold: 5
+                  periodSeconds: 30
+                  timeoutSeconds: 10
               startup:
                 enabled: true
                 custom: true
@@ -99,7 +98,8 @@ spec:
                   httpGet:
                     path: /check/
                     port: 9999
-                  initialDelaySeconds: 5
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 10
             resources:
               limits:
                 kernel.org/tun: 1
