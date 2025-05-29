@@ -223,7 +223,7 @@ spec:
         rules:
           - backendRefs:
               - port: *serverport
-                name: server
+                identifier: server
     service:
       machine-learning:
         controller: machine-learning
