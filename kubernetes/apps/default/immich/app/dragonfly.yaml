@@ -10,30 +10,28 @@ metadata:
     app.kubernetes.io/part-of: immich
   name: immich-df
 spec:
+  affinity:
+    podAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values: ["immich"]
+            topologyKey: kubernetes.io/hostname
+          weight: 100
   args:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
     - --default_lua_flags=allow-undeclared-keys
     - --lock_on_hashtags
+    - --dbfilename=immich
   authentication:
     passwordFromSecret:
       name: immich-df
       key: REDIS_PASSWORD
-  env:
-    - name: MAX_MEMORY
-      valueFrom:
-        resourceFieldRef:
-          resource: limits.memory
-          divisor: 1Mi
-  image: ghcr.io/dragonflydb/dragonfly:v1.30.3
-  replicas: 1
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      memory: 512Mi
   containerSecurityContext:
     allowPrivilegeEscalation: false
     capabilities: { drop: ["ALL"] }
@@ -43,5 +41,27 @@ spec:
     # NOTE: io_uring is blocked by the default containerd v2 seccomp profile
     # https://github.com/containerd/containerd/pull/9320
     seccompProfile: { type: Unconfined }
+  env:
+    - name: MAX_MEMORY
+      valueFrom:
+        resourceFieldRef:
+          resource: limits.memory
+          divisor: 1Mi
+  image: ghcr.io/dragonflydb/dragonfly:v1.30.3
+  replicas: 2
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+  snapshot:
+    cron: "*/5 * * * *"
+    persistentVolumeClaimSpec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 2Gi
+      storageClassName: ceph-block
   tlsSecretRef:
     name: immich-df-tls
