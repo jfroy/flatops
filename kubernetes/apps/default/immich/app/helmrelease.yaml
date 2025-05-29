@@ -31,8 +31,8 @@ spec:
               repository: ghcr.io/immich-app/immich-machine-learning
               tag: v1.134.0-cuda@sha256:0a0b9a3769a55bd6f725577902b34123268a74b3affee33536f9b1ac9fe67ddb
             env:
-              MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-B-16-SigLIP__webli
-              MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-B-16-SigLIP__webli
+              MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-SO400M-16-SigLIP2-384__webli
+              MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-SO400M-16-SigLIP2-384__webli
               MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__RECOGNITION: buffalo_l
               MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__DETECTION: buffalo_l
             probes:
@@ -143,14 +143,14 @@ spec:
               - secretRef:
                   name: immich-initdb
     defaultPodOptions:
-          enableServiceLinks: false
-          securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
-            runAsNonRoot: true
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
-            seccompProfile: { type: RuntimeDefault }
+      enableServiceLinks: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     persistence:
       ca-certificates:
         type: configMap
