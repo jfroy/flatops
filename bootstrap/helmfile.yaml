@@ -38,7 +38,7 @@ releases:
   - name: kubelet-csr-approver
     namespace: kube-system
     chart: oci://ghcr.io/postfinance/charts/kubelet-csr-approver
-    version: 1.2.8
+    version: 1.2.10
     values:
       - ../apps/kube-system/kubelet-csr-approver/app/helm-values.yaml
     needs:
