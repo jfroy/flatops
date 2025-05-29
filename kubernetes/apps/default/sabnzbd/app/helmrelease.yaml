@@ -90,7 +90,7 @@ spec:
                     path: /check/
                     port: 9999
                   periodSeconds: 10
-                  timeoutSeconds: 5
+                  timeoutSeconds: 8
                   failureThreshold: 5
               startup:
                 enabled: true
