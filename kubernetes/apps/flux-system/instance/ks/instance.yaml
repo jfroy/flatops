@@ -133,21 +133,6 @@ spec:
           kind: Deployment
           name: source-controller
 
-      - # Flux near OOM detection for Helm
-        patch: |
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --feature-gates=OOMWatch=true
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --oom-watch-memory-threshold=95
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --oom-watch-interval=500ms
-        target:
-          kind: Deployment
-          name: helm-controller
-
       - # Disable chart digest tracking
         patch: |
           - op: add
