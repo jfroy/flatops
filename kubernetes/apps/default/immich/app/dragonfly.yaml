@@ -40,6 +40,8 @@ spec:
     runAsNonRoot: true
     runAsUser: 999
     runAsGroup: 999
-    seccompProfile: { type: RuntimeDefault }
+    # NOTE: io_uring is blocked by the default containerd v2 seccomp profile
+    # https://github.com/containerd/containerd/pull/9320
+    seccompProfile: { type: Unconfined }
   tlsSecretRef:
     name: immich-df-tls
