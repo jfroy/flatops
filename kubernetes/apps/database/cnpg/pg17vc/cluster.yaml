@@ -31,21 +31,22 @@ spec:
     podMonitorMetricRelabelings:
       - { sourceLabels: ["cluster"], targetLabel: cnpg_cluster, action: replace }
       - { regex: cluster, action: labeldrop }
-  externalClusters:
-    - name: postgres16-v4
-      connectionParameters:
-        host: postgres16-rw.database.svc.cluster.local
-        user: postgres
-      password:
-        name: postgres16-superuser-secret
-        key: password
+  # externalClusters:
+  #   - name: postgres16-v4
+  #     connectionParameters:
+  #       host: postgres16-rw.database.svc.cluster.local
+  #       user: postgres
+  #     password:
+  #       name: postgres16-superuser-secret
+  #       key: password
   bootstrap:
     initdb:
-      import:
-        type: monolith
-        databases:
-          - "*"
-        roles:
-          - "*"
-        source:
-          externalCluster: postgres16-v4
+      {}
+      # import:
+      #   type: monolith
+      #   databases:
+      #     - "*"
+      #   roles:
+      #     - "*"
+      #   source:
+      #     externalCluster: postgres16-v4
