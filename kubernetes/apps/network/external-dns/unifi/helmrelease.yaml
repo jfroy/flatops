@@ -26,15 +26,13 @@ spec:
     fullnameOverride: *app
     domainFilters: ["kantai.xyz", "kantai.wtf", "internal"]
     extraArgs:
-      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
-      - --crd-source-kind=DNSEndpoint
       - --gateway-name=internal
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi
     policy: sync
     serviceMonitor:
       enabled: true
-    sources: ["crd", "gateway-httproute", "service"]
+    sources: ["gateway-httproute", "service"]
     tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
