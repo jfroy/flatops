@@ -3,11 +3,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./dnsendpoint.yaml
+  - ./endpoints.yaml
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./networkpolicy.yaml
   - ./pvc.yaml
+  - ./service.yaml
 configMapGenerator:
   - name: kantai3-avahi
     files:
