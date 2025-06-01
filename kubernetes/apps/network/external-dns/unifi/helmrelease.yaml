@@ -28,6 +28,7 @@ spec:
     extraArgs:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
+      - --gateway-name=internal
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi
     policy: sync
