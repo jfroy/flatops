@@ -17,6 +17,7 @@ configMapGenerator:
     files:
       - ./resources/idrac_overview.json
       - ./resources/idrac.json
+      - ./resources/status-alternative.json
     options:
       annotations:
         kustomize.toolkit.fluxcd.io/substitute: disabled

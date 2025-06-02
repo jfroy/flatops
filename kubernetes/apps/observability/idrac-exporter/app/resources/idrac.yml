@@ -6,6 +6,8 @@ hosts:
     username: {{ .kantai1_username }}
     password: {{ .kantai1_password }}
 metrics:
+  all: false
+  processors: true
   system: true
   sensors: true
   power: true
@@ -13,3 +15,4 @@ metrics:
   storage: false
   memory: false
   network: false
+  extra: false
