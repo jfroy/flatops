@@ -68,6 +68,9 @@ spec:
           - name: external
             namespace: kube-system
             sectionName: https
+          - name: internal
+            namespace: kube-system
+            sectionName: https
         rules:
           - backendRefs:
               - name: echo
