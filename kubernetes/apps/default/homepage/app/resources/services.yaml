@@ -3,6 +3,16 @@
 # https://gethomepage.dev/latest/configs/services
 
 - Media:
+    - immich:
+        icon: sh-immich.webp
+        href: https://photos.kantai.xyz/
+        namespace: default
+        app: immich
+        widget:
+          type: immich
+          url: https://photos.kantai.xyz/
+          key: {{HOMEPAGE_VAR_IMMICH_API_KEY}}
+          version: 2
     - plex:
         icon: sh-plex.webp
         href: https://app.plex.tv/
