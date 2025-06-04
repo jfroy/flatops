@@ -9,11 +9,13 @@ providers:
 layout:
   Media:
     style: row
-    columns: 2
+    columns: 3
   Arr:
     style: row
     columns: 3
   Infra:
     style: row
     columns: 3
-    useEqualHeights: true
+  Tools:
+    style: row
+    columns: 3
