@@ -33,7 +33,7 @@
           key: {{HOMEPAGE_VAR_STASH_API_KEY}}
 - Arr:
     - radarr:
-        icon: sh-radarr-light.webp
+        icon: sh-radarr.webp
         href: https://radarr.kantai.xyz/
         namespace: default
         app: radarr
@@ -80,21 +80,6 @@
           url: http://sabnzbd.default.svc:80
           key: {{HOMEPAGE_VAR_SAB_API_KEY}}
 - Infra:
-    - grafana:
-        icon: sh-grafana.webp
-        href: https://grafana.kantai.xyz/
-        namespace: observability
-        app: grafana
-    - homeassistant:
-        icon: sh-home-assistant-light.webp
-        href: https://hass.example.com/
-    - nextdns:
-        icon: nextdns.png
-        href: https://my.nextdns.io
-        widget:
-          type: nextdns
-          profile: {{HOMEPAGE_VAR_NEXTDNS_PROFILE}}
-          key: {{HOMEPAGE_VAR_NEXTDNS_API_KEY}}
     - unifi:
         icon: sh-ubiquiti-unifi-light.webp
         href: https://unifi.ui.com/
@@ -102,6 +87,37 @@
           type: unifi
           url: https://unifi.internal
           key: {{HOMEPAGE_VAR_UNIFI_API_KEY}}
+    - nextdns:
+        icon: sh-nextdns-light.webp
+        href: https://my.nextdns.io
+        widget:
+          type: nextdns
+          profile: {{HOMEPAGE_VAR_NEXTDNS_PROFILE}}
+          key: {{HOMEPAGE_VAR_NEXTDNS_API_KEY}}
+    - homeassistant:
+        icon: sh-home-assistant-light.webp
+        href: https://hass.nouvelle.house/
+    - esphomedb:
+        icon: sh-esphome-light.webp
+        href: http://esphdb.internal:6052/
+        namespace: default
+        app: esphome-device-builder
+        widget:
+          type: esphome
+          url: http://esphdb.internal:6052/
+    - gatus:
+        icon: sh-gatus-light.webp
+        href: https://status.kantai.xyz/
+        namespace: observability
+        app: gatus
+        widget:
+          type: gatus
+          url: http://gatus.observability.svc:80
+    - grafana:
+        icon: sh-grafana-light.webp
+        href: https://grafana.kantai.xyz/
+        namespace: observability
+        app: grafana
     - victorialogs:
         icon: sh-victoriametrics-light.webp
         href: https://val.kantai.xyz/
@@ -117,3 +133,26 @@
         href: https://login.tailscale.com/admin/machines
         namespace: tailscale
         podSelector: ""
+- Tools:
+    - changedetectionio:
+        icon: sh-changedetection.webp
+        href: https://cd.kantai.xyz
+        namespace: default
+        app: changedetection
+        widget:
+          type: changedetectionio
+          url: http://changedetection.default.svc:5000
+          key: {{HOMEPAGE_VAR_CHANGE_DETECTION_API_KEY}}
+    - homebox:
+        icon: sh-homebox.webp
+        href: https://homebox.kantai.xyz/
+        namespace: default
+        app: homebox
+    - spoolman:
+        icon: sh-spoolman.webp
+        href: https://spoolman.kantai.xyz/
+        namespace: default
+        app: spoolman
+        widget:
+          type: spoolman
+          url: http://spoolman.default.svc:8000
