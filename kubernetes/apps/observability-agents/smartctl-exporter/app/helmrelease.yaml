@@ -39,10 +39,13 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    serviceMonitor:
-      enabled: true
-    prometheusRules:
-      enabled: false
     image:
       repository: ghcr.io/home-operations/smartctl-exporter
       tag: 0.14
+    prometheusRules:
+      enabled: false
+    serviceMonitor:
+      enabled: true
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_node_name]
+          targetLabel: instance
