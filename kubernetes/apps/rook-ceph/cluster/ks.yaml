@@ -12,6 +12,20 @@ spec:
     - name: rook-ceph-operator
     - name: snapshot-controller
       namespace: kube-system
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: *app
+      namespace: rook-ceph
+    - apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      name: rook-ceph
+      namespace: rook-ceph
+  healthCheckExprs:
+    - apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      failed: status.ceph.health == 'HEALTH_ERR'
+      current: status.ceph.health in ['HEALTH_OK', 'HEALTH_WARN']
   path: ./kubernetes/apps/rook-ceph/cluster/app
   prune: false  # don't GC ceph cluster to avoid unwanted DR
   sourceRef:
