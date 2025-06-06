@@ -113,8 +113,6 @@ spec:
         storageClass: ceph-block
       config:
         existingClaim: ${APP}
-      tmp:
-        type: emptyDir
       media2:
         type: persistentVolumeClaim
         existingClaim: default-media-smb-kantai1
@@ -122,6 +120,10 @@ spec:
           - path: /media2/library
             subPath: library
             readOnly: true
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
     route:
       jellyfin:
         hostnames:
