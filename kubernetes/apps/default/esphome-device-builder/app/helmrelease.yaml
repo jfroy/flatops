@@ -20,11 +20,13 @@ spec:
             image:
               repository: ghcr.io/home-operations/esphome
               tag: 2025.5.2
-            args:
-              - dashboard
-              - --address
-              - "10.1.2.3"
-              - /config
+            env:
+              - name: ESPHOME_TRUSTED_DOMAINS
+                value: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+              - name: POD_IP
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.podIP
             ports:
               - containerPort: &port 6052
                 hostPort: *port
@@ -64,6 +66,14 @@ spec:
         sizeLimit: 50Gi
       config:
         existingClaim: ${APP}
+      entrypoint:
+        type: configMap
+        name: esphome-device-builder-entrypoint
+        defaultMode: 0755
+        globalMounts:
+          - path: /entrypoint.sh
+            subPath: entrypoint.sh
+            readOnly: true
       secrets:
         type: secret
         name: esphome-device-builder-secrets
