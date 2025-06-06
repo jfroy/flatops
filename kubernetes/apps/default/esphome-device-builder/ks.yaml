@@ -22,4 +22,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      APP_SUBDOMAIN: esphdb
       VOLSYNC_CAPACITY: 1Gi

@@ -20,6 +20,11 @@ spec:
             image:
               repository: ghcr.io/home-operations/esphome
               tag: 2025.5.2
+            args:
+              - dashboard
+              - --address
+              - "10.1.2.3"
+              - /config
             ports:
               - containerPort: &port 6052
                 hostPort: *port
@@ -40,7 +45,13 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         pod:
-          hostNetwork: true
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name": "multus-default",
+                "namespace": "kube-system",
+                "ips": ["10.1.2.3/16"]
+              }]
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -48,6 +59,9 @@ spec:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
     persistence:
+      cache:
+        type: emptyDir
+        sizeLimit: 50Gi
       config:
         existingClaim: ${APP}
       secrets:
@@ -56,17 +70,22 @@ spec:
         globalMounts:
           - path: /config/secrets.yaml
             subPath: secrets.yaml
-      cache:
-        type: emptyDir
-        sizeLimit: 50Gi
+    route:
+      homepage:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: internal
+            namespace: kube-system
+            sectionName: https
+        rules:
+          - backendRefs:
+              - port: *port
+                name: esphome-device-builder
     service:
       esphome-device-builder:
         controller: esphome-device-builder
-        clusterIP: None
-        annotations:
-          external-dns.alpha.kubernetes.io/endpoints-type: HostIP
-          external-dns.alpha.kubernetes.io/hostname: esphdb.internal
+        type: ClusterIP
         ports:
-          smb:
+          http:
             port: *port
-            protocol: TCP
