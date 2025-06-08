@@ -16,7 +16,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          esphdb:
             image:
               repository: ghcr.io/home-operations/esphome
               tag: 2025.5.2
@@ -42,10 +42,19 @@ spec:
               requests:
                 cpu: 5m
                 memory: 512Mi
-            securityContext:
+            securityContext: &csc
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+        initContainers:
+          copy-secrets:
+            image:
+              repository: docker.io/library/alpine
+              tag: latest
+            command: [/bin/cp, /secrets/secrets.yaml, /config/secrets.yaml]
+            securityContext:
+              <<: *csc
+              seccompProfile: { type: RuntimeDefault }
         pod:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
@@ -77,9 +86,6 @@ spec:
       secrets:
         type: secret
         name: esphome-device-builder-secrets
-        globalMounts:
-          - path: /config/secrets.yaml
-            subPath: secrets.yaml
     route:
       homepage:
         hostnames:
