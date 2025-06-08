@@ -27,6 +27,8 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: status.podIP
+              - name: TZ
+                value: America/Los_Angeles
             ports:
               - containerPort: &port 6052
                 hostPort: *port
