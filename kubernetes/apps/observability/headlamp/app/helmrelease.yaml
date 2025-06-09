@@ -44,10 +44,10 @@ spec:
         command:
           - /bin/sh
           - -c
-          - mkdir -p /build/plugins && rm -rf /build/plugins/flux && cp -r /plugins/flux /build/plugins/
+          - rm -rf /headlamp/plugins/flux && cp -r /plugins/flux /headlamp/plugins/
         name: headlamp-plugin-flux
         volumeMounts:
-          - mountPath: /build/plugins
+          - mountPath: /headlamp/plugins
             name: headlamp-plugins
     config:
       oidc:
@@ -56,7 +56,6 @@ spec:
         externalSecret:
           enabled: true
           name: headlamp-oidc
-      pluginsDir: /build/plugins
     env:
       - name: HEADLAMP_CONFIG_TRACING_ENABLED
         value: "false"
@@ -65,15 +64,9 @@ spec:
     podAnnotations:
       reloader.stakater.com/auto: "true"
     volumeMounts:
-      - mountPath: /build/plugins
+      - mountPath: /headlamp/plugins
         name: headlamp-plugins
     volumes:
       - name: headlamp-plugins
-        persistentVolumeClaim:
-          claimName: headlamp
-    persistentVolumeClaim:
-      enabled: true
-      accessModes:
-        - ReadWriteOnce
-      size: 100Mi
-      storageClassName: openebs-hostpath
+        emptyDir:
+          sizeLimit: 100Mi
