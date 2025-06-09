@@ -57,6 +57,11 @@ spec:
           enabled: true
           name: headlamp-oidc
       pluginsDir: /build/plugins
+    env:
+      - name: HEADLAMP_CONFIG_TRACING_ENABLED
+        value: "false"
+      - name: HEADLAMP_CONFIG_METRICS_ENABLED
+        value: "false"
     podAnnotations:
       reloader.stakater.com/auto: "true"
     volumeMounts:
