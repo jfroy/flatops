@@ -156,7 +156,7 @@ spec:
     persistence:
       ca-certificates:
         type: configMap
-        name: ca-certificates.crt
+        name: cluster-ca-certificates.crt
         globalMounts:
           - path: /certs
       geocoding-dump:

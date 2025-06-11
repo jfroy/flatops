@@ -78,7 +78,7 @@ spec:
     persistence:
       ca-certificates:
         type: configMap
-        name: ca-certificates.crt
+        name: cluster-ca-certificates.crt
         advancedMounts:
           maybe:
             web:
