@@ -39,7 +39,7 @@ spec:
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-credentials
+                    name: onepassword-connect-credentials
                     key: 1password-credentials.json
               XDG_DATA_HOME: /data
             probes:
@@ -76,7 +76,7 @@ spec:
               OP_SESSION:
                 valueFrom:
                   secretKeyRef:
-                    name: onepassword-credentials
+                    name: onepassword-connect-credentials
                     key: 1password-credentials.json
               XDG_DATA_HOME: /data
             probes:
