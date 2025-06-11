@@ -33,6 +33,7 @@ metadata:
   name: external-secrets-stores
 spec:
   dependsOn:
+    - name: onepassword-connect
     - name: external-secrets
   healthChecks:
     - apiVersion: external-secrets.io/v1
