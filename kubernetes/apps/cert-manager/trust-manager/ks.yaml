@@ -32,7 +32,7 @@ spec:
   dependsOn:
     - name: trust-manager
   path: ./kubernetes/apps/cert-manager/trust-manager/cluster-ca-bundle
-  prune: false  # don't delete issued trust bundles
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
