@@ -42,10 +42,6 @@ spec:
       name: 1password-cko-secret
       valuesKey: connect-credentials
       targetPath: connect.credentials_base64
-    - kind: Secret
-      name: 1password-cko-secret
-      valuesKey: operator-token
-      targetPath: operator.token.value
   values:
     connect:
       api:
