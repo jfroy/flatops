@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./external-secrets/ks.yaml
+  - ./onepassword-connect/ks.yaml
 components:
   - ../../components/common
 transformers:
