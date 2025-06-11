@@ -5,9 +5,10 @@ metadata:
   name: cluster-ca.crt
 spec:
   sources:
-  - secret:
-      name: cluster-ca
-      key: ca.crt
+    - useDefaultCAs: true
+    - secret:
+        name: cluster-ca
+        key: ca.crt
   target:
     configMap:
       key: ca.crt
@@ -15,12 +16,13 @@ spec:
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:
-  name: ca-certificates.crt
+  name: cluster-ca-certificates.crt
 spec:
   sources:
-  - secret:
-      name: cluster-ca
-      key: ca.crt
+    - useDefaultCAs: true
+    - secret:
+        name: cluster-ca
+        key: ca.crt
   target:
     configMap:
       key: ca-certificates.crt
