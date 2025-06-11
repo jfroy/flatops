@@ -81,6 +81,8 @@ spec:
         name: ca-certificates.crt
         advancedMounts:
           maybe:
+            web:
+              - path: /etc/ssl/certs
             worker:
               - path: /etc/ssl/certs
       data:
