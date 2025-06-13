@@ -4,6 +4,7 @@ kind: Service
 metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: kantai3.smb.internal
+    external-dns.alpha.kubernetes.io/target: "10.1.2.2"
   name: kantai3-smb-internal
 spec:
   clusterIP: None
@@ -11,4 +12,3 @@ spec:
     - name: smbd
       port: 445
       targetPort: 445
-  publishNotReadyAddresses: true

@@ -4,6 +4,7 @@ kind: Service
 metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: kantai1.smb.internal
+    external-dns.alpha.kubernetes.io/target: "10.1.2.4"
   name: kantai1-smb-internal
 spec:
   clusterIP: None
