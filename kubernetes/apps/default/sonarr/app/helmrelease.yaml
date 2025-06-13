@@ -77,7 +77,7 @@ spec:
         existingClaim: ${APP}
       media2:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai1
+        existingClaim: media-smb-kantai1
       scripts:
         type: configMap
         name: sonarr-configmap

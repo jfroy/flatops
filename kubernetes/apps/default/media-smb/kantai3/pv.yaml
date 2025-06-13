@@ -4,13 +4,13 @@ kind: PersistentVolume
 metadata:
   annotations:
     pv.kubernetes.io/provisioned-by: smb.csi.k8s.io
-  name: default-media-smb-media1
+  name: default-media-smb-kantai3
 spec:
   capacity:
     storage: 50Ti
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: ""
   mountOptions:
     - vers=3.1.1
@@ -28,5 +28,5 @@ spec:
     volumeAttributes:
       source: "//kantai3.smb.internal/media"
     nodeStageSecretRef:
-      name: media-smb-media1
+      name: media-smb-kantai3
       namespace: default

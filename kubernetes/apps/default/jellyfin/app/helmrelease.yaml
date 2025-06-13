@@ -115,7 +115,7 @@ spec:
         existingClaim: ${APP}
       media2:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai1
+        existingClaim: media-smb-kantai1
         globalMounts:
           - path: /media2/library
             subPath: library

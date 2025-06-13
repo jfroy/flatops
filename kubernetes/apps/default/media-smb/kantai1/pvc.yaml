@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: default-media-smb-kantai1
+  name: media-smb-kantai1
 spec:
   accessModes:
     - ReadWriteMany

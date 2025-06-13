@@ -144,7 +144,7 @@ spec:
                 readOnly: true
       media2:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai1
+        existingClaim: media-smb-kantai1
         advancedMounts:
           sabnzbd:
             sabnzbd:

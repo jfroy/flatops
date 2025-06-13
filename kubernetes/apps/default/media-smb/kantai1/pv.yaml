@@ -10,7 +10,7 @@ spec:
     storage: 160Ti
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete
   storageClassName: ""
   mountOptions:
     - vers=3.1.1

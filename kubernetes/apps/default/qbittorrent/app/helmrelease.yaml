@@ -167,7 +167,7 @@ spec:
                 readOnly: true
       media:
         type: persistentVolumeClaim
-        existingClaim: media-smb-media1
+        existingClaim: media-smb-kantai3
         advancedMounts:
           qbittorrent:
             qbittorrent:
@@ -177,7 +177,7 @@ spec:
                 subPath: sss
       media2:
         type: persistentVolumeClaim
-        existingClaim: default-media-smb-kantai1
+        existingClaim: media-smb-kantai1
         advancedMounts:
           qbittorrent:
             qbittorrent:

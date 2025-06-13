@@ -158,7 +158,7 @@ spec:
               - path: /scrapers
       sss:
         type: persistentVolumeClaim
-        existingClaim: media-smb-media1
+        existingClaim: media-smb-kantai3
         globalMounts:
           - path: /mnt/citerne/media
     route:

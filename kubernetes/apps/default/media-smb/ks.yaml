@@ -3,8 +3,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: default-media-smb-kantai1
-  namespace: flux-system
+  name: media-smb-kantai1
 spec:
   path: ./kubernetes/apps/default/media-smb/kantai1
   prune: true
@@ -20,10 +19,9 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: default-media-smb-media1
-  namespace: flux-system
+  name: media-smb-kantai3
 spec:
-  path: ./kubernetes/apps/default/media-smb/media1
+  path: ./kubernetes/apps/default/media-smb/kantai3
   prune: true
   sourceRef:
     kind: GitRepository
