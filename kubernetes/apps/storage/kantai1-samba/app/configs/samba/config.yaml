@@ -1,6 +1,6 @@
 samba-container-config: v0
 configs:
-  media-kantai1-smb:
+  default:
     globals:
       - default
     shares:
