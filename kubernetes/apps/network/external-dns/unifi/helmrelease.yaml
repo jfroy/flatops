@@ -27,6 +27,7 @@ spec:
     domainFilters: ["kantai.xyz", "kantai.wtf", "internal"]
     extraArgs:
       - --gateway-name=internal
+    logLevel: debug
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi
     policy: sync
