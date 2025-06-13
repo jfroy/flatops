@@ -1,0 +1,46 @@
+---
+apiVersion: zfs.openebs.io/v1
+kind: ZFSVolume
+metadata:
+  name: jf
+  finalizers:
+    - cluster.local/data-protection
+spec:
+  capacity: "25330530735448"
+  compression: "zstd"
+  dedup: "off"
+  fsType: zfs
+  ownerNodeID: kantai3
+  poolName: citerne/personal
+  recordsize: 128K
+  shared: "yes"
+  thinProvision: "yes"
+  volumeType: DATASET
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zfs-jf
+spec:
+  accessModes:
+    - ReadWriteMany
+  capacity:
+    storage: 108Gi
+  csi:
+    driver: zfs.csi.openebs.io
+    fsType: zfs
+    volumeAttributes:
+      openebs.io/cas-type: localpv-zfs
+      openebs.io/poolname: citerne/personal
+    volumeHandle: jf
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: openebs.io/nodeid
+              operator: In
+              values:
+                - kantai3
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem

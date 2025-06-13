@@ -160,6 +160,13 @@ spec:
           kantai3-samba:
             smbd:
               - path: /homeassistant-backup
+      jf:
+        type: persistentVolumeClaim
+        existingClaim: zfs-jf
+        advancedMounts:
+          kantai3-samba:
+            smbd:
+              - path: /jf
       lock:
         type: emptyDir
         medium: Memory

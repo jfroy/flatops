@@ -26,3 +26,17 @@ spec:
   storageClassName: ""
   volumeMode: Filesystem
   volumeName: homeassistant-backup
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: zfs-jf
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 100Gi
+  storageClassName: ""
+  volumeMode: Filesystem
+  volumeName: zfs-jf
