@@ -11,3 +11,4 @@ spec:
     - name: smbd
       port: 445
       targetPort: 445
+  publishNotReadyAddresses: true
