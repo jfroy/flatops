@@ -24,9 +24,9 @@ spec:
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
-    volumeHandle: kantai1.smb.internal/media##
+    volumeHandle: kantai1-smb-internal.storage.svc/media##
     volumeAttributes:
-      source: "//kantai1.smb.internal/media"
+      source: "//kantai1-smb-internal.storage.svc/media"
     nodeStageSecretRef:
       name: media-smb-kantai1
       namespace: default
