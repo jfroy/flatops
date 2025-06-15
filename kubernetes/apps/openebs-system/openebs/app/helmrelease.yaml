@@ -40,6 +40,9 @@ spec:
     remediation:
       retries: 3
   values:
+    alloy:
+      enabled: false
+
     openebs-crds:
       csi:
         volumeSnapshots:
@@ -82,6 +85,9 @@ spec:
           volumeSnapshots:
             enabled: false
 
+    loki:
+      enabled: false
+
     lvm-localpv:
       enabled: false
 
@@ -109,6 +115,9 @@ spec:
         - key: node-role.kubernetes.io/control-plane
           operator: Exists
           effect: NoSchedule
+
+    minio:
+      enabled: false
 
     engines:
       local:
