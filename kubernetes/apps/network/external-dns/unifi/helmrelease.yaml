@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    domainFilters: ["kantai.xyz", "kantai.wtf", "internal"]
+    domainFilters: ["kantai.xyz", "internal"]
     extraArgs:
       - --gateway-name=internal
     logLevel: debug

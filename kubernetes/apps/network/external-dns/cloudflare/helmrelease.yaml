@@ -24,7 +24,7 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    domainFilters: ["kantai.xyz", "kantai.wtf"]
+    domainFilters: ["kantai.xyz"]
     env:
       - name: CF_API_TOKEN
         valueFrom:
