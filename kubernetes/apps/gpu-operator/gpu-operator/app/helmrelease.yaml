@@ -68,7 +68,7 @@ spec:
       enabled: false
     toolkit:
       repository: ghcr.io/jfroy
-      version: 1.17.6-ubuntu20.04
+      version: 1.17.8-ubuntu20.04
       # These environment variables are stored in the cluster policy CR. The operator uses them to
       # create the toolkit daemonset resource.
       env:
