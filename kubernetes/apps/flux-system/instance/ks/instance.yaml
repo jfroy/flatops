@@ -13,8 +13,8 @@ spec:
     # renovate: datasource=github-releases depName=controlplaneio-fluxcd/distribution
     version: 2.6.2
     registry: ghcr.io/fluxcd
-    # renovate: datasource=docker depName=ghcr.io/controlplaneio-fluxcd/flux-operator-manifests
-    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.22.0
+    # renovate: datasource=github-releases depName=controlplaneio-fluxcd/flux-operator
+    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.23.0
   components:
     - source-controller
     - kustomize-controller
