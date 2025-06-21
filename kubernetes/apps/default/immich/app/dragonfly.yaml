@@ -47,7 +47,7 @@ spec:
         resourceFieldRef:
           resource: limits.memory
           divisor: 1Mi
-  image: ghcr.io/dragonflydb/dragonfly:v1.30.3
+  image: ghcr.io/dragonflydb/dragonfly:v1.31.0
   replicas: 2
   resources:
     requests:
