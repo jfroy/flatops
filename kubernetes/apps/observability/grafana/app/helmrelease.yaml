@@ -239,7 +239,7 @@ spec:
         victoria-single:
           # renovate: depName="VictoriaMetrics - single-node"
           gnetId: 10229
-          revision: 39
+          revision: 40
           datasource: Prometheus
       rook-ceph:
         rook-ceph-cluster:
