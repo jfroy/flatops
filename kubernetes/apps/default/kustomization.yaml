@@ -15,7 +15,7 @@ resources:
   - ./homepage/ks.yaml
   - ./immich/ks.yaml
   # - ./jellyfin/ks.yaml
-  - ./maybe/ks.yaml
+  # - ./maybe/ks.yaml
   - ./media-smb/ks.yaml
   - ./namespace.yaml
   - ./octoeverywhere-bambu-connect/ks.yaml
