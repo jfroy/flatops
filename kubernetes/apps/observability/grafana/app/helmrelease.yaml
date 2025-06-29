@@ -224,7 +224,7 @@ spec:
         victoria-alert:
           # renovate: depName="VictoriaMetrics - vmalert"
           gnetId: 14950
-          revision: 14
+          revision: 15
           datasource: Prometheus
         victoria-logs:
           # renovate: depName="VictoriaLogs"
