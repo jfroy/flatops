@@ -28,7 +28,7 @@ spec:
           dozzle:
             image:
               repository: docker.io/amir20/dozzle
-              tag: v8.13.3@sha256:a3915e87fbb20166edd89b977b3e795f2d0a67244ec084a13a038b44fe633c3a
+              tag: v8.13.4@sha256:36707d180462e764eac81aac793f8352296048404fa4dea1f280fa3cefa7fce3
             env:
               DOZZLE_MODE: k8s
               TZ: America/Los_Angeles
