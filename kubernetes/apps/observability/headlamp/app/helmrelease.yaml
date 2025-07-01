@@ -40,7 +40,7 @@ spec:
   values:
     fullnameOverride: headlamp
     initContainers:
-      - image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:v0.2.0
+      - image: ghcr.io/headlamp-k8s/headlamp-plugin-flux:v0.3.0
         command:
           - /bin/sh
           - -c
