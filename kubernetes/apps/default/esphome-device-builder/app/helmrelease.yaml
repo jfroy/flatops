@@ -27,6 +27,8 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: status.podIP
+              - name: RUST_BACKTRACE
+                value: "1"
               - name: TZ
                 value: America/Los_Angeles
             ports:
