@@ -19,7 +19,7 @@ spec:
           esphdb:
             image:
               repository: ghcr.io/jfroy/esphome
-              tag: "2025.6.3"
+              tag: "2025.6.3@sha256:88d5143a6d22847e53a11eff775a02ae8a07df1f58b430aab18bf956a670b08d"
             env:
               - name: ESPHOME_TRUSTED_DOMAINS
                 value: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
