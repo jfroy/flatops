@@ -18,7 +18,7 @@ spec:
         containers:
           esphdb:
             image:
-              repository: ghcr.io/home-operations/esphome
+              repository: ghcr.io/jfroy/esphome
               tag: "2025.6.3"
             env:
               - name: ESPHOME_TRUSTED_DOMAINS
