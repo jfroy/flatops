@@ -68,8 +68,13 @@ spec:
       cache:
         type: emptyDir
         sizeLimit: 50Gi
-      config:
+      data:
         existingClaim: ${APP}
+        globalMounts:
+          - path: /config
+            subPath: config
+          - path: /cache/data/storage
+            subPath: storage
       entrypoint:
         type: configMap
         name: esphome-device-builder-entrypoint
