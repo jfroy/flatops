@@ -7,7 +7,7 @@ resources:
   # --
   - ./node-exporter/ks.yaml
   - ./smartctl-exporter/ks.yaml
-  - ./telegraf-zfs/ks.yaml
+  - ./telegraf/ks.yaml
 components:
   - ../../components/common
 transformers:

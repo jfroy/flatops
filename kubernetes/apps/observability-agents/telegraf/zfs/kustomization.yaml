@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: telegraf
+  - name: telegraf-zfs
     files:
       - ./configs/telegraf.conf
     options:
