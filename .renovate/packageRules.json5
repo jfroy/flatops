@@ -11,5 +11,10 @@
       matchPackageNames: ["registry.kantai.xyz**/*"],
       enabled: false
     },
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/library/influxdb"],
+      allowedVersions: "<2"
+    },
   ]
 }
