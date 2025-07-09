@@ -28,19 +28,10 @@ spec:
           influxdb:
             image:
               repository: docker.io/library/influxdb
-              tag: 3.0.3-core
+              tag: "1.11.8"
             args:
-              - --object-store
-              - file
-              - --data-dir
-              - /data/data
-              - --plugin-dir
-              - /data/plugins
-            env:
-              INFLUXDB3_NODE_IDENTIFIER_PREFIX:
-                valueFrom:
-                  fieldRef:
-                    fieldPath: spec.nodeName
+              - -config
+              - /config/influxdb.conf
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
@@ -54,6 +45,10 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     persistence:
+      config:
+        type: configMap
+        name: influxdb-config
+        defaultMode: 0755
       data:
         existingClaim: ${APP}
     route:
@@ -66,7 +61,7 @@ spec:
             sectionName: https
         rules:
           - backendRefs:
-              - port: &port 8181
+              - port: &port 8086
                 name: influxdb
     service:
       influxdb:
