@@ -51,18 +51,6 @@ spec:
         defaultMode: 0755
       data:
         existingClaim: ${APP}
-    route:
-      homepage:
-        hostnames:
-          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - port: &port 8086
-                name: influxdb
     service:
       influxdb:
         controller: influxdb
