@@ -33,7 +33,9 @@ spec:
               - --object-store
               - file
               - --data-dir
-              - /data
+              - /data/data
+              - --plugin-dir
+              - /data/plugins
             env:
               INFLUXDB3_NODE_IDENTIFIER_PREFIX:
                 valueFrom:
