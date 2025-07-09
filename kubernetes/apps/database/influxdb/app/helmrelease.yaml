@@ -57,4 +57,4 @@ spec:
         type: ClusterIP
         ports:
           http:
-            port: *port
+            port: &port 8086
