@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
             - name: rclone
-              image: docker.io/rclone/rclone:1.70.2@sha256:2a25b0ac42aa0bcb690f039a0b9713974bdea501b48e4b4bb5de328ff3cf29ee
+              image: docker.io/rclone/rclone:1.70.3@sha256:34c729127386abec1c610b2aa024e39b4498dc2b4a72a0798ae21fbdc1b0493b
               imagePullPolicy: IfNotPresent
               workingDir: /data
               args:
