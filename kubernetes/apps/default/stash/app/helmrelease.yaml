@@ -63,7 +63,7 @@ spec:
           nams:
             image:
               repository: registry.kantai.xyz/nams
-              tag: 2.1.0@sha256:d0a6601ce7e0b4d9650122736e0fab9bdd27d9f3ba357adeb374e1e16969c3fe
+              tag: 2.1.0@sha256:9e371880966af1a98d614b79b38c633062dd06d3f87bb5e3e9e3ed63657ad462
             env:
               TZ: America/Los_Angeles
             probes:
