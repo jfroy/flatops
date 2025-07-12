@@ -131,7 +131,7 @@ spec:
                 subPath: licenseV1.0.lic
       nams-logs:
         type: emptyDir
-        sizeLimit: 10Mi
+        sizeLimit: 100Mi
         advancedMounts:
           stash:
             nams:
@@ -161,6 +161,10 @@ spec:
         existingClaim: media-smb-kantai3
         globalMounts:
           - path: /mnt/citerne/media
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 100Mi
     route:
       stash:
         hostnames:
