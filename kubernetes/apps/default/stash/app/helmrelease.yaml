@@ -28,7 +28,7 @@ spec:
           stash:
             image:
               repository: ghcr.io/jfroy/stash
-              tag: v0.28.1-cudajellyfin.3@sha256:4f11d488e2986bf6968dbcdf8226787038d59ac3379499b781d280fba599ca8c
+              tag: v0.28.1-cudajellyfin.7
             env:
               HOME: /config
               NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
@@ -63,7 +63,7 @@ spec:
           nams:
             image:
               repository: registry.kantai.xyz/nams
-              tag: 2.0.0@sha256:bff337ca9ec86b1879263f2d1a2ab75c72ce34e86afd1fb09273d48cd441bb01
+              tag: 2.1.0@sha256:d0a6601ce7e0b4d9650122736e0fab9bdd27d9f3ba357adeb374e1e16969c3fe
             env:
               TZ: America/Los_Angeles
             probes:
