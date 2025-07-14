@@ -17,6 +17,7 @@ resources:
   # - ./jellyfin/ks.yaml
   # - ./maybe/ks.yaml
   - ./media-smb/ks.yaml
+  - ./memos/ks.yaml
   - ./namespace.yaml
   - ./octoeverywhere-bambu-connect/ks.yaml
   - ./pgadmin/ks.yaml
