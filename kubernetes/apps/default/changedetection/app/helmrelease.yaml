@@ -50,6 +50,7 @@ spec:
               CONCURRENT: "10"
               DATA_DIR: /profile
               DOWNLOAD_DIR: /downloads
+              TIMEOUT: "60000"
             envFrom:
               - secretRef:
                   name: changedetection
