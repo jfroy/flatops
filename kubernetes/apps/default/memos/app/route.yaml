@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: &app memos
+spec:
+  hostnames:
+    - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+  parentRefs:
+    - name: internal
+      namespace: kube-system
+      sectionName: https
+  rules:
+    - backendRefs:
+        - name: "memos-grpc"
+          namespace: default
+          port: 5231
+      matches:
+        - headers:
+            - type: Exact
+              name: Content-Type
+              value: "application/grpc-web+proto"
+    - backendRefs:
+        - name: memos-app
+          namespace: default
+          port: 5230
+          weight: 1

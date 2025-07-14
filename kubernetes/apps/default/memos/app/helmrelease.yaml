@@ -48,7 +48,7 @@ spec:
               tag: 0.24.4@sha256:c6defc2dfb98fb97f78d86f94efb1464c959653cadf5123e1d4ad7452aefb973
             env:
               MEMOS_DRIVER: postgres
-              MEMOS_PORT: &port 5230
+              MEMOS_PORT: "5230"
               MEMOS_PUBLIC: false
               TZ: America/Los_Angeles
             envFrom:
@@ -61,7 +61,7 @@ spec:
                 spec:
                   httpGet:
                     path: /healthz
-                    port: *port
+                    port: 5230
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
@@ -72,22 +72,38 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /var/opt/memos
-    route:
-      memos:
-        hostnames:
-          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-        parentRefs:
-          - name: internal
-            namespace: kube-system
-            sectionName: https
-        rules:
-          - backendRefs:
-              - port: *port
-                name: memos
+    route: {}
+      # FIXME(jfroy): switch to chart route when header matching is supported
+      # memos:
+      #   hostnames:
+      #     - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+      #   parentRefs:
+      #     - name: internal
+      #       namespace: kube-system
+      #       sectionName: https
+      #   rules:
+      #     - backendRefs:
+      #         - identifier: app
+      #           port: 5230
+      #     - backendRefs:
+      #         - identifier: grpc
+      #           port: 5230
+      #       matches:
+      #         - headers:
+      #             - type: Exact
+      #               name: Content-Type
+      #               value: "application/grpc-web+proto"
     service:
-      memos:
+      app:
         controller: memos
-        type: ClusterIP
         ports:
           http:
-            port: *port
+            port: 5230
+            appProtocol: http
+      grpc:
+        controller: memos
+        ports:
+          http:
+            port: 5231
+            targetPort: 5230
+            appProtocol: kubernetes.io/h2c
