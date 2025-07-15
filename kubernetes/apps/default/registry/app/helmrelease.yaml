@@ -70,7 +70,10 @@ spec:
           - path: /etc/distribution
             readOnly: true
       storage:
-        existingClaim: ${APP}
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 1Ti
+        storageClass: ceph-block
         globalMounts:
           - path: /var/lib/registry
     route:
