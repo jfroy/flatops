@@ -99,12 +99,12 @@
         href: https://hass.nouvelle.house/
     - esphomedb:
         icon: sh-esphome-light.webp
-        href: http://esphdb.internal:6052/
+        href: https://esphdb.kantai.xyz/
         namespace: default
         app: esphome-device-builder
         widget:
           type: esphome
-          url: http://esphdb.internal:6052/
+          url: https://esphdb.kantai.xyz/
     - gatus:
         icon: sh-gatus-light.webp
         href: https://status.kantai.xyz/
