@@ -148,6 +148,11 @@
         href: https://homebox.kantai.xyz/
         namespace: default
         app: homebox
+    - memos:
+        icon: sh-memos.webp
+        href: https://memos.kantai.xyz/
+        namespace: default
+        app: memos
     - spoolman:
         icon: sh-spoolman.webp
         href: https://spoolman.kantai.xyz/
