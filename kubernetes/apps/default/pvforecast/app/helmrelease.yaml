@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: pvforecast
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      pvforecast:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          pvforecast:
+            image:
+              repository: ghcr.io/stefae/pvforecast
+              tag: main@sha256:77a69be33eef9939efdfa183c72afe2fed79cff6ba1de0275831684c75115e9c
+            command: [ "python", "./PVForecasts.py" ]
+            args:
+              - --cfg=/config/config.ini
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+              seccompProfile: { type: RuntimeDefault }
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      config:
+        type: configMap
+        name: pvforecast-config
+        defaultMode: 0755
