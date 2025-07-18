@@ -347,7 +347,7 @@ spec:
         auto_assign_org_role: Admin
 
     plugins:
-      - Sun and Moon
+      - sunandmoon-datasource
       - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.18.1/victoriametrics-logs-datasource-v0.18.1.zip;victorialogs-datasource
       - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.17.0/victoriametrics-metrics-datasource-v0.17.0.zip;victoriametrics-datasource
 
