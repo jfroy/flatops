@@ -521,7 +521,7 @@
           "alias": "Home Usage",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -556,7 +556,7 @@
           "alias": "Solar Energy",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -592,7 +592,7 @@
           "alias": "Powerwall",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -631,7 +631,7 @@
           "alias": "Grid Usage",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -676,7 +676,7 @@
           "alias": "Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -734,7 +734,7 @@
           "alias": "Temperature",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -775,7 +775,7 @@
           "alias": "Clouds",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -816,7 +816,7 @@
           "alias": "Feels Like",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -857,7 +857,7 @@
           "alias": "Grid Down",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -900,7 +900,7 @@
           "alias": "Reserve",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -972,7 +972,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -1163,7 +1163,7 @@
           "alias": "Grid Status",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -1207,7 +1207,7 @@
           "alias": "sync",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT min(\"grid_status\") + 2 FROM \"grid\".\"http\" WHERE grid_status = -1 and $timeFilter GROUP BY time($__interval) fill(null) tz('${tz:text}')",
@@ -1219,7 +1219,7 @@
           "alias": "off_grid",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT min(\"grid_status\") + 1 FROM \"grid\".\"http\" WHERE grid_status = 0 and $timeFilter GROUP BY time($__interval) fill(null) tz('${tz:text}')",
@@ -1248,7 +1248,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1312,7 +1312,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "measurement": "http",
@@ -1352,7 +1352,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1416,7 +1416,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "measurement": "http",
@@ -1454,7 +1454,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -1520,7 +1520,7 @@
           "alias": "SolarPowered",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "hide": false,
@@ -1561,7 +1561,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1625,7 +1625,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "measurement": "http",
@@ -1663,7 +1663,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1727,7 +1727,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "measurement": "http",
@@ -1765,7 +1765,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1829,7 +1829,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "measurement": "http",
@@ -1867,7 +1867,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -1931,7 +1931,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "measurement": "http",
@@ -1969,7 +1969,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -2034,7 +2034,7 @@
           "alias": "",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "measurement": "http",
@@ -2074,7 +2074,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "Estimated Savings (Buy  = $ $avg_buy_per_kwh / Sell  = $ $avg_sell_per_kwh)",
       "fieldConfig": {
@@ -2139,7 +2139,7 @@
           "alias": "powerwall > home",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "query": "SELECT fp FROM (SELECT sum(\"from_pw\")  * $avg_buy_per_kwh AS fp FROM kwh.http WHERE  $timeFilter )",
           "rawQuery": true,
@@ -2150,7 +2150,7 @@
           "alias": "solar > home",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT s - (tp + tg) FROM (SELECT sum(\"solar\") * $avg_buy_per_kwh AS s,  sum(\"to_pw\")  * $avg_buy_per_kwh AS tp, sum(\"to_grid\") * $avg_buy_per_kwh AS tg FROM kwh.http WHERE  $timeFilter )",
@@ -2162,7 +2162,7 @@
           "alias": "solar > grid",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT tgg FROM (SELECT sum(\"to_grid\") * $avg_sell_per_kwh AS tgg FROM kwh.http WHERE  $timeFilter )\n",
@@ -2174,7 +2174,7 @@
           "alias": "total",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT tgg + (s - tp - tg ) + fp FROM (SELECT sum(\"to_pw\")  * $avg_buy_per_kwh AS tp, sum(\"solar\") * $avg_buy_per_kwh AS s, sum(\"to_grid\") * $avg_buy_per_kwh AS tg, sum(\"from_pw\") * $avg_buy_per_kwh AS fp, sum(\"to_grid\") * $avg_sell_per_kwh AS tgg FROM kwh.http WHERE  $timeFilter )",
@@ -2190,7 +2190,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -2445,7 +2445,7 @@
           "alias": "From Solar",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "query": "SELECT  (1+from_solar/abs(from_solar))*from_solar/2  FROM (SELECT integral(solar)/1000/3600 - (integral(to_pw) - integral(grid_to_pw))/1000/3600  - integral(to_grid)/1000/3600  AS from_solar FROM (SELECT from_solar, solar, to_pw, to_grid, ((from_grid - home - solar) + ABS((from_grid - home - solar))) / 2 AS grid_to_pw FROM autogen.http WHERE  $timeFilter ))",
           "rawQuery": true,
@@ -2456,7 +2456,7 @@
           "alias": "From Powerwall",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "hide": false,
@@ -2494,7 +2494,7 @@
           "alias": "From Grid",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [],
           "hide": false,
@@ -2536,7 +2536,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -2586,7 +2586,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "query": "SELECT last(\"battery_instant_power\")  / 1000 AS \"Battery\", last(\"site_instant_power\")  / 1000 AS \"Grid\", last(\"load_instant_power\")  / 1000 AS \"Home\", last(\"solar_instant_power\")  / 1000 AS \"Solar\" FROM \"raw\".\"http\" WHERE time >= now() - 10m",
           "rawQuery": true,
@@ -2611,7 +2611,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "fieldConfig": {
             "defaults": {
@@ -2712,7 +2712,7 @@
               "alias": "Home Usage",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -2759,7 +2759,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "fieldConfig": {
             "defaults": {
@@ -2860,7 +2860,7 @@
               "alias": "Solar Energy",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -2913,7 +2913,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "fieldConfig": {
             "defaults": {
@@ -3014,7 +3014,7 @@
               "alias": "From Powerwall",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -3061,7 +3061,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "fieldConfig": {
             "defaults": {
@@ -3177,7 +3177,7 @@
               "alias": "From Grid",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -3219,7 +3219,7 @@
               "alias": "To Grid",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -3273,7 +3273,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "description": "",
           "fieldConfig": {
@@ -3447,7 +3447,7 @@
               "alias": "Home Usage",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -3497,7 +3497,7 @@
               "alias": "Solar",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -3547,7 +3547,7 @@
               "alias": "Grid Usage",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "hide": false,
               "query": "SELECT sum(\"from_grid\") - sum(\"to_grid\") as \"grid\" FROM \"kwh\".\"http\" WHERE  $timeFilter GROUP BY time(1d) fill(null) tz('${tz:text}')",
@@ -3581,7 +3581,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -3684,7 +3684,7 @@
           "alias": "A",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -3725,7 +3725,7 @@
           "alias": "B",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -3767,7 +3767,7 @@
           "alias": "C",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -3809,7 +3809,7 @@
           "alias": "D",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -3851,7 +3851,7 @@
           "alias": "E",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -3893,7 +3893,7 @@
           "alias": "F",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -3935,7 +3935,7 @@
           "alias": "A1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -3977,7 +3977,7 @@
           "alias": "B1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4019,7 +4019,7 @@
           "alias": "C1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4061,7 +4061,7 @@
           "alias": "D1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4103,7 +4103,7 @@
           "alias": "E1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4145,7 +4145,7 @@
           "alias": "F1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4187,7 +4187,7 @@
           "alias": "A2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4229,7 +4229,7 @@
           "alias": "B2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4271,7 +4271,7 @@
           "alias": "C2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4313,7 +4313,7 @@
           "alias": "D2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4355,7 +4355,7 @@
           "alias": "E2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4397,7 +4397,7 @@
           "alias": "F2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4439,7 +4439,7 @@
           "alias": "A3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4481,7 +4481,7 @@
           "alias": "B3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4523,7 +4523,7 @@
           "alias": "C3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4565,7 +4565,7 @@
           "alias": "D3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4607,7 +4607,7 @@
           "alias": "E3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4649,7 +4649,7 @@
           "alias": "F3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4691,7 +4691,7 @@
           "alias": "A4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4733,7 +4733,7 @@
           "alias": "B4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4775,7 +4775,7 @@
           "alias": "C4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4817,7 +4817,7 @@
           "alias": "D4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4859,7 +4859,7 @@
           "alias": "E4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4901,7 +4901,7 @@
           "alias": "F4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4943,7 +4943,7 @@
           "alias": "A5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -4985,7 +4985,7 @@
           "alias": "B5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5027,7 +5027,7 @@
           "alias": "C5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5069,7 +5069,7 @@
           "alias": "D5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5111,7 +5111,7 @@
           "alias": "E5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5153,7 +5153,7 @@
           "alias": "F5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5199,7 +5199,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -5302,7 +5302,7 @@
           "alias": "A",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5343,7 +5343,7 @@
           "alias": "B",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5385,7 +5385,7 @@
           "alias": "C",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5427,7 +5427,7 @@
           "alias": "D",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5469,7 +5469,7 @@
           "alias": "E",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5511,7 +5511,7 @@
           "alias": "F",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5553,7 +5553,7 @@
           "alias": "A1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5595,7 +5595,7 @@
           "alias": "B1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5637,7 +5637,7 @@
           "alias": "C1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5679,7 +5679,7 @@
           "alias": "D1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5721,7 +5721,7 @@
           "alias": "E1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5763,7 +5763,7 @@
           "alias": "F1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5805,7 +5805,7 @@
           "alias": "A2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5847,7 +5847,7 @@
           "alias": "B2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5889,7 +5889,7 @@
           "alias": "C2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5931,7 +5931,7 @@
           "alias": "D2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -5973,7 +5973,7 @@
           "alias": "E2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6015,7 +6015,7 @@
           "alias": "F2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6057,7 +6057,7 @@
           "alias": "A3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6099,7 +6099,7 @@
           "alias": "B3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6141,7 +6141,7 @@
           "alias": "C3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6183,7 +6183,7 @@
           "alias": "D3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6225,7 +6225,7 @@
           "alias": "E3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6267,7 +6267,7 @@
           "alias": "F3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6309,7 +6309,7 @@
           "alias": "A4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6351,7 +6351,7 @@
           "alias": "B4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6393,7 +6393,7 @@
           "alias": "C4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6435,7 +6435,7 @@
           "alias": "D4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6477,7 +6477,7 @@
           "alias": "E4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6519,7 +6519,7 @@
           "alias": "F4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6561,7 +6561,7 @@
           "alias": "A5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6603,7 +6603,7 @@
           "alias": "B5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6645,7 +6645,7 @@
           "alias": "C5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6687,7 +6687,7 @@
           "alias": "D5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6729,7 +6729,7 @@
           "alias": "E5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6771,7 +6771,7 @@
           "alias": "F5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6817,7 +6817,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -6920,7 +6920,7 @@
           "alias": "A",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -6961,7 +6961,7 @@
           "alias": "B",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7003,7 +7003,7 @@
           "alias": "C",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7045,7 +7045,7 @@
           "alias": "D",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7087,7 +7087,7 @@
           "alias": "E",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7129,7 +7129,7 @@
           "alias": "F",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7171,7 +7171,7 @@
           "alias": "A1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7213,7 +7213,7 @@
           "alias": "B1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7255,7 +7255,7 @@
           "alias": "C1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7297,7 +7297,7 @@
           "alias": "D1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7339,7 +7339,7 @@
           "alias": "E1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7381,7 +7381,7 @@
           "alias": "F1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7423,7 +7423,7 @@
           "alias": "A2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7465,7 +7465,7 @@
           "alias": "B2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7507,7 +7507,7 @@
           "alias": "C2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7549,7 +7549,7 @@
           "alias": "D2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7591,7 +7591,7 @@
           "alias": "E2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7633,7 +7633,7 @@
           "alias": "F2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7675,7 +7675,7 @@
           "alias": "A3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7717,7 +7717,7 @@
           "alias": "B3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7759,7 +7759,7 @@
           "alias": "C3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7801,7 +7801,7 @@
           "alias": "D3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7843,7 +7843,7 @@
           "alias": "E3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7885,7 +7885,7 @@
           "alias": "F3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7927,7 +7927,7 @@
           "alias": "A4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -7969,7 +7969,7 @@
           "alias": "B4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8011,7 +8011,7 @@
           "alias": "C4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8053,7 +8053,7 @@
           "alias": "D4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8095,7 +8095,7 @@
           "alias": "E4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8137,7 +8137,7 @@
           "alias": "F4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8179,7 +8179,7 @@
           "alias": "A5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8221,7 +8221,7 @@
           "alias": "B5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8263,7 +8263,7 @@
           "alias": "C5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8305,7 +8305,7 @@
           "alias": "D5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8347,7 +8347,7 @@
           "alias": "E5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8389,7 +8389,7 @@
           "alias": "F5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8435,7 +8435,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "fieldConfig": {
         "defaults": {
@@ -8550,7 +8550,7 @@
           "alias": "Inverter1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8591,7 +8591,7 @@
           "alias": "Inverter2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8633,7 +8633,7 @@
           "alias": "Inverter3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8675,7 +8675,7 @@
           "alias": "Inverter4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8717,7 +8717,7 @@
           "alias": "Inverter5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8759,7 +8759,7 @@
           "alias": "Inverter6",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -8818,7 +8818,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -9024,7 +9024,7 @@
           "alias": "Solar",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9065,7 +9065,7 @@
           "alias": "Home",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9107,7 +9107,7 @@
           "alias": "Grid",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9149,7 +9149,7 @@
           "alias": "Powerwall",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9195,7 +9195,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -9400,7 +9400,7 @@
           "alias": "Solar",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9441,7 +9441,7 @@
           "alias": "Home",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9483,7 +9483,7 @@
           "alias": "Grid",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9525,7 +9525,7 @@
           "alias": "Powerwall",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9571,7 +9571,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -9800,7 +9800,7 @@
           "alias": "PW1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9841,7 +9841,7 @@
           "alias": "PW2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9883,7 +9883,7 @@
           "alias": "PW3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9925,7 +9925,7 @@
           "alias": "PW4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -9967,7 +9967,7 @@
           "alias": "PW5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10009,7 +10009,7 @@
           "alias": "PW6",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10051,7 +10051,7 @@
           "alias": "PW7",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10093,7 +10093,7 @@
           "alias": "PW8",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10135,7 +10135,7 @@
           "alias": "PW9",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10177,7 +10177,7 @@
           "alias": "PW10",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10219,7 +10219,7 @@
           "alias": "PW11",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10261,7 +10261,7 @@
           "alias": "PW12",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10303,7 +10303,7 @@
           "alias": "PW1 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10345,7 +10345,7 @@
           "alias": "PW2 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10387,7 +10387,7 @@
           "alias": "PW3 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10429,7 +10429,7 @@
           "alias": "PW4 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10471,7 +10471,7 @@
           "alias": "PW5 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10513,7 +10513,7 @@
           "alias": "PW6 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10555,7 +10555,7 @@
           "alias": "PW7 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10597,7 +10597,7 @@
           "alias": "PW8 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10639,7 +10639,7 @@
           "alias": "PW9 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10681,7 +10681,7 @@
           "alias": "PW10 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10723,7 +10723,7 @@
           "alias": "PW11 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10765,7 +10765,7 @@
           "alias": "PW12 Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10807,7 +10807,7 @@
           "alias": "Total",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10849,7 +10849,7 @@
           "alias": "Total Charge",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -10895,7 +10895,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -11198,7 +11198,7 @@
           "alias": "PW1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11241,7 +11241,7 @@
           "alias": "PW2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11283,7 +11283,7 @@
           "alias": "PW3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11325,7 +11325,7 @@
           "alias": "PW4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11367,7 +11367,7 @@
           "alias": "PW5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11409,7 +11409,7 @@
           "alias": "PW6",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11451,7 +11451,7 @@
           "alias": "PW7",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11493,7 +11493,7 @@
           "alias": "PW8",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11535,7 +11535,7 @@
           "alias": "PW9",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11577,7 +11577,7 @@
           "alias": "PW10",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11619,7 +11619,7 @@
           "alias": "PW11",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11661,7 +11661,7 @@
           "alias": "PW12",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11703,7 +11703,7 @@
           "alias": "Fan1 Actual",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11745,7 +11745,7 @@
           "alias": "Fan2 Actual",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11787,7 +11787,7 @@
           "alias": "Fan3 Actual",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11829,7 +11829,7 @@
           "alias": "Fan4 Actual",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11871,7 +11871,7 @@
           "alias": "Fan5 Actual",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11913,7 +11913,7 @@
           "alias": "Fan6 Actual",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11955,7 +11955,7 @@
           "alias": "Fan1 Target",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -11997,7 +11997,7 @@
           "alias": "Fan2 Target",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12039,7 +12039,7 @@
           "alias": "Fan3 Target",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12081,7 +12081,7 @@
           "alias": "Fan4 Target",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12123,7 +12123,7 @@
           "alias": "Fan5 Target",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12165,7 +12165,7 @@
           "alias": "Fan6 Target",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12211,7 +12211,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -12364,7 +12364,7 @@
           "alias": "Home L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12405,7 +12405,7 @@
           "alias": "Home L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12447,7 +12447,7 @@
           "alias": "Home L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12489,7 +12489,7 @@
           "alias": "Grid L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12531,7 +12531,7 @@
           "alias": "Grid L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12573,7 +12573,7 @@
           "alias": "Grid L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12615,7 +12615,7 @@
           "alias": "PW1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12657,7 +12657,7 @@
           "alias": "PW2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12699,7 +12699,7 @@
           "alias": "PW3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12741,7 +12741,7 @@
           "alias": "PW4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12783,7 +12783,7 @@
           "alias": "PW5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12825,7 +12825,7 @@
           "alias": "PW6",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12867,7 +12867,7 @@
           "alias": "PW7",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12909,7 +12909,7 @@
           "alias": "PW8",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12951,7 +12951,7 @@
           "alias": "PW9",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -12993,7 +12993,7 @@
           "alias": "PW10",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13035,7 +13035,7 @@
           "alias": "PW11",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13077,7 +13077,7 @@
           "alias": "PW12",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13119,7 +13119,7 @@
           "alias": "Off Grid",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13175,7 +13175,7 @@
           "alias": "Off Grid",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13233,7 +13233,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -13391,7 +13391,7 @@
           "alias": "Home L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13433,7 +13433,7 @@
           "alias": "Home L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13475,7 +13475,7 @@
           "alias": "Home L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13517,7 +13517,7 @@
           "alias": "Grid L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13559,7 +13559,7 @@
           "alias": "Grid L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13601,7 +13601,7 @@
           "alias": "Grid L3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13643,7 +13643,7 @@
           "alias": "PW1 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13687,7 +13687,7 @@
           "alias": "PW1 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13731,7 +13731,7 @@
           "alias": "PW2 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13775,7 +13775,7 @@
           "alias": "PW2 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13819,7 +13819,7 @@
           "alias": "PW3 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13863,7 +13863,7 @@
           "alias": "PW3 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13907,7 +13907,7 @@
           "alias": "PW4 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13951,7 +13951,7 @@
           "alias": "PW4 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -13995,7 +13995,7 @@
           "alias": "PW5 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14039,7 +14039,7 @@
           "alias": "PW5 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14083,7 +14083,7 @@
           "alias": "PW6 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14127,7 +14127,7 @@
           "alias": "PW6 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14171,7 +14171,7 @@
           "alias": "PW7 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14215,7 +14215,7 @@
           "alias": "PW7 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14259,7 +14259,7 @@
           "alias": "PW8 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14303,7 +14303,7 @@
           "alias": "PW8 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14347,7 +14347,7 @@
           "alias": "PW9 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14391,7 +14391,7 @@
           "alias": "PW9 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14435,7 +14435,7 @@
           "alias": "PW10 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14479,7 +14479,7 @@
           "alias": "PW10 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14523,7 +14523,7 @@
           "alias": "PW11 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14567,7 +14567,7 @@
           "alias": "PW11 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14611,7 +14611,7 @@
           "alias": "PW12 L1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14655,7 +14655,7 @@
           "alias": "PW12 L2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14699,7 +14699,7 @@
           "alias": "PW1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14743,7 +14743,7 @@
           "alias": "PW2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14787,7 +14787,7 @@
           "alias": "PW3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14831,7 +14831,7 @@
           "alias": "PW4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14875,7 +14875,7 @@
           "alias": "PW5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14919,7 +14919,7 @@
           "alias": "PW6",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -14963,7 +14963,7 @@
           "alias": "PW7",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -15007,7 +15007,7 @@
           "alias": "PW8",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -15051,7 +15051,7 @@
           "alias": "PW9",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -15095,7 +15095,7 @@
           "alias": "PW10",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -15139,7 +15139,7 @@
           "alias": "PW11",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -15183,7 +15183,7 @@
           "alias": "PW12",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -15227,7 +15227,7 @@
           "alias": "PW1",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW1_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15239,7 +15239,7 @@
           "alias": "PW2",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW2_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15251,7 +15251,7 @@
           "alias": "PW3",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW3_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15263,7 +15263,7 @@
           "alias": "PW4",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW4_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15275,7 +15275,7 @@
           "alias": "PW5",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW5_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15287,7 +15287,7 @@
           "alias": "PW6",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW6_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15299,7 +15299,7 @@
           "alias": "PW7",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW7_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15311,7 +15311,7 @@
           "alias": "PW8",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW8_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15323,7 +15323,7 @@
           "alias": "PW9",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW9_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15335,7 +15335,7 @@
           "alias": "PW10",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW10_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15347,7 +15347,7 @@
           "alias": "PW11",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW11_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15359,7 +15359,7 @@
           "alias": "PW12",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT mean(\"PW12_v_out\") FROM \"vitals\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(null)",
@@ -15371,7 +15371,7 @@
           "alias": "Grid Status",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {
@@ -15444,7 +15444,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -15625,7 +15625,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "hide": false,
           "query": "SELECT *::field from alerts.alerts where $timeFilter",
@@ -15660,7 +15660,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "description": "",
           "fieldConfig": {
@@ -15873,7 +15873,7 @@
               "alias": "Temperature",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -15914,7 +15914,7 @@
               "alias": "Humidity (%)",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -15956,7 +15956,7 @@
               "alias": "Clouds (%)",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -15998,7 +15998,7 @@
               "alias": "Feels Like",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -16044,7 +16044,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "description": "",
           "fieldConfig": {
@@ -16244,7 +16244,7 @@
               "alias": "Snow",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -16285,7 +16285,7 @@
               "alias": "Pressure",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -16327,7 +16327,7 @@
               "alias": "Rain",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -16369,7 +16369,7 @@
               "alias": "Visibility (K)",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -16417,7 +16417,7 @@
               "alias": "Wind",
               "datasource": {
                 "type": "influxdb",
-                "uid": "derfwzwykxwqob"
+                "uid": "influxdb"
               },
               "groupBy": [
                 {
@@ -16480,7 +16480,7 @@
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "derfwzwykxwqob"
+        "uid": "influxdb"
       },
       "description": "",
       "fieldConfig": {
@@ -16537,7 +16537,7 @@
           "alias": "v",
           "datasource": {
             "type": "influxdb",
-            "uid": "derfwzwykxwqob"
+            "uid": "influxdb"
           },
           "groupBy": [
             {

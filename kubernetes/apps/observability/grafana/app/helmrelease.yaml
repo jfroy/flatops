@@ -48,7 +48,7 @@ spec:
         parentRefs:
           - group: gateway.networking.k8s.io
             kind: Gateway
-            name: internal
+            name: external
             namespace: kube-system
     serviceMonitor:
       enabled: true
@@ -330,6 +330,11 @@ spec:
         interval_day: "MMM DD"
         interval_month: "YYYY-MM"
         interval_year: "YYYY"
+      feature_toggles:
+        grafanaAPIServerEnsureKubectlAccess: true
+        kubernetesClientDashboardsFolders: true
+        kubernetesDashboards: true
+        provisioning: true
       news:
         news_feed_enabled: false
       plugins:
@@ -343,7 +348,7 @@ spec:
 
     plugins:
       - grafana-clock-panel
-      - sunandmoon
+      - Sun and Moon
       - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.16.3/victoriametrics-logs-datasource-v0.16.3.zip;victorialogs-datasource
       - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.15.1/victoriametrics-metrics-datasource-v0.15.1.zip;victoriametrics-datasource
 
