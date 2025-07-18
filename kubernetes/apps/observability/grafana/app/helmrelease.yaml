@@ -347,10 +347,9 @@ spec:
         auto_assign_org_role: Admin
 
     plugins:
-      - grafana-clock-panel
       - Sun and Moon
-      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.16.3/victoriametrics-logs-datasource-v0.16.3.zip;victorialogs-datasource
-      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.15.1/victoriametrics-metrics-datasource-v0.15.1.zip;victoriametrics-datasource
+      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.18.1/victoriametrics-logs-datasource-v0.18.1.zip;victorialogs-datasource
+      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.17.0/victoriametrics-metrics-datasource-v0.17.0.zip;victoriametrics-datasource
 
     sidecar:
       dashboards:
