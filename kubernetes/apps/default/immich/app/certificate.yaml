@@ -2,25 +2,6 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: immich-df
-spec:
-  secretName: immich-df-tls
-  duration: 2160h  # 90d
-  renewBefore: 360h # 15d
-  subject:
-    organizations:
-      - immich-df
-  issuerRef:
-    name: cluster-ca
-    kind: ClusterIssuer
-    group: cert-manager.io
-  commonName: immich-df.default.svc.cluster.local
-  dnsNames:
-    - immich-df.default.svc.cluster.local
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
   name: immich-valkey
 spec:
   secretName: immich-valkey-tls
@@ -33,7 +14,7 @@ spec:
     name: cluster-ca
     kind: ClusterIssuer
     group: cert-manager.io
-  commonName: immich-valkey-headless.default.svc.cluster.local
+  commonName: immich-valkey-primary.default.svc.cluster.local
   dnsNames:
     - immich-valkey-headless.default.svc.cluster.local
     - immich-valkey-primary.default.svc.cluster.local

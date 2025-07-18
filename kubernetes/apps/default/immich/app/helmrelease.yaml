@@ -74,7 +74,7 @@ spec:
               - secretRef:
                   name: immich-db
               - secretRef:
-                  name: immich-df
+                  name: immich-valkey
             env:
               IMMICH_MEDIA_LOCATION: /photos
               IMMICH_TELEMETRY_INCLUDE: all
@@ -106,7 +106,7 @@ spec:
               - secretRef:
                   name: immich-db
               - secretRef:
-                  name: immich-df
+                  name: immich-valkey
             env:
               IMMICH_MEDIA_LOCATION: /photos
               IMMICH_TELEMETRY_INCLUDE: all
