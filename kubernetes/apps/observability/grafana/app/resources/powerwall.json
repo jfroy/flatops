@@ -24,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 89,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -494,8 +494,8 @@
         ]
       },
       "gridPos": {
-        "h": 13,
-        "w": 16,
+        "h": 12,
+        "w": 21,
         "x": 0,
         "y": 1
       },
@@ -944,79 +944,16 @@
       "type": "timeseries"
     },
     {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 10,
-        "w": 8,
-        "x": 16,
-        "y": 1
-      },
-      "id": 13,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "<style>\ndiv.powerDiv {\n      width: 100%;\n      height: 100%;\n      overflow: hidden;\n      background: url(public/img/load_big.gif) center center no-repeat;\n    }\ndiv.firmwareDiv {\n      width: 100%;\n      position: absolute;\n      text-align: center;\n      left: 0;\n      bottom: 0;\n      overflow: hidden;\n    }\niframe.powerFrame {\n      width: 400px;\n      height: 300px;\n      transform: scale(0);\n      transform-origin: center;\n      position: absolute;\n      left: 50%;\n      top: 50%;\n      border-style: none;\n    }\n</style>\n<div class=\"powerDiv\">\n    <iframe id=\"frame8675\" class=\"powerFrame\" src=\"/public/img/grafana_icon.svg\">IFRAME not supported by browser.</iframe>\n</div>\n<div class=\"firmwareDiv\">\n  <p class=\"version\" style=\"color:gray; text-align: center;\">Firmware</p>\n</div>\n<script>\n// Scale Animation when Window is Resized\nfunction scale() {\n  document.querySelectorAll('.powerFrame').forEach(scaled => {\n    parent = scaled.parentNode;\n    ratio = Math.min(1,parent.offsetWidth / scaled.offsetWidth, parent.offsetHeight / scaled.offsetHeight);\n    scaled.style.transform = 'translate(-50%, -50%) scale(' + ratio + ')';\n  })\n}\nwindow.addEventListener('resize', function(e){ scale(); }, false);\n\n// Display Firmware Version\nfunction showversion() {\n    var pwver = window.location.protocol + \"//\" + window.location.hostname + \":8675/version\";\n    $.getJSON(pwver, function(data) {\n        var text = `Firmware: ${data.version.split(\" \")[0]}`;\n        $(\".version\").html(text);\n    });\n    setTimeout(showversion, 60000);\n}\nshowversion();\n\n// Load Animation from pyPowerwall\nvar powerFrame = document.getElementById('frame8675');\npowerFrame.onload = function() {\n  // remove animated gif from background now that frame downloaded...\n  this.parentNode.setAttribute('style','background: none');\n  // and scale the frame to fit...\n  scale();\n}\npowerFrame.src = window.location.protocol + \"//\" + window.location.hostname + \":8675/\";\n</script>",
-        "mode": "html"
-      },
-      "pluginVersion": "12.0.2",
-      "title": "Power Flow",
-      "transparent": true,
-      "type": "text"
-    },
-    {
       "datasource": {
         "type": "influxdb",
         "uid": "influxdb"
       },
-      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "green",
-            "mode": "fixed"
+            "mode": "palette-classic"
           },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
-            "drawStyle": "line",
-            "fillOpacity": 37,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 3,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [],
           "mappings": [],
-          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -1025,212 +962,51 @@
               }
             ]
           },
-          "unit": "none"
+          "unit": "kwatt"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "off_grid"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "red",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": true,
-                  "tooltip": true,
-                  "viz": false
-                }
-              },
-              {
-                "id": "custom.axisPlacement",
-                "value": "hidden"
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "bars"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 3
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Grid Status"
-            },
-            "properties": [
-              {
-                "id": "custom.axisPlacement",
-                "value": "hidden"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "0": {
-                        "color": "red",
-                        "index": 1,
-                        "text": "Off Grid"
-                      },
-                      "1": {
-                        "color": "green",
-                        "index": 0,
-                        "text": "On Grid"
-                      },
-                      "-1": {
-                        "color": "yellow",
-                        "index": 2,
-                        "text": "Synchronizing"
-                      }
-                    },
-                    "type": "value"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "sync"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "fixedColor": "yellow",
-                  "mode": "fixed"
-                }
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "bars"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 3
-              },
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": true,
-                  "tooltip": true,
-                  "viz": false
-                }
-              },
-              {
-                "id": "custom.axisPlacement",
-                "value": "hidden"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 6,
-        "x": 17,
-        "y": 11
+        "h": 10,
+        "w": 3,
+        "x": 21,
+        "y": 1
       },
-      "id": 72,
+      "id": 80,
       "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
         },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "none"
-        }
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "auto",
+        "wideLayout": true
       },
       "pluginVersion": "12.0.2",
       "targets": [
         {
-          "alias": "Grid Status",
           "datasource": {
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "0"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "http",
-          "orderByTime": "ASC",
-          "policy": "raw",
-          "query": "SELECT min(\"grid_status\") FROM \"grid\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(previous) tz('${tz:text}')",
+          "query": "SELECT last(\"battery_instant_power\")  / 1000 AS \"Battery\", last(\"site_instant_power\")  / 1000 AS \"Grid\", last(\"load_instant_power\")  / 1000 AS \"Home\", last(\"solar_instant_power\")  / 1000 AS \"Solar\" FROM \"raw\".\"http\" WHERE time >= now() - 10m",
           "rawQuery": true,
           "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "grid_status"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "sum"
-              }
-            ]
-          ],
-          "tags": [],
-          "tz": "${tz:text}"
-        },
-        {
-          "alias": "sync",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
-          },
-          "hide": false,
-          "query": "SELECT min(\"grid_status\") + 2 FROM \"grid\".\"http\" WHERE grid_status = -1 and $timeFilter GROUP BY time($__interval) fill(null) tz('${tz:text}')",
-          "rawQuery": true,
-          "refId": "C",
-          "resultFormat": "time_series"
-        },
-        {
-          "alias": "off_grid",
-          "datasource": {
-            "type": "influxdb",
-            "uid": "influxdb"
-          },
-          "hide": false,
-          "query": "SELECT min(\"grid_status\") + 1 FROM \"grid\".\"http\" WHERE grid_status = 0 and $timeFilter GROUP BY time($__interval) fill(null) tz('${tz:text}')",
-          "rawQuery": true,
-          "refId": "B",
-          "resultFormat": "time_series"
+          "resultFormat": "table"
         }
       ],
-      "title": "Grid Status",
+      "title": "Current State",
       "transparent": true,
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "collapsed": false,
@@ -1238,7 +1014,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 13
       },
       "id": 41,
       "panels": [],
@@ -1283,7 +1059,7 @@
         "h": 2,
         "w": 3,
         "x": 0,
-        "y": 15
+        "y": 14
       },
       "id": 4,
       "maxDataPoints": 100,
@@ -1387,7 +1163,7 @@
         "h": 2,
         "w": 3,
         "x": 3,
-        "y": 15
+        "y": 14
       },
       "id": 5,
       "maxDataPoints": 100,
@@ -1490,7 +1266,7 @@
         "h": 2,
         "w": 3,
         "x": 6,
-        "y": 15
+        "y": 14
       },
       "id": 70,
       "maxDataPoints": 100,
@@ -1596,7 +1372,7 @@
         "h": 2,
         "w": 3,
         "x": 9,
-        "y": 15
+        "y": 14
       },
       "id": 8,
       "maxDataPoints": 100,
@@ -1698,7 +1474,7 @@
         "h": 2,
         "w": 3,
         "x": 12,
-        "y": 15
+        "y": 14
       },
       "id": 6,
       "maxDataPoints": 100,
@@ -1800,7 +1576,7 @@
         "h": 2,
         "w": 3,
         "x": 15,
-        "y": 15
+        "y": 14
       },
       "id": 7,
       "maxDataPoints": 100,
@@ -1902,7 +1678,7 @@
         "h": 2,
         "w": 3,
         "x": 18,
-        "y": 15
+        "y": 14
       },
       "id": 9,
       "maxDataPoints": 100,
@@ -2004,7 +1780,7 @@
         "h": 2,
         "w": 3,
         "x": 21,
-        "y": 15
+        "y": 14
       },
       "id": 69,
       "maxDataPoints": 100,
@@ -2100,10 +1876,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 6,
         "w": 9,
         "x": 0,
-        "y": 17
+        "y": 16
       },
       "id": 78,
       "options": {
@@ -2410,7 +2186,7 @@
         "h": 6,
         "w": 8,
         "x": 9,
-        "y": 17
+        "y": 16
       },
       "id": 43,
       "maxDataPoints": 3,
@@ -2538,12 +2314,49 @@
         "type": "influxdb",
         "uid": "influxdb"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "green",
+            "mode": "fixed"
           },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 37,
+            "gradientMode": "opacity",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 3,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -2552,51 +2365,212 @@
               }
             ]
           },
-          "unit": "kwatt"
+          "unit": "none"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "off_grid"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": false
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Grid Status"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "0": {
+                        "color": "red",
+                        "index": 1,
+                        "text": "Off Grid"
+                      },
+                      "1": {
+                        "color": "green",
+                        "index": 0,
+                        "text": "On Grid"
+                      },
+                      "-1": {
+                        "color": "yellow",
+                        "index": 2,
+                        "text": "Synchronizing"
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "sync"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "bars"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              },
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": true,
+                  "tooltip": true,
+                  "viz": false
+                }
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "hidden"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 6,
-        "w": 6,
-        "x": 18,
-        "y": 17
+        "w": 7,
+        "x": 17,
+        "y": 16
       },
-      "id": 80,
+      "id": 72,
       "options": {
-        "colorMode": "background",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "percentChangeColorMode": "standard",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
         },
-        "showPercentChange": false,
-        "text": {},
-        "textMode": "auto",
-        "wideLayout": true
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
       },
       "pluginVersion": "12.0.2",
       "targets": [
         {
+          "alias": "Grid Status",
           "datasource": {
             "type": "influxdb",
             "uid": "influxdb"
           },
-          "query": "SELECT last(\"battery_instant_power\")  / 1000 AS \"Battery\", last(\"site_instant_power\")  / 1000 AS \"Grid\", last(\"load_instant_power\")  / 1000 AS \"Home\", last(\"solar_instant_power\")  / 1000 AS \"Solar\" FROM \"raw\".\"http\" WHERE time >= now() - 10m",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "0"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "http",
+          "orderByTime": "ASC",
+          "policy": "raw",
+          "query": "SELECT min(\"grid_status\") FROM \"grid\".\"http\" WHERE $timeFilter GROUP BY time($__interval) fill(previous) tz('${tz:text}')",
           "rawQuery": true,
           "refId": "A",
-          "resultFormat": "table"
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "grid_status"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "sum"
+              }
+            ]
+          ],
+          "tags": [],
+          "tz": "${tz:text}"
+        },
+        {
+          "alias": "sync",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "hide": false,
+          "query": "SELECT min(\"grid_status\") + 2 FROM \"grid\".\"http\" WHERE grid_status = -1 and $timeFilter GROUP BY time($__interval) fill(null) tz('${tz:text}')",
+          "rawQuery": true,
+          "refId": "C",
+          "resultFormat": "time_series"
+        },
+        {
+          "alias": "off_grid",
+          "datasource": {
+            "type": "influxdb",
+            "uid": "influxdb"
+          },
+          "hide": false,
+          "query": "SELECT min(\"grid_status\") + 1 FROM \"grid\".\"http\" WHERE grid_status = 0 and $timeFilter GROUP BY time($__interval) fill(null) tz('${tz:text}')",
+          "rawQuery": true,
+          "refId": "B",
+          "resultFormat": "time_series"
         }
       ],
-      "title": "Current State",
+      "title": "Grid Status",
       "transparent": true,
-      "type": "stat"
+      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -2604,7 +2578,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 22
       },
       "id": 22,
       "panels": [
@@ -2690,7 +2664,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 24
+            "y": 26
           },
           "id": 24,
           "options": {
@@ -2838,7 +2812,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 24
+            "y": 26
           },
           "id": 25,
           "options": {
@@ -2992,7 +2966,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 32
+            "y": 34
           },
           "id": 26,
           "options": {
@@ -3155,7 +3129,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 32
+            "y": 34
           },
           "id": 27,
           "options": {
@@ -3422,7 +3396,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 40
+            "y": 42
           },
           "id": 76,
           "options": {
@@ -3571,7 +3545,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 23
       },
       "id": 37,
       "panels": [],
@@ -3660,7 +3634,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 25
+        "y": 24
       },
       "id": 32,
       "options": {
@@ -5278,7 +5252,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 25
+        "y": 24
       },
       "id": 62,
       "options": {
@@ -6896,7 +6870,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 30
+        "y": 29
       },
       "id": 63,
       "options": {
@@ -8526,7 +8500,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 30
+        "y": 29
       },
       "id": 34,
       "options": {
@@ -8808,7 +8782,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 34
       },
       "id": 82,
       "panels": [],
@@ -9002,7 +8976,7 @@
         "h": 6,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 35
       },
       "id": 85,
       "options": {
@@ -9378,7 +9352,7 @@
         "h": 6,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 35
       },
       "id": 84,
       "options": {
@@ -9775,7 +9749,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 42
+        "y": 41
       },
       "id": 55,
       "options": {
@@ -11173,7 +11147,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 47
       },
       "id": 86,
       "options": {
@@ -12339,7 +12313,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 52
       },
       "id": 38,
       "options": {
@@ -13366,7 +13340,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 57
       },
       "id": 61,
       "options": {
@@ -15434,7 +15408,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 63
+        "y": 62
       },
       "id": 65,
       "panels": [],
@@ -15601,7 +15575,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 63
       },
       "id": 68,
       "options": {
@@ -15653,7 +15627,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 74
+        "y": 73
       },
       "id": 57,
       "panels": [
@@ -15849,7 +15823,7 @@
             "h": 6,
             "w": 24,
             "x": 0,
-            "y": 75
+            "y": 97
           },
           "id": 59,
           "options": {
@@ -16220,7 +16194,7 @@
             "h": 7,
             "w": 24,
             "x": 0,
-            "y": 81
+            "y": 103
           },
           "id": 60,
           "options": {
@@ -16470,7 +16444,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 75
+        "y": 74
       },
       "id": 90,
       "panels": [],
@@ -16508,7 +16482,7 @@
         "h": 2,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 75
       },
       "id": 88,
       "options": {
@@ -16630,12 +16604,12 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "America/Los_Angeles",
   "title": "Powerwall - Power Flow",
   "uid": "RSabAvRRzZ",
-  "version": 7
+  "version": 0
 }
