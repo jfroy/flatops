@@ -7,7 +7,7 @@
 				"serve"
 			],
       "env": {
-        "KUBECONFIG": "kubeconfig",
+        "KUBECONFIG": "${workspaceFolder}/kubeconfig",
       },
 		}
 	},
