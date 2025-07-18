@@ -23,3 +23,24 @@ spec:
     substitute:
       APP: *app
       APP_SUBDOMAIN: photos
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app immich-valkey
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/instance: immich
+      app.kubernetes.io/name: valkey
+      app.kubernetes.io/part-of: immich
+  path: ./kubernetes/apps/default/immich/valkey
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m

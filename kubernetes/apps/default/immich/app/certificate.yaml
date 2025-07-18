@@ -17,3 +17,24 @@ spec:
   commonName: immich-df.default.svc.cluster.local
   dnsNames:
     - immich-df.default.svc.cluster.local
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: immich-valkey
+spec:
+  secretName: immich-valkey-tls
+  duration: 2160h  # 90d
+  renewBefore: 360h # 15d
+  subject:
+    organizations:
+      - immich-valkey
+  issuerRef:
+    name: cluster-ca
+    kind: ClusterIssuer
+    group: cert-manager.io
+  commonName: immich-valkey-headless.default.svc.cluster.local
+  dnsNames:
+    - immich-valkey-headless.default.svc.cluster.local
+    - immich-valkey-primary.default.svc.cluster.local
+    - immich-valkey-replicas.default.svc.cluster.local

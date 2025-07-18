@@ -1,0 +1,53 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: bitnami-valkey
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 3.0.22
+  url: oci://registry-1.docker.io/bitnamicharts/valkey
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app immich-valkey
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: bitnami-valkey
+  values:
+    fullnameOverride: *app
+    architecture: standalone
+    auth:
+      enabled: true
+      existingSecret: immich-valkey
+      existingSecretPasswordKey: REDIS_PASSWORD
+    primary:
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values: ["immich"]
+                topologyKey: kubernetes.io/hostname
+              weight: 100
+      persistence:
+        enabled: false
+      resourcesPreset: large
+    tls:
+      enabled: true
+      authClients: false
+      existingSecret: immich-valkey-tls
+      certFilename: tls.crt
+      certKeyFilename: tls.key
+      certCAFilename: ca.crt
