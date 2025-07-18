@@ -1,0 +1,15 @@
+{
+	"servers": {
+		"flux-operator-mcp": {
+			"type": "stdio",
+			"command": "flux-operator-mcp",
+			"args": [
+				"serve"
+			],
+      "env": {
+        "KUBECONFIG": "kubeconfig",
+      },
+		}
+	},
+	"inputs": []
+}

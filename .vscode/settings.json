@@ -3,21 +3,9 @@
     "Kubernetes": "./kubernetes/*.yaml"
   },
   "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "./kubeconfig",
-    "vs-kubernetes.knownKubeconfigs": ["./kubeconfig"]
+    "vs-kubernetes.kubeconfig": "kubeconfig"
   },
   "githubPullRequests.remotes": ["origin"],
   "git.rebaseWhenSync": true,
-  "mcp": {
-    "servers": {
-      "flux-operator-mcp": {
-        "command": "/home/linuxbrew/.linuxbrew/bin/flux-operator-mcp",
-        "args": ["serve"],
-        "env": {
-          "KUBECONFIG": "/home/jfroy/Developer/jfroy/flatops/kubeconfig"
-        }
-      }
-    }
-  },
   "chat.mcp.enabled": true
 }
