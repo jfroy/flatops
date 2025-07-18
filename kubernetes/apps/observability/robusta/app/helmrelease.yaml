@@ -5,7 +5,7 @@ kind: HelmRepository
 metadata:
   name: robusta
 spec:
-  interval: 2h
+  interval: 1h
   url: https://robusta-charts.storage.googleapis.com
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json

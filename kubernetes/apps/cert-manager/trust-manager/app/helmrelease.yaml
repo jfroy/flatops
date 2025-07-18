@@ -5,7 +5,7 @@ kind: HelmRepository
 metadata:
   name: jetstack
 spec:
-  interval: 2h
+  interval: 1h
   url: https://charts.jetstack.io
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
