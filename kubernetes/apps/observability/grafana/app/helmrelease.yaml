@@ -99,6 +99,12 @@ spec:
             type: victorialogs-datasource
             access: proxy
             url: http://victoria-logs-server.observability.svc:9428
+          - name: sunandmoon
+            type: fetzerch-sunandmoon-datasource
+            uid: sunandmoon
+            jsonData:
+              latitude: 37.8188048
+              longitude: -122.4244139
 
     dashboardProviders:
       dashboardproviders.yaml:

@@ -723,7 +723,7 @@
         {
           "datasource": {
             "type": "fetzerch-sunandmoon-datasource",
-            "uid": "aerfwwlcehhc0b"
+            "uid": "sunandmoon"
           },
           "refId": "F",
           "target": [
