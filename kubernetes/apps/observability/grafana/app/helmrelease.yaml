@@ -40,10 +40,6 @@ spec:
     envFromSecret: grafana-secrets
     persistence:
       enabled: false
-    plugins:
-      - grafana-clock-panel
-      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.16.3/victoriametrics-logs-datasource-v0.16.3.zip;victorialogs-datasource
-      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.15.1/victoriametrics-metrics-datasource-v0.15.1.zip;victoriametrics-datasource
     route:
       main:
         enabled: true
@@ -70,6 +66,22 @@ spec:
           - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
         datasources:
+          - name: Alertmanager
+            type: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://alertmanager-operated.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
+          - name: InfluxDB
+            type: influxdb
+            uid: influxdb
+            access: proxy
+            url: http://influxdb.database.svc.cluster.local:8086
+            jsonData:
+              dbName: powerwall
+              httpMode: POST
+              timeInterval: 10s
           - name: Prometheus
             type: prometheus
             uid: prometheus
@@ -87,13 +99,6 @@ spec:
             type: victorialogs-datasource
             access: proxy
             url: http://victoria-logs-server.observability.svc:9428
-          - name: Alertmanager
-            type: alertmanager
-            uid: alertmanager
-            access: proxy
-            url: http://alertmanager-operated.observability.svc.cluster.local:9093
-            jsonData:
-              implementation: prometheus
 
     dashboardProviders:
       dashboardproviders.yaml:
@@ -335,6 +340,12 @@ spec:
         allow_sign_up: false
         auto_assign_org: true
         auto_assign_org_role: Admin
+
+    plugins:
+      - grafana-clock-panel
+      - sunandmoon
+      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.16.3/victoriametrics-logs-datasource-v0.16.3.zip;victorialogs-datasource
+      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.15.1/victoriametrics-metrics-datasource-v0.15.1.zip;victoriametrics-datasource
 
     sidecar:
       dashboards:

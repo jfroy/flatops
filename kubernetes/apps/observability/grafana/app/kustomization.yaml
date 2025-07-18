@@ -9,6 +9,7 @@ configMapGenerator:
   - name: grafana-dashboards
     files:
       - ./resources/cluster-global-perf.json
+      - ./resources/powerwall.json
       - ./resources/zfs-details.json
       - ./resources/zfs.json
     options:
