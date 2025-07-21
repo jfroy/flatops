@@ -72,6 +72,8 @@ spec:
     valkey:
       enabled: true
       architecture: standalone
+    housekeeping:
+      enabled: false
     worker:
       enabled: false
   valuesFrom:
