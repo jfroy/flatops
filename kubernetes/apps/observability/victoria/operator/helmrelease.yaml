@@ -17,7 +17,7 @@ spec:
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: vm-operator
+  name: victoria-operator
 spec:
   interval: 1h
   chartRef:
@@ -50,7 +50,7 @@ spec:
         value: "false"
       - name: VM_ENABLEDPROMETHEUSCONVERTER_SERVICESCRAPE
         value: "false"
-    fullnameOverride: vm-operator
+    fullnameOverride: victoria-operator
     operator:
       disable_prometheus_converter: false
       enable_converter_ownership: true

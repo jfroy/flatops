@@ -20,8 +20,8 @@ resources:
   - ./silence-operator/ks.yaml
   - ./speedtest-exporter/ks.yaml
   - ./unpoller/ks.yaml
+  - ./victoria/ks.yaml
   - ./victorialogs/ks.yaml
-  - ./victoriametrics/ks.yaml
 components:
   - ../../components/common
 transformers:
