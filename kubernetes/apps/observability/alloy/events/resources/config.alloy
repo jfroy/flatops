@@ -12,7 +12,6 @@ prometheus.scrape "metamonitoring" {
 }
 
 loki.source.kubernetes_events "default" {
-	log_format = "json"
 	forward_to = [loki.write.victorialogs.receiver]
 }
 
