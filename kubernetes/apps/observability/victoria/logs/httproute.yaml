@@ -3,10 +3,9 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   labels:
-    app.kubernetes.io/instance: victoria-logs
-    app.kubernetes.io/name: victoria-logs
-    app.kubernetes.io/part-of: victoria-logs
-  name: victoria-logs-server
+    app.kubernetes.io/instance: kantai
+    app.kubernetes.io/name: vlsingle
+  name: vlsingle-kantai
 spec:
   hostnames:
     - val.kantai.xyz
@@ -18,5 +17,5 @@ spec:
       sectionName: https
   rules:
     - backendRefs:
-        - name: victoria-logs-server
+        - name: vlsingle-kantai
           port: 9428

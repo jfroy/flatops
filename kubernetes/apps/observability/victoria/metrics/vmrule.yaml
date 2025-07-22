@@ -2,17 +2,17 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMRule
 metadata:
-  name: vmoperator-rules
+  name: victoria-operator
 spec:
   groups:
-    - name: vmoperator
+    - name: victoria-operator
       rules:
         - alert: LogErrors
           expr: |
             sum(
               rate(
                 operator_log_messages_total{
-                  level="error",job=~".*((victoria.*)|vm)-?operator"
+                  level="error",job="victoria-operator"
                 }[5m]
               )
             ) > 0
@@ -29,7 +29,7 @@ spec:
             sum(
               rate(
                 controller_runtime_reconcile_errors_total{
-                  job=~".*((victoria.*)|vm)-?operator"
+                  job="victoria-operator"
                 }[5m]
               )
             ) > 0
@@ -45,7 +45,7 @@ spec:
           expr: |
             sum(
               workqueue_depth{
-                job=~".*((victoria.*)|vm)-?operator",
+                job="victoria-operator",
                 name=~"(vmagent|vmalert|vmalertmanager|vmauth|vmcluster|vmnodescrape|vmpodscrape|vmprobe|vmrule|vmservicescrape|vmsingle|vmstaticscrape)"
               }
             ) by(name) > 10
@@ -60,7 +60,9 @@ spec:
         - alert: BadObjects
           expr: |
             sum(
-              operator_controller_bad_objects_count{job=~".*((victoria.*)|vm)-?operator"}
+              operator_controller_bad_objects_count{
+                job="victoria-operator"
+              }
             ) by(controller) > 0
           for: 15m
           labels:

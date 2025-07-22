@@ -86,7 +86,7 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://vmsingle-stack.observability.svc:8429
+            url: http://vmsingle-kantai.observability.svc:8429
             isDefault: true
             jsonData:
               prometheusType: Prometheus
@@ -94,11 +94,11 @@ spec:
           - name: VictoriaMetrics
             type: victoriametrics-datasource
             access: proxy
-            url: http://vmsingle-stack.observability.svc:8429
+            url: http://vmsingle-kantai.observability.svc:8429
           - name: VictoriaLogs
             type: victorialogs-datasource
             access: proxy
-            url: http://victoria-logs-server.observability.svc:9428
+            url: http://vlsingle-kantai.observability.svc:9428
           - name: sunandmoon
             type: fetzerch-sunandmoon-datasource
             uid: sunandmoon

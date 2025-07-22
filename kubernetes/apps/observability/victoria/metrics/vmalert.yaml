@@ -2,10 +2,10 @@
 apiVersion: operator.victoriametrics.com/v1beta1
 kind: VMAlert
 metadata:
-  name: stack
+  name: kantai
 spec:
   datasource:
-    url: http://vmsingle-stack.observability.svc:8429
+    url: http://vmsingle-kantai.observability.svc:8429
   evaluationInterval: 1m
   externalLabels:
     cluster: kantai
@@ -14,9 +14,9 @@ spec:
   notifiers:
     - url: http://alertmanager-operated.observability.svc:9093
   remoteRead:
-    url: http://vmsingle-stack.observability.svc:8429
+    url: http://vmsingle-kantai.observability.svc:8429
   remoteWrite:
-    url: http://vmsingle-stack.observability.svc:8429
+    url: http://vmsingle-kantai.observability.svc:8429
   replicaCount: 1
   selectAllByDefault: true
   useDefaultResources: false

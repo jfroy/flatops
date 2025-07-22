@@ -33,7 +33,7 @@ spec:
               MINIO_SERVER_URL: "https://s3.kantai.xyz"
               MINIO_API_CORS_ALLOW_ORIGIN: https://minio.kantai.xyz,https://s3.kantai.xyz
               MINIO_PROMETHEUS_JOB_ID: minio
-              MINIO_PROMETHEUS_URL: http://vmsingle-stack.observability.svc:8429
+              MINIO_PROMETHEUS_URL: http://vmsingle-kantai.observability.svc:8429
               MINIO_PROMETHEUS_AUTH_TYPE: public
             envFrom:
               - secretRef:

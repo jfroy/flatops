@@ -21,7 +21,6 @@ resources:
   - ./speedtest-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria/ks.yaml
-  - ./victorialogs/ks.yaml
 components:
   - ../../components/common
 transformers:

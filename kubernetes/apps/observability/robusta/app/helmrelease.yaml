@@ -50,9 +50,6 @@ spec:
       targetPath: sinksConfig[1].slack_sink.api_key
   values:
     clusterName: kantai
-    # globalConfig:
-      # alertmanager_url: http://alertmanager-operated.observability.svc.cluster.local:9093
-      # prometheus_url: http://vmsingle-stack.observability.svc.cluster.local:8429
     sinksConfig:
       - robusta_sink:
           name: robusta_ui_sink

@@ -134,13 +134,13 @@ prometheus.scrape "metamonitoring" {
 
 prometheus.remote_write "victoriametrics" {
 	endpoint {
-		url = "http://vmsingle-stack.observability.svc:8429/prometheus/api/v1/write"
+		url = "http://vmsingle-kantai.observability.svc:8429/prometheus/api/v1/write"
 	}
 }
 
 loki.write "victorialogs" {
 	endpoint {
-		url = "http://victoria-logs-server.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
+		url = "http://vlsingle-kantai.observability.svc:9428/insert/loki/api/v1/push?_stream_fields=instance,job,host,app"
 	}
 }
 
@@ -203,12 +203,12 @@ otelcol.processor.batch "default" {
 
 otelcol.exporter.otlphttp "victoriametrics" {
 	client {
-		endpoint = "http://vmsingle-stack.observability.svc:8429/opentelemetry"
+		endpoint = "http://vmsingle-kantai.observability.svc:8429/opentelemetry"
 	}
 }
 
 otelcol.exporter.otlphttp "victorialogs" {
 	client {
-		endpoint = "http://victoria-logs-server.observability.svc:9428/opentelemetry"
+		endpoint = "http://vlsingle-kantai.observability.svc:9428/opentelemetry"
 	}
 }
