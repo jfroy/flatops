@@ -7,3 +7,4 @@ spec:
   blocks:
     - start: 10.10.0.2
       stop: 10.10.255.254
+    - cidr: "${CLUSTER_LBA_V6_CIDR}"

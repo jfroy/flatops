@@ -15,3 +15,8 @@ spec:
           peerAddress: 10.1.0.1
           peerConfigRef:
             name: cilium-peer-v4
+        - name: peer-64700-udmp-v6
+          peerASN: 64700
+          peerAddress: "${BGP_PEER_64700_V6_ADDRESS}"
+          peerConfigRef:
+            name: cilium-peer-v6
