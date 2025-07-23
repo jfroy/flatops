@@ -3,26 +3,7 @@ stores:
   yaml:
     indent: 2
 creation_rules:
-  - # IMPORTANT: This rule MUST be above the others
-    path_regex: bootstrap/.*\.sops\.ya?ml
-    key_groups:
-      - age:
-          - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"
-    mac_only_encrypted: true
-  - path_regex: kubernetes/apps/kube-system/cilium/config/.*\.sops\.ya?ml
-    encrypted_regex: "^(data|stringData|peerAddress)$"
-    key_groups:
-      - age:
-          - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"
-    mac_only_encrypted: true
-  - path_regex: kubernetes/.*/networkpolicy\.sops\.ya?ml
-    encrypted_regex: "^(egress|ingress)$"
-    key_groups:
-      - age:
-          - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"
-    mac_only_encrypted: true
-  - path_regex: kubernetes/.*\.sops\.ya?ml
-    encrypted_regex: "^(data|stringData|password)$"
+  - path_regex: (bootstrap|talos)/.*\.sops\.ya?ml
     key_groups:
       - age:
           - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"
