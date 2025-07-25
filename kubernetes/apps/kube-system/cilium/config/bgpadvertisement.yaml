@@ -14,13 +14,13 @@ spec:
       selector:
         matchExpressions:
           - { key: somekey, operator: NotIn, values: ["never-used-value"] }
----
-apiVersion: cilium.io/v2alpha1
-kind: CiliumBGPAdvertisement
-metadata:
-  name: podsv6
-  labels:
-    advertise: bgpv6
-spec:
-  advertisements:
-    - advertisementType: "PodCIDR"
+# ---
+# apiVersion: cilium.io/v2alpha1
+# kind: CiliumBGPAdvertisement
+# metadata:
+#   name: podsv6
+#   labels:
+#     advertise: bgpv6
+# spec:
+#   advertisements:
+#     - advertisementType: "PodCIDR"
