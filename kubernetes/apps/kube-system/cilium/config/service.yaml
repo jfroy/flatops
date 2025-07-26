@@ -7,13 +7,14 @@ metadata:
   name: external-kube-apiserver
 spec:
   externalTrafficPolicy: Local
-  type: LoadBalancer
+  ipFamilyPolicy: PreferDualStack
   loadBalancerClass: io.cilium/bgp-control-plane
-  selector:
-    k8s-app: kube-apiserver
-    tier: control-plane
   ports:
     - name: https
       port: 6443
       protocol: TCP
       targetPort: 6443
+  selector:
+    k8s-app: kube-apiserver
+    tier: control-plane
+  type: LoadBalancer
