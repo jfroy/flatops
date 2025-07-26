@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    lbipam.cilium.io/ips: 10.10.10.10
+    lbipam.cilium.io/ips: 10.10.10.10,${KUBE_API_SERVER_LBA_V6_ADDRESS}
   name: external-kube-apiserver
 spec:
   externalTrafficPolicy: Local
