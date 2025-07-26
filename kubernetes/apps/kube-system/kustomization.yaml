@@ -18,7 +18,7 @@ resources:
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
-  - ./spegel/ks.yaml
+  # - ./spegel/ks.yaml
 components:
   - ../../components/common
 transformers:
