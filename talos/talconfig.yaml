@@ -350,7 +350,7 @@ controlPlane:
         controllerManager:
           extraArgs:
             bind-address: 0.0.0.0
-            node-cidr-mask-size-ipv6: "80"
+            node-cidr-mask-size-ipv6: "108"
         coreDNS:
           disabled: true
         proxy:
