@@ -58,7 +58,7 @@ spec:
               [{
                 "name": "multus-default",
                 "namespace": "kube-system",
-                "ips": ["10.1.2.3/16"]
+                "ips": ["10.1.2.3/16", "${MULTUS_ESPHDB_V6_ADDRESS}"]
               }]
           securityContext:
             runAsNonRoot: true

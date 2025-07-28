@@ -24,3 +24,6 @@ spec:
       APP: *app
       APP_SUBDOMAIN: esphdb
       VOLSYNC_CAPACITY: 1Gi
+    substituteFrom:
+      - kind: Secret
+        name: esphome-device-builder-ipv6-config
