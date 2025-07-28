@@ -16,7 +16,8 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              {"dst": "0.0.0.0/0", "gw": "10.1.0.1"}
+              {"dst": "0.0.0.0/0", "gw": "10.1.0.1"},
+              {"dst": "::/0", "gw": "${MULTUS_GATEWAY_V6_ADDRESS}"}
             ]
           }
         },
