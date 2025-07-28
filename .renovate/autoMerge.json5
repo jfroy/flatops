@@ -1,15 +1,22 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
+    // - Don't automerge imager or kubelet; want to review Talos and k8s updates
     {
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/jfroy/siderolabs/imager", "ghcr.io/siderolabs/kubelet"],
       automerge: false,
     },
+    // - Don't automerge gpu-operator; requires custom image build
+    {
+      matchDatasources: ["helm"],
+      matchPackageNames: ["gpu-operator"],
+      automerge: false,
+    },
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["digest"],
-      matchPackageNames: ["ghcr.io/home-operations**/*", "ghcr.io/jfroy/vuetorrent"],
+      matchPackageNames: ["ghcr.io/home-operations**/*", "ghcr.io/jfroy/*"],
       automerge: true,
     },
     {
