@@ -13,6 +13,13 @@
       matchPackageNames: ["gpu-operator"],
       automerge: false,
     },
+    // - Don't automerge Cilium minor releases; they are basically major releases
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium"],
+      matchUpdateTypes: ["minor"],
+      automerge: false,
+    },
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["digest"],
