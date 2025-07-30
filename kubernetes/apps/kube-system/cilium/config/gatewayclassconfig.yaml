@@ -1,0 +1,8 @@
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumGatewayClassConfig
+metadata:
+  name: cilium
+spec:
+  service:
+    ipFamilyPolicy: PreferDualStack

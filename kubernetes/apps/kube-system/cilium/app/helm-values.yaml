@@ -38,6 +38,8 @@ envoy:
 gatewayAPI:
   enabled: true
   enableAlpn: true
+  gatewayClass:
+    create: "false"
   xffNumTrustedHops: 1
 hubble:
   enabled: false
