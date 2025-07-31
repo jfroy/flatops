@@ -92,11 +92,11 @@ spec:
               prometheusType: Prometheus
               timeInterval: 60s
           - name: VictoriaMetrics
-            type: victoriametrics-datasource
+            type: victoriametrics-metrics-datasource
             access: proxy
             url: http://vmsingle-kantai.observability.svc:8429
           - name: VictoriaLogs
-            type: victorialogs-datasource
+            type: victoriametrics-logs-datasource
             access: proxy
             url: http://vlsingle-kantai.observability.svc:9428
           - name: sunandmoon
@@ -344,7 +344,7 @@ spec:
       news:
         news_feed_enabled: false
       plugins:
-        allow_loading_unsigned_plugins: "victorialogs-datasource,victoriametrics-datasource"
+        allow_loading_unsigned_plugins: "victoriametrics-logs-datasource,victoriametrics-metrics-datasource"
       server:
         root_url: https://grafana.kantai.xyz
       users:
@@ -354,8 +354,8 @@ spec:
 
     plugins:
       - fetzerch-sunandmoon-datasource
-      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.18.1/victoriametrics-logs-datasource-v0.18.1.zip;victorialogs-datasource
-      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.17.0/victoriametrics-metrics-datasource-v0.17.0.zip;victoriametrics-datasource
+      - https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.19.1/victoriametrics-logs-datasource-v0.19.1.zip;victoriametrics-logs-datasource
+      - https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.18.1/victoriametrics-metrics-datasource-v0.18.1.zip;victoriametrics-metrics-datasource
 
     sidecar:
       dashboards:
