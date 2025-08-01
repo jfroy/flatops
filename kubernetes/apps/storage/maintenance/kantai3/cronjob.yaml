@@ -84,7 +84,7 @@ spec:
               command:
                 - /bin/sh
                 - -c
-                - chroot /host /usr/local/sbin/zpool scrub -w bouteille citerne
+                - chroot /host /usr/local/sbin/zpool scrub -w citerne
               securityContext:
                 privileged: true
                 runAsUser: 0
