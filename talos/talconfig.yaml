@@ -291,6 +291,16 @@ patches:
           # Incompatible with Cilium bpf masquerade. https://github.com/siderolabs/talos/issues/8836
           forwardKubeDNSToHost: false
 
+  # Use GCR mirror for Docker Hub
+  # NOTE: Incompatible with Spegel, remove once Spegel can be used again.
+  - |-
+    machine:
+      registries:
+        mirrors:
+          docker.io:
+            endpoints:
+              - https://mirror.gcr.io
+
   # containerd config
   # - discard_unpacked_layers (spegel, https://spegel.dev/docs/getting-started/#talos)
   # - enable_unprivileged_ports, enable_unprivileged_icmp (convenience, https://github.com/kubernetes/kubernetes/issues/102612)
