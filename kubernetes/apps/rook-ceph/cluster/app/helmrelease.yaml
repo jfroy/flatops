@@ -202,6 +202,18 @@ spec:
     monitoring:
       enabled: true
       createPrometheusRules: true
+    route:
+      dashboard:
+        host:
+          name: ceph.kantai.xyz
+          path: "/"
+          pathType: PathPrefix
+        parentRefs:
+          - group: gateway.networking.k8s.io
+            kind: Gateway
+            name: internal
+            namespace: kube-system
+            sectionName: https
     toolbox:
       enabled: true
       resources:
