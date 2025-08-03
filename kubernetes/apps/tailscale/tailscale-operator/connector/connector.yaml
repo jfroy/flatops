@@ -9,5 +9,6 @@ spec:
   proxyClass: kernel-org-tun
   subnetRouter:
     advertiseRoutes:
+      - "10.1.0.6/32"
       - "10.10.0.0/16" # load-balancers
       - "10.12.0.0/16" # services
