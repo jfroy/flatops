@@ -14,7 +14,7 @@ spec:
     version: 2.6.4
     registry: ghcr.io/fluxcd
     # renovate: datasource=github-releases depName=controlplaneio-fluxcd/flux-operator
-    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.24.1
+    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.26.0
   components:
     - source-controller
     - kustomize-controller
