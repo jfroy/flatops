@@ -86,6 +86,21 @@ loki.process "pod_logs" {
 	forward_to = [loki.write.victorialogs.receiver]
 }
 
+// PROMETHEUS
+
+prometheus.scrape "rpis" {
+	targets = [
+		{"__address__" = "pikvm.internal:9100", "instance" = "pikvm"},
+		{"__address__" = "pwdash.internal:9100", "instance" = "pwdash"},
+	]
+	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+	job_name   = "node-exporter"
+
+	clustering {
+		enabled = true
+	}
+}
+
 // PROMETHEUS OPERATOR
 
 prometheus.operator.podmonitors "default" {
@@ -126,8 +141,8 @@ prometheus.operator.servicemonitors "default" {
 prometheus.exporter.self "default" { }
 
 prometheus.scrape "metamonitoring" {
-	targets         = prometheus.exporter.self.default.targets
-	forward_to      = [prometheus.remote_write.victoriametrics.receiver]
+	targets    = prometheus.exporter.self.default.targets
+	forward_to = [prometheus.remote_write.victoriametrics.receiver]
 }
 
 // WRITES

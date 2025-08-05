@@ -7,4 +7,3 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
-  - ./scrapeconfig.yaml
