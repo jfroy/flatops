@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 3.0.26
+    tag: 3.0.28
   url: oci://registry-1.docker.io/bitnamicharts/valkey
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
