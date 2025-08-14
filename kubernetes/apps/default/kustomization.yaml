@@ -21,7 +21,7 @@ resources:
   - ./media-smb/ks.yaml
   - ./memos/ks.yaml
   # - ./netbox/ks.yaml
-  - ./octoeverywhere-bambu-connect/ks.yaml
+  # - ./octoeverywhere-bambu-connect/ks.yaml
   - ./pgadmin/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
