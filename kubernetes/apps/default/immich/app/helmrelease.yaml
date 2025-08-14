@@ -29,7 +29,7 @@ spec:
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v1.137.3-cuda@sha256:5451885207f1b4146a83b845c1046bbeb99a9a17d4d72da1dc340d8c1afd7ef5
+              tag: v1.138.0-cuda@sha256:8cf0cd426bae6937690b0086d5dfe1c20c8babe3473698d82a21a38aa6384d25
             env:
               MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-SO400M-16-SigLIP2-384__webli
               MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-SO400M-16-SigLIP2-384__webli
