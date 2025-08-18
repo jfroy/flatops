@@ -35,7 +35,7 @@ spec:
           idrac-exporter:
             image:
               repository: docker.io/mrlhansen/idrac_exporter
-              tag: 2.1.0@sha256:f2c06d53a13c77c604739e6ae5606d165c71814826258007350613d7f3e1adbd
+              tag: 2.2.0@sha256:16275f896172767fde9664d3d0785678e69eb2b96d36127905c736be210d3da3
             command:
               - /app/bin/idrac_exporter
               - --config=/config/idrac.yml
