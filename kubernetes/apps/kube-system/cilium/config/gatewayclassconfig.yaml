@@ -5,4 +5,4 @@ metadata:
   name: cilium
 spec:
   service:
-    ipFamilyPolicy: PreferDualStack
+    ipFamilyPolicy: SingleStack
