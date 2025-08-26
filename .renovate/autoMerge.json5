@@ -20,6 +20,12 @@
       matchUpdateTypes: ["minor"],
       automerge: false,
     },
+    // - Don't automerge rook-ceph; want to review updates
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/rook/rook-ceph", "ghcr.io/rook/rook-ceph-cluster"],
+      automerge: false,
+    },
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["digest"],
