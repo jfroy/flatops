@@ -56,7 +56,7 @@ spec:
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{
-                "name": "multus-default",
+                "name": "multus-dual-stack",
                 "namespace": "kube-system",
                 "ips": ["10.1.2.3/16", "${MULTUS_ESPHDB_V6_ADDRESS}"]
               }]

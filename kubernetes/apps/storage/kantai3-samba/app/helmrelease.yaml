@@ -99,7 +99,7 @@ spec:
       annotations:
         k8s.v1.cni.cncf.io/networks: |
           [{
-            "name": "multus-default",
+            "name": "multus-ipv4",
             "namespace": "kube-system",
             "ips": ["10.1.2.2/16"]
           }]

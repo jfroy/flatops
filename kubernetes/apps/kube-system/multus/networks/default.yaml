@@ -2,12 +2,12 @@
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
-  name: multus-default
+  name: multus-dual-stack
 spec:
   config: |-
     {
       "cniVersion": "0.3.1",
-      "name": "multus-default",
+      "name": "multus-dual-stack",
       "plugins": [
         {
           "type": "macvlan",
@@ -18,6 +18,33 @@ spec:
             "routes": [
               {"dst": "0.0.0.0/0", "gw": "10.1.0.1"},
               {"dst": "::/0", "gw": "${MULTUS_GATEWAY_V6_ADDRESS}"}
+            ]
+          }
+        },
+        {
+          "type": "sbr"
+        }
+      ]
+    }
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  name: multus-ipv4
+spec:
+  config: |-
+    {
+      "cniVersion": "0.3.1",
+      "name": "multus-ipv4",
+      "plugins": [
+        {
+          "type": "macvlan",
+          "capabilities": { "ips": true },
+          "mode": "bridge",
+          "ipam": {
+            "type": "static",
+            "routes": [
+              {"dst": "0.0.0.0/0", "gw": "10.1.0.1"}
             ]
           }
         },
