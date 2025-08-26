@@ -35,10 +35,6 @@ spec:
   values:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
-      enableCephfsDriver: false
-      enableCephfsSnapshotter: false
-      enableCSIEncryption: false
-      enableNFSSnapshotter: false
       enableLiveness: true
       pluginTolerations:
         - key: node-role.kubernetes.io/control-plane
@@ -50,12 +46,6 @@ spec:
           effect: NoSchedule
       serviceMonitor:
         enabled: true
-    discover:
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-    enableDiscoveryDaemon: true
     image:
       repository: ghcr.io/rook/ceph
     monitoring:
