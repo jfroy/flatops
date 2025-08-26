@@ -49,6 +49,7 @@ spec:
             env:
               HBOX_OPTIONS_CHECK_GITHUB_RELEASE: "false"
               HBOX_DATABASE_DRIVER: postgres
+              HBOX_DATABASE_SSL_MODE: disable
               HBOX_LOG_FORMAT: json
               HBOX_LOG_LEVEL: info
               HBOX_WEB_PORT: &port "7745"
