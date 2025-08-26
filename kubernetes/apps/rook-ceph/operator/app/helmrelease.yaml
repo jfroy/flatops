@@ -24,7 +24,7 @@ spec:
     kind: OCIRepository
     name: rook-ceph
   driftDetection:
-    mode: enabled
+    mode: disabled
   install:
     remediation:
       retries: -1
