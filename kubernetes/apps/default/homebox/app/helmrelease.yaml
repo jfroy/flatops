@@ -64,6 +64,11 @@ spec:
     persistence:
       data:
         existingClaim: ${APP}
+      modcache:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /.cache
     route:
       homebox:
         hostnames:
