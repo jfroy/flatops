@@ -17,13 +17,14 @@
     {
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium"],
-      matchUpdateTypes: ["minor"],
+      matchUpdateTypes: ["major", "minor"],
       automerge: false,
     },
-    // - Don't automerge rook-ceph; want to review updates
+    // - Don't automerge Rook-Ceph minor releases; they are basically major releases
     {
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/rook/rook-ceph", "ghcr.io/rook/rook-ceph-cluster"],
+      matchUpdateTypes: ["major", "minor"],
       automerge: false,
     },
     {
