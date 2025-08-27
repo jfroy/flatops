@@ -29,6 +29,14 @@ spec:
               tag: v2.15.4@sha256:788a890f2dc5aef3e99ce430917221c43b4e084464d38bc6537a8c7294ef8770
             env:
               TZ: America/Los_Angeles
+              UP_LOKI_DISABLE: false
+              UP_LOKI_URL: http://vlsingle-kantai.observability.svc:9428/insert/loki/api/v1/push
+              UP_UNIFI_DEFAULT_SAVE_ALARMS: true
+              UP_UNIFI_DEFAULT_SAVE_ANOMALIES: true
+              UP_UNIFI_DEFAULT_SAVE_DPI: true
+              UP_UNIFI_DEFAULT_SAVE_EVENTS: true
+              UP_UNIFI_DEFAULT_SAVE_IDS: true
+              UP_UNIFI_DEFAULT_SAVE_SITES: true
               UP_UNIFI_DEFAULT_URL: https://unifi.internal
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
               UP_INFLUXDB_DISABLE: true
