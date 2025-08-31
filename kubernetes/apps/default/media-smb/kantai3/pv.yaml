@@ -21,6 +21,7 @@ spec:
     - forceuid
     - gid=4000
     - forcegid
+    - persistenthandles
   csi:
     driver: smb.csi.k8s.io
     readOnly: false
