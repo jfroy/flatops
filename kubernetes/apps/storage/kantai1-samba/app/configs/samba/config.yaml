@@ -8,51 +8,54 @@ configs:
 globals:
   default:
     options:
-      bind interfaces only: "true"
-      clustering: "false"
+      bind interfaces only: "yes"
+      clustering: "no"
       create mask: "0775"
       directory mask: "0775"
-      disable spoolss: "true"
-      dns proxy: "false"
-      ea support: "true"
+      disable spoolss: "yes"
+      dns proxy: "no"
+      durable handles: "yes"
+      ea support: "yes"
       guest account: nobody
-      host msdfs: "false"
+      host msdfs: "no"
       interfaces: net1 eth0
-      load printers: "false"
-      local master: "true"
+      load printers: "no"
+      local master: "yes"
       log level: "1"
       netbios aliases: ""
       netbios name: kantai1
-      ntlm auth: "false"
+      ntlm auth: "no"
+      # NOTE(posix locking): must be disabled for durable handles
+      posix locking: "no"
       printcap name: /dev/null
       restrict anonymous: "2"
       rpc_daemon:mdssd: disabled
       rpc_server:mdssvc: disabled
       security: user
       server min protocol: SMB3_11
-      server multi channel support: "true"
+      server multi channel support: "yes"
       server role: standalone server
       server string: kantai1
-      smb1 unix extensions: "true"
-      smb3 unix extensions: "false"
+      smb1 unix extensions: "yes"
+      smb3 unix extensions: "no"
       unix charset: UTF-8
       winbind request timeout: "2"
       workgroup: "WORKGROUP"
 shares:
   media:
     options:
-      access based share enum: "false"
-      available: "true"
-      browseable: "true"
+      access based share enum: "no"
+      available: "yes"
+      browseable: "yes"
       comment: ""
       create mask: "0660"
       directory mask: "0770"
-      guest ok: "false"
-      kernel oplocks: "false"
-      mangled names: "false"
+      guest ok: "no"
+      kernel oplocks: "no"
+      mangled names: "no"
       path: /media
-      posix locking: "false"
-      read only: "false"
+      posix locking: "no"
+      read only: "no"
       smbd max xattr size: "2097152"
       # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
       vfs objects: streams_xattr
