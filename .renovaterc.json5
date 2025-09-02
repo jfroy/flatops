@@ -12,6 +12,7 @@
     'github>jfroy/flatops//.renovate/autoMerge.json5',
     'github>jfroy/flatops//.renovate/customManagers.json5',
     'github>jfroy/flatops//.renovate/grafanaDashboards.json5',
+    'github>jfroy/flatops//.renovate/groups.json5',
     'github>jfroy/flatops//.renovate/labels.json5',
     'github>jfroy/flatops//.renovate/packageRules.json5',
     'github>jfroy/flatops//.renovate/semanticCommits.json5',
