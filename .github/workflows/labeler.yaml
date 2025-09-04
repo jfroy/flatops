@@ -17,6 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Labeler
-        uses: actions/labeler@v5
+        uses: actions/labeler@v6
         with:
           configuration-path: .github/labeler.yaml
