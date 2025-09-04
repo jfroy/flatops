@@ -240,7 +240,7 @@ spec:
         victoria-logs:
           # renovate: depName="VictoriaLogs"
           gnetId: 22084
-          revision: 5
+          revision: 8
           datasource: Prometheus
         victoria-operator:
           # renovate: depName="VictoriaMetrics - operator"
