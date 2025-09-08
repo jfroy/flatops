@@ -43,6 +43,8 @@ spec:
             envFrom:
               - secretRef:
                   name: netronome-db
+              - secretRef:
+                  name: netronome-oidc
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
