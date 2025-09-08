@@ -76,6 +76,7 @@ spec:
             readOnly: true
       geoip:
         type: persistentVolumeClaim
+        forceRename: netronome-geoip
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 100Gi
