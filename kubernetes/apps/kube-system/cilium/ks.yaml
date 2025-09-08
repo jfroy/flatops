@@ -12,7 +12,8 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
-    - name: gateway-crd
+    - name: envoy-gateway
+      namespace: network
   path: ./kubernetes/apps/kube-system/cilium/app
   prune: true
   sourceRef:
