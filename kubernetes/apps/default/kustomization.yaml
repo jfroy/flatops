@@ -28,6 +28,7 @@ resources:
   - ./prowlarr/ks.yaml
   # - ./pvforecast/ks.yaml
   - ./qbittorrent/ks.yaml
+  - ./qui/ks.yaml
   - ./radarr/ks.yaml
   - ./recyclarr/ks.yaml
   - ./registry/ks.yaml
