@@ -23,6 +23,14 @@ spec:
     controllers:
       netronome:
         initContainers:
+          download-geoip:
+            image:
+              repository: quay.io/curl/curl
+              tag: "8.15.0"
+            command: ["/download-geoip.sh"]
+            envFrom:
+              - secretRef:
+                  name: netronome-maxmind
           init-db:
             image:
               repository: ghcr.io/home-operations/postgres-init
@@ -58,6 +66,19 @@ spec:
     persistence:
       data:
         existingClaim: "${APP}"
+      download-geoip:
+        type: configMap
+        name: netronome-download-geoip
+        defaultMode: 0755
+        globalMounts:
+          - path: /download-geoip.sh
+            subPath: download-geoip.sh
+            readOnly: true
+      geoip:
+        type: persistentVolumeClaim
+        storageClass: openebs-hostpath
+        accessMode: ReadWriteOnce
+        size: 100Gi
       tmp:
         type: emptyDir
         medium: Memory
