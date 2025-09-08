@@ -38,6 +38,7 @@ spec:
               repository: ghcr.io/autobrr/netronome
               tag: v0.6.0@sha256:57036ce116cefe1307fbab19d8d1d36f3f48f5f8554fc29b842587ec48d3dbf5
             env:
+              NETRONOME__HOST: 0.0.0.0
               NETRONOME__PORT: &port 7575
               TZ: America/Los_Angeles
             envFrom:
