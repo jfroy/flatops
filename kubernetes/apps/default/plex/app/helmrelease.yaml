@@ -37,6 +37,9 @@ spec:
               PLEX_PREFERENCE_3: GdmEnabled=0
               PLEX_PREFERENCE_4: EnableIPv6=0
               TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: plex-claim
             ports:
               - containerPort: 32400
                 hostPort: 22400
