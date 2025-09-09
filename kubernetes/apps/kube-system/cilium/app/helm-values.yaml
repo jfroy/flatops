@@ -69,6 +69,8 @@ operator:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
+pmtuDiscovery:
+  enabled: true
 rollOutCiliumPods: true
 routingMode: native
 securityContext:
