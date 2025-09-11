@@ -7,6 +7,6 @@
   },
   "githubPullRequests.remotes": ["origin"],
   "git.rebaseWhenSync": true,
-  "chat.mcp.enabled": true,
-  "sops.defaults.ageKeyFile": "age.key"
+  "sops.defaults.ageKeyFile": "age.key",
+  "chat.mcp.access": "all"
 }
