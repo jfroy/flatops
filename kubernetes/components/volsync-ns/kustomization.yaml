@@ -2,9 +2,6 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
-resources:
-  - ./alerts
-  - ./externalsecret.yaml
 transformers:
   - |-
     apiVersion: builtin
@@ -12,7 +9,7 @@ transformers:
     metadata:
       name: annotate-ns
     annotations:
-      kustomize.toolkit.fluxcd.io/prune: disabled
+      volsync.backube/privileged-movers: "true"
     fieldSpecs:
       - path: metadata/annotations
         kind: Namespace

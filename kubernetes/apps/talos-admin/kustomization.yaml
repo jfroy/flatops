@@ -8,5 +8,6 @@ resources:
   - ./talos-backup/ks.yaml
 components:
   - ../../components/common
+  - ../../components/volsync-ns
 transformers:
   - ./transformers
