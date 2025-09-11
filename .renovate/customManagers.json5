@@ -3,7 +3,7 @@
   customManagers: [
     {
       customType: "regex",
-      fileMatch: ["(^|/)kubernetes/.+\\.ya?ml$"],
+      fileMatch: ["^(kubernetes|talos)/.+\\.yaml$"],
       matchStrings: [
         // # renovate: datasource=github-releases depName=org/repo versioning=loose
         // version: 1.2.3
