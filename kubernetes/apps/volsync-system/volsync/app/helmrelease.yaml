@@ -10,13 +10,8 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.13.0-rc.2
-  url: oci://ghcr.io/home-operations/charts-mirror/volsync
-  verify:
-    provider: cosign
-    matchOIDCIdentity:
-      - issuer: "^https://token.actions.githubusercontent.com$"
-        subject: "^https://github.com/home-operations/charts-mirror.*$"
+    tag: 0.16.9
+  url: oci://ghcr.io/home-operations/charts-mirror/volsync-perfectra1n
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -43,10 +38,17 @@ spec:
     remediation:
       retries: 3
   values:
-    image:
-      tag: 0.13.0-rc.3
+    fullnameOverride: volsync # Required for volsync-perfectra1n fork
+    image: &image
+      repository: ghcr.io/perfectra1n/volsync
+      tag: v0.15.42
+    kopia: *image
+    rclone: *image
+    restic: *image
+    rsync: *image
+    rsync-tls: *image
+    syncthing: *image
     manageCRDs: true
-    replicaCount: 1
     metrics:
       disableAuth: true
     resources:
