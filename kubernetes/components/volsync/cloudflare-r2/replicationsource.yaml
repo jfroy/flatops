@@ -8,20 +8,16 @@ spec:
   sourcePVC: "${APP}"
   trigger:
     schedule: "0 0 * * *"
-  restic:
-    accessModes: ["${VOLSYNC_ACCESSMODES:=ReadWriteOnce}"]
-    cacheAccessModes: ["${VOLSYNC_CACHE_ACCESSMODES:=ReadWriteOnce}"]
-    cacheCapacity: "${VOLSYNC_CACHE_CAPACITY:=1Gi}"
-    cacheStorageClassName: "${VOLSYNC_CACHE_SNAPSHOTCLASS:=ceph-block}"
-    copyMethod: "${VOLSYNC_COPYMETHOD:=Snapshot}"
+  kopia:
+    compression: zstd
+    copyMethod: Clone
     moverSecurityContext:
-      runAsUser: ${VOLSYNC_PUID:=1000}
-      runAsGroup: ${VOLSYNC_PGID:=1000}
-      fsGroup: ${VOLSYNC_PGID:=1000}
-    pruneIntervalDays: 7
-    repository: "${APP}-volsync-r2-secret"
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    parallelism: 2
+    repository: "${APP}-volsync-kopia-r2"
     retain:
       daily: 7
-    storageClassName: "${VOLSYNC_STORAGECLASS:=ceph-block}"
-    unlock: u2
-    volumeSnapshotClassName: "${VOLSYNC_SNAPSHOTCLASS:=ceph-block}"
+      weekly: 4
+      monthly: 12
