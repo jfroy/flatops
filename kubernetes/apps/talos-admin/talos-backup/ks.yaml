@@ -23,5 +23,5 @@ spec:
     substitute:
       APP: *app
       # renovate: datasource=docker depName=ghcr.io/jfroy/siderolabs/imager
-      TALOS_VERSION: v1.10.2
+      TALOS_VERSION: v1.11.1
       VOLSYNC_CAPACITY: 50Gi
