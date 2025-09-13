@@ -16,7 +16,7 @@ spec:
       runAsGroup: 1000
       fsGroup: 1000
     parallelism: 2
-    repository: "${APP}-volsync-kopia-r2"
+    repository: volsync-kopia-r2
     retain:
       daily: 7
       weekly: 4
