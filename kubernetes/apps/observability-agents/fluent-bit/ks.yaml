@@ -8,7 +8,7 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/observability/fluent-bit/app
+  path: ./kubernetes/apps/observability-agents/fluent-bit/app
   prune: true
   sourceRef:
     kind: GitRepository
