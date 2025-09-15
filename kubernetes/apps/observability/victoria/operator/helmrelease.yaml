@@ -41,17 +41,6 @@ spec:
   values:
     crds:
       enabled: false
-    env:
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_ALERTMANAGERCONFIG
-        value: "false"
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_PODMONITOR
-        value: "false"
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_PROBE
-        value: "false"
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_SCRAPECONFIG
-        value: "false"
-      - name: VM_ENABLEDPROMETHEUSCONVERTER_SERVICESCRAPE
-        value: "false"
     fullnameOverride: victoria-operator
     operator:
       disable_prometheus_converter: false

@@ -1,0 +1,8 @@
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+  name: kantai
+spec:
+  remoteWrite:
+    - url: "http://vmsingle-kantai.observability.svc:8428/api/v1/write"
+  selectAllByDefault: true
