@@ -75,8 +75,8 @@ spec:
         hostnames:
           - minio.kantai.xyz
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
@@ -86,8 +86,8 @@ spec:
         hostnames:
           - s3.kantai.xyz
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

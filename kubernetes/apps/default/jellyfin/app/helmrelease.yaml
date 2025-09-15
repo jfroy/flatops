@@ -129,8 +129,8 @@ spec:
         hostnames:
           - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
@@ -140,8 +140,8 @@ spec:
         hostnames:
           - "jellyvue.kantai.xyz"
         parentRefs:
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:

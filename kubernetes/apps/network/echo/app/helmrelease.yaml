@@ -65,11 +65,11 @@ spec:
         hostnames:
           - "{{ .Release.Name }}.kantai.xyz"
         parentRefs:
-          - name: external
-            namespace: kube-system
+          - name: envoy-external
+            namespace: network
             sectionName: https
-          - name: internal
-            namespace: kube-system
+          - name: envoy-internal
+            namespace: network
             sectionName: https
         rules:
           - backendRefs:
