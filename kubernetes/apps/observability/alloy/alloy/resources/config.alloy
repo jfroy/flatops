@@ -8,6 +8,10 @@ logging {
 
 discovery.kubernetes "pod" {
 	role = "pod"
+  selectors {
+    role  = "pod"
+    field = "spec.nodeName=" + coalesce(sys.env("NODE_NAME"), constants.hostname)
+  }
 }
 
 discovery.kubernetes "service" {
@@ -24,6 +28,12 @@ discovery.relabel "pod_logs" {
 		action        = "replace"
 		target_label  = "namespace"
 	}
+
+  rule {
+    source_labels = ["__meta_kubernetes_pod_node_name"]
+    action = "replace"
+    target_label = "node"
+  }
 
 	rule {
 		source_labels = ["__meta_kubernetes_pod_name"]
@@ -71,10 +81,6 @@ discovery.relabel "pod_logs" {
 loki.source.kubernetes "pod_logs" {
 	targets    = discovery.relabel.pod_logs.output
 	forward_to = [loki.process.pod_logs.receiver]
-
-	clustering {
-		enabled = true
-	}
 }
 
 loki.process "pod_logs" {
@@ -95,45 +101,49 @@ prometheus.scrape "rpis" {
 	]
 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
 	job_name   = "node-exporter"
-
-	clustering {
-		enabled = true
-	}
 }
 
 // PROMETHEUS OPERATOR
 
 prometheus.operator.podmonitors "default" {
 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
-
-	clustering {
-		enabled = true
-	}
 }
 
 prometheus.operator.probes "default" {
 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
-
-	clustering {
-		enabled = true
-	}
 }
 
 // EXPERIMENTAL: The `stability.level` flag must be set to `experimental` to use the component.
 // prometheus.operator.scrapeconfigs "default" {
 // 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
-
-// 	clustering {
-// 		enabled = true
-// 	}
 // }
 
 prometheus.operator.servicemonitors "default" {
 	forward_to = [prometheus.remote_write.victoriametrics.receiver]
+}
 
-	clustering {
-		enabled = true
-	}
+// EVENTS
+
+loki.source.kubernetes_events "default" {
+  job_name   = "integrations/kubernetes/eventhandler"
+  log_format = "logfmt"
+	forward_to = [loki.process.cluster_events.receiver]
+}
+
+loki.process "cluster_events" {
+  forward_to = [loki.write.victorialogs.receiver]
+
+  stage.static_labels {
+    values = {
+			cluster = "kantai",
+    }
+  }
+
+  stage.labels {
+    values = {
+      kubernetes_cluster_events = "job",
+    }
+  }
 }
 
 // META

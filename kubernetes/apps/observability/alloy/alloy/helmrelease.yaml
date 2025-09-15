@@ -1,4 +1,23 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: alloy
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.2.1
+  url: oci://ghcr.io/home-operations/charts-mirror/alloy
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: "^https://token.actions.githubusercontent.com$"
+        subject: "^https://github.com/home-operations/charts-mirror.*$"
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -23,13 +42,13 @@ spec:
     alloy:
       configMap:
         create: false
-        name: alloy-config
+        name: &config alloy-config
         key: config.alloy
-      clustering:
-        enabled: true
-        name: alloy
-      storagePath: /var/lib/alloy
-      enableReporting: false
+      extraEnv:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
       extraPorts:
         - name: otlp
           port: 4317
@@ -37,20 +56,8 @@ spec:
         - name: otlphttp
           port: 4318
           targetPort: 4318
-      mounts:
-        extra:
-          - name: alloy
-            mountPath: /var/lib/alloy
     controller:
-      type: "statefulset"
-      replicas: 1
-      enableStatefulSetAutoDeletePVC: true
-      volumeClaimTemplates:
-        - metadata:
-            name: alloy
-          spec:
-            accessModes: [ReadWriteOnce]
-            storageClassName: ceph-block
-            resources:
-              requests:
-                storage: 5Gi
+      podAnnotations:
+        configmap.reloader.stakater.com/reload: *config
+    serviceMonitor:
+      enabled: true
