@@ -9,7 +9,6 @@ resources:
   - ./blackbox-exporter/ks.yaml
   - ./dozzle/ks.yaml
   - ./exportarr/ks.yaml
-  - ./fluent-bit/ks.yaml
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./headlamp/ks.yaml
