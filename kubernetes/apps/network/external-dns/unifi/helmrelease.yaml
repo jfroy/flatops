@@ -26,7 +26,7 @@ spec:
     fullnameOverride: *app
     domainFilters: ["kantai.xyz", "internal"]
     extraArgs:
-      - --gateway-name=internal
+      - --gateway-name=envoy-internal
     logLevel: debug
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi
