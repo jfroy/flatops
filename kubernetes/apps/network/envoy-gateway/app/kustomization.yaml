@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./envoy.yaml
   - ./helmrelease.yaml
+  - ./networkpolicy.yaml
   - ./observability.yaml
