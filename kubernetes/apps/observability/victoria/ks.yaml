@@ -1,3 +1,39 @@
+# https://github.com/VictoriaMetrics/helm-charts/issues/2420
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/gitrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: github.com-victoriametrics-helm-charts-operator-crds
+spec:
+  url: https://github.com/VictoriaMetrics/helm-charts
+  ref:
+    tag: victoria-metrics-operator-crds-0.5.0
+  interval: 1h
+  timeout: 5m
+  ignore: |
+    # exclude all
+    /*
+    # include crd.yaml file
+    !/charts/victoria-metrics-operator/crd.yaml
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app victoria-crds
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  path: ./charts/victoria-metrics-operator/
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: github.com-victoriametrics-helm-charts-operator-crds
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -11,6 +47,7 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
+    - name: victoria-crds
   path: ./kubernetes/apps/observability/victoria/operator
   prune: true
   sourceRef:

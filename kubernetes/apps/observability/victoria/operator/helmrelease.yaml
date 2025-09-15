@@ -30,15 +30,17 @@ spec:
         target:
           kind: VMServiceScrape
   install:
-    crds: CreateReplace
+    crds: Skip
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
-    crds: CreateReplace
+    crds: Skip
     remediation:
       retries: 3
   values:
+    crds:
+      enabled: false
     env:
       - name: VM_ENABLEDPROMETHEUSCONVERTER_ALERTMANAGERCONFIG
         value: "false"
