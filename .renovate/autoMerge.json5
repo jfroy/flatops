@@ -27,16 +27,24 @@
       matchUpdateTypes: ["major", "minor"],
       automerge: false,
     },
+    // - Automerge digest updates from trusted repos
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["digest"],
       matchPackageNames: ["ghcr.io/home-operations**/*", "ghcr.io/jfroy/*"],
       automerge: true,
     },
+    // - Misc rules
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["major"],
       matchPackageNames: ["ghcr.io/mendhak/http-https-echo"],
+      automerge: true,
+    },
+    {
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["digest"],
+      matchPackageNames: ["ghcr.io/squat/generic-device-plugin"],
       automerge: true,
     },
   ]
