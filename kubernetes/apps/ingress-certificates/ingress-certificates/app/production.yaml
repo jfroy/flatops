@@ -22,7 +22,7 @@ spec:
   from:
   - group: gateway.networking.k8s.io
     kind: Gateway
-    namespace: kube-system
+    namespace: network
   to:
   - group: ""
     kind: Secret
