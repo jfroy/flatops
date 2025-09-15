@@ -5,7 +5,7 @@ kind: OCIRepository
 metadata:
   name: fluent-bit
 spec:
-  interval: 1h
+  interval: 15m
   layerSelector:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
@@ -104,6 +104,8 @@ spec:
           compress gzip
     dashboards:
       enabled: true
+    image:
+      repository: ghcr.io/fluent/fluent-bit
     serviceMonitor:
       enabled: true
     tolerations:
