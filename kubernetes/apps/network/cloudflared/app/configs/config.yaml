@@ -4,7 +4,7 @@ originRequest:
 
 ingress:
   - hostname: "kantai.xyz"
-    service: https://cilium-gateway-external.kube-system.svc.cluster.local:443
+    service: https://envoy-external.network.svc.cluster.local:443
   - hostname: "*.kantai.xyz"
-    service: https://cilium-gateway-external.kube-system.svc.cluster.local:443
+    service: https://envoy-external.network.svc.cluster.local:443
   - service: http_status:404
