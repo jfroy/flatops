@@ -9,7 +9,7 @@ resources:
   - ./changedetection/ks.yaml
   - ./docker-registry-ui/ks.yaml
   - ./esphome-device-builder/ks.yaml
-  - ./freshrss/ks.yaml
+  # - ./freshrss/ks.yaml
   - ./glance/ks.yaml
   - ./gluetun/ks.yaml
   - ./gomft/ks.yaml
