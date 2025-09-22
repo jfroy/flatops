@@ -190,18 +190,6 @@ spec:
         globalMounts:
           - path: /run
           - path: /var/run
-    route:
-      qbittorrent:
-        hostnames:
-          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - port: *port
-                name: qbittorrent
     service:
       qbittorrent:
         controller: qbittorrent
