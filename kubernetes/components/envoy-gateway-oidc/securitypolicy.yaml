@@ -1,0 +1,21 @@
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: ${APP}-oidc
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: ${APP}
+  oidc:
+    provider:
+      issuer: https://pid.kantai.xyz
+    clientID: "${CLIENT_ID}"
+    clientSecret:
+      name: "${APP}-oidc"
+    refreshToken: true
+    cookieDomain: kantai.xyz
+    redirectURL: "https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz/oauth2/callback"
+    logoutPath: "${LOGOUT_PATH:-/logout}"
+    scopes: ["openid", "profile", "email"]

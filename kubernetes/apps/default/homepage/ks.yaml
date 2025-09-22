@@ -9,6 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/envoy-gateway-oidc
     - ../../../../components/gatus/guarded
   path: ./kubernetes/apps/default/homepage/app
   prune: true
@@ -22,3 +23,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      CLIENT_ID: 97a8bd69-5c83-4b0e-99c8-a6223271e934
