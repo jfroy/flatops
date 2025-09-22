@@ -9,6 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/envoy-gateway-oidc
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/sabnzbd/app
@@ -24,4 +25,5 @@ spec:
     substitute:
       APP: *app
       APP_SUBDOMAIN: sab
+      CLIENT_ID: 86768cbf-0a9f-4f21-80c1-5dfc9ff187ad
       VOLSYNC_CAPACITY: 1Gi
