@@ -9,6 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
+    - ../../../../components/envoy-gateway-oidc
     - ../../../../components/gatus/guarded
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/sonarr/app
@@ -23,4 +24,5 @@ spec:
   postBuild:
     substitute:
       APP: *app
+      CLIENT_ID: 57f35cce-3d3b-4442-a88a-ddf302fe7315
       VOLSYNC_CAPACITY: 1Gi
