@@ -31,6 +31,7 @@ spec:
               tag: v1.4.6@sha256:a1a578fdcfc72754985c3b3b26e4f398a6a782e354d10cf2b156ecbf06d252e9
             env:
               HOMEPAGE_ALLOWED_HOSTS: "*"
+              NODE_OPTIONS: "--max-http-header-size=65536"
               PUID: 1000
               PGID: 1000
               TZ: America/Los_Angeles
