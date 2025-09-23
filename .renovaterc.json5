@@ -22,6 +22,10 @@
     {
       matchHost: "registry.kantai.xyz",
       enabled: false
+    },
+    {
+      matchHost: "tif.etincelle.cloud",
+      enabled: false
     }
   ],
   flux: {

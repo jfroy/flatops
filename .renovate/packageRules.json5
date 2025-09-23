@@ -8,7 +8,7 @@
     },
     {
       matchDatasources: ["docker"],
-      matchPackageNames: ["registry.kantai.xyz**/*"],
+      matchPackageNames: ["registry.kantai.xyz**/*", "tif.etincelle.cloud**/*"],
       enabled: false
     },
     {
