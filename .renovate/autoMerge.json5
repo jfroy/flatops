@@ -27,6 +27,13 @@
       matchUpdateTypes: ["major", "minor"],
       automerge: false,
     },
+    // - Don't automerge tuppr; in development
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/home-operations/charts/tuppr"],
+      matchUpdateTypes: ["major", "minor", "patch"],
+      automerge: false,
+    },
     // - Automerge digest updates from trusted repos
     {
       matchDatasources: ["docker"],
