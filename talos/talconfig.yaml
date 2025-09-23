@@ -52,7 +52,7 @@ nodes:
       - interface: enp66s0f1
         ignore: true
     nodeLabels:
-      openebs.io/engine: mayastor
+      secureboot.kantai.xyz: "true"
     schematic:
       customization:
         extraKernelArgs:
@@ -131,6 +131,8 @@ nodes:
       - interface: enp0s1
         dhcp: true
         mtu: 1500
+    nodeLabels:
+      secureboot.kantai.xyz: "true"
     schematic:
       customization:
         extraKernelArgs:
