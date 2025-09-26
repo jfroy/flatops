@@ -17,6 +17,43 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
       labels:
         grafana_dashboard: "1"
+  - name: factorio-dashboards
+    files:
+      - ./resources/factorio/graftorio2.json
+      - ./resources/factorio/Factorio/# Info.json
+      - ./resources/factorio/Factorio/# Items.json
+      - ./resources/factorio/Factorio/1.1 - Default Electricity.json
+      - ./resources/factorio/Factorio/1.2 - Default Items.json
+      - ./resources/factorio/Factorio/1.3 - Default Fluids.json
+      - ./resources/factorio/Factorio/1.4 - Default Buildings.json
+      - ./resources/factorio/Factorio/1.5 - Default Pollution.json
+      - ./resources/factorio/Factorio/1.6 - Default Kills.json
+      - ./resources/factorio/Factorio/1.7 - Default Logistics.json
+      - ./resources/factorio/Factorio/2.0.1 - Rate Electricity.json
+      - ./resources/factorio/Factorio/2.0.2 - Rate Items.json
+      - ./resources/factorio/Factorio/2.0.2.1 - Rate Storage.json
+      - ./resources/factorio/Factorio/2.0.2.2 - Rate Science Packs.json
+      - ./resources/factorio/Factorio/2.0.3 - Rate Fluids.json
+      - ./resources/factorio/Factorio/2.0.4 - Rate Buildings.json
+      - ./resources/factorio/Factorio/2.0.5 - Rate Pollution.json
+      - ./resources/factorio/Factorio/2.0.6 - Rate Kills.json
+      - ./resources/factorio/Factorio/2.0.7 - Rate Evolution.json
+      - ./resources/factorio/Factorio/2.0.8 - Rate Research.json
+      - ./resources/factorio/Factorio/2.0.9 - Rate Rockets.json
+      - ./resources/factorio/Factorio/2.1.0 - Rate Players.json
+      - ./resources/factorio/Factorio/3.0.1 - Misc Items.json
+      - ./resources/factorio/Factorio/3.0.2 - Misc Buildings.json
+      - ./resources/factorio/Factorio/3.0.4 - Misc Logistic Networks.json
+      - ./resources/factorio/Factorio/3.0.4.1 - Misc Logistic Items.json
+      - ./resources/factorio/Factorio/3.0.4.2 - Misc Robots.json
+      - ./resources/factorio/Factorio/3.0.5 - Misc Trains.json
+      - ./resources/factorio/Factorio/4.0.1 - Mod YARM.json
+    options:
+      annotations:
+        grafana_folder: "Factorio"
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: "1"
   - name: flux-dashboards
     files:
       - ./resources/flux-control-plane.json
