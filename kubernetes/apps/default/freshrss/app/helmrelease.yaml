@@ -38,7 +38,7 @@ spec:
           freshrss:
             image:
               repository: docker.io/freshrss/freshrss
-              tag: "1.27.0"
+              tag: "1.27.1"
             env:
               CRON_MIN: 13,43
               DOMAIN: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
