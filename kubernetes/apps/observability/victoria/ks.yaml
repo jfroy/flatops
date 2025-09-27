@@ -12,7 +12,7 @@ spec:
     operation: extract
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator-crds
   ref:
-    tag: 0.5.0
+    tag: 0.5.1
   ignore: |
     /*
     !/crd.yaml
