@@ -14,7 +14,7 @@ spec:
     accessModes: [ReadWriteOnce]
     resources:
       requests:
-        storage: 50Gi
+        storage: 100Gi
     storageClassName: ceph-block
   useDefaultResources: false
   useStrictSecurity: true
