@@ -9,7 +9,7 @@ spec:
     - targets:
         - pikvm.internal:9100
         - pwdash.internal:9100
-        - wave5.internal:9100
+        # - wave5.internal:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
