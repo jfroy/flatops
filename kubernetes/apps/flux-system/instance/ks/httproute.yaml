@@ -2,6 +2,9 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
+  annotations:
+    gatus.home-operations.com/endpoint: |-
+      conditions: ["[STATUS] == 404"]
   labels:
     app.kubernetes.io/name: github-webhook
     app.kubernetes.io/part-of: flux

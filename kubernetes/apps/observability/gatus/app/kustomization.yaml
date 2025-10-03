@@ -8,7 +8,7 @@ resources:
   - ./prometheusrule.yaml
   - ./rbac.yaml
 configMapGenerator:
-  - name: gatus-config
+  - name: gatus-configmap
     files:
       - config.yaml=./resources/config.yaml
 generatorOptions:

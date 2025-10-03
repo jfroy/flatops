@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -29,7 +29,7 @@ spec:
             image:
               repository: ghcr.io/home-operations/postgres-init
               tag: 17.6.0@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
-            env: &env
+            env:
               INIT_POSTGRES_DBNAME: gatus
               INIT_POSTGRES_HOST: pg17vc-rw.database.svc.cluster.local
               INIT_POSTGRES_USER: gatus
@@ -38,38 +38,33 @@ spec:
                   name: gatus-secret
               - secretRef:
                   name: gatus-initdb-secret
-            securityContext: &securityContext
+            securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-          config-sync:
+          gatus-sidecar:
             dependsOn: init-db
             image:
-              repository: ghcr.io/kiwigrid/k8s-sidecar
-              tag: 1.30.10@sha256:835d79d8fbae62e42d8a86929d4e3c5eec2e869255dd37756b5a3166c2f22309
-            env:
-              FOLDER: /config
-              LABEL: gatus.io/enabled
-              NAMESPACE: ALL
-              RESOURCE: configmap
-              UNIQUE_FILENAMES: true
-              METHOD: WATCH
-            securityContext: *securityContext
+              repository: ghcr.io/home-operations/gatus-sidecar
+              tag: 0.0.4@sha256:be7ec7fe1f6efc6090856a1ba4d1b9b023c38a0895314c8bc46d4343b91f2b22
+            args:
+              - --auto-group=true
+              - --auto-routes=true
             restartPolicy: Always
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
         containers:
           gatus:
             image:
               repository: ghcr.io/twin/gatus
               tag: v5.25.2@sha256:9ff09fe5eb5e96b7f2126dc95b375a87a7bc16380d5cb9d798af4e0ef36f0049
             env:
-              <<: *env
-              TZ: America/Los_Angeles
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
+              TZ: America/Los_Angeles
               WEB_PORT: &port 80
-            envFrom:
-              - secretRef:
-                  name: gatus-secret
             probes:
               liveness: &probe
                 enabled: true
@@ -79,9 +74,10 @@ spec:
                     path: /health
                     port: *port
               readiness: *probe
-            securityContext: *securityContext
-        serviceAccount:
-          identifier: gatus
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -94,29 +90,53 @@ spec:
         type: emptyDir
       config-file:
         type: configMap
-        name: gatus-config
+        name: "{{ .Release.Name }}-configmap"
         globalMounts:
           - path: /config/config.yaml
             subPath: config.yaml
-            readOnly: true
+    rbac:
+      roles:
+        gatus:
+          type: ClusterRole
+          rules:
+            - apiGroups:
+                - ""
+              resources:
+                - services
+              verbs:
+                - get
+                - watch
+                - list
+            - apiGroups:
+                - gateway.networking.k8s.io
+              resources:
+                - httproutes
+              verbs:
+                - get
+                - watch
+                - list
+      bindings:
+        gatus:
+          type: ClusterRoleBinding
+          roleRef:
+            identifier: gatus
+          subjects:
+            - identifier: gatus
     route:
       gatus:
+        annotations:
+          gatus.home-operations.com/enabled: "true"
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 200"]
         hostnames:
+          - "{{ .Release.Name }}.kantai.xyz"
           - status.kantai.xyz
         parentRefs:
           - name: envoy-external
             namespace: network
             sectionName: https
-          - name: envoy-internal
-            namespace: network
-            sectionName: https
-        rules:
-          - backendRefs:
-              - name: gatus
-                port: *port
     service:
       gatus:
-        controller: gatus
         ports:
           http:
             port: *port
@@ -124,7 +144,6 @@ spec:
       gatus: {}
     serviceMonitor:
       gatus:
-        serviceName: gatus
         endpoints:
           - port: http
             metricRelabelings:

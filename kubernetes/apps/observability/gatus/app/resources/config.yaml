@@ -1,5 +1,4 @@
 ---
-# Note: Gatus vars should be escaped with $${VAR_NAME} to avoid interpolation by Flux
 web:
   port: ${WEB_PORT}
 storage:
@@ -11,24 +10,13 @@ debug: false
 ui:
   title: Status | Gatus
   header: Status
+  link: https://github.com/jfroy
+  buttons:
+    - name: Github
+      link: https://github.com/jfroy
+    - name: Homelab
+      link: https://github.com/jfroy/flatops
 connectivity:
   checker:
     target: 1.1.1.1:53
     interval: 1m
-endpoints:
-  - name: status
-    group: external
-    url: https://status.kantai.xyz
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 200"
-  - name: flux-webhook
-    group: external
-    url: https://flux-webhook.kantai.xyz
-    interval: 1m
-    client:
-      dns-resolver: tcp://1.1.1.1:53
-    conditions:
-      - "[STATUS] == 404"
