@@ -29,7 +29,7 @@ spec:
             image:
               repository: ghcr.io/home-operations/postgres-init
               tag: 17.6.0@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
-            env:
+            env: &env
               INIT_POSTGRES_DBNAME: gatus
               INIT_POSTGRES_HOST: pg17vc-rw.database.svc.cluster.local
               INIT_POSTGRES_USER: gatus
@@ -61,10 +61,14 @@ spec:
               repository: ghcr.io/twin/gatus
               tag: v5.25.2@sha256:9ff09fe5eb5e96b7f2126dc95b375a87a7bc16380d5cb9d798af4e0ef36f0049
             env:
+              <<: *env
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
               TZ: America/Los_Angeles
               WEB_PORT: &port 80
+            envFrom:
+              - secretRef:
+                  name: gatus-secret
             probes:
               liveness: &probe
                 enabled: true
