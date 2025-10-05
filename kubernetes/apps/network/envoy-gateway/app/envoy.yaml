@@ -81,6 +81,13 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: envoy-internal
+  annotations:
+    gatus.home-operations.com/endpoint: |
+      conditions: ["len([BODY]) == 0"]
+      dns:
+        query-name: {{ .Release.Name }}.kantai.xyz
+        query-type: A
+      url: 1.1.1.1
 spec:
   gatewayClassName: envoy
   listeners:
