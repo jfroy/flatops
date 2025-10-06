@@ -48,24 +48,6 @@ spec:
               - "no"
             env:
               VALKEY_PASSWORD_FILE: /opt/bitnami/valkey/secrets/valkey-password
-            probes:
-              liveness:
-                enabled: true
-                spec:
-                  tcpSocket:
-                    port: 6379
-              readiness:
-                enabled: true
-                spec:
-                  tcpSocket:
-                    port: 6379
-              startup:
-                enabled: true
-                spec:
-                  tcpSocket:
-                    port: 6379
-                  failureThreshold: 30
-                  periodSeconds: 5
         pod:
           affinity:
             podAffinity:
