@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bookshelf
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      bookshelf:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.6.0@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
+            envFrom:
+              - secretRef:
+                  name: bookshelf-db
+              - secretRef:
+                  name: bookshelf-initdb
+        containers:
+          bookshelf:
+            image:
+              repository: ghcr.io/pennydreadful/bookshelf
+              tag: hardcover-v0.4.20.91@sha256:fd6183d0eacf1cac6ce3a0c8ff2b0d5af9ddf2101141f6c86c928a136c9b2d95
+            command: ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
+            env:
+              READARR__AUTH__METHOD: External
+              READARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              READARR__LOG__DBENABLED: "False"
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: bookshelf-db
+            ports:
+              - containerPort: &port 8787
+                name: http
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: false
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [4000]
+    persistence:
+      config:
+        existingClaim: "{{ .Release.Name }}"
+      entrypoint:
+        type: configMap
+        name: bookshelf-entrypoint
+        defaultMode: 0755
+        advancedMounts:
+          bookshelf:
+            bookshelf:
+              - path: /entrypoint.sh
+                subPath: entrypoint.sh
+                readOnly: true
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media-smb-kantai1
+      run:
+        type: emptyDir
+        medium: Memory
+      tmp:
+        type: emptyDir
+    route:
+      bookshelf:
+        hostnames: ["{{ .Release.Name }}.kantai.xyz"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+            sectionName: https
+        rules:
+          - backendRefs:
+              - identifier: bookshelf
+                port: *port
+
+    service:
+      bookshelf:
+        controller: bookshelf
+        ports:
+          bookshelf:
+            port: *port
