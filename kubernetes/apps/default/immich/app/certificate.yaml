@@ -14,8 +14,6 @@ spec:
     name: cluster-ca
     kind: ClusterIssuer
     group: cert-manager.io
-  commonName: immich-valkey-primary.default.svc.cluster.local
+  commonName: immich-valkey.default.svc.cluster.local
   dnsNames:
-    - immich-valkey-headless.default.svc.cluster.local
-    - immich-valkey-primary.default.svc.cluster.local
-    - immich-valkey-replicas.default.svc.cluster.local
+    - immich-valkey.default.svc.cluster.local

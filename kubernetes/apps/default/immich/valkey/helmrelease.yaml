@@ -1,53 +1,93 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: bitnami-valkey
-spec:
-  interval: 1h
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 3.0.31
-  url: oci://registry-1.docker.io/bitnamicharts/valkey
----
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app immich-valkey
+  name: immich-valkey
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
-    name: bitnami-valkey
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
-    fullnameOverride: *app
-    architecture: standalone
-    auth:
-      enabled: true
-      existingSecret: immich-valkey
-      existingSecretPasswordKey: REDIS_PASSWORD
-    primary:
-      affinity:
-        podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                    - key: app.kubernetes.io/name
-                      operator: In
-                      values: ["immich"]
-                topologyKey: kubernetes.io/hostname
-              weight: 100
-      persistence:
-        enabled: false
-      resourcesPreset: large
-    tls:
-      enabled: true
-      authClients: false
-      existingSecret: immich-valkey-tls
-      certFilename: tls.crt
-      certKeyFilename: tls.key
-      certCAFilename: ca.crt
+    controllers:
+      valkey:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          valkey:
+            image:
+              repository: ghcr.io/valkey-io/valkey
+              tag: 8.1.4@sha256:81db6d39e1bba3b3ff32bd3a1b19a6d69690f94a3954ec131277b9a26b95b3aa
+            args:
+              - /config/valkey.conf
+              - --save
+              - ""
+              - --tls-port
+              - "6379"
+              - --port
+              - "0"
+              - --tls-cert-file
+              - /certs/tls.crt
+              - --tls-key-file
+              - /certs/tls.key
+              - --tls-ca-cert-file
+              - /certs/ca.crt
+              - --tls-auth-clients
+              - "no"
+            env:
+              VALKEY_PASSWORD_FILE: /opt/bitnami/valkey/secrets/valkey-password
+            probes:
+              liveness:
+                enabled: true
+                spec:
+                  tcpSocket:
+                    port: 6379
+              readiness:
+                enabled: true
+                spec:
+                  tcpSocket:
+                    port: 6379
+              startup:
+                enabled: true
+                spec:
+                  tcpSocket:
+                    port: 6379
+                  failureThreshold: 30
+                  periodSeconds: 5
+        pod:
+          affinity:
+            podAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - podAffinityTerm:
+                    labelSelector:
+                      matchExpressions:
+                        - key: app.kubernetes.io/name
+                          operator: In
+                          values: ["immich"]
+                    topologyKey: kubernetes.io/hostname
+                  weight: 100
+    persistence:
+      certs:
+        type: secret
+        name: immich-valkey-tls
+      config:
+        type: secret
+        name: immich-valkey
+    service:
+      valkey:
+        controller: valkey
+        ports:
+          http:
+            port: 6379
