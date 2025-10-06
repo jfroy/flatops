@@ -52,6 +52,8 @@ metadata:
   annotations:
     # NOTE: external-dns target for routes using this gateway; sends traffic to CF tunnel
     external-dns.alpha.kubernetes.io/target: &hostname external.kantai.xyz
+    gatus.home-operations.com/endpoint: |
+      group: external
 spec:
   gatewayClassName: envoy
   infrastructure:
@@ -83,6 +85,8 @@ metadata:
   name: envoy-internal
   annotations:
     gatus.home-operations.com/guarded: "true"
+    gatus.home-operations.com/endpoint: |
+      group: internal
 spec:
   gatewayClassName: envoy
   listeners:
