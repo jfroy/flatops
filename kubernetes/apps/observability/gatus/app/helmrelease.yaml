@@ -78,23 +78,14 @@ spec:
                     path: /health
                     port: *port
               readiness: *probe
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {drop: ["ALL"]}
+        pod:
+          hostUsers: false
         statefulset:
           volumeClaimTemplates:
             - name: config
               storageClass: ceph-block
               accessMode: ReadWriteOnce
               size: 1Gi
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     persistence:
       config-file:
         type: configMap

@@ -1,12 +1,26 @@
 ---
-web:
-  port: ${WEB_PORT}
+connectivity:
+  checker:
+    target: 1.1.1.1:53
+    interval: 1m
+endpoints:
+  - name: Cloudflare
+    group: connectivity
+    url: icmp://1.1.1.1
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+  - name: Google
+    group: connectivity
+    url: icmp://8.8.8.8
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
+metrics: true
 storage:
   type: postgres
   path: postgres://${INIT_POSTGRES_USER}:${INIT_POSTGRES_PASS}@${INIT_POSTGRES_HOST}:5432/${INIT_POSTGRES_DBNAME}
   caching: true
-metrics: true
-debug: false
 ui:
   title: Status | Gatus
   header: Status
@@ -16,7 +30,5 @@ ui:
       link: https://github.com/jfroy
     - name: Homelab
       link: https://github.com/jfroy/flatops
-connectivity:
-  checker:
-    target: 1.1.1.1:53
-    interval: 1m
+web:
+  port: ${WEB_PORT}
