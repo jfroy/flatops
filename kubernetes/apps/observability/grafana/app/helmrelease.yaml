@@ -44,7 +44,7 @@ spec:
       main:
         enabled: true
         hostnames:
-          - &host grafana.kantai.xyz
+          - grafana.kantai.xyz
         parentRefs:
           - group: gateway.networking.k8s.io
             kind: Gateway
@@ -153,9 +153,7 @@ spec:
     dashboards:
       default:
         cloudflared:
-          # renovate: depName="Cloudflare Tunnels (cloudflared)"
-          gnetId: 17457
-          revision: 6
+          url: https://grafana.com/api/dashboards/17457/revisions/6/download
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         envoy-gateway:
@@ -165,32 +163,22 @@ spec:
           url: https://raw.githubusercontent.com/envoyproxy/gateway/refs/heads/main/charts/gateway-addons-helm/dashboards/envoy-proxy-global.json
           datasource: Prometheus
         external-dns:
-          # renovate: depName="External-dns"
-          gnetId: 15038
-          revision: 3
+          url: https://grafana.com/api/dashboards/15038/revisions/3/download
           datasource: Prometheus
         node-exporter-full:
-          # renovate: depName="Node Exporter Full"
-          gnetId: 1860
-          revision: 42
+          url: https://grafana.com/api/dashboards/1860/revisions/42/download
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         nut-exporter:
-          # renovate: depName="Prometheus NUT Exporter for DRuggeri"
-          gnetId: 19308
-          revision: 3
+          url: https://grafana.com/api/dashboards/19308/revisions/3/download
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         smartctl-exporter:
-          # renovate: depName="SMARTctl Exporter Dashboard"
-          gnetId: 22604
-          revision: 2
+          url: https://grafana.com/api/dashboards/22604/revisions/2/download
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         volsync:
-          # removate: depName="VolSync Dashboard"
-          gnetId: 21356
-          revision: 3
+          url: https://grafana.com/api/dashboards/21356/revisions/3/download
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
             - { name: VAR_REPLICATIONDESTNAME, value: .*-dst }
@@ -198,9 +186,7 @@ spec:
           url: https://gitlab.com/uneeq-oss/cert-manager-mixin/-/raw/master/dashboards/cert-manager.json?ref_type=heads
           datasource: Prometheus
         external-secrets:
-          # renovate: depName="External Secrets"
-          gnetId: 21640
-          revision: 4
+          url: https://grafana.com/api/dashboards/21640/revisions/4/download
           datasource:
             - name: DS_METRICS
               value: Prometheus
@@ -228,82 +214,52 @@ spec:
           token: ""
       observability:
         victoria-agent:
-          # renovate: depName="VictoriaMetrics - vmagent"
-          gnetId: 12683
-          revision: 25
+          url: https://grafana.com/api/dashboards/12683/revisions/25/download
           datasource: Prometheus
         victoria-alert:
-          # renovate: depName="VictoriaMetrics - vmalert"
-          gnetId: 14950
-          revision: 16
+          url: https://grafana.com/api/dashboards/14950/revisions/16/download
           datasource: Prometheus
         victoria-logs:
-          # renovate: depName="VictoriaLogs"
-          gnetId: 22084
-          revision: 8
+          url: https://grafana.com/api/dashboards/22084/revisions/8/download
           datasource: Prometheus
         victoria-operator:
-          # renovate: depName="VictoriaMetrics - operator"
-          gnetId: 17869
-          revision: 3
+          url: https://grafana.com/api/dashboards/17869/revisions/3/download
           datasource: Prometheus
         victoria-single:
-          # renovate: depName="VictoriaMetrics - single-node"
-          gnetId: 10229
-          revision: 41
+          url: https://grafana.com/api/dashboards/10229/revisions/41/download
           datasource: Prometheus
       rook-ceph:
         rook-ceph-cluster:
-          # renovate: depName="Ceph Cluster"
-          gnetId: 2842
-          revision: 18
+          url: https://grafana.com/api/dashboards/2842/revisions/18/download
           datasource: Prometheus
         rook-ceph-osd-single:
-          # renovate: depName="Ceph - OSD (Single)"
-          gnetId: 5336
-          revision: 9
+          url: https://grafana.com/api/dashboards/5336/revisions/9/download
           datasource: Prometheus
         rook-ceph-pools:
-          # renovate: depName="Ceph - Pools"
-          gnetId: 5342
-          revision: 9
+          url: https://grafana.com/api/dashboards/5342/revisions/9/download
           datasource: Prometheus
       unifi:
         unifi-dpi:
-          # renovate: depName="UniFi-Poller: Client DPI - Prometheus"
-          gnetId: 11310
-          revision: 5
+          url: https://grafana.com/api/dashboards/11310/revisions/5/download
           datasource: Prometheus
         unifi-insights:
-          # renovate: depName="UniFi-Poller: Client Insights - Prometheus"
-          gnetId: 11315
-          revision: 9
+          url: https://grafana.com/api/dashboards/11315/revisions/9/download
           datasource: Prometheus
         unifi-network-sites:
-          # renovate: depName="UniFi-Poller: Network Sites - Prometheus"
-          gnetId: 11311
-          revision: 5
+          url: https://grafana.com/api/dashboards/11311/revisions/5/download
           datasource: Prometheus
         unifi-pdu:
-          # renovate: depName="UniFi-Poller: PDU Insights - Prometheus"
-          gnetId: 23027
-          revision: 1
+          url: https://grafana.com/api/dashboards/23027/revisions/1/download
           datasource:
             - { name: DS_PROMETHEUS, value: Prometheus }
         unifi-uap:
-          # renovate: depName="UniFi-Poller: UAP Insights - Prometheus"
-          gnetId: 11314
-          revision: 10
+          url: https://grafana.com/api/dashboards/11314/revisions/10/download
           datasource: Prometheus
         unifi-usg:
-          # renovate: depName="UniFi-Poller: USG Insights - Prometheus"
-          gnetId: 11313
-          revision: 9
+          url: https://grafana.com/api/dashboards/11313/revisions/9/download
           datasource: Prometheus
         unifi-usw:
-          # renovate: depName="UniFi-Poller: USW Insights - Prometheus"
-          gnetId: 11312
-          revision: 9
+          url: https://grafana.com/api/dashboards/11312/revisions/9/download
           datasource: Prometheus
 
     ## Grafana's primary configuration
