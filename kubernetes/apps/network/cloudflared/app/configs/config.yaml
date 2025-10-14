@@ -1,10 +1,8 @@
 ---
-originRequest:
-  originServerName: "external.kantai.xyz"
-
 ingress:
-  - hostname: "kantai.xyz"
-    service: https://envoy-external.network.svc.cluster.local:443
   - hostname: "*.kantai.xyz"
+    originRequest:
+      http2Origin: true
+      originServerName: external.kantai.xyz
     service: https://envoy-external.network.svc.cluster.local:443
   - service: http_status:404
