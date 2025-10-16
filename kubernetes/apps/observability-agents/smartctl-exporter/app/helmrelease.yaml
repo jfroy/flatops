@@ -39,9 +39,6 @@ spec:
       retries: 3
   values:
     fullnameOverride: *app
-    image:
-      repository: ghcr.io/home-operations/smartctl-exporter
-      tag: 0.14
     prometheusRules:
       enabled: false
     serviceMonitor:
