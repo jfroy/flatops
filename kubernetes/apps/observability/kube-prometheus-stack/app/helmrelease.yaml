@@ -95,7 +95,7 @@ spec:
 
     grafana:
       enabled: false
-      forceDeployDashboards: true
+      forceDeployDashboards: false
       operator:
         dashboardsConfigMapRefEnabled: true
         folder: observability
