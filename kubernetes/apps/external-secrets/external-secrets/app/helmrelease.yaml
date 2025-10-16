@@ -45,14 +45,18 @@ spec:
       podDisruptionBudget:
         enabled: true
         minAvailable: 1
+    extendedMetricLabels: true
     global:
       tolerations:
         - key: "node-role.kubernetes.io/control-plane"
           operator: Exists
           effect: NoSchedule
+    grafanaDashboard:
+      enabled: true
+      annotations:
+        grafana_folder: external-secrets
     image:
       repository: ghcr.io/external-secrets/external-secrets
-    extendedMetricLabels: true
     podDisruptionBudget:
       enabled: true
       minAvailable: 1

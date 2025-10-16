@@ -57,7 +57,7 @@ spec:
         dashboards:
           enabled: true
           annotations:
-            grafana_folder: Cilium
+            grafana_folder: kube-system
       tls:
         auto:
           method: certmanager
@@ -95,7 +95,7 @@ spec:
       dashboards:
         enabled: true
         annotations:
-          grafana_folder: Cilium
+          grafana_folder: kube-system
     prometheus:
       enabled: true
       serviceMonitor:
@@ -104,4 +104,4 @@ spec:
     dashboards:
       enabled: true
       annotations:
-        grafana_folder: Cilium
+        grafana_folder: kube-system
