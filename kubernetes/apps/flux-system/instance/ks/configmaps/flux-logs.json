@@ -5,7 +5,7 @@
       "label": "VictoriaLogs",
       "description": "",
       "type": "datasource",
-      "pluginId": "victorialogs-datasource",
+      "pluginId": "victoriametrics-logs-datasource",
       "pluginName": "VictoriaLogs"
     }
   ],
@@ -15,19 +15,13 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.2.0"
+      "version": "12.1.0"
     },
     {
       "type": "panel",
       "id": "logs",
       "name": "Logs",
       "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
     },
     {
       "type": "panel",
@@ -37,9 +31,9 @@
     },
     {
       "type": "datasource",
-      "id": "victorialogs-datasource",
+      "id": "victoriametrics-logs-datasource",
       "name": "VictoriaLogs",
-      "version": "0.4.0"
+      "version": "0.21.1"
     }
   ],
   "annotations": {
@@ -65,6 +59,7 @@
           "uid": "grafana"
         },
         "enable": true,
+        "hide": false,
         "iconColor": "red",
         "name": "flux events",
         "target": {
@@ -78,17 +73,16 @@
       }
     ]
   },
-  "description": "Flux logs collected from Kubernetes, stored in VictoriaLogs",
+  "description": "Flux logs collected from Kubernetes, stored in Loki",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
-        "type": "victorialogs-datasource",
+        "type": "victoriametrics-logs-datasource",
         "uid": "${DS_VICTORIALOGS}"
       },
       "description": "",
@@ -136,7 +130,7 @@
             "steps": [
               {
                 "color": "green",
-                "value": null
+                "value": 0
               },
               {
                 "color": "red",
@@ -162,19 +156,23 @@
           "showLegend": false
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
-            "type": "victorialogs-datasource",
+            "type": "victoriametrics-logs-datasource",
             "uid": "${DS_VICTORIALOGS}"
           },
-          "expr": "sum(count_over_time({namespace=~\"$namespace\", stream=~\"$stream\", app =~\"$controller\"} | json | __error__!=\"JSONParserErr\" | level=~\"$level\" |= \"$query\" [$__interval]))",
+          "editorMode": "code",
+          "expr": "_time:$__interval {namespace=~\"$namespace\", stream=~\"$stream\", app=~\"$controller\"} level:~\"$level\" $query | stats by (_time:$__interval) count() as hits",
           "instant": false,
           "legendFormat": "Log count",
+          "queryType": "statsRange",
           "range": true,
           "refId": "A"
         }
@@ -183,7 +181,7 @@
     },
     {
       "datasource": {
-        "type": "victorialogs-datasource",
+        "type": "victoriametrics-logs-datasource",
         "uid": "${DS_VICTORIALOGS}"
       },
       "description": "Logs from services running in Kubernetes",
@@ -196,6 +194,7 @@
       "id": 2,
       "options": {
         "dedupStrategy": "numbers",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": false,
         "prettifyLogMessage": true,
         "showCommonLabels": false,
@@ -204,13 +203,16 @@
         "sortOrder": "Descending",
         "wrapLogMessage": false
       },
+      "pluginVersion": "12.1.0",
       "targets": [
         {
           "datasource": {
-            "type": "victorialogs-datasource",
+            "type": "victoriametrics-logs-datasource",
             "uid": "${DS_VICTORIALOGS}"
           },
-          "expr": "{namespace=~\"$namespace\", stream=~\"$stream\", app =~\"$controller\"} | json | __error__!=\"JSONParserErr\" | level=~\"$level\" |= \"$query\"",
+          "editorMode": "code",
+          "expr": "{namespace=~\"$namespace\", stream=~\"$stream\", app=~\"$controller\"} level:~\"$level\" $query",
+          "queryType": "instant",
           "refId": "A"
         }
       ],
@@ -218,7 +220,7 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 39,
+  "schemaVersion": 41,
   "tags": [
     "flux"
   ],
@@ -226,12 +228,10 @@
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "",
           "value": ""
         },
         "description": "String to search for",
-        "hide": 0,
         "label": "Search Query",
         "name": "query",
         "options": [
@@ -242,26 +242,17 @@
           }
         ],
         "query": "",
-        "skipUrlSync": false,
         "type": "textbox"
       },
       {
         "allValue": "info|error",
         "current": {
-          "selected": false,
-          "text": "All",
+          "text": "$__all",
           "value": "$__all"
         },
-        "hide": 0,
         "includeAll": true,
-        "multi": false,
         "name": "level",
         "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
           {
             "selected": false,
             "text": "info",
@@ -274,107 +265,86 @@
           }
         ],
         "query": "info,error",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
+        "current": {},
         "datasource": {
-          "type": "victorialogs-datasource",
+          "type": "victoriametrics-logs-datasource",
           "uid": "${DS_VICTORIALOGS}"
         },
-        "definition": "label_values(app)",
-        "hide": 0,
+        "definition": "",
         "includeAll": true,
         "multi": true,
         "name": "controller",
         "options": [],
-        "query": "label_values(app)",
+        "query": {
+          "field": "app",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "allValue": ".+",
-        "current": {
-          "selected": true,
-          "text": [
-            "flux-system"
-          ],
-          "value": [
-            "flux-system"
-          ]
-        },
+        "current": {},
         "datasource": {
-          "type": "victorialogs-datasource",
+          "type": "victoriametrics-logs-datasource",
           "uid": "${DS_VICTORIALOGS}"
         },
-        "definition": "label_values(namespace)",
-        "hide": 0,
+        "definition": "",
         "includeAll": true,
         "multi": true,
         "name": "namespace",
         "options": [],
-        "query": "label_values(namespace)",
+        "query": {
+          "field": "namespace",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "allValue": ".+",
-        "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "datasource": {
-          "type": "victorialogs-datasource",
+          "type": "victoriametrics-logs-datasource",
           "uid": "${DS_VICTORIALOGS}"
         },
-        "definition": "label_values(stream)",
-        "hide": 0,
+        "definition": "",
         "includeAll": true,
         "multi": true,
         "name": "stream",
         "options": [],
-        "query": "label_values(stream)",
+        "query": {
+          "field": "stream",
+          "limit": 0,
+          "query": "",
+          "refId": "VictoriaLogsVariableQueryEditor-VariableQuery",
+          "type": "fieldValue"
+        },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "VictoriaLogs",
-          "value": "VictoriaLogs"
-        },
-        "hide": 0,
+        "current": {},
         "includeAll": false,
         "label": "Datasource",
-        "multi": false,
         "name": "DS_VICTORIALOGS",
         "options": [],
-        "query": "victorialogs-datasource",
-        "queryValue": "VictoriaLogs",
+        "query": "victoriametrics-logs-datasource",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       }
     ]
@@ -387,6 +357,6 @@
   "timezone": "",
   "title": "Flux Logs",
   "uid": "flux-logs",
-  "version": 3,
+  "version": 7,
   "weekStart": ""
 }

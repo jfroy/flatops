@@ -53,8 +53,6 @@ spec:
           effect: NoSchedule
     grafanaDashboard:
       enabled: true
-      annotations:
-        grafana_folder: external-secrets
     image:
       repository: ghcr.io/external-secrets/external-secrets
     podDisruptionBudget:

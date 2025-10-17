@@ -10,3 +10,16 @@ resources:
   - ./podmonitor.yaml
   - ./prometheusrule.yaml
   - ./receiver.yaml
+configMapGenerator:
+  - name: flux-dashboards
+    files:
+      - ./configmaps/flux-control-plane.json
+      - ./configmaps/flux-instance-stats.json
+      - ./configmaps/flux-logs.json
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: "1"
+generatorOptions:
+  disableNameSuffixHash: true

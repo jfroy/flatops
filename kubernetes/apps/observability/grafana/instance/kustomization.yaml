@@ -7,4 +7,3 @@ resources:
   - ./grafana.yaml
   - ./grafanadatasource.yaml
   - ./httproute.yaml
-  - ./sidecar-provider.yaml

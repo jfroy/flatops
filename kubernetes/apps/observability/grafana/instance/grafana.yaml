@@ -42,9 +42,8 @@ spec:
     news:
       news_feed_enabled: "false"
     plugins:
-      allow_loading_unsigned_plugins: "victoriametrics-logs-datasource,victoriametrics-metrics-datasource"
       plugin_admin_enabled: "false"
-      preinstall_sync: "fetzerch-sunandmoon-datasource,victoriametrics-logs-datasource@@https://github.com/VictoriaMetrics/victorialogs-datasource/releases/download/v0.21.1/victoriametrics-logs-datasource-v0.21.1.zip,victoriametrics-metrics-datasource@@https://github.com/VictoriaMetrics/victoriametrics-datasource/releases/download/v0.19.5/victoriametrics-metrics-datasource-v0.19.5.zip"
+      preinstall_sync: "fetzerch-sunandmoon-datasource,victoriametrics-logs-datasource,victoriametrics-metrics-datasource"
     security:
       angular_support_enabled: "true"
     server:
@@ -60,55 +59,8 @@ spec:
         type: Recreate
       template:
         spec:
-          initContainers:
-            - name: k8s-sidecar
-              image: ghcr.io/kiwigrid/k8s-sidecar:1.30.11
-              env:
-                - name: FOLDER
-                  value: /var/lib/grafana/dashboards
-                - name: FOLDER_ANNOTATION
-                  value: grafana_folder
-                - name: LABEL
-                  value: grafana_dashboard
-                - name: IGNORE_ALREADY_PROCESSED
-                  value: "true"
-                - name: METHOD
-                  value: WATCH
-                - name: NAMESPACE
-                  value: ALL
-                - name: RESOURCE
-                  value: configmap
-                - name: REQ_METHOD
-                  value: POST
-                - name: REQ_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: grafana-admin-password
-                      key: GF_SECURITY_ADMIN_PASSWORD
-                - name: REQ_URL
-                  value: http://localhost:3000/api/admin/provisioning/dashboards/reload
-                - name: REQ_USERNAME
-                  value: admin
-                - name: UNIQUE_FILENAMES
-                  value: "true"
-              securityContext:
-                allowPrivilegeEscalation: false
-                readOnlyRootFilesystem: true
-                capabilities: {drop: ["ALL"]}
-              volumeMounts:
-                - name: grafana-sidecar-dashboards
-                  mountPath: /var/lib/grafana/dashboards
-                - name: tmpfs
-                  mountPath: /tmp
-              restartPolicy: Always
           containers:
             - name: grafana
-              env:
-                - name: GF_SECURITY_ADMIN_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: grafana-admin-password
-                      key: GF_SECURITY_ADMIN_PASSWORD
               envFrom:
                 - secretRef:
                     name: grafana-oidc
@@ -116,12 +68,6 @@ spec:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true
                 capabilities: {drop: ["ALL"]}
-              volumeMounts:
-                - name: grafana-sidecar-provider
-                  mountPath: /etc/grafana/provisioning/dashboards/sidecar-provider.yaml
-                  subPath: provider.yaml
-                - name: grafana-sidecar-dashboards
-                  mountPath: /var/lib/grafana/dashboards
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
@@ -132,11 +78,6 @@ spec:
             - name: grafana-data
               persistentVolumeClaim:
                 claimName: grafana-data
-            - name: grafana-sidecar-provider
-              configMap:
-                name: grafana-sidecar-provider
-            - name: grafana-sidecar-dashboards
-              emptyDir: {}
             - name: tmpfs
               emptyDir: {}
   disableDefaultSecurityContext: All

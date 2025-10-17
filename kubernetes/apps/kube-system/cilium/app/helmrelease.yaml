@@ -56,8 +56,6 @@ spec:
           enabled: true
         dashboards:
           enabled: true
-          annotations:
-            grafana_folder: kube-system
       tls:
         auto:
           method: certmanager
@@ -94,8 +92,6 @@ spec:
               sourceLabels: ["__name__"]
       dashboards:
         enabled: true
-        annotations:
-          grafana_folder: kube-system
     prometheus:
       enabled: true
       serviceMonitor:
@@ -103,5 +99,3 @@ spec:
         trustCRDsExist: true
     dashboards:
       enabled: true
-      annotations:
-        grafana_folder: kube-system

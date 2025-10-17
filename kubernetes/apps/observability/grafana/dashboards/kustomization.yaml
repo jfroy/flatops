@@ -2,34 +2,17 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+resources:
+  - ./grafanadashboard.yaml
 configMapGenerator:
-  - name: flux-dashboards
+  - name: observability-dashboards
     files:
-      - ./resources/flux-control-plane.json
-      - ./resources/flux-instance-stats.json
-      - ./resources/flux-logs.json
+      - ./configmaps/cluster-global-perf.json
+      - ./configmaps/powerwall.json
+      - ./configmaps/zfs-details.json
+      - ./configmaps/zfs.json
     options:
       annotations:
-        grafana_folder: "flux-system"
-        kustomize.toolkit.fluxcd.io/substitute: disabled
-      labels:
-        grafana_dashboard: "1"
-  - name: powerwall-dashboards
-    files:
-      - ./resources/powerwall.json
-    options:
-      annotations:
-        grafana_folder: "powerwall"
-        kustomize.toolkit.fluxcd.io/substitute: disabled
-      labels:
-        grafana_dashboard: "1"
-  - name: zfs-dashboards
-    files:
-      - ./resources/zfs-details.json
-      - ./resources/zfs.json
-    options:
-      annotations:
-        grafana_folder: "zfs-system"
         kustomize.toolkit.fluxcd.io/substitute: disabled
       labels:
         grafana_dashboard: "1"
