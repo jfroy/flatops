@@ -64,6 +64,7 @@ spec:
           k8s-logging.exclude on
           namespace_labels off
           annotations off
+          buffer_size 64k
 
         [FILTER]
           name nest
@@ -113,8 +114,6 @@ spec:
           log_response_payload false
     dashboards:
       enabled: true
-      annotations:
-        grafana_folder: observability
     image:
       repository: ghcr.io/fluent/fluent-bit
     logLevel: warn
