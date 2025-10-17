@@ -37,11 +37,6 @@ spec:
       interval_day: "MMM DD"
       interval_month: "YYYY-MM"
       interval_year: "YYYY"
-    feature_toggles:
-      grafanaAPIServerEnsureKubectlAccess: "true"
-      kubernetesClientDashboardsFolders: "true"
-      kubernetesDashboards: "true"
-      provisioning: "true"
     log:
       mode: console
     news:
