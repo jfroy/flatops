@@ -7,3 +7,4 @@ resources:
   - ./grafana.yaml
   - ./grafanadatasource.yaml
   - ./httproute.yaml
+  - ./vmservicescrape.yaml
