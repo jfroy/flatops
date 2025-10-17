@@ -48,6 +48,17 @@ spec:
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
+            ports:
+              - name: metrics
+                containerPort: 9273
+            probes:
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /metrics
+                    port: metrics
             securityContext:
               privileged: true
     persistence:
