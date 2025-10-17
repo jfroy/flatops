@@ -68,24 +68,27 @@ spec:
         [FILTER]
           name nest
           match kubernetes.*
-          wildcard pod_name
           operation lift
           nested_under kubernetes
-          add_prefix k_
+          add_prefix k8s_
 
         [FILTER]
           name nest
           match kubernetes.*
           operation lift
-          nested_under k_labels
-          add_prefix k_labels_
+          nested_under k8s_labels
+          add_prefix k8s_labels_
 
         [FILTER]
           name modify
           match kubernetes.*
-          rename k_labels_app.kubernetes.io/name app
-          rename k_labels_app app
-          rename k_labels_k8s-app app
+          rename k8s_labels_app.kubernetes.io/name app
+          rename k8s_labels_app app
+          rename k8s_labels_k8s-app app
+          rename k8s_namespace_name namespace
+          rename k8s_pod_name pod
+          rename k8s_container_name container
+          rename k8s_host host
 
       customParsers: |-
         [PARSER]
@@ -101,7 +104,7 @@ spec:
           match kubernetes.*
           host vlsingle-kantai.observability.svc.cluster.local
           port 9428
-          uri /insert/jsonline?_stream_fields=stream,k_namespace_name,k_pod_name,app&_msg_field=log&_time_field=date
+          uri /insert/jsonline?_stream_fields=stream,namespace,pod,container,app,host&_msg_field=log&_time_field=date
           format json_lines
           json_date_format iso8601
           compress gzip
