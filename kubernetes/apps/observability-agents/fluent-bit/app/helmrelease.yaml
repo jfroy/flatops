@@ -115,6 +115,7 @@ spec:
         grafana_folder: observability
     image:
       repository: ghcr.io/fluent/fluent-bit
+    logLevel: warn
     serviceMonitor:
       enabled: true
     tolerations:
