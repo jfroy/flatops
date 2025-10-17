@@ -90,8 +90,8 @@ spec:
           rename k8s_pod_name pod
           rename k8s_container_name container
           rename k8s_host node
-          remove_wildcard k8s_labels_*
           remove_wildcard k8s_*
+          remove_regex ^k8s_.*
 
       customParsers: |-
         [PARSER]
