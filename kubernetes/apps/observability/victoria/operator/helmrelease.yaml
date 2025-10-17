@@ -30,17 +30,15 @@ spec:
         target:
           kind: VMServiceScrape
   install:
-    crds: Skip
+    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
-    crds: Skip
+    crds: CreateReplace
     remediation:
       retries: 3
   values:
-    crds:
-      enabled: false
     fullnameOverride: victoria-operator
     operator:
       disable_prometheus_converter: false
