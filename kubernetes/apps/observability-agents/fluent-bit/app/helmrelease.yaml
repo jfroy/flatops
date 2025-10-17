@@ -88,7 +88,7 @@ spec:
           rename k8s_namespace_name namespace
           rename k8s_pod_name pod
           rename k8s_container_name container
-          rename k8s_host host
+          rename k8s_host node
 
       customParsers: |-
         [PARSER]
@@ -104,7 +104,7 @@ spec:
           match kubernetes.*
           host vlsingle-kantai.observability.svc.cluster.local
           port 9428
-          uri /insert/jsonline?_stream_fields=stream,namespace,pod,container,app,host&_msg_field=log&_time_field=date
+          uri /insert/jsonline?_stream_fields=stream,namespace,pod,container,app,node&_msg_field=log&_time_field=date
           format json_lines
           json_date_format iso8601
           compress gzip
