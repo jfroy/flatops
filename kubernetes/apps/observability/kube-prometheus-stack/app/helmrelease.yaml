@@ -39,6 +39,10 @@ spec:
       - paths: ["/metadata/annotations/prometheus-operator-validated"]
         target:
           kind: PrometheusRule
+      - paths: [""]
+        target:
+          kind: GrafanaDashboard
+          name: kps-prometheus
   values:
     nameOverride: *app
     cleanPrometheusOperatorObjectNames: true
