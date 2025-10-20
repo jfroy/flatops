@@ -242,9 +242,3 @@ spec:
               - op: add
                 path: /spec/endpoints/2/trackTimestampsStaleness
                 value: true
-          - patch: |-
-              apiVersion: grafana.integreatly.org/v1beta1
-              kind: GrafanaDashboard
-              metadata:
-                name: kps-prometheus
-              $patch: delete
