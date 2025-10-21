@@ -29,8 +29,8 @@ spec:
         containers:
           smbd:
             image:
-              repository: quay.io/samba.org/samba-server
-              tag: nightly-fedora-amd64@sha256:ec83f841b71b4b19bffdca6b5e993ac093e5c61a3a1671549260e6497047c830
+              repository: ghcr.io/jfroy/samba
+              tag: 4.23.1@sha256:7b9ce36ccc652f370cf1443e72d4fae9990a6c2cc07e84ec9fb59cb6161dd7f3
             env:
               SAMBA_CONTAINER_ID: default
               # SAMBA_SPECIFICS: daemon_cli_debug_output

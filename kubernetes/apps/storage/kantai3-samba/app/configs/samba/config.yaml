@@ -38,8 +38,6 @@ globals:
       server multi channel support: "yes"
       server role: standalone server
       server string: kantai3
-      smb1 unix extensions: "yes"
-      smb3 unix extensions: "no"
       unix charset: UTF-8
       winbind request timeout: "2"
       workgroup: "WORKGROUP"
