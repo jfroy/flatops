@@ -63,7 +63,6 @@ spec:
             env:
               <<: *env
               GATUS_CONFIG_PATH: /config
-              GATUS_DELAY_START_SECONDS: 5
               TZ: America/Los_Angeles
               WEB_PORT: &port 80
             envFrom:
