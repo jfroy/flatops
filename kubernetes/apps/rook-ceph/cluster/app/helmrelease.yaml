@@ -213,7 +213,6 @@ spec:
             kind: Gateway
             name: envoy-internal
             namespace: network
-            sectionName: https
     toolbox:
       enabled: true
       resources:

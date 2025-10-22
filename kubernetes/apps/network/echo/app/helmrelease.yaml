@@ -67,10 +67,8 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-            sectionName: https
           - name: envoy-internal
             namespace: network
-            sectionName: https
         rules:
           - backendRefs:
               - name: echo
