@@ -60,12 +60,6 @@ spec:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: *hostname
   listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
-      allowedRoutes:
-        namespaces:
-          from: Same
     - name: https
       protocol: HTTPS
       port: 443
@@ -90,12 +84,6 @@ metadata:
 spec:
   gatewayClassName: envoy
   listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
-      allowedRoutes:
-        namespaces:
-          from: Same
     - name: https
       protocol: HTTPS
       port: 443
