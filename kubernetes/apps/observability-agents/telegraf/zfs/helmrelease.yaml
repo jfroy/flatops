@@ -42,7 +42,7 @@ spec:
           telegraf:
             image:
               repository: ghcr.io/jfroy/telegraf-zfs
-              tag: 1.36.1@sha256:b8908359c9a79152cff6c47d0f4c8018046d92ff15884f18b1e3a1abd1eacaa4
+              tag: 1.36.1@sha256:b0d3cf98a2c427de3c254cd9bfc1e2661e1f2e5a50a313906bc036cb61c688b1
             env:
               NODE_NAME:
                 valueFrom:
