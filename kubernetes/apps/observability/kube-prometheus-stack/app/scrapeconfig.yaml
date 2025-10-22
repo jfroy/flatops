@@ -10,6 +10,10 @@ spec:
         - pikvm.internal:9100
         - pwdash.internal:9100
         # - wave5.internal:9100
+    - targets:
+        - homeassistant.internal:9100
+      labels:
+        nodename: homeassistant
   metricsPath: /metrics
   relabelings:
     - action: replace
