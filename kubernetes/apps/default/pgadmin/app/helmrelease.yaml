@@ -29,6 +29,8 @@ spec:
               tag: "9.9@sha256:5d9624a93634d1c5e595619cc57b1d330758120d1baf445fa97300c0c1fc3c0a"
             env:
               GUNICORN_LIMIT_REQUEST_LINE: "0"
+              GUNICORN_LIMIT_REQUEST_FIELD_SIZE: "0"
+              PGADMIN_CUSTOM_CONFIG_DISTRO_FILE: /tmp/config_distro.py
               PGADMIN_DISABLE_POSTFIX: "true"
             envFrom:
               - secretRef:
