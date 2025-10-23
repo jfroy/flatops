@@ -28,6 +28,7 @@ spec:
               repository: docker.io/dpage/pgadmin4
               tag: "9.9@sha256:5d9624a93634d1c5e595619cc57b1d330758120d1baf445fa97300c0c1fc3c0a"
             env:
+              GUNICORN_LIMIT_REQUEST_LINE: "0"
               PGADMIN_DISABLE_POSTFIX: "true"
             envFrom:
               - secretRef:
