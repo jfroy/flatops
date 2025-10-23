@@ -14,7 +14,6 @@ globals:
       directory mask: "0775"
       disable spoolss: "yes"
       dns proxy: "no"
-      durable handles: "yes"
       ea support: "yes"
       guest account: nobody
       host msdfs: "no"
@@ -25,19 +24,15 @@ globals:
       netbios aliases: ""
       netbios name: kantai1
       ntlm auth: "no"
-      # NOTE(posix locking): must be disabled for durable handles
-      posix locking: "no"
       printcap name: /dev/null
       restrict anonymous: "2"
       rpc_daemon:mdssd: disabled
       rpc_server:mdssvc: disabled
       security: user
       server min protocol: SMB3_11
-      server multi channel support: "yes"
       server role: standalone server
       server string: kantai1
       unix charset: UTF-8
-      winbind request timeout: "2"
       workgroup: "WORKGROUP"
 shares:
   media:
@@ -52,7 +47,6 @@ shares:
       kernel oplocks: "no"
       mangled names: "no"
       path: /media
-      posix locking: "no"
       read only: "no"
       smbd max xattr size: "2097152"
       # NOTE: acl_xattr is not loaded because it uses security.NTACL which requires SYS_ADMIN.
