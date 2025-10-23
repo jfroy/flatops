@@ -50,3 +50,31 @@ spec:
       #     - "*"
       #   source:
       #     externalCluster: postgres16-v4
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg17vc-restore3
+spec:
+  instances: 1
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:17.4-0.3.0
+  logLevel: debug
+  storage:
+    size: 100Gi
+    storageClass: openebs-hostpath
+  superuserSecret:
+    name: pg17vc-superuser-secret
+  enableSuperuserAccess: true
+  externalClusters:
+  - name: pg17vc-backup
+    plugin:
+      name: barman-cloud.cloudnative-pg.io
+      parameters:
+        barmanObjectName: pg17vc-local-ceph
+        serverName: pg17vc-v1
+  bootstrap:
+    recovery:
+      source: pg17vc-backup
+      recoveryTarget:
+        targetTime: "2025-10-21T00:00:00Z"
