@@ -22,7 +22,7 @@ spec:
       rules:
         - alert: CertManagerCertExpirySoon
           expr: |-
-            avg by (exported_namespace, namespace, name) (certmanager_certificate_expiration_timestamp_seconds - time()) < (21 * 24 * 3600)
+            avg by (exported_namespace, namespace, name) (certmanager_certificate_expiration_timestamp_seconds - time()) < (15 * 24 * 3600)
           for: 5m
           annotations:
             summary: >-
