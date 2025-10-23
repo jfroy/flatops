@@ -170,7 +170,7 @@ spec:
       lock:
         type: emptyDir
         medium: Memory
-        sizeLimit: 1Mi
+        sizeLimit: 1Gi
         globalMounts:
           - path: /var/lock
       log:
@@ -188,11 +188,10 @@ spec:
       run:
         type: emptyDir
         medium: Memory
-        sizeLimit: 10Mi
+        sizeLimit: 1Gi
         globalMounts:
           - path: /run
           - path: /var/run
       tmp:
         type: emptyDir
-        medium: Memory
-        sizeLimit: 10Mi
+        sizeLimit: 1Gi
