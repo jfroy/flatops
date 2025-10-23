@@ -159,6 +159,11 @@ spec:
         sizeLimit: 1Mi
         globalMounts:
           - path: /var/lock
+      log:
+        type: emptyDir
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /var/log/samba
       media:
         type: persistentVolumeClaim
         existingClaim: storage-media-kantai1-zfs
