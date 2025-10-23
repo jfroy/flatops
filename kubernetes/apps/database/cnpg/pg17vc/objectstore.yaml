@@ -17,6 +17,6 @@ spec:
         name: pg17vc-obc
         key: AWS_SECRET_ACCESS_KEY
     wal:
-      compression: bzip2
-      maxParallel: 2
+      compression: zstd
+      maxParallel: 4
   retentionPolicy: 30d
