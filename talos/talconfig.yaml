@@ -244,6 +244,7 @@ patches:
         defaultRuntimeSeccompProfileEnabled: true
         extraConfig:
           featureGates:
+            ImageVolume: true
             UserNamespacesSupport: true
             UserNamespacesPodSecurityStandards: true
           maxParallelImagePulls: 10
@@ -380,7 +381,7 @@ controlPlane:
           extraArgs:
             disable-admission-plugins: PodSecurity
             enable-aggregator-routing: true
-            feature-gates: UserNamespacesSupport=true,UserNamespacesPodSecurityStandards=true
+            feature-gates: ImageVolume=true,UserNamespacesSupport=true,UserNamespacesPodSecurityStandards=true
             oidc-client-id: "${OIDC_CLIENT_ID}"
             oidc-issuer-url: "${OIDC_ISSUER_URL}"
             oidc-username-claim: email
