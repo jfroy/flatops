@@ -63,7 +63,7 @@ spec:
     postgresql:
       enabled: false
     externalDatabase:
-      host: pg17vc-rw.database.svc.cluster.local
+      host: pg18vc-rw.database.svc.cluster.local
       port: 5432
       database: netbox
       username: netbox

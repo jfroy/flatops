@@ -32,7 +32,7 @@ spec:
               tag: 17.6.0@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
             env: &env
               INIT_POSTGRES_DBNAME: gatus
-              INIT_POSTGRES_HOST: pg17vc-rw.database.svc.cluster.local
+              INIT_POSTGRES_HOST: pg18vc-rw.database.svc.cluster.local
               INIT_POSTGRES_USER: gatus
             envFrom:
               - secretRef:
