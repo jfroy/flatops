@@ -1,0 +1,60 @@
+---
+# yaml-language-server: $schema=https://github.com/datreeio/CRDs-catalog/raw/refs/heads/main/postgresql.cnpg.io/cluster_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg18vc
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.0-standard-trixie
+  storage:
+    size: 100Gi
+    storageClass: openebs-hostpath
+  superuserSecret:
+    name: pg18vc-superuser-secret
+  enableSuperuserAccess: true
+  plugins:
+    - name: barman-cloud.cloudnative-pg.io
+      isWALArchiver: true
+      parameters:
+        barmanObjectName: pg18vc-local-ceph
+        serverName: pg18vc-v1
+  postgresql:
+    extensions:
+      - name: vchord
+        image:
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v0.5.3@sha256:c310ede47f7f82bd257c3e53806d60680d5899c318ca946fb313efad9a90a78e
+        dynamic_library_path:
+          - /usr/lib/postgresql/18/lib/
+        extension_control_path:
+          - /usr/share/postgresql/18/
+    parameters:
+      max_connections: "100"
+      shared_buffers: 64MB
+    shared_preload_libraries:
+      - vchord
+  monitoring:
+    enablePodMonitor: true
+    # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
+    podMonitorMetricRelabelings:
+      - { sourceLabels: ["cluster"], targetLabel: cnpg_cluster, action: replace }
+      - { regex: cluster, action: labeldrop }
+  externalClusters:
+    - name: pg17vc
+      connectionParameters:
+        host: pg17vc-rw.database.svc.cluster.local
+        user: postgres
+      password:
+        name: pg17vc-superuser-secret
+        key: password
+  bootstrap:
+    initdb:
+      # {}
+      import:
+        type: monolith
+        databases:
+          - "*"
+        roles:
+          - "*"
+        source:
+          externalCluster: pg17vc

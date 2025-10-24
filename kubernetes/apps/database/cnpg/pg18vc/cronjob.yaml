@@ -1,0 +1,79 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pg18vc-backup
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 2 * * *" # Run every day at 02:00
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: rclone
+              image: docker.io/rclone/rclone:1.71.2@sha256:3103526c506266a9ecdf064efe99bf3677d92ef6407af124d8c56b4f49cbaa51
+              imagePullPolicy: IfNotPresent
+              workingDir: /data
+              args:
+                - copy
+                - "ceph:pg18vc"
+                - "cloudflare:kantai-pg18vc"
+              env:
+                - name: RCLONE_VERBOSE
+                  value: "1"
+                - name: RCLONE_CONFIG_CLOUDFLARE_TYPE
+                  value: "s3"
+                - name: RCLONE_CONFIG_CLOUDFLARE_PROVIDER
+                  value: "Cloudflare"
+                - name: RCLONE_CONFIG_CLOUDFLARE_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: pg18vc-backup
+                      key: ACCESS_KEY_ID
+                - name: RCLONE_CONFIG_CLOUDFLARE_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: pg18vc-backup
+                      key: SECRET_ACCESS_KEY
+                - name: RCLONE_CONFIG_CLOUDFLARE_REGION
+                  value: "auto"
+                - name: RCLONE_CONFIG_CLOUDFLARE_ENDPOINT
+                  valueFrom:
+                    secretKeyRef:
+                      name: pg18vc-backup
+                      key: ENDPOINT
+                - name: RCLONE_CONFIG_CLOUDFLARE_ACL
+                  value: "private"
+                - name: RCLONE_CONFIG_CLOUDFLARE_NO_CHECK_BUCKET
+                  value: "true"
+                - name: RCLONE_CONFIG_CEPH_TYPE
+                  value: "s3"
+                - name: RCLONE_CONFIG_CEPH_PROVIDER
+                  value: "Ceph"
+                - name: RCLONE_CONFIG_CEPH_ENV_AUTH
+                  value: "false"
+                - name: RCLONE_CONFIG_CEPH_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: pg18vc-obc
+                      key: AWS_ACCESS_KEY_ID
+                - name: RCLONE_CONFIG_CEPH_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: pg18vc-obc
+                      key: AWS_SECRET_ACCESS_KEY
+                - name: RCLONE_CONFIG_CEPH_ENDPOINT
+                  value: "http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80"
+              securityContext:
+                allowPrivilegeEscalation: false
+                capabilities: { drop: ["ALL"] }
+                readOnlyRootFilesystem: true
+                seccompProfile: { type: RuntimeDefault }
+          restartPolicy: OnFailure
+          securityContext:
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
