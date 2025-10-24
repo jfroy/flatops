@@ -29,7 +29,7 @@ spec:
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.0.1-cuda@sha256:6a6da15fc6eb0e1e48f7153088609d6a2681ef6eb61c58b12332cae9d5cfaade
+              tag: v2.1.0-cuda
             env:
               MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-SO400M-16-SigLIP2-384__webli
               MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-SO400M-16-SigLIP2-384__webli
@@ -69,7 +69,7 @@ spec:
           microservices:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.0.1@sha256:8286638680f0a38a7cb380be64ed77d1d1cfe6d0e0b843f64bff92b24289078d
+              tag: v2.1.0
             envFrom:
               - secretRef:
                   name: immich-db
@@ -101,7 +101,7 @@ spec:
           server:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.0.1@sha256:8286638680f0a38a7cb380be64ed77d1d1cfe6d0e0b843f64bff92b24289078d
+              tag: v2.1.0
             envFrom:
               - secretRef:
                   name: immich-db
