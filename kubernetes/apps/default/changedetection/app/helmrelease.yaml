@@ -45,7 +45,7 @@ spec:
           browser:
             image:
               repository: ghcr.io/browserless/chromium
-              tag: v2.37.1@sha256:730733ba9a90f3c8b4627405807a96949ef384a873fe67fe9b13515863e77309
+              tag: v2.38.1@sha256:78afaada9f7b049783bfed624e6b5e9a2d3438fc04bb46801ed777e82ae1501f
             env:
               CONCURRENT: "10"
               DATA_DIR: /profile
