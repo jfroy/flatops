@@ -33,12 +33,6 @@ spec:
       shared_buffers: 64MB
     shared_preload_libraries:
       - vchord
-  monitoring:
-    enablePodMonitor: true
-    # Ref: https://github.com/cloudnative-pg/cloudnative-pg/issues/2501
-    podMonitorMetricRelabelings:
-      - { sourceLabels: ["cluster"], targetLabel: cnpg_cluster, action: replace }
-      - { regex: cluster, action: labeldrop }
   externalClusters:
     - name: pg17vc
       connectionParameters:
