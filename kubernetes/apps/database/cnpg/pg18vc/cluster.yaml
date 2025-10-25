@@ -33,22 +33,22 @@ spec:
       shared_buffers: 64MB
     shared_preload_libraries:
       - vchord
-  externalClusters:
-    - name: pg17vc
-      connectionParameters:
-        host: pg17vc-rw.database.svc.cluster.local
-        user: postgres
-      password:
-        name: pg17vc-superuser-secret
-        key: password
+  # externalClusters:
+  #   - name: pg17vc
+  #     connectionParameters:
+  #       host: pg17vc-rw.database.svc.cluster.local
+  #       user: postgres
+  #     password:
+  #       name: pg17vc-superuser-secret
+  #       key: password
   bootstrap:
     initdb:
-      # {}
-      import:
-        type: monolith
-        databases:
-          - "*"
-        roles:
-          - "*"
-        source:
-          externalCluster: pg17vc
+      {}
+      # import:
+      #   type: monolith
+      #   databases:
+      #     - "*"
+      #   roles:
+      #     - "*"
+      #   source:
+      #     externalCluster: pg17vc
