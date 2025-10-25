@@ -81,6 +81,14 @@ spec:
         # dualStack: true
       placement:
         all:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/hostname
+                  operator: NotIn
+                  values:
+                    - kantai2
           tolerations:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
