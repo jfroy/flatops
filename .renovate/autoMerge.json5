@@ -41,13 +41,14 @@
       matchPackageNames: ["ghcr.io/home-operations**/*", "ghcr.io/jfroy/*"],
       automerge: true,
     },
-    // - Misc rules
+    // - Packages whose major versions are basically minor or patch releases
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["major"],
-      matchPackageNames: ["ghcr.io/mendhak/http-https-echo"],
+      matchPackageNames: ["ghcr.io/mendhak/http-https-echo", "ghcr.io/prometheus-community/charts/kube-prometheus-stack"],
       automerge: true,
     },
+    // - Packages which use digest releases
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["digest"],
