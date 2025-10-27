@@ -12,11 +12,6 @@ spec:
   ref:
     tag: 1.18.3
   url: oci://ghcr.io/home-operations/charts-mirror/cilium
-  verify:
-    provider: cosign
-    matchOIDCIdentity:
-      - issuer: ^https://token.actions.githubusercontent.com$
-        subject: ^https://github.com/home-operations/charts-mirror.*$
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
