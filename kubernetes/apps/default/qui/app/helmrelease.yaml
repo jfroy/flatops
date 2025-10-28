@@ -31,12 +31,18 @@ spec:
               tag: v1.5.0@sha256:393055be10e7b11b893f665c02b936cf50529ed1dbd6166ad1177bf36e1a68cb
             env:
               QUI__HOST: 0.0.0.0
-              QUI__PORT: &port 80
               QUI__LOG_LEVEL: INFO
+              QUI__OIDC_DISABLE_BUILT_IN_LOGIN: "true"
+              QUI__OIDC_ENABLED: "true"
+              QUI__OIDC_ISSUER: https://pid.kantai.xyz
+              QUI__OIDC_REDIRECT_URL: https://qui.kantai.xyz/api/auth/oidc/callback
+              QUI__PORT: &port 80
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
                   name: qui
+              - secretRef:
+                  name: qui-oidc
             probes:
               liveness: &probes
                 enabled: true
@@ -67,7 +73,7 @@ spec:
     route:
       qui:
         hostnames:
-          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+          - qui.kantai.xyz
         parentRefs:
           - name: envoy-internal
             namespace: network
