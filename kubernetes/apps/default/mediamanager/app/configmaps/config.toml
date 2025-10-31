@@ -1,0 +1,92 @@
+# MediaManager Configuration File
+# https://maxdorninger.github.io/MediaManager/introduction.html
+
+
+[misc]
+frontend_url = "https://mm.kantai.xyz/web/"
+cors_urls = ["https://mm.kantai.xyz"]
+
+image_directory = "/metadata"
+tv_directory = "/media2/library/tv"
+movie_directory = "/media2/library/movies"
+torrent_directory = "/media2/qbittorrent/complete/mediamanager"
+
+# Custom Media Libraries
+[[misc.tv_libraries]]
+name = "Anime"
+path = "/media2/library/tv/anime"
+
+[auth]
+email_password_resets = false
+session_lifetime = 86400
+admin_emails = ["jf@lesroy.net"]
+
+# OpenID Connect settings
+[auth.openid_connect]
+enabled = true
+configuration_endpoint = "https://pid.kantai.xyz/.well-known/openid-configuration"
+name = "PocketID"
+
+[torrents]
+# qBittorrent settings
+[torrents.qbittorrent]
+enabled = true
+host = "http://qbittorrent.default.svc"
+port = 80
+username = ""
+password = ""
+category_name = "mediamanager"
+category_save_path = "/media2/qbittorrent/complete/mediamanager"
+
+# SABnzbd settings
+[torrents.sabnzbd]
+enabled = true
+host = "http://sabnzbd.default.svc"
+port = 80
+
+[indexers]
+# Prowlarr settings
+[indexers.prowlarr]
+enabled = true
+url = "http://prowlarr.default.svc:80"
+api_key = ""
+reject_torrents_on_url_error = true
+
+# Title-based scoring rules
+[[indexers.title_scoring_rules]]
+name = "prefer_h265"
+keywords = ["h265", "hevc", "x265", "h.265", "x.265"]
+score_modifier = 100
+negate = false
+
+[[indexers.title_scoring_rules]]
+name = "avoid_cam"
+keywords = ["cam", "ts"]
+score_modifier = -10000
+negate = false
+
+# Indexer flag-based scoring rules
+[[indexers.indexer_flag_scoring_rules]]
+name = "reject_nuked"
+flags = ["nuked"]
+score_modifier = -10000
+negate = false
+
+# Scoring rulesets
+[[indexers.scoring_rule_sets]]
+name = "default"
+libraries = ["ALL_TV", "ALL_MOVIES"]
+rule_names = ["prefer_h265", "avoid_cam", "reject_nuked"]
+
+[[indexers.scoring_rule_sets]]
+name = "strict_quality"
+libraries = ["ALL_MOVIES"]
+rule_names = ["prefer_h265", "avoid_cam"]
+
+# Metadata relay
+[metadata]
+[metadata.tmdb]
+tmdb_relay_url = "http://mediamanager-metadata-relay.default.svc.cluster.local:8000/tmdb"
+
+[metadata.tvdb]
+tvdb_relay_url = "http://mediamanager-metadata-relay.default.svc.cluster.local:8000/tvdb"

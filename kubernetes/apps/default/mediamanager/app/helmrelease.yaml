@@ -1,0 +1,121 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mediamanager
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      mediamanager:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17.6.0@sha256:86a1992d46273c58fd4ad95b626081dfaabfe16bd56944675169e406d1a660dd
+            envFrom:
+              - secretRef:
+                  name: mediamanager-db
+              - secretRef:
+                  name: mediamanager-initdb
+        containers:
+          mediamanager:
+            image:
+              repository: ghcr.io/maxdorninger/mediamanager/mediamanager
+              tag: 1.9.0@sha256:6c08a611b8ff320226e0f7957163428b4e4475b26b95c53298cfbbd8b3e83189
+            command: ["/entrypoint.sh"]
+            env:
+              CONFIG_DIR: /app/config
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: mediamanager
+              - secretRef:
+                  name: mediamanager-db
+              - secretRef:
+                  name: mediamanager-auth-token
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: &port 8000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      cache:
+        type: emptyDir
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /.cache
+      config:
+        type: configMap
+        name: mediamanager-config
+        globalMounts:
+          - path: /app/config
+      entrypoint:
+        type: configMap
+        name: mediamanager-entrypoint
+        defaultMode: 0755
+        advancedMounts:
+          mediamanager:
+            mediamanager:
+              - path: /entrypoint.sh
+                subPath: entrypoint.sh
+                readOnly: true
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media-smb-kantai1
+      metadata:
+        type: persistentVolumeClaim
+        size: 20Gi
+        accessMode: ReadWriteOnce
+        storageClass: ceph-block
+    route:
+      mediamanager:
+        hostnames:
+          - mm.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: mediamanager
+    service:
+      mediamanager:
+        ports:
+          http:
+            port: *port
