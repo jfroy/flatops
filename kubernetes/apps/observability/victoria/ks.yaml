@@ -8,6 +8,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/envoy-gateway-oidc
   dependsOn:
     - name: victoria-operator
   path: ./kubernetes/apps/observability/victoria/logs
@@ -19,6 +21,10 @@ spec:
   interval: 1h
   retryInterval: 2m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      APP_SUBDOMAIN: val
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -29,6 +35,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
+  components:
+    - ../../../../components/envoy-gateway-oidc
   dependsOn:
     - name: victoria-operator
   path: ./kubernetes/apps/observability/victoria/metrics
@@ -40,6 +48,10 @@ spec:
   interval: 1h
   retryInterval: 2m
   timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      APP_SUBDOMAIN: vam
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
