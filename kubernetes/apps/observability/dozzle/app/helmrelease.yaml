@@ -31,6 +31,8 @@ spec:
               tag: v8.14.6@sha256:a53cabe919f87b39d07a5ced17cf28bbe3f01a47b2cd0f37864bdf1f562a205a
             env:
               DOZZLE_MODE: k8s
+              DOZZLE_NO_ANALYTICS: "true"
+              DOZZLE_TIMEOUT: "60s"
               TZ: America/Los_Angeles
             probes:
               liveness:
