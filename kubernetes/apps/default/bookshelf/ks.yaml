@@ -23,5 +23,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      CLIENT_ID: d11b0f41-ccbb-4067-a78d-2b5c9ac3c9ba
       VOLSYNC_CAPACITY: 10Gi

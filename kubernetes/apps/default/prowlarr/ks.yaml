@@ -22,4 +22,3 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      CLIENT_ID: b444bb0b-5f44-480a-a7a7-8beab60cfda0

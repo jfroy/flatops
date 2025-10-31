@@ -11,7 +11,8 @@ spec:
   oidc:
     provider:
       issuer: https://pid.kantai.xyz
-    clientID: "${CLIENT_ID}"
+    clientIDRef:
+      name: "${APP}-oidc"
     clientSecret:
       name: "${APP}-oidc"
     refreshToken: true
