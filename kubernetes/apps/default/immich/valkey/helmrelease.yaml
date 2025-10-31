@@ -46,8 +46,6 @@ spec:
               - /certs/ca.crt
               - --tls-auth-clients
               - "no"
-            env:
-              VALKEY_PASSWORD_FILE: /opt/bitnami/valkey/secrets/valkey-password
         pod:
           affinity:
             podAffinity:
