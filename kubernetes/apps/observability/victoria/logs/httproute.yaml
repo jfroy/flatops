@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/instance: kantai
     app.kubernetes.io/name: vlsingle
-  name: vlsingle-kantai
+  name: victoria-logs
 spec:
   hostnames:
     - val.kantai.xyz
