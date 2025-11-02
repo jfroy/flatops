@@ -1,0 +1,121 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: paperless-ai
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      paperless-ai:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          paperless-ai:
+            image:
+              repository: docker.io/clusterzx/paperless-ai
+              tag: 3.0.7@sha256:25e1c501891e2d409f1df92e64e4e20b379a0197b7cd35cf98b49184d9da6814
+            env:
+              ACTIVATE_TAGGING: no
+              AI_PROVIDER: openai
+              OPENAI_MODEL: gpt-4o
+              PAPERLESS_AI_PORT: &port 3000
+              PAPERLESS_API_URL: http://paperless.default.svc.cluster.local:8000/api
+              PGID: 1000
+              PROCESS_PREDEFINED_DOCUMENTS: yes
+              PUID: 1000
+              RAG_SERVICE_ENABLED: true
+              RAG_SERVICE_URL: http://localhost:8000
+              RESTRICT_TO_EXISTING_DOCUMENT_TYPES: yes
+              RESTRICT_TO_EXISTING_TAGS: yes
+              SCAN_INTERVAL: "*/30 * * * *"
+              TAGS: AI
+              TZ: America/Los_Angeles
+              USE_EXISTING_DATA: yes
+            envFrom:
+              - secretRef:
+                  name: paperless-ai
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      config:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /app/data
+      cache:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /app/public/images
+      home:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /home/node/.pm2
+      logs:
+        type: emptyDir
+        sizeLimit: 10Mi
+        globalMounts:
+          - path: /app/logs
+      nltk:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /home/node/nltk_data
+      openapi:
+        type: emptyDir
+        sizeLimit: 1Mi
+        globalMounts:
+          - path: /app/OPENAPI
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 100Mi
+    route:
+      paperless-ai:
+        hostnames: ["{{ .Release.Name }}.kantai.xyz"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      paperless-ai:
+        controller: paperless-ai
+        ports:
+          http:
+            port: *port
