@@ -73,7 +73,7 @@ spec:
               PAPERLESS_READ_CACHE_TTL: 300 # 5 minutes
               PAPERLESS_REDIS: redis://localhost:6379/0
               PAPERLESS_SOCIAL_AUTO_SIGNUP: true
-              PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: false
+              PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: true
               PAPERLESS_TASK_WORKERS: 2
               PAPERLESS_THREADS_PER_WORKER: 2
               PAPERLESS_TIME_ZONE: America/Los_Angeles
