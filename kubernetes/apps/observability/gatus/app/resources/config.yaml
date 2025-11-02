@@ -32,3 +32,4 @@ ui:
       link: https://github.com/jfroy/flatops
 web:
   port: ${WEB_PORT}
+  read-buffer-size: 32768
