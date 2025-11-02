@@ -30,22 +30,16 @@ spec:
               repository: docker.io/clusterzx/paperless-ai
               tag: 3.0.7@sha256:25e1c501891e2d409f1df92e64e4e20b379a0197b7cd35cf98b49184d9da6814
             env:
-              ACTIVATE_TAGGING: no
               AI_PROVIDER: openai
               OPENAI_MODEL: gpt-4o
               PAPERLESS_AI_PORT: &port 3000
               PAPERLESS_API_URL: http://paperless.default.svc.cluster.local:8000/api
               PGID: 1000
-              PROCESS_PREDEFINED_DOCUMENTS: yes
               PUID: 1000
               RAG_SERVICE_ENABLED: true
               RAG_SERVICE_URL: http://localhost:8000
-              RESTRICT_TO_EXISTING_DOCUMENT_TYPES: yes
-              RESTRICT_TO_EXISTING_TAGS: yes
               SCAN_INTERVAL: "*/30 * * * *"
-              TAGS: AI
               TZ: America/Los_Angeles
-              USE_EXISTING_DATA: yes
             envFrom:
               - secretRef:
                   name: paperless-ai
