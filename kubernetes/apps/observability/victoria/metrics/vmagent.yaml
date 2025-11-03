@@ -3,6 +3,8 @@ kind: VMAgent
 metadata:
   name: kantai
 spec:
+  extraArgs:
+    opentelemetry.usePrometheusNaming: "true"
   remoteWrite:
     - url: "http://vmsingle-kantai.observability.svc:8428/api/v1/write"
   selectAllByDefault: true
