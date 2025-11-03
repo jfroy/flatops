@@ -50,6 +50,7 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.6.34-cuda
             env:
+              AUDIT_LOG_LEVEL: REQUEST_RESPONSE
               #ENABLE_PERSISTENT_CONFIG: False
               # CORS_ALLOW_ORIGIN: "https://kantai.xyz"
               DATABASE_TYPE: postgresql
