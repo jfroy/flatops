@@ -51,9 +51,10 @@ spec:
               tag: v0.6.34-cuda
             env:
               #ENABLE_PERSISTENT_CONFIG: False
-              CORS_ALLOW_ORIGIN: "https://kantai.xyz"
+              # CORS_ALLOW_ORIGIN: "https://kantai.xyz"
               DATABASE_TYPE: postgresql
               DATABASE_URL: ""
+              ENABLE_COMPRESSION_MIDDLEWARE: False
               ENABLE_FORWARD_USER_INFO_HEADERS: True
               ENABLE_LOGIN_FORM: False
               ENABLE_OAUTH_GROUP_CREATION: True
@@ -69,6 +70,7 @@ spec:
               ENABLE_SIGNUP: False
               ENABLE_VERSION_UPDATE_CHECK: False
               ENABLE_WEBSOCKET_SUPPORT: True
+              GLOBAL_LOG_LEVEL: DEBUG
               MODELS_CACHE_TTL: 300
               OAUTH_CODE_CHALLENGE_METHOD: S256
               OAUTH_GROUP_CLAIM: open_webui_groups
@@ -83,8 +85,8 @@ spec:
               REDIS_URL: redis://localhost:6379/0
               THREAD_POOL_SIZE: 10
               TZ: America/Los_Angeles
-              WEBSOCKET_MANAGER: redis
-              WEBSOCKET_REDIS_URL: redis://localhost:6379/1
+              # WEBSOCKET_MANAGER: redis
+              # WEBSOCKET_REDIS_URL: redis://localhost:6379/1
               WEBUI_AUTH_COOKIE_SECURE: True
               WEBUI_SESSION_COOKIE_SECURE: True
               WEBUI_URL: https://owui.kantai.xyz
