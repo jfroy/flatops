@@ -68,6 +68,7 @@ spec:
               ENABLE_OTEL: False
               ENABLE_SIGNUP: False
               ENABLE_VERSION_UPDATE_CHECK: False
+              ENABLE_WEBSOCKET_SUPPORT: True
               MODELS_CACHE_TTL: 300
               OAUTH_CODE_CHALLENGE_METHOD: S256
               OAUTH_GROUP_CLAIM: open_webui_groups
@@ -82,6 +83,7 @@ spec:
               REDIS_URL: redis://localhost:6379/0
               THREAD_POOL_SIZE: 10
               TZ: America/Los_Angeles
+              WEBSOCKET_MANAGER: redis
               WEBSOCKET_REDIS_URL: redis://localhost:6379/1
               WEBUI_AUTH_COOKIE_SECURE: True
               WEBUI_SESSION_COOKIE_SECURE: True
