@@ -137,6 +137,7 @@ spec:
         ports:
           http:
             port: 8080
+            appProtocol: http
     route:
       open-webui:
         hostnames: ["owui.kantai.xyz"]
