@@ -41,7 +41,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /health
+                    path: /
                     port: http
               readiness: *probes
             resources:
