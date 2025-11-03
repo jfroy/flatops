@@ -32,6 +32,18 @@ spec:
             env:
               OLLAMA_MODELS: /models
               TZ: America/Los_Angeles
+            ports:
+              - containerPort: 11434
+                name: http
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: http
+              readiness: *probes
             resources:
               limits:
                 nvidia.com/gpu: 1
