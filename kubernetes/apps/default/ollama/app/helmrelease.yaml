@@ -54,12 +54,6 @@ spec:
         ports:
           http:
             port: 11434
-    route:
-      ollama:
-        hostnames: ["{{ .Release.Name }}.kantai.xyz"]
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
     persistence:
       data:
         existingClaim: "${APP}"
