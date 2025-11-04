@@ -52,7 +52,7 @@ spec:
             env:
               #ENABLE_FORWARD_USER_INFO_HEADERS: True
               #ENABLE_PERSISTENT_CONFIG: False
-              AUDIT_LOG_LEVEL: REQUEST_RESPONSE
+              # AUDIT_LOG_LEVEL: REQUEST_RESPONSE
               CORS_ALLOW_ORIGIN: https://owui.kantai.xyz
               DATABASE_TYPE: postgresql
               DATABASE_URL: ""
