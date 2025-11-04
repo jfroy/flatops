@@ -43,7 +43,7 @@ spec:
               OLLAMA_HOST: http://ollama.default.svc.cluster.local:11434
               # --
               AUTO_OCR_TAG: paperless-gpt-ocr-auto
-              OCR_LIMIT_PAGES: 5
+              OCR_LIMIT_PAGES: 0
               OCR_PROCESS_MODE: image
               OCR_PROVIDER: llm
               PDF_SKIP_EXISTING_OCR: false
