@@ -41,7 +41,7 @@ spec:
               LLM_PROVIDER: ollama
               #OLLAMA_CONTEXT_LENGTH: 8192
               OLLAMA_HOST: http://ollama.default.svc.cluster.local:11434
-              #TOKEN_LIMIT: 1000
+              TOKEN_LIMIT: 3000
               # --
               AUTO_OCR_TAG: paperless-gpt-ocr-auto
               OCR_LIMIT_PAGES: 0
