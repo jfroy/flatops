@@ -31,6 +31,7 @@ spec:
               tag: v1.8.0@sha256:dbdfab8b86b6b1275d243d9a08e9feb396b575ca9cb4c0c7e7402626bdf811ae
             env:
               DOCLING_DEVICE: cuda
+              DOCLING_SERVE_MAX_SYNC_WAIT: 600
               TZ: America/Los_Angeles
             ports:
               - containerPort: &port 5001
@@ -67,6 +68,15 @@ spec:
           http:
             port: *port
     persistence:
+      cache:
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        storageClass: ceph-block
+        suffix: cache
+        type: persistentVolumeClaim
+        globalMounts:
+          - path: /opt/app-root/src/.cache/torch/kernels
+            subPath: kernels
       run:
         type: emptyDir
         medium: Memory
