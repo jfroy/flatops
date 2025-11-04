@@ -37,9 +37,9 @@ spec:
               TZ: America/Los_Angeles
               # --
               LLM_LANGUAGE: English
-              LLM_MODEL: gpt-oss:20b
+              LLM_MODEL: gemma3:27b
               LLM_PROVIDER: ollama
-              OLLAMA_CONTEXT_LENGTH: 8192
+              OLLAMA_CONTEXT_LENGTH: 131072
               OLLAMA_HOST: http://ollama.default.svc.cluster.local:11434
               # --
               AUTO_OCR_TAG: paperless-gpt-ocr-auto
@@ -47,7 +47,7 @@ spec:
               OCR_PROCESS_MODE: image
               OCR_PROVIDER: llm
               PDF_SKIP_EXISTING_OCR: false
-              VISION_LLM_MODEL: qwen3-vl:8b
+              VISION_LLM_MODEL: gemma3:27b
               VISION_LLM_PROVIDER: ollama
             envFrom:
               - secretRef:
