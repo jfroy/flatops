@@ -50,19 +50,19 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.6.34-cuda
             env:
-              AUDIT_LOG_LEVEL: REQUEST_RESPONSE
+              #ENABLE_FORWARD_USER_INFO_HEADERS: True
               #ENABLE_PERSISTENT_CONFIG: False
-              # CORS_ALLOW_ORIGIN: "https://kantai.xyz"
+              AUDIT_LOG_LEVEL: REQUEST_RESPONSE
+              CORS_ALLOW_ORIGIN: https://owui.kantai.xyz
               DATABASE_TYPE: postgresql
               DATABASE_URL: ""
               ENABLE_COMPRESSION_MIDDLEWARE: False
-              # ENABLE_FORWARD_USER_INFO_HEADERS: True
               ENABLE_LOGIN_FORM: True
-              # ENABLE_OAUTH_GROUP_CREATION: True
-              # ENABLE_OAUTH_GROUP_MANAGEMENT: True
+              ENABLE_OAUTH_GROUP_CREATION: True
+              ENABLE_OAUTH_GROUP_MANAGEMENT: True
               ENABLE_OAUTH_ID_TOKEN_COOKIE: False
               ENABLE_OAUTH_PERSISTENT_CONFIG: False
-              # ENABLE_OAUTH_ROLE_MANAGEMENT: True
+              ENABLE_OAUTH_ROLE_MANAGEMENT: True
               ENABLE_OAUTH_SIGNUP: True
               ENABLE_OLLAMA_API: True
               ENABLE_OPENAI_API: True
@@ -73,11 +73,11 @@ spec:
               ENABLE_WEBSOCKET_SUPPORT: True
               GLOBAL_LOG_LEVEL: DEBUG
               MODELS_CACHE_TTL: 300
-              # OAUTH_CODE_CHALLENGE_METHOD: S256
-              # OAUTH_GROUP_CLAIM: open_webui_groups
+              OAUTH_CODE_CHALLENGE_METHOD: S256
+              OAUTH_GROUP_CLAIM: open_webui_groups
               OAUTH_MERGE_ACCOUNTS_BY_EMAIL: True
               OAUTH_PROVIDER_NAME: Pocket ID
-              # OAUTH_ROLES_CLAIM: open_webui_roles
+              OAUTH_ROLES_CLAIM: open_webui_roles
               OAUTH_UPDATE_PICTURE_ON_LOGIN: True
               OLLAMA_BASE_URL: http://ollama.default.svc.cluster.local:11434
               OPENID_PROVIDER_URL: https://pid.kantai.xyz/.well-known/openid-configuration
@@ -86,10 +86,10 @@ spec:
               REDIS_URL: redis://localhost:6379/0
               THREAD_POOL_SIZE: 10
               TZ: America/Los_Angeles
-              # WEBSOCKET_MANAGER: redis
-              # WEBSOCKET_REDIS_URL: redis://localhost:6379/1
-              # WEBUI_AUTH_COOKIE_SECURE: True
-              # WEBUI_SESSION_COOKIE_SECURE: True
+              WEBSOCKET_MANAGER: redis
+              WEBSOCKET_REDIS_URL: redis://localhost:6379/1
+              WEBUI_AUTH_COOKIE_SECURE: True
+              WEBUI_SESSION_COOKIE_SECURE: True
               WEBUI_URL: https://owui.kantai.xyz
             envFrom:
               - secretRef:
