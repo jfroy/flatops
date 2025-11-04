@@ -9,6 +9,7 @@ resources:
   - ./buildkit/ks.yaml
   - ./changedetection/ks.yaml
   - ./docker-registry-ui/ks.yaml
+  - ./docling/ks.yaml
   - ./esphome-device-builder/ks.yaml
   - ./glance/ks.yaml
   - ./gluetun/ks.yaml

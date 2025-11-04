@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: docling
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      docling:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          docling:
+            image:
+              repository: ghcr.io/docling-project/docling-serve-cu128
+              tag: v1.8.0@sha256:dbdfab8b86b6b1275d243d9a08e9feb396b575ca9cb4c0c7e7402626bdf811ae
+            env:
+              DOCLING_DEVICE: cuda
+              TZ: America/Los_Angeles
+            ports:
+              - containerPort: &port 5001
+                name: http
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: http
+              readiness: *probes
+            resources:
+              limits:
+                nvidia.com/gpu: 1
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          nodeSelector:
+            nvidia.com/gpu.present: "true"
+          runtimeClassName: nvidia
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+            fsGroupChangePolicy: OnRootMismatch
+    service:
+      docling:
+        ports:
+          http:
+            port: *port
+    persistence:
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
