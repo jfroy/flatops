@@ -30,19 +30,25 @@ spec:
               repository: ghcr.io/icereed/paperless-gpt
               tag: v0.23.0@sha256:90766d15d541162129d0fa47dad5ffb33a02a0c77cbc4cee9007b24b656ba6ce
             env:
+              AUTO_TAG: paperless-gpt-auto
+              MANUAL_TAG: paperless-gpt
               PAPERLESS_BASE_URL: http://paperless.default.svc.cluster.local:8000
               PAPERLESS_PUBLIC_URL: https://paperless.kantai.xyz
               TZ: America/Los_Angeles
               # --
               LLM_LANGUAGE: English
-              LLM_MODEL: gpt-4o
-              LLM_PROVIDER: openai
+              LLM_MODEL: qwen3:8b
+              LLM_PROVIDER: ollama
+              OLLAMA_CONTEXT_LENGTH: 8192
+              OLLAMA_HOST: http://ollama.default.svc.cluster.local:11434
               # --
+              AUTO_OCR_TAG: paperless-gpt-ocr-auto
+              OCR_LIMIT_PAGES: 5
               OCR_PROCESS_MODE: image
               OCR_PROVIDER: llm
               PDF_SKIP_EXISTING_OCR: false
-              VISION_LLM_MODEL: gpt-4o
-              VISION_LLM_PROVIDER: openai
+              VISION_LLM_MODEL: minicpm-v
+              VISION_LLM_PROVIDER: ollama
             envFrom:
               - secretRef:
                   name: paperless-gpt
