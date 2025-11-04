@@ -16,7 +16,6 @@ spec:
     clientSecret:
       name: "${APP}-oidc"
     refreshToken: true
-    cookieDomain: kantai.xyz
     redirectURL: "https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz/oauth2/callback"
     logoutPath: "${LOGOUT_PATH:-/logout}"
     scopes: ["openid", "profile", "email"]
