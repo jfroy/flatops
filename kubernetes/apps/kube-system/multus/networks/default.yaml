@@ -22,6 +22,17 @@ spec:
           }
         },
         {
+          "type": "tuning",
+          "sysctl": {
+            "net.ipv6.conf.IFNAME.disable_ipv6": "0",
+            "net.ipv6.conf.IFNAME.accept_ra": "2",
+            "net.ipv6.conf.IFNAME.autoconf": "1",
+            "net.ipv6.conf.IFNAME.accept_ra_defrtr": "1",
+            "net.ipv6.conf.IFNAME.accept_ra_pinfo": "1",
+            "net.ipv6.conf.IFNAME.router_solicitations": "1"
+          }
+        },
+        {
           "type": "sbr"
         }
       ]
