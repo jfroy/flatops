@@ -4,6 +4,8 @@ kind: NetworkAttachmentDefinition
 metadata:
   name: multus-dual-stack
 spec:
+  # sysctls to accept Route Information Option routes from Thread border routers.
+  # https://openthread.io/codelabs/openthread-border-router#prepare-linux-host
   config: |-
     {
       "cniVersion": "0.3.1",
@@ -24,12 +26,9 @@ spec:
         {
           "type": "tuning",
           "sysctl": {
-            "net.ipv6.conf.IFNAME.disable_ipv6": "0",
-            "net.ipv6.conf.IFNAME.accept_ra": "2",
-            "net.ipv6.conf.IFNAME.autoconf": "1",
-            "net.ipv6.conf.IFNAME.accept_ra_defrtr": "1",
-            "net.ipv6.conf.IFNAME.accept_ra_pinfo": "1",
-            "net.ipv6.conf.IFNAME.router_solicitations": "1"
+            "net.ipv6.conf.IFNAME.accept_ra": "1",
+            "net.ipv6.conf.IFNAME.accept_ra_rt_info_max_plen": "64",
+            "net.ipv6.conf.IFNAME.forwarding": "0"
           }
         },
         {
