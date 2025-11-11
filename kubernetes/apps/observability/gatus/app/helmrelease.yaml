@@ -77,17 +77,8 @@ spec:
                     path: /health
                     port: *port
               readiness: *probe
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: {add: ["NET_RAW"], drop: ["ALL"]}
         pod:
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
+          hostUsers: false
         statefulset:
           volumeClaimTemplates:
             - name: config
