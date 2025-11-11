@@ -12,8 +12,10 @@ spec:
   ref:
     tag: 0.26.1
   url: oci://ghcr.io/cloudnative-pg/charts/cloudnative-pg
-  verify:
-    provider: cosign
+  # TODO: enable cosign once flux v2.8 is deployed
+  # https://github.com/fluxcd/flux2/releases/tag/v2.7.3
+  # verify:
+  #   provider: cosign
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
