@@ -42,7 +42,7 @@ spec:
       enabled: true
     devicePlugin:
       repository: ghcr.io/jfroy
-      version: f80187da
+      version: 82da4aa1
       env:
         - name: LD_DEBUG
           value: "files,libs"
