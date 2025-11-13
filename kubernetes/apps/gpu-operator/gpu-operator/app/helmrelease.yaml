@@ -41,6 +41,8 @@ spec:
     cdi:
       enabled: true
     devicePlugin:
+      repository: ghcr.io/jfroy
+      version: b74dcd2f
       config:
         name: time-slicing-config-all
         default: any
