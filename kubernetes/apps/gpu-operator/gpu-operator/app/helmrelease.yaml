@@ -71,10 +71,12 @@ spec:
       # create the toolkit daemonset resource.
       env:
         # Talos /etc is read-only. `CONTAINERD_CONFIG` is read by the operator to override the
-        # config file path (which is ultimately passed via the `RUNTIME_CONFIG` environment
-        # variable).
+        # config file path in the toolkit daemonset. `RUNTIME_DROP_IN_CONFIG` is similar, but for
+        # the containerd drop-in config.
         - name: CONTAINERD_CONFIG
           value: /var/nvidia/etc/containerd.toml
+        - name: RUNTIME_DROP_IN_CONFIG
+          value: /var/nvidia/etc/containerd/conf.d/99-nvidia.toml
         # Talos does not recover if containerd is restarted with SIGHUP.
         # https://github.com/siderolabs/talos/issues/9271
         # https://github.com/siderolabs/talos/issues/10980
