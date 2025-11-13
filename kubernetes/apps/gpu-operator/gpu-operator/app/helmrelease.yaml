@@ -43,6 +43,9 @@ spec:
     devicePlugin:
       repository: ghcr.io/jfroy
       version: b74dcd2f
+      env:
+        - name: LD_DEBUG
+          value: "files,libs"
       config:
         name: time-slicing-config-all
         default: any
