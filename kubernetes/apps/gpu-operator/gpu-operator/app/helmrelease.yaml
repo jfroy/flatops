@@ -18,7 +18,7 @@ spec:
   chart:
     spec:
       chart: gpu-operator
-      version: v25.3.2
+      version: v25.10.0
       sourceRef:
         kind: HelmRepository
         name: nvidia
@@ -40,7 +40,6 @@ spec:
       enabled: false
     cdi:
       enabled: true
-      default: true
     devicePlugin:
       config:
         name: time-slicing-config-all
@@ -60,7 +59,6 @@ spec:
     migManager:
       enabled: false
     operator:
-      repository: ghcr.io/jfroy
       defaultRuntime: containerd
       resources:
         limits: null
@@ -68,7 +66,7 @@ spec:
       enabled: false
     toolkit:
       repository: ghcr.io/jfroy
-      version: 1.17.8-ubuntu20.04
+      version: a1cf213c # v1.18.0 with Go wrapper PR
       # These environment variables are stored in the cluster policy CR. The operator uses them to
       # create the toolkit daemonset resource.
       env:
@@ -83,8 +81,6 @@ spec:
         - name: RUNTIME_RESTART_MODE
           value: none
       installDir: "/var/nvidia"
-    validator:
-      repository: ghcr.io/jfroy/gpu-operator
     vfioManager:
       enabled: false
     vgpuDeviceManager:
@@ -114,11 +110,3 @@ spec:
                     securityContext:
                       fsGroup: 1000
                       fsGroupChangePolicy: OnRootMismatch
-          - patch: |-
-              apiVersion: nvidia.com/v1
-              kind: ClusterPolicy
-              metadata:
-                name: cluster-policy
-              spec:
-                operator:
-                  useDevicePluginCDIDevicesFeature: true
