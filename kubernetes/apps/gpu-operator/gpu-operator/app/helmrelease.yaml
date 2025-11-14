@@ -71,7 +71,7 @@ spec:
       enabled: false
     toolkit:
       repository: ghcr.io/jfroy
-      version: 1fa1b6bb # v1.18.0 with Go wrapper PR
+      version: 66e26abf # v1.18.0 with patches for Talos
       # These environment variables are stored in the cluster policy CR. The operator uses them to
       # create the toolkit daemonset resource.
       env:
