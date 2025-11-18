@@ -68,7 +68,7 @@ spec:
       enabled: false
     toolkit:
       repository: registry.kantai.xyz/nvidia
-      version: ad7c96ae # v1.18.0 with patches for Talos
+      version: f77b36be # v1.18.0 with patches for Talos
       # These environment variables are stored in the cluster policy CR. The operator uses them to
       # create the toolkit daemonset resource.
       env:
