@@ -42,10 +42,7 @@ spec:
       enabled: true
     devicePlugin:
       repository: ghcr.io/jfroy
-      version: 53c0912d
-      env:
-        - name: LD_DEBUG
-          value: "files,libs"
+      version: 53c0912d # https://github.com/NVIDIA/k8s-device-plugin/pull/1505
       config:
         name: time-slicing-config-all
         default: any
