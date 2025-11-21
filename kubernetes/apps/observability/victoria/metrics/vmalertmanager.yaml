@@ -1,0 +1,16 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAlertmanager
+metadata:
+  name: kantai
+spec:
+  configSelector:
+    matchLabels:
+      app.kubernetes.io/instance: kantai
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: openebs-hostpath
+        resources:
+          requests:
+            storage: 1Gi
