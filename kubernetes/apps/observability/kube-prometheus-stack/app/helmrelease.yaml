@@ -48,32 +48,7 @@ spec:
     cleanPrometheusOperatorObjectNames: true
 
     alertmanager:
-      alertmanagerSpec:
-        replicas: 1
-        alertmanagerConfiguration:
-          name: cluster
-          global:
-            resolveTimeout: 5m
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: openebs-hostpath
-              resources:
-                requests:
-                  storage: 1Gi
-        resources:
-          limits:
-            memory: 200Mi # hardcoded in promtheus-operator
-      route:
-        main:
-          enabled: true
-          hostnames:
-            - alm.kantai.xyz
-          parentRefs:
-            - group: gateway.networking.k8s.io
-              kind: Gateway
-              name: envoy-internal
-              namespace: network
+      enabled: false # managed by VictoriaMetrics operator
 
     # managed by Robusta
     defaultRules:
@@ -209,16 +184,7 @@ spec:
       forceDeployDashboards: true
 
     prometheusOperator:
-      fullnameOverride: prometheus-operator
-      admissionWebhooks:
-        certManager:
-          enabled: true
-          admissionCert:
-            duration: 2160h # 90d
-          issuerRef:
-            name: cluster-ca
-            kind: ClusterIssuer
-            group: cert-manager.io
+      enabled: false # Using VictoriaMetrics operator
 
     prometheus:
       enabled: false # Using VictoriaMetrics
