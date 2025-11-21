@@ -243,10 +243,6 @@ patches:
       kubelet:
         defaultRuntimeSeccompProfileEnabled: true
         extraConfig:
-          featureGates:
-            ImageVolume: true
-            UserNamespacesSupport: true
-            UserNamespacesPodSecurityStandards: true
           maxParallelImagePulls: 10
           maxPods: 400
           serializeImagePulls: false
@@ -379,10 +375,29 @@ controlPlane:
           extraArgs:
             disable-admission-plugins: PodSecurity
             enable-aggregator-routing: true
-            feature-gates: ImageVolume=true,UserNamespacesSupport=true,UserNamespacesPodSecurityStandards=true
             oidc-client-id: "${OIDC_CLIENT_ID}"
             oidc-issuer-url: "${OIDC_ISSUER_URL}"
             oidc-username-claim: email
+
+    # Feature gates
+    - |-
+      cluster:
+        apiServer:
+          extraArgs:
+            feature-gates: DRAPartitionableDevices=true,ImageVolume=true,ResourceHealthStatus=true,UserNamespacesSupport=true,UserNamespacesPodSecurityStandards=true
+        controllerManager:
+          extraArgs:
+            feature-gates:
+        scheduler:
+          extraArgs:
+            feature-gates: DRAPartitionableDevices=true
+      machine:
+        kubelet:
+          extraConfig:
+            featureGates:
+              ImageVolume: true
+              UserNamespacesSupport: true
+              UserNamespacesPodSecurityStandards: true
 
     # Enable K8s Talos API Access
     - |-
