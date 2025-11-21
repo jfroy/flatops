@@ -12,7 +12,7 @@ spec:
   extraArgs:
     external.url: https://vam.kantai.xyz
   notifiers:
-    - url: http://alertmanager-operated.observability.svc:9093
+    - url: http://vmalertmanager-kantai.observability.svc:9093
   remoteRead:
     url: http://vmsingle-kantai.observability.svc:8429
   remoteWrite:

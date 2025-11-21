@@ -14,7 +14,7 @@ spec:
     access: proxy
     jsonData:
       implementation: prometheus
-    url: http://alertmanager-operated.observability.svc.cluster.local:9093
+    url: http://vmalertmanager-kantai.observability.svc.cluster.local:9093
   uid: alertmanager
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json

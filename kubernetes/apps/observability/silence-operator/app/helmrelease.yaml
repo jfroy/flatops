@@ -31,6 +31,6 @@ spec:
     remediation:
       retries: 3
   values:
-    alertmanagerAddress: http://alertmanager-operated.observability.svc.cluster.local:9093
+    alertmanagerAddress: http://vmalertmanager-kantai.observability.svc.cluster.local:9093
     networkPolicy:
       enabled: false
