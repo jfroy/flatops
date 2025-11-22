@@ -36,9 +36,16 @@ spec:
     remediation:
       retries: 3
   values:
+    gpuResourcesEnabledOverride: true
     nvidiaDriverRoot: /run/nvidia/driver
     resources:
-      gpus:
+      computeDomains:
         enabled: false
+      gpus:
+        enabled: true
     webhook:
-      enabled: false
+      enabled: true
+      tls:
+        certManager:
+          issuerType: clusterissuer
+          issuerName: cluster-ca
