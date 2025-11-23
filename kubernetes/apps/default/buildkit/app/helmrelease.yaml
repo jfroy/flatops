@@ -25,7 +25,7 @@ spec:
           buildkitd:
             image:
               repository: moby/buildkit
-              tag: v0.25.2@sha256:0f63d66f8d2de0bd16438284831a3e9ee6ca7cd57b6eb3ed6e38a7a456590fa7
+              tag: v0.26.2@sha256:de10faf919fc71ba4eb1dd7bd6449566d012b0c9436b1c61bfee21d621b009aa
             args:
               - --addr
               - unix:///run/buildkit/buildkitd.sock
@@ -68,7 +68,7 @@ spec:
           buildkitd:
             image:
               repository: moby/buildkit
-              tag: v0.25.2@sha256:0f63d66f8d2de0bd16438284831a3e9ee6ca7cd57b6eb3ed6e38a7a456590fa7
+              tag: v0.26.2@sha256:de10faf919fc71ba4eb1dd7bd6449566d012b0c9436b1c61bfee21d621b009aa
             args:
               - --addr
               - unix:///run/buildkit/buildkitd.sock
