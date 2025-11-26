@@ -3,7 +3,6 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   labels:
-    app.kubernetes.io/instance: kantai
     app.kubernetes.io/name: vmsingle
   name: victoria-metrics
 spec:
@@ -23,7 +22,6 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
   labels:
-    app.kubernetes.io/instance: kantai
     app.kubernetes.io/name: vmalertmanager
   name: victoria-alertmanager
 spec:
