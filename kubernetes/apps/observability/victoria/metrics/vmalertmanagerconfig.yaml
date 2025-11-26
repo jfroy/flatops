@@ -5,7 +5,7 @@ metadata:
   name: kantai
 spec:
   route:
-    receiver: "null"
+    receiver: "blackhole"
     group_by: ["alertname", "job"]
     routes:
       - receiver: robusta
@@ -14,7 +14,7 @@ spec:
         repeat_interval: 4h
         matchers: [severity=~.*]
         continue: true
-      - receiver: "null"
+      - receiver: "blackhole"
         matchers: [alertname=InfoInhibitor]
       - receiver: heartbeat
         group_interval: 5m
@@ -27,7 +27,6 @@ spec:
         repeat_interval: 1h
         matchers: [severity=~critical|error|warning]
   receivers:
-  - name: "null"
   - name: heartbeat
     webhook_configs:
       - url_secret:
