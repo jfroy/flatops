@@ -27,6 +27,7 @@ spec:
         repeat_interval: 1h
         matchers: [severity=~critical|error|warning]
   receivers:
+  - name: "blackhole"
   - name: heartbeat
     webhook_configs:
       - url_secret:
