@@ -51,19 +51,40 @@ spec:
             follow_redirects: true
             preferred_ip_protocol: ipv4
             ip_protocol_fallback: false
+        http_2xx_ipv6:
+          prober: http
+          timeout: 5s
+          http:
+            valid_http_versions: ["HTTP/1.1", "HTTP/2.0"]
+            follow_redirects: true
+            preferred_ip_protocol: ip6
+            ip_protocol_fallback: false
         icmp:
           prober: icmp
+          timeout: 5s
           icmp:
             preferred_ip_protocol: ip4
             ip_protocol_fallback: false
+        icmp6:
+          prober: icmp
+          timeout: 5s
+          icmp:
+            preferred_ip_protocol: ip6
+            ip_protocol_fallback: false
+        tcp_connect:
+          prober: tcp
+          timeout: 5s
+          tcp:
+            preferred_ip_protocol: ip4
+        tcp_connect6:
+          prober: tcp
+          timeout: 5s
+          tcp:
+            preferred_ip_protocol: ip6
     service:
       ipDualStack:
-        enabled: false
-    podAnnotations:
-      reloader.stakater.com/auto: "true"
-    extraArgs:
-      - --log.level=info
-      - --log.prober=warning
+        enabled: true
+        ipFamilies: ["IPv4", "IPv6"]
     serviceMonitor:
       selfMonitor:
         enabled: true
@@ -71,10 +92,11 @@ spec:
       enabled: true
       rules:
         - alert: BlackboxProbeFailed
-          expr: probe_success == 0
-          for: 5m
+          expr: |-
+            probe_success{service="blackbox-exporter"} == 0
+          for: 15m
           labels:
             severity: critical
           annotations:
             summary: |-
-              The host {{ $labels.target }} is currently unreachable
+              The probe targeting {{ $labels.instance }} is currently having connectivity issues
