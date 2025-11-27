@@ -31,5 +31,5 @@ ui:
     - name: Homelab
       link: https://github.com/jfroy/flatops
 web:
-  port: ${WEB_PORT}
+  port: ${GATUS_WEB_PORT}
   read-buffer-size: 32768
