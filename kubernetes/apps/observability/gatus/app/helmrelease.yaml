@@ -81,9 +81,7 @@ spec:
                     port: *port
               readiness: *probe
             securityContext:
-              allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: {add: ["NET_RAW"], drop: ["ALL"]}
         pod:
           hostUsers: false
         statefulset:
