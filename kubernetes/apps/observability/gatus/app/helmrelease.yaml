@@ -91,7 +91,7 @@ spec:
             - name: config
               storageClass: ceph-block
               accessMode: ReadWriteOnce
-              size: 1Gi
+              size: 10Mi
     persistence:
       config-file:
         type: configMap
