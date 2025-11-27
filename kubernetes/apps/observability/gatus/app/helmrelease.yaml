@@ -83,7 +83,7 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
+              capabilities: {add: ["NET_RAW"], drop: ["ALL"]}
         pod:
           hostUsers: false
         statefulset:
