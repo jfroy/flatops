@@ -9,7 +9,7 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  url: https://grafana.com/api/dashboards/12683/revisions/25/download
+  url: https://grafana.com/api/dashboards/12683/revisions/26/download
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -21,7 +21,7 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  url: https://grafana.com/api/dashboards/14950/revisions/16/download
+  url: https://grafana.com/api/dashboards/14950/revisions/17/download
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
@@ -33,4 +33,4 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  url: https://grafana.com/api/dashboards/10229/revisions/41/download
+  url: https://grafana.com/api/dashboards/10229/revisions/43/download
