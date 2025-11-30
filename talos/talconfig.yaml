@@ -243,6 +243,8 @@ patches:
       kubelet:
         defaultRuntimeSeccompProfileEnabled: true
         extraConfig:
+          imageGCHighThresholdPercent: 85
+          imageGCLowThresholdPercent: 65
           maxParallelImagePulls: 10
           maxPods: 400
           serializeImagePulls: false
