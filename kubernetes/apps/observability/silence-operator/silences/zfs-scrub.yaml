@@ -1,0 +1,13 @@
+---
+apiVersion: monitoring.giantswarm.io/v1alpha1
+kind: Silence
+metadata:
+  name: zfs-scrub
+spec:
+  matchers:
+    - name: alertname
+      value: KubeJobNotCompleted
+      isRegex: false
+    - name: job
+      value: zfs-scrub-.*
+      isRegex: true

@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./smart.yaml
   - ./overcommit.yaml
+  - ./zfs-scrub.yaml
