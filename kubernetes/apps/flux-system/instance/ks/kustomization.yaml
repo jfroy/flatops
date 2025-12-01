@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./grafanadashboard.yaml
+  - ./helmrelease.yaml
   - ./helmrepository.yaml
   - ./httproute.yaml
   - ./ocirepository.yaml
@@ -12,6 +13,9 @@ resources:
   - ./prometheusrule.yaml
   - ./receiver.yaml
 configMapGenerator:
+  - name: flux-helm-values
+    files:
+      - values.yaml=./helm-values.yaml
   - name: flux-dashboards
     files:
       - ./configmaps/flux-control-plane.json
@@ -22,5 +26,5 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
       labels:
         grafana_dashboard: "1"
-generatorOptions:
-  disableNameSuffixHash: true
+configurations:
+  - kustomizeconfig.yaml

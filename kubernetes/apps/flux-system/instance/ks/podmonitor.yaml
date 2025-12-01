@@ -19,7 +19,10 @@ spec:
   jobLabel: app.kubernetes.io/instance
   selector:
     matchExpressions:
-      - key: app.kubernetes.io/part-of
+      - key: app.kubernetes.io/component
         operator: In
         values:
-          - flux
+          - helm-controller
+          - source-controller
+          - kustomize-controller
+          - notification-controller
