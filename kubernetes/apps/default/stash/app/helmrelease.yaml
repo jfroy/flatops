@@ -63,7 +63,7 @@ spec:
           nams:
             image:
               repository: registry.kantai.xyz/nams
-              tag: "3.0.0"
+              tag: 3.0.0@sha256:1474169ea2509d812cc923741c3506f165830f53e46d7554bcc12285880783bd
             env:
               TZ: America/Los_Angeles
             probes:
@@ -87,14 +87,13 @@ spec:
           nodeSelector:
             nvidia.com/gpu.present: "true"
           runtimeClassName: nvidia
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [4000]
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [4000]
     persistence:
       cache:
         type: emptyDir
