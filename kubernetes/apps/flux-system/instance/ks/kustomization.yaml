@@ -7,7 +7,6 @@ resources:
   - ./grafanadashboard.yaml
   - ./helmrepository.yaml
   - ./httproute.yaml
-  - ./instance.yaml
   - ./ocirepository.yaml
   - ./podmonitor.yaml
   - ./prometheusrule.yaml
