@@ -3,7 +3,7 @@
   customManagers: [
     {
       customType: "regex",
-      managerFilePatterns: ["^(kubernetes|talos)/.+\\.yaml$"],
+      managerFilePatterns: ["/^(kubernetes|talos)/.+\\.yaml$/"],
       matchStrings: [
         // # renovate: datasource=github-releases depName=org/repo versioning=loose
         // version: 1.2.3
@@ -19,7 +19,7 @@
     },
     {
       customType: "regex",
-      managerFilePatterns: ["^(kubernetes|talos)/.+\\.yaml$"],
+      managerFilePatterns: ["/^(kubernetes|talos)/.+\\.yaml$/"],
       matchStrings: [
         "oci://(?<depName>[^:]+):(?<currentValue>\\S+)",
       ],
