@@ -60,6 +60,29 @@ spec:
                 nvidia.com/gpu: 1
             workingDir: /config
         initContainers:
+          aiserver:
+            image:
+              repository: ghcr.io/skier233/stash-ai-server
+              tag: 0.5.0b2
+            env:
+              AI_SERVER_DATA_DIR: /app/data
+              AI_SERVER_HOST: 0.0.0.0
+              AI_SERVER_PORT: 4153
+              AI_SERVER_PLUGINS_DIR: /app/plugins
+              STASH_DB_PATH: /stash/stash-go.sqlite
+              STASH_URL: http://stash.default.svc.cluster.local:9999
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: aiserver
+            ports:
+              - containerPort: 4153
+                name: http
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            restartPolicy: Always
           nams:
             image:
               repository: registry.kantai.xyz/nams
@@ -101,6 +124,19 @@ spec:
         data:
           dockerenv: ""
     persistence:
+      aiserver-data:
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        retain: true
+        size: 1Gi
+        advancedMounts:
+          stash:
+            aiserver:
+              - path: /app/data
+                subPath: data
+              - path: /app/plugins
+                subPath: plugins
       cache:
         type: emptyDir
         advancedMounts:
@@ -111,6 +147,9 @@ spec:
         existingClaim: ${APP}
         advancedMounts:
           stash:
+            aiserver:
+              - path: /stash
+                readOnly: true
             stash:
               - path: /config
       data:
