@@ -64,6 +64,7 @@ spec:
             image:
               repository: registry.kantai.xyz/nams
               tag: 3.0.0@sha256:dfa3b3d55d66699c5b68659db1964e3beda705e8105de8db314458e45cce41a3
+            command: ["sleep", "infinity"]
             env:
               TZ: America/Los_Angeles
             probes:
@@ -139,8 +140,8 @@ spec:
             nams:
               - path: /app/models/.ai_license_fingerprint
                 subPath: .ai_license_fingerprint
-              - path: /app/models/licenseV1.0.lic
-                subPath: licenseV1.0.lic
+              # - path: /app/models/licenseV1.0.lic
+              #   subPath: licenseV1.0.lic
       nams-logs:
         type: emptyDir
         sizeLimit: 100Mi
