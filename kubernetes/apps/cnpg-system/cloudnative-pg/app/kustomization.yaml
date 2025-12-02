@@ -6,3 +6,14 @@ resources:
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
+configMapGenerator:
+  - name: cnpg-dashboards
+    files:
+      - ./resources/cloudnative-pg.json
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: "1"
+generatorOptions:
+  disableNameSuffixHash: true

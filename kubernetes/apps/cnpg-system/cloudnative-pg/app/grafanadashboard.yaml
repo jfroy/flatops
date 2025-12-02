@@ -3,7 +3,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: cloudnativepg
+  name: cloudnative-pg
 spec:
   allowCrossNamespaceImport: true
   datasources:
@@ -12,4 +12,6 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  url: https://grafana.com/api/dashboards/20417/revisions/4/download
+  configMapRef:
+    name: cnpg-dashboards
+    key: cloudnative-pg.json
