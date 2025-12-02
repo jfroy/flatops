@@ -12,7 +12,7 @@ resources:
   - ./gatus/ks.yaml
   - ./grafana/ks.yaml
   - ./headlamp/ks.yaml
-  - ./idrac-exporter/ks.yaml
+  # - ./idrac-exporter/ks.yaml
   - ./kite/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./netronome/ks.yaml
