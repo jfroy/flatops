@@ -30,6 +30,7 @@ spec:
               repository: ghcr.io/jfroy/stash
               tag: v0.29.3-cudajellyfin
             env:
+              AI_BACKEND_BASE_URL: https://sais.kantai.xyz
               HOME: /config
               NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
               STASH_BLOBS_PATH: /blobs
@@ -67,7 +68,7 @@ spec:
             env:
               AI_SERVER_DATA_DIR: /app/data
               AI_SERVER_HOST: 0.0.0.0
-              AI_SERVER_PORT: 4153
+              AI_SERVER_PORT: &saisPort 4153
               AI_SERVER_PLUGINS_DIR: /app/plugins
               STASH_DB_PATH: /stash/stash-go.sqlite
               STASH_URL: http://stash.default.svc.cluster.local:9999
@@ -76,8 +77,17 @@ spec:
               - secretRef:
                   name: aiserver
             ports:
-              - containerPort: 4153
+              - containerPort: *saisPort
                 name: http
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: http
+              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -99,14 +109,14 @@ spec:
             env:
               TZ: America/Los_Angeles
             probes:
-              liveness: &namsProbe
+              liveness: &probe
                 enabled: false
                 custom: true
                 spec:
                   httpGet:
                     path: /
                     port: 8000
-              readiness: *namsProbe
+              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -236,6 +246,16 @@ spec:
         medium: Memory
         sizeLimit: 100Mi
     route:
+      sais:
+        hostnames:
+          - sais.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                identifier: sais
       stash:
         hostnames:
           - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
@@ -245,10 +265,16 @@ spec:
         rules:
           - backendRefs:
               - port: *port
-                name: stash
+                identifier: stash
     service:
+      sais:
+        controller: stash
+        ports:
+          http:
+            port: *saisPort
       stash:
         controller: stash
+        forceRename: "{{ .Release.Name }}"
         ports:
           http:
             port: *port
