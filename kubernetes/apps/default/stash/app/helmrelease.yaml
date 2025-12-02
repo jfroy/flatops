@@ -25,6 +25,38 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
+          sais:
+            image:
+              repository: ghcr.io/skier233/stash-ai-server
+              tag: 0.5.0b2
+            env:
+              AI_SERVER_DATA_DIR: /app/data
+              AI_SERVER_HOST: 0.0.0.0
+              AI_SERVER_PORT: &saisPort 4153
+              AI_SERVER_PLUGINS_DIR: /app/plugins
+              STASH_DB_PATH: /stash/stash-go.sqlite
+              STASH_URL: http://stash.default.svc.cluster.local:9999
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: sais
+            ports:
+              - containerPort: *saisPort
+                name: http
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: http
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            restartPolicy: Always
           stash:
             image:
               repository: ghcr.io/jfroy/stash
@@ -61,38 +93,6 @@ spec:
                 nvidia.com/gpu: 1
             workingDir: /config
         initContainers:
-          aiserver:
-            image:
-              repository: ghcr.io/skier233/stash-ai-server
-              tag: 0.5.0b2
-            env:
-              AI_SERVER_DATA_DIR: /app/data
-              AI_SERVER_HOST: 0.0.0.0
-              AI_SERVER_PORT: &saisPort 4153
-              AI_SERVER_PLUGINS_DIR: /app/plugins
-              STASH_DB_PATH: /stash/stash-go.sqlite
-              STASH_URL: http://stash.default.svc.cluster.local:9999
-              TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: aiserver
-            ports:
-              - containerPort: *saisPort
-                name: http
-            probes:
-              liveness: &probe
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: http
-              readiness: *probe
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            restartPolicy: Always
           install-plugins:
             image:
               repository: ghcr.io/instrumentisto/rsync-ssh
@@ -143,7 +143,7 @@ spec:
         data:
           dockerenv: ""
     persistence:
-      aiserver-data:
+      sais-data:
         type: persistentVolumeClaim
         storageClass: ceph-block
         accessMode: ReadWriteOnce
@@ -151,12 +151,12 @@ spec:
         size: 1Gi
         advancedMounts:
           stash:
-            aiserver:
+            sais:
               - path: /app/data
                 subPath: data
               - path: /app/plugins
                 subPath: plugins
-      aiserver-plugin:
+      sais-plugin:
         type: image
         image: registry.kantai.xyz/sais-frontend:0.5.0b2@sha256:eac1c7c1aee019231211b03824eabc824fe6808e9c5009c78b84279d604ae6b6
         advancedMounts:
@@ -173,7 +173,7 @@ spec:
         existingClaim: ${APP}
         advancedMounts:
           stash:
-            aiserver:
+            sais:
               - path: /stash
                 readOnly: true
             stash:
