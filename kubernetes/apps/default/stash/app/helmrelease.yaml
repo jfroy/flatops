@@ -83,6 +83,15 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             restartPolicy: Always
+          install-plugins:
+            image:
+              repository: ghcr.io/instrumentisto/rsync-ssh
+              tag: alpine3.22
+            command: ["/usr/bin/rsync", "-a", "/install/", "/plugins/managed/"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
           nams:
             image:
               repository: registry.kantai.xyz/nams
@@ -137,6 +146,13 @@ spec:
                 subPath: data
               - path: /app/plugins
                 subPath: plugins
+      aiserver-plugin:
+        type: image
+        image: registry.kantai.xyz/sais-frontend:0.5.0b2@sha256:eac1c7c1aee019231211b03824eabc824fe6808e9c5009c78b84279d604ae6b6
+        advancedMounts:
+          stash:
+            install-plugins:
+              - path: /install/AIOverhaul
       cache:
         type: emptyDir
         advancedMounts:
@@ -196,6 +212,8 @@ spec:
         size: 100Mi
         advancedMounts:
           stash:
+            install-plugins:
+              - path: /plugins
             stash:
               - path: /plugins
       scrapers:
