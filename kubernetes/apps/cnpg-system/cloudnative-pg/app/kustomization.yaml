@@ -9,7 +9,7 @@ resources:
 configMapGenerator:
   - name: cnpg-dashboards
     files:
-      - ./resources/cloudnative-pg.json
+      - ./configmaps/cloudnative-pg.json
     options:
       annotations:
         kustomize.toolkit.fluxcd.io/substitute: disabled
