@@ -94,6 +94,11 @@ spec:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups: [4000]
+    configMaps:
+      dockerenv:
+        suffix: dockerenv
+        data:
+          dockerenv: ""
     persistence:
       cache:
         type: emptyDir
@@ -120,14 +125,22 @@ spec:
                 subPath: blobs
               - path: /generated
                 subPath: generated
+      dockerenv:
+        type: configMap
+        identifier: dockerenv
+        globalMounts:
+          - path: /.dockerenv
+            subPath: dockerenv
       nams-license:
         type: secret
         name: nams-license
         advancedMounts:
           stash:
             nams:
-              - path: /app/models/licenseV1.0.lic
-                subPath: licenseV1.0.lic
+              - path: /app/models/.ai_license_fingerprint
+                subPath: .ai_license_fingerprint
+              # - path: /app/models/licenseV1.0.lic
+              #   subPath: licenseV1.0.lic
       nams-logs:
         type: emptyDir
         sizeLimit: 100Mi
