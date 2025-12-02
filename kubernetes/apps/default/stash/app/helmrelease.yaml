@@ -254,7 +254,7 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - port: *port
+              - port: *saisPort
                 identifier: sais
             filters:
               - type: URLRewrite
