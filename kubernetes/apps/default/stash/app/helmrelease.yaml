@@ -85,6 +85,7 @@ spec:
                 nvidia.com/gpu: 1
             restartPolicy: Always
         pod:
+          hostname: stash
           nodeSelector:
             nvidia.com/gpu.present: "true"
           runtimeClassName: nvidia
