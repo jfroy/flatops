@@ -3,16 +3,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./prometheusrule.yaml
-configMapGenerator:
-  - name: cnpg-grafana-dashboard
-    files:
-      - ./resources/cnp.json
-    options:
-      annotations:
-        kustomize.toolkit.fluxcd.io/substitute: disabled
-      labels:
-        grafana_dashboard: "1"
-generatorOptions:
-  disableNameSuffixHash: true

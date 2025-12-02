@@ -3,7 +3,7 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: nvidia-dcgm-dashboard
+  name: blackbox-exporter-19342
 spec:
   allowCrossNamespaceImport: true
   datasources:
@@ -12,15 +12,13 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  configMapRef:
-    name: nvidia-dcgm-dashboards
-    key: nvidia-dcgm-dashboard.json
+  url: https://grafana.com/api/dashboards/19342/revisions/9/download
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
-  name: nvidia-mig-dcgm
+  name: blackbox-exporter-16124
 spec:
   allowCrossNamespaceImport: true
   datasources:
@@ -29,4 +27,4 @@ spec:
   instanceSelector:
     matchLabels:
       grafana.internal/instance: grafana
-  url: https://grafana.com/api/dashboards/23382/revisions/1/download
+  url: https://grafana.com/api/dashboards/16124/revisions/4/download
