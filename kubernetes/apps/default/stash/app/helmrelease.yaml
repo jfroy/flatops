@@ -63,7 +63,7 @@ spec:
           nams:
             image:
               repository: registry.kantai.xyz/nams
-              tag: 3.0.0@sha256:dfa3b3d55d66699c5b68659db1964e3beda705e8105de8db314458e45cce41a3
+              tag: 3.0.0@sha256:1c4fc966666afb7ed952b500b10d3d3215c5b7340a7779dc3ec2e6f496bb28b2
             command: ["sleep", "infinity"]
             env:
               TZ: America/Los_Angeles
