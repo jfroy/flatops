@@ -139,8 +139,8 @@ spec:
             nams:
               - path: /app/models/.ai_license_fingerprint
                 subPath: .ai_license_fingerprint
-              # - path: /app/models/licenseV1.0.lic
-              #   subPath: licenseV1.0.lic
+              - path: /app/models/licenseV1.0.lic
+                subPath: licenseV1.0.lic
       nams-logs:
         type: emptyDir
         sizeLimit: 100Mi
