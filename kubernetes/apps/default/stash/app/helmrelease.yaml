@@ -30,7 +30,7 @@ spec:
               repository: ghcr.io/jfroy/stash
               tag: v0.29.3-cudajellyfin
             env:
-              AI_BACKEND_BASE_URL: https://sais.kantai.xyz
+              AI_BACKEND_BASE_URL: https://stash.kantai.xyz/sais
               HOME: /config
               NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
               STASH_BLOBS_PATH: /blobs
@@ -246,16 +246,6 @@ spec:
         medium: Memory
         sizeLimit: 100Mi
     route:
-      sais:
-        hostnames:
-          - sais.kantai.xyz
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - port: *port
-                identifier: sais
       stash:
         hostnames:
           - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
@@ -263,6 +253,19 @@ spec:
           - name: envoy-internal
             namespace: network
         rules:
+          - backendRefs:
+              - port: *port
+                identifier: sais
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /sais
           - backendRefs:
               - port: *port
                 identifier: stash
