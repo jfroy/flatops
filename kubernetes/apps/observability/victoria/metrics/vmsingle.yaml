@@ -7,6 +7,8 @@ spec:
   extraArgs:
     maxLabelsPerTimeseries: "40"
     opentelemetry.usePrometheusNaming: "true"
+    search.maxDeleteSeries: "10000000"
+    search.maxUniqueTimeseries: "10000000"
     search.minStalenessInterval: 5m
     vmalert.proxyURL: http://vmalert-kantai.observability.svc:8080
   replicaCount: 1
