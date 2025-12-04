@@ -265,16 +265,17 @@ patches:
         fs.inotify.max_queued_events: "65536"
         fs.inotify.max_user_watches: "1048576"
         fs.inotify.max_user_instances: "8192"
-        net.core.default_qdisc: fq                 # Fair Queue, don't use codel with bbr
         net.core.rmem_max: "67108864"              # 64 MiB; QUIC and 10 Gbps
         net.core.wmem_max: "67108864"              # 64 MiB; QUIC and 10 Gbps
+        net.ipv4.tcp_rmem: 4096 131072 33554432    # 1K, 128K, 32M; QUIC and 10 Gbps
+        net.ipv4.tcp_wmem: 4096 131072 33554432    # 1K, 128K, 32M; QUIC and 10 Gbps
         net.ipv4.ping_group_range: "0 2147483647"  # Allow all groups to ping
+        net.core.default_qdisc: fq                 # Fair Queue, don't use codel with bbr
         net.ipv4.tcp_congestion_control: bbr
         net.ipv4.tcp_fastopen: "3"                 # Enable TFO for both client and server
         net.ipv4.tcp_mtu_probing: "1"              # Disabled by default, enabled when an ICMP black hole detected
         net.ipv4.tcp_notsent_lowat: "16384"        # 16K
-        net.ipv4.tcp_rmem: 4096 131072 33554432    # 1K, 128K, 32M; QUIC and 10 Gbps
-        net.ipv4.tcp_wmem: 4096 131072 33554432    # 1K, 128K, 32M; QUIC and 10 Gbps
+        net.ipv4.tcp_slow_start_after_idle: "0"    # Disable RFC2861 slow start after idle
         user.max_user_namespaces: "49152"          # C000; arbitrary
 
   # Extra mounts for openebs-hostpath
