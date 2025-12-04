@@ -254,17 +254,25 @@ patches:
             - 10.1.1.0/24
             - ${CLUSTER_NODE_V6_CIDR}
 
-  # Custom sysctl settings
+  # Common sysctl settings
+  # https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+  # https://fasterdata.es.net/host-tuning/linux/
+  # https://blog.cloudflare.com/http-2-prioritization-with-nginx/
+  # https://www.geeksforgeeks.org/computer-networks/what-is-tcp-fast-open/
   - |-
     machine:
       sysctls:
         fs.inotify.max_queued_events: "65536"
         fs.inotify.max_user_watches: "1048576"
         fs.inotify.max_user_instances: "8192"
-        net.core.default_qdisc: fq_codel           # Fair Queue CoDel packet scheduler to fight bufferbloat
+        net.core.default_qdisc: fq                 # Fair Queue, don't use codel with bbr
         net.core.rmem_max: "67108864"              # 64 MiB; QUIC and 10 Gbps
         net.core.wmem_max: "67108864"              # 64 MiB; QUIC and 10 Gbps
         net.ipv4.ping_group_range: "0 2147483647"  # Allow all groups to ping
+        net.ipv4.tcp_congestion_control: bbr
+        net.ipv4.tcp_fastopen: "3"                 # Enable TFO for both client and server
+        net.ipv4.tcp_mtu_probing: "1"              # Disabled by default, enabled when an ICMP black hole detected
+        net.ipv4.tcp_notsent_lowat: "16384"        # 16K
         net.ipv4.tcp_rmem: 4096 131072 33554432    # 1K, 128K, 32M; QUIC and 10 Gbps
         net.ipv4.tcp_wmem: 4096 131072 33554432    # 1K, 128K, 32M; QUIC and 10 Gbps
         user.max_user_namespaces: "49152"          # C000; arbitrary
