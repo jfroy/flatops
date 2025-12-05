@@ -30,7 +30,7 @@ spec:
           smbd:
             image:
               repository: ghcr.io/jfroy/samba
-              tag: 4.23.1@sha256:b7ff6bfdd246d92f7e3bf0e25ea6a04f174493c8299b806e6a5ae9cd262a16ee
+              tag: 4.23.1@sha256:d5179766675b725f3e0a9735707193fcfacea0019732f7a48adc5c9e5ab72467
             env:
               SAMBA_CONTAINER_ID: default
               SAMBA_SPECIFICS: daemon_cli_debug_output
