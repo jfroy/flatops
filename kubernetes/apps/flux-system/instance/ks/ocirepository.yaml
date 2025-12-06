@@ -12,5 +12,6 @@ spec:
   ref:
     tag: 4.5.0
   url: oci://ghcr.io/bjw-s-labs/helm/app-template
-  verify:
-    provider: cosign
+  # TODO: Add verify back once running flux 2.8
+  # verify:
+  #   provider: cosign
