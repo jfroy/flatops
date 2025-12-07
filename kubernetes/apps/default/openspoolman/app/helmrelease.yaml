@@ -28,7 +28,7 @@ spec:
           openspoolman:
             image:
               repository: ghcr.io/drndos/openspoolman
-              tag: 0.1.9@sha256:ea01d5c23283391a171a985fa4698b5811ed41e6d219cc85b2979577512f3fa1
+              tag: 0.2.0@sha256:95d61d01a86b0c4c431c0a57e58b8ef10f868aa048906f1fe21c0707713a2bc8
             env:
               OPENSPOOLMAN_BASE_URL: https://openspoolman.kantai.xyz
               SPOOLMAN_BASE_URL: https://spoolman.kantai.xyz
