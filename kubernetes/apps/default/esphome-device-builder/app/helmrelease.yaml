@@ -85,12 +85,19 @@ spec:
           - path: /entrypoint.sh
             subPath: entrypoint.sh
             readOnly: true
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 128Mi
       secrets:
         type: secret
         name: esphome-device-builder-secrets
         globalMounts:
           - path: /config/secrets.yaml
             subPath: secrets.yaml
+      tmp:
+        type: emptyDir
+        sizeLimit: 1Gi
     route:
       homepage:
         hostnames:
