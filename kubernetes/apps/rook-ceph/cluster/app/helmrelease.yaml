@@ -150,14 +150,28 @@ spec:
             compression_algorithm: lz4
             compression_mode: aggressive
         storageClass:
-          enabled: true
-          name: ceph-block
-          isDefault: true
-          reclaimPolicy: Delete
+          allowedTopologies: []
           allowVolumeExpansion: true
-          volumeBindingMode: Immediate
+          annotations: {}
+          enabled: true
+          isDefault: true
+          labels: {}
+          mountOptions: []
+          name: ceph-block
+          reclaimPolicy: Delete
+          volumeBindingMode: "Immediate"
           parameters:
+            imageFormat: "2"
             imageFeatures: layering,exclusive-lock,object-map,fast-diff,deep-flatten
+            csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/provisioner-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/controller-expand-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/controller-expand-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/controller-publish-secret-name: rook-csi-rbd-provisioner
+            csi.storage.k8s.io/controller-publish-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/node-stage-secret-name: rook-csi-rbd-node
+            csi.storage.k8s.io/node-stage-secret-namespace: "{{ .Release.Namespace }}"
+            csi.storage.k8s.io/fstype: ext4
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: ceph-block
@@ -196,6 +210,8 @@ spec:
           name: ceph-bucket
           reclaimPolicy: Delete
           volumeBindingMode: Immediate
+          annotations: {}
+          labels: {}
           parameters:
             region: us-west-1
             # endpoint: <hostname including port>
