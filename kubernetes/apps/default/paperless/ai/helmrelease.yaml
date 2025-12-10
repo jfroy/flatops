@@ -31,7 +31,7 @@ spec:
               tag: 3.0.9@sha256:2b65888163fd59716f1c8285b31c5bd0b30c9c3c192c42b516688e3887d4ba60
             env:
               AI_PROVIDER: openai
-              OPENAI_MODEL: gpt-4o
+              OPENAI_MODEL: gpt-4o-mini
               PAPERLESS_AI_PORT: &port 3000
               PAPERLESS_API_URL: http://paperless.default.svc.cluster.local:8000/api
               PGID: 1000
