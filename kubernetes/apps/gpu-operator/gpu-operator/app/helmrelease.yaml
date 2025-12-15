@@ -39,6 +39,9 @@ spec:
         name: time-slicing-config-all
         default: any
     dcgmExporter:
+      env:
+        - name: KUBERNETES_VIRTUAL_GPUS
+          value: "true"
       serviceMonitor:
         enabled: true
         honorLabels: true
