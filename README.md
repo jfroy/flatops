@@ -1,416 +1,273 @@
-# ⛵ Cluster Template
-
-Welcome to my opinionated and extensible template for deploying a single Kubernetes cluster. The goal of this project is to make it easier for people interested in using Kubernetes to deploy a cluster at home on bare-metal or VMs. This template closely mirrors my personal [home-ops](https://github.com/onedr0p/home-ops) repository.
-
-At a high level this project makes use of [makejinja](https://github.com/mirkolenz/makejinja) to read in a [configuration file](./config.sample.yaml) which renders out templates that will allow you to install and manage your Kubernetes cluster with.
-
-## ✨ Features
-
-The features included will depend on the type of configuration you want to use. There are currently **2 different types** of **configurations** available with this template.
-
-1. **"Flux cluster"** - a Kubernetes cluster deployed on-top of [Talos Linux](https://github.com/siderolabs/talos) with an opinionated implementation of [Flux](https://github.com/fluxcd/flux2) using [GitHub](https://github.com/) as the Git provider and [sops](https://github.com/getsops/sops) to manage secrets.
-
-    - **Required:** Some knowledge of [Containers](https://opencontainers.org/), [YAML](https://yaml.org/), and [Git](https://git-scm.com/).
-    - **Components:** [flux](https://github.com/fluxcd/flux2), [cilium](https://github.com/cilium/cilium), [cert-manager](https://github.com/cert-manager/cert-manager), [spegel](https://github.com/spegel-org/spegel), [reloader](https://github.com/stakater/Reloader), and [openebs](https://github.com/openebs/openebs).
-
-2. **"Flux cluster with Cloudflare"** - An addition to "**Flux cluster**" that provides DNS and SSL with [Cloudflare](https://www.cloudflare.com/). [Cloudflare Tunnel](https://www.cloudflare.com/products/tunnel/) is also included to provide external access to certain applications deployed in your cluster.
-
-    - **Required:** A Cloudflare account with a domain managed in your Cloudflare account.
-    - **Components:** [ingress-nginx](https://github.com/kubernetes/ingress-nginx/), [external-dns](https://github.com/kubernetes-sigs/external-dns) and [cloudflared](https://github.com/cloudflare/cloudflared).
-
-**Other features include:**
-
-- A [Renovate](https://www.mend.io/renovate)-ready repository with pull request diffs provided by [flux-local](https://github.com/allenporter/flux-local)
-- Integrated [GitHub Actions](https://github.com/features/actions) with helpful workflows.
-
-## 💻 Machine Preparation
-
-### System requirements
-
-> [!NOTE]
-> 1. The included behaviour of Talos is that all nodes are able to run workloads, **including** the controller nodes. **Worker nodes** are therefore **optional**.
-> 2. Do you have 3 or more nodes? It is highly recommended to make 3 of them controller nodes for a highly available control plane.
-> 3. Running the cluster on Proxmox VE? My thoughts and recommendations about that are documented [here](https://onedr0p.github.io/home-ops/notes/proxmox-considerations.html).
-
-| Role    | Cores    | Memory        | System Disk               |
-|---------|----------|---------------|---------------------------|
-| Control | 4 _(6*)_ | 8GB _(24GB*)_ | 120GB _(500GB*)_ SSD/NVMe |
-| Worker  | 4 _(6*)_ | 8GB _(24GB*)_ | 120GB _(500GB*)_ SSD/NVMe |
-| _\* recommended_ |
-
-1. Head over to <https://factory.talos.dev> and follow the instructions which will eventually lead you to download a Talos Linux iso file (or for SBCs the `.raw.xz`). Make sure to note the schematic ID you will need this later on.
-
-2. Flash the iso or raw file to a USB drive and boot to Talos on your nodes with it.
-
-3. Continue on to 🚀 [**Getting Started**](#-getting-started)
-
-## 🚀 Getting Started
-
-Once you have installed Talos on your nodes, there are six stages to getting a Flux-managed cluster up and running.
-
-> [!NOTE]
-> For all stages below the commands **MUST** be ran on your personal workstation within your repository directory
-
-### 🎉 Stage 1: Create a Git repository
-
-1. Create a new **public** repository by clicking the big green "Use this template" button at the top of this page.
-
-2. Clone **your new repo** to you local workstation and `cd` into it.
-
-3. Continue on to 🌱 [**Stage 2**](#-stage-2-setup-your-local-workstation-environment)
-
-### 🌱 Stage 2: Setup your local workstation
-
-You have two different options for setting up your local workstation.
-
-- First option is using a `devcontainer` which requires you to have Docker and VSCode installed. This method is the fastest to get going because all the required CLI tools are provided for you in my [devcontainer](https://github.com/onedr0p/cluster-template/pkgs/container/cluster-template%2Fdevcontainer) image.
-- The second option is setting up the CLI tools directly on your workstation.
-
-#### Devcontainer method
-
-1. Start Docker and open your repository in VSCode. There will be a pop-up asking you to use the `devcontainer`, click the button to start using it.
-
-2. Continue on to 🔧 [**Stage 3**](#-stage-3-bootstrap-configuration)
-
-#### Non-devcontainer method
-
-1. Install the most recent version of [task](https://taskfile.dev/) and [direnv](https://direnv.net/)
-
-    ```sh
-    # Homebrew
-    brew install direnv go-task
-    # or, Arch
-    pacman -S --noconfirm direnv go-task \
-      && ln -sf /usr/bin/go-task /usr/local/bin/task
-    ```
-
-2. [Hook `direnv` into your preferred shell](https://direnv.net/docs/hook.html), then run:
-
-    ```sh
-    task workstation:direnv
-    ```
-
-    📍 _**Verify** that `direnv` is setup properly by opening a new terminal and `cd`ing into your repository. You should see something like:_
-
-    ```sh
-    cd /path/to/repo
-    direnv: loading ... .envrc
-    direnv: export +VIRTUAL_ENV ... ~PATH
-    ```
-
-3. Install the additional **required** CLI tools
-
-   📍 _**Not using Homebrew or ArchLinux?** Try using the generic Linux task below, if that fails check out the [Brewfile](.taskfiles/workstation/Brewfile)/[Archfile](.taskfiles/workstation/Archfile) for what CLI tools needed and install them._
-
-    ```sh
-    # Homebrew
-    task workstation:brew
-    # or, Arch with yay/paru
-    task workstation:arch
-    # or, Generic Linux (YMMV, this pulls binaires in to ./bin)
-    task workstation:generic-linux
-    ```
-
-4. Setup a Python virual environment by running the following task command.
-
-    📍 _This commands requires Python 3.11+ to be installed._
-
-    ```sh
-    task workstation:venv
-    ```
-
-5. Continue on to 🔧 [**Stage 3**](#-stage-3-bootstrap-configuration)
-
-### 🔧 Stage 3: Bootstrap configuration
-
-> [!NOTE]
-> The [config.sample.yaml](./config.sample.yaml) file contains config that is **vital** to the bootstrap process.
-
-1. Generate the `config.yaml` from the [config.sample.yaml](./config.sample.yaml) configuration file.
-
-    ```sh
-    task init
-    ```
-
-2. Fill out the `config.yaml` configuration file using the comments in that file as a guide.
-
-3. Run the following command which will generate all the files needed to continue.
-
-    ```sh
-    task configure
-    ```
-
-4. Push you changes to git
-
-   📍 _**Verify** all the `./kubernetes/**/*.sops.*` files are **encrypted** with SOPS_
-
-    ```sh
-    git add -A
-    git commit -m "Initial commit :rocket:"
-    git push
-    ```
-
-### ⛵ Stage 4: Install Kubernetes
-
-1. Deploy your cluster and bootstrap it. This generates secrets, generates the config files for your nodes and applies them. It bootstraps the cluster afterwards, fetches the kubeconfig file and installs Cilium and kubelet-csr-approver. It finishes with some health checks.
-
-    ```sh
-    task bootstrap:talos
-    ```
-
-2. ⚠️ It might take a while for the cluster to be setup (10+ minutes is normal), during which time you will see a variety of error messages like: "couldn't get current server API group list," "error: no matching resources found", etc. This is a normal. If this step gets interrupted, e.g. by pressing <kbd>Ctrl</kbd> + <kbd>C</kbd>, you likely will need to [nuke the cluster](#-Nuke) before trying again.
-
-#### Cluster validation
-
-1. The `kubeconfig` for interacting with your cluster should have been created in the root of your repository.
-
-2. Verify the nodes are online
-
-    📍 _If this command **fails** you likely haven't configured `direnv` as [mentioned previously](#non-devcontainer-method) in the guide._
-
-    ```sh
-    kubectl get nodes -o wide
-    # NAME           STATUS   ROLES                       AGE     VERSION
-    # k8s-0          Ready    control-plane,etcd,master   1h      v1.30.1
-    # k8s-1          Ready    worker                      1h      v1.30.1
-    ```
-
-3. Continue on to 🔹 [**Stage 6**](#-stage-6-install-flux-in-your-cluster)
-
-### 🔹 Stage 6: Install Flux in your cluster
-
-1. Verify Flux can be installed
-
-    ```sh
-    flux check --pre
-    # ► checking prerequisites
-    # ✔ kubectl 1.30.1 >=1.18.0-0
-    # ✔ Kubernetes 1.30.1 >=1.16.0-0
-    # ✔ prerequisites checks passed
-    ```
-
-2. Install Flux and sync the cluster to the Git repository
-
-    ```sh
-    task bootstrap:flux
-    # namespace/flux-system configured
-    # customresourcedefinition.apiextensions.k8s.io/alerts.notification.toolkit.fluxcd.io created
-    # ...
-    ```
-
-3. Verify Flux components are running in the cluster
-
-    ```sh
-    kubectl -n flux-system get pods -o wide
-    # NAME                                       READY   STATUS    RESTARTS   AGE
-    # helm-controller-5bbd94c75-89sb4            1/1     Running   0          1h
-    # kustomize-controller-7b67b6b77d-nqc67      1/1     Running   0          1h
-    # notification-controller-7c46575844-k4bvr   1/1     Running   0          1h
-    # source-controller-7d6875bcb4-zqw9f         1/1     Running   0          1h
-    ```
-
-### 🎤 Verification Steps
-
-_Mic check, 1, 2_ - In a few moments applications should be lighting up like Christmas in July 🎄
-
-1. Output all the common resources in your cluster.
-
-    📍 _Feel free to use the provided [kubernetes tasks](.taskfiles/Kubernetes/Taskfile.yaml) for validation of cluster resources or continue to get familiar with the `kubectl` and `flux` CLI tools._
-
-    ```sh
-    task kubernetes:resources
-    ```
-
-2. ⚠️ It might take `cert-manager` awhile to generate certificates, this is normal so be patient.
-
-3. 🏆 **Congratulations** if all goes smooth you will have a Kubernetes cluster managed by Flux and your Git repository is driving the state of your cluster.
-
-4. 🧠 Now it's time to pause and go get some motel motor oil ☕ and admire you made it this far!
-
-## 📣 Flux w/ Cloudflare post installation
-
-#### 🌐 Public DNS
-
-The `external-dns` application created in the `networking` namespace will handle creating public DNS records. By default, `echo-server` and the `flux-webhook` are the only subdomains reachable from the public internet. In order to make additional applications public you must set set the correct ingress class name and ingress annotations like in the HelmRelease for `echo-server`.
-
-#### 🏠 Home DNS
-
-`k8s_gateway` will provide DNS resolution to external Kubernetes resources (i.e. points of entry to the cluster) from any device that uses your home DNS server. For this to work, your home DNS server must be configured to forward DNS queries for `${bootstrap_cloudflare.domain}` to `${bootstrap_cloudflare.gateway_vip}` instead of the upstream DNS server(s) it normally uses. This is a form of **split DNS** (aka split-horizon DNS / conditional forwarding).
-
-> [!TIP]
-> Below is how to configure a Pi-hole for split DNS. Other platforms should be similar.
-> 1. Apply this file on the Pihole server while substituting the variables
-> ```sh
-> # /etc/dnsmasq.d/99-k8s-gateway-forward.conf
-> server=/${bootstrap_cloudflare.domain}/${bootstrap_cloudflare.gateway_vip}
-> ```
-> 2. Restart dnsmasq on the server.
-> 3. Query an internal-only subdomain from your workstation (any `internal` class ingresses): `dig @${home-dns-server-ip} echo-server-internal.${bootstrap_cloudflare.domain}`. It should resolve to `${bootstrap_cloudflare.ingress_vip}`.
-
-If you're having trouble with DNS be sure to check out these two GitHub discussions: [Internal DNS](https://github.com/onedr0p/cluster-template/discussions/719) and [Pod DNS resolution broken](https://github.com/onedr0p/cluster-template/discussions/635).
-
-... Nothing working? That is expected, this is DNS after all!
-
-#### 📜 Certificates
-
-By default this template will deploy a wildcard certificate using the Let's Encrypt **staging environment**, which prevents you from getting rate-limited by the Let's Encrypt production servers if your cluster doesn't deploy properly (for example due to a misconfiguration). Once you are sure you will keep the cluster up for more than a few hours be sure to switch to the production servers as outlined in `config.yaml`.
-
-📍 _You will need a production certificate to reach internet-exposed applications through `cloudflared`._
-
-#### 🪝 Github Webhook
-
-By default Flux will periodically check your git repository for changes. In order to have Flux reconcile on `git push` you must configure Github to send `push` events to Flux.
-
-> [!NOTE]
-> This will only work after you have switched over certificates to the Let's Encrypt Production servers.
-
-1. Obtain the webhook path
-
-    📍 _Hook id and path should look like `/hook/12ebd1e363c641dc3c2e430ecf3cee2b3c7a5ac9e1234506f6f5f3ce1230e123`_
-
-    ```sh
-    kubectl -n flux-system get receiver github-receiver -o jsonpath='{.status.webhookPath}'
-    ```
-
-2. Piece together the full URL with the webhook path appended
-
-    ```text
-    https://flux-webhook.${bootstrap_cloudflare.domain}/hook/12ebd1e363c641dc3c2e430ecf3cee2b3c7a5ac9e1234506f6f5f3ce1230e123
-    ```
-
-3. Navigate to the settings of your repository on Github, under "Settings/Webhooks" press the "Add webhook" button. Fill in the webhook URL and your `bootstrap_github_webhook_token` secret in `config.yaml`, Content type: `application/json`, Events: Choose Just the push event, and save.
-
-## 💥 Reset
-
-There might be a situation where you want to destroy your Kubernetes cluster. The following command will reset your nodes back to maintenance mode, append `--force` to completely format your the Talos installation. Either way the nodes should reboot after the command has run.
-
-```sh
-task talos:reset # --force
+# ⛵ flatops
+
+A GitOps-managed Kubernetes homelab cluster running on [Talos Linux](https://www.talos.dev/).
+
+## 📋 Overview
+
+This repository contains the declarative configuration for **kantai**, a bare-metal Kubernetes cluster. The cluster is designed for home infrastructure workloads with a focus on:
+
+- **GitOps-driven operations** via FluxCD
+- **Secure networking** with Cilium in kube-proxy replacement mode
+- **Distributed storage** using Rook-Ceph
+- **GPU workloads** with NVIDIA GPU Operator
+- **Comprehensive observability** using VictoriaMetrics and Grafana
+- **Continuous integration** via Renovate
+
+## 🏗️ Cluster Architecture
+
+### Nodes
+
+| Node | Role | Hardware |
+|------|------|----------|
+| kantai1 | Hyper-converged control plane and workloads | <ul><li>AMD EPYC 7443P, 64 GiB</li><li>NVIDIA RTX 4000 Ada Generation, 24 GB</li><li>Micron 9300 PRO, 4 TB, x7</li><li>Seagate Exos X20, 18 TB, x15</li><li>NVIDIA ConnectX-5</li><li>LSI 9500-8e</li><li>45Drives HL-15</li></ul> |
+| kantai2 | Virtual arm64 control plane and workloads | <ul><li>Apple M2 Mac Mini, 16 GB (mem), 500 GB (block)</li><li>UTM + QEMU hypervisor</li></ul> |
+| kantai3 | Hyper-converged control plane and workloads | <ul><li>AMD Ryzen Embedded V1500B, 32 GB</li><li>NVIDIA T400, 4 GB</li><li>Seagate Exos X18, 18 TB, x6</li><li>NVIDIA ConnectX-3</li><li>QNAP TS-673A</li></ul> |
+
+### Infrastructure Stack
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                              Applications                               │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Envoy Gateway │ external-dns │ Tailscale │ cert-manager │ Pocket ID    │
+├─────────────────────────────────────────────────────────────────────────┤
+│  VictoriaMetrics │ Grafana │ fluent-bit │ kube-prometheus-stack         │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Rook-Ceph │ OpenEBS ZFS │ Samba │ VolSync → Cloudflare R2              │
+├─────────────────────────────────────────────────────────────────────────┤
+│  CloudNative-PG │ NVIDIA GPU Operator │ Multus CNI                      │
+├─────────────────────────────────────────────────────────────────────────┤
+│  Cilium (kube-proxy replacement, BGP, Network Policies)                 │
+├─────────────────────────────────────────────────────────────────────────┤
+│                        Talos Linux + Kubernetes                         │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
 
-## 🛠️ Talos and Kubernetes Maintenance
+### Network infrastructure
 
-#### ⚙️ Updating Talos node configuration
+**kantai** sits on top of an all-[Ubiquiti](https://ui.com/) network, with a [Hi-Capacity Aggregation](https://store.ui.com/us/en/category/switching-aggregation/products/usw-pro-aggregation) as the TOR and a [Dream Machine Pro](https://store.ui.com/us/en/category/all-cloud-gateways/products/udm-pro) as the gateway/router/firewall. Recent versions of Unifi Network and Unifi OS support [BGP](https://help.ui.com/hc/en-us/articles/16271338193559-UniFi-Border-Gateway-Protocol-BGP), which is used to advertise load balancer addresses and thus provide node-balanced cluster services to the network.
 
-📍 _Ensure you have updated `talconfig.yaml` and any patches with your updated configuration._
+## 🔧 Core Components
 
-```sh
-# (Re)generate the Talos config
-task talos:generate-config
-# Apply the config to the node
-task talos:apply-node HOSTNAME=? MODE=?
-# e.g. task talos:apply-config HOSTNAME=k8s-0 MODE=auto
-```
+### GitOps & Cluster Management
 
-#### ⬆️ Updating Talos and Kubernetes versions
+#### FluxCD
 
-📍 _Ensure the `talosVersion` and `kubernetesVersion` in `talhelper.yaml` are up-to-date with the version you wish to upgrade to._
+The cluster is managed entirely through GitOps using [FluxCD](https://fluxcd.io/). All resources are declared in this repository and automatically reconciled to the cluster. The [Flux Operator](https://fluxcd.control-plane.io/operator/) manages the FluxCD instance.
 
-```sh
-# Upgrade node to a newer Talos version
-task talos:upgrade-node HOSTNAME=?
-# e.g. task talos:upgrade HOSTNAME=k8s-0
-```
+- **Kustomizations** define the desired state of each application
+- **HelmReleases** manage Helm chart deployments
+- **OCIRepositories** pull charts from OCI registries
+- Drift detection ensures cluster state matches Git
 
-```sh
-# Upgrade cluster to a newer Kubernetes version
-task talos:upgrade-k8s
-# e.g. task talos:upgrade-k8s
-```
+#### tuppr
 
-## 🤖 Renovate
+Automated Talos and Kubernetes upgrades are managed by [tuppr](https://github.com/home-operations/tuppr). Upgrade CRDs (`TalosUpgrade`, `KubernetesUpgrade`) define version targets with health checks that ensure VolSync backups complete and Ceph cluster health is OK before proceeding.
 
-[Renovate](https://www.mend.io/renovate) is a tool that automates dependency management. It is designed to scan your repository around the clock and open PRs for out-of-date dependencies it finds. Common dependencies it can discover are Helm charts, container images, GitHub Actions, Ansible roles... even Flux itself! Merging a PR will cause Flux to apply the update to your cluster.
+#### Renovate
 
-To enable Renovate, click the 'Configure' button over at their [Github app page](https://github.com/apps/renovate) and select your repository. Renovate creates a "Dependency Dashboard" as an issue in your repository, giving an overview of the status of all updates. The dashboard has interactive checkboxes that let you do things like advance scheduling or reattempt update PRs you closed without merging.
+This repository is constantly updated using [Renovate](https://docs.renovatebot.com/) and [flux-local](https://github.com/allenporter/flux-local). Minor and patch updates are applied automatically while major releases require human approval.
 
-The base Renovate configuration in your repository can be viewed at [.github/renovate.json5](./.github/renovate.json5). By default it is scheduled to be active with PRs every weekend, but you can [change the schedule to anything you want](https://docs.renovatebot.com/presets-schedule), or remove it if you want Renovate to open PRs right away.
+### Networking
 
-## 🐛 Debugging
+#### Cilium
 
-Below is a general guide on trying to debug an issue with an resource or application. For example, if a workload/resource is not showing up or a pod has started but in a `CrashLoopBackOff` or `Pending` state.
+[Cilium](https://cilium.io/) serves as the CNI in **kube-proxy replacement mode**, providing:
 
-1. Start by checking all Flux Kustomizations & Git Repository & OCI Repository and verify they are healthy.
+- **eBPF-based networking** with native routing
+- **BGP Control Plane** for advertising service IPs to the network with load-balancing
+- **Network Policies** for pod-level traffic control
+- **Bandwidth Manager** with BBR congestion control
+- **IPv4/IPv6 dual-stack** with BIG TCP support
 
-    ```sh
-    flux get sources oci -A
-    flux get sources git -A
-    flux get ks -A
-    ```
+#### Envoy Gateway
 
-2. Then check all the Flux Helm Releases and verify they are healthy.
+[Envoy Gateway](https://gateway.envoyproxy.io/) implements the Kubernetes Gateway API for HTTP/HTTPS routes and load balancing. It provides the primary entry points for cluster services.
 
-    ```sh
-    flux get hr -A
-    ```
+#### external-dns
 
-3. Then check the if the pod is present.
+[external-dns](https://github.com/kubernetes-sigs/external-dns) automatically manages DNS records for services:
 
-    ```sh
-    kubectl -n <namespace> get pods -o wide
-    ```
+- **Cloudflare** for public DNS
+- **UniFi** for internal DNS
 
-4. Then check the logs of the pod if its there.
+#### Tailscale
 
-    ```sh
-    kubectl -n <namespace> logs <pod-name> -f
-    # or
-    stern -n <namespace> <fuzzy-name>
-    ```
+The [Tailscale Operator](https://tailscale.com/kubernetes-operator) provides secure remote access to cluster services via a mesh VPN, including API server proxy functionality.
 
-5. If a resource exists try to describe it to see what problems it might have.
+#### Multus
 
-    ```sh
-    kubectl -n <namespace> describe <resource> <name>
-    ```
+[Multus CNI](https://github.com/k8snetworkplumbingwg/multus-cni) enables attaching multiple network interfaces to pods. Used for workloads requiring direct LAN access via macvlan interfaces with dual-stack networking support.
 
-6. Check the namespace events
+### Secrets Management
 
-    ```sh
-    kubectl -n <namespace> get events --sort-by='.metadata.creationTimestamp'
-    ```
+#### external-secrets + 1Password
 
-Resolving problems that you have could take some tweaking of your YAML manifests in order to get things working, other times it could be a external factor like permissions on NFS. If you are unable to figure out your problem see the help section below.
+[external-secrets](https://external-secrets.io/) synchronizes secrets from 1Password into Kubernetes using the 1Password Connect server. A `ClusterSecretStore` provides cluster-wide access to secrets.
 
-## 👉 Help
+### Certificate Management
 
-- Make a post in this repository's Github [Discussions](https://github.com/onedr0p/cluster-template/discussions).
-- Start a thread in the `#support` or `#cluster-template` channels in the [Home Operations](https://discord.gg/home-operations) Discord server.
+#### cert-manager + trust-manager
 
-## ❔ What's next
+[cert-manager](https://cert-manager.io/) automates certificate lifecycle management:
 
-The cluster is your oyster (or something like that). Below are some optional considerations you might want to review.
+- ACME (Let's Encrypt) certificates for public services
+- Internal CA for cluster services
+- [trust-manager](https://cert-manager.io/docs/trust-manager/) distributes CA bundles across namespaces
 
-### Ship it
+### Identity & Authentication
 
-To browse or get ideas on applications people are running, community member [@whazor](https://github.com/whazor) created [Kubesearch](https://kubesearch.dev) as a creative way to search Flux HelmReleases across Github and Gitlab.
+#### Pocket ID
 
-### DNS
+[Pocket ID](https://github.com/pocket-id/pocket-id) serves as the in-cluster OIDC provider, enabling:
 
-Instead of using [k8s_gateway](https://github.com/ori-edge/k8s_gateway) to provide DNS for your applications you might want to check out [external-dns](https://github.com/kubernetes-sigs/external-dns), it has wide support for many different providers such as [Pi-hole](https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/pihole.md), [UniFi](https://github.com/kashalls/external-dns-unifi-webhook), [Adguard Home](https://github.com/muhlba91/external-dns-provider-adguard), [Bind](https://github.com/kubernetes-sigs/external-dns/blob/master/docs/tutorials/rfc2136.md) and more.
+- Kubernetes API server OIDC authentication
+- OAuth2 authentication for cluster services via Envoy Gateway
+- Centralized identity management for applications
 
 ### Storage
 
-The included CSI (openebs in local-hostpath mode) is a great start for storage but soon you might find you need more features like replicated block storage, or to connect to a NFS/SMB/iSCSI server. If you need any of those features be sure to check out the projects like [rook-ceph](https://github.com/rook/rook), [longhorn](https://github.com/longhorn/longhorn), [openebs](https://github.com/openebs/openebs), [democratic-csi](https://github.com/democratic-csi/democratic-csi), [csi-driver-nfs](https://github.com/kubernetes-csi/csi-driver-nfs),
-and [synology-csi](https://github.com/SynologyOpenSource/synology-csi).
+#### Rook-Ceph
 
-## 🙌 Related Projects
+[Rook-Ceph](https://rook.io/) provides distributed storage across the cluster:
 
-If this repo is too hot to handle or too cold to hold check out these following projects.
+- **Block Storage** (`ceph-block`) - Default storage class with 3-way replication, LZ4 compression
+- **Object Storage** (`ceph-bucket`) - S3-compatible storage with erasure coding (2+1)
+- **Dashboard** exposed via Envoy Gateway
+- Encrypted OSDs for data-at-rest security
 
-- [ajaykumar4/cluster-template](https://github.com/ajaykumar4/cluster-template) - _A template for deploying a Talos Kubernetes cluster including Argo for GitOps_
-- [khuedoan/homelab](https://github.com/khuedoan/homelab) - _Fully automated homelab from empty disk to running services with a single command._
-- [ricsanfre/pi-cluster](https://github.com/ricsanfre/pi-cluster) - _Pi Kubernetes Cluster. Homelab kubernetes cluster automated with Ansible and FluxCD_
-- [techno-tim/k3s-ansible](https://github.com/techno-tim/k3s-ansible) - _The easiest way to bootstrap a self-hosted High Availability Kubernetes cluster. A fully automated HA k3s etcd install with kube-vip, MetalLB, and more. Build. Destroy. Repeat._
+#### OpenEBS ZFS
 
-## ⭐ Stargazers
+[OpenEBS ZFS LocalPV](https://openebs.io/) exposes existing ZFS pools on nodes as Kubernetes storage:
 
-<div align="center">
+- Provides access to large media and data pools
+- Supports ZFS features (compression, snapshots, datasets)
+- Used for workloads requiring high-capacity local storage
 
-[![Star History Chart](https://api.star-history.com/svg?repos=onedr0p/cluster-template&type=Date)](https://star-history.com/#onedr0p/cluster-template&Date)
+#### Samba
 
-</div>
+Samba deployments on storage nodes share ZFS-backed volumes to the local network via SMB, enabling access to cluster-managed data from non-Kubernetes clients.
 
-## 🤝 Thanks
+#### VolSync + Kopia
 
-Big shout out to all the contributors, sponsors and everyone else who has helped on this project.
+[VolSync](https://volsync.readthedocs.io/) backs up persistent volumes to **Cloudflare R2** using Kopia:
+
+- Daily snapshots with 7 daily, 4 weekly, 12 monthly retention
+- Clone-based backups (no application downtime)
+- Zstd compression for efficient storage
+
+### Database
+
+#### CloudNative-PG
+
+[CloudNative-PG](https://cloudnative-pg.io/) manages PostgreSQL clusters for applications:
+
+- PostgreSQL 18 with **vchord** vector extensions for AI/ML workloads
+- WAL archiving via barman-cloud plugin
+- Automated backups and point-in-time recovery
+
+### GPU Compute
+
+#### NVIDIA GPU Operator
+
+The [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/) enables GPU workloads:
+
+- Automatic container toolkit management
+- CDI (Container Device Interface) support
+- Time-slicing for GPU sharing
+- DCGM metrics for monitoring
+
+### Observability
+
+#### Metrics: VictoriaMetrics
+
+The [VictoriaMetrics Operator](https://docs.victoriametrics.com/operator/) manages the metrics stack:
+
+- **VMSingle** for metrics storage (12-week retention on Ceph block storage)
+- **VMAgent** for metric collection
+- **VMAlert** + **VMAlertmanager** for alerting
+- OpenTelemetry integration with Prometheus naming
+
+#### Dashboards: Grafana Operator
+
+The [Grafana Operator](https://grafana.github.io/grafana-operator/) manages Grafana instances and dashboards:
+
+- Declarative dashboard management via `GrafanaDashboard` CRDs
+- Automated datasource configuration
+- Integrated with VictoriaMetrics
+
+#### Logs: fluent-bit
+
+[fluent-bit](https://fluentbit.io/) collects container logs from all nodes, running as a DaemonSet in the observability-agents namespace.
+
+#### kube-prometheus-stack
+
+The [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack) provides:
+
+- ServiceMonitors for Kubernetes components (API server, kubelet, etcd, scheduler, controller-manager)
+- kube-state-metrics for resource metrics
+- Dashboards via Grafana Operator integration
+
+> **Note:** Prometheus and Alertmanager from this stack are disabled in favor of VictoriaMetrics. The stack is primarily used for its comprehensive ServiceMonitor definitions and dashboards.
+
+## 📁 Repository Structure
+
+```
+├── kubernetes/                  # Kubernetes resources
+│   ├── apps/                    # Deployments by namespace
+│   │   ├── cert-manager/
+│   │   ├── cnpg-system/
+│   │   ├── database/            # Databases (postgres, influxdb)
+│   │   ├── default/             # Most applications
+│   │   ├── external-secrets/
+│   │   ├── flux-system/
+│   │   ├── gpu-operator/        # NVIDIA GPU operator
+│   │   ├── kube-system/         # Core infrastructure (Cilium, CoreDNS, etc.)
+│   │   ├── network/             # Networking (Envoy Gateway, external-dns, etc.)
+│   │   ├── observability/       # Observability stack
+│   │   ├── observability-agents/# Privileged observability agents
+│   │   ├── openebs-system/
+│   │   ├── rook-ceph/
+│   │   ├── storage/             # Samba
+│   │   ├── tailscale/
+│   │   ├── talos-admin/         # Talos management (backups, tuppr)
+│   │   └── volsync-system/
+│   ├── components/              # Reusable Kustomize components
+│   └── transformers/            # Global Kustomize transformers
+├── talos/                       # Talos configuration
+└── Taskfile.yaml                # Task runner commands
+```
+
+## 🚀 Getting Started
+
+### Bootstrap
+
+Bootstrap is currently broken and unusable. I love my pets.
+
+### Maintenance
+
+**Update Talos node configuration:**
+
+```sh
+task talos:gen-mc
+task talos:apply-mc
+```
+
+## 🔒 Security
+
+- **Talos Linux** provides an immutable, minimal OS with no SSH access
+- **Secure Boot** enabled on supported nodes with TPM-backed disk encryption
+- **Pod Security Standards** enforced via ValidatingAdmissionPolicies
+- **Network Policies** via Cilium restrict pod-to-pod traffic
+- **OIDC authentication** for Kubernetes API via Pocket ID
+
+## 📊 Monitoring
+
+Lots of dashboards available on the on-cluster Grafana instance. Alerts go out to Discord.
+
+## 🙏 Acknowledgments
+
+- This cluster originally started from [onedr0p/cluster-template](https://github.com/onedr0p/cluster-template), which is absolutely amazing. It makes running Kubernetes at home easy.
+- The [Home Operations](https://discord.gg/home-operations) community is amazing as well and will help you. Please join us.
+- [Sidero Labs](https://www.siderolabs.com/) for creating an amazing Kubernetes-native system.
+- All the Kubernetes SIG groups for maintaining and evolving the world's open, extensible, at-scale resources and workloads orchestration system.
