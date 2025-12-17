@@ -1,3 +1,0 @@
----
-spegel:
-  containerdRegistryConfigPath: /etc/cri/conf.d/hosts
