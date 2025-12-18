@@ -19,5 +19,9 @@ spec:
     url: http://vmsingle-kantai.observability.svc:8429
   replicaCount: 1
   selectAllByDefault: true
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
   useDefaultResources: false
   useStrictSecurity: true

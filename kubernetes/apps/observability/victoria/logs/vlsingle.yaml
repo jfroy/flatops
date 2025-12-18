@@ -11,5 +11,9 @@ spec:
       requests:
         storage: 10Gi
     storageClassName: ceph-block
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
   useDefaultResources: false
   useStrictSecurity: true

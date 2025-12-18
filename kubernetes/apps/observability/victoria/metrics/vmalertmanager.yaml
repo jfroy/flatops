@@ -15,3 +15,7 @@ spec:
         resources:
           requests:
             storage: 1Gi
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule
