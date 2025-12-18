@@ -395,7 +395,7 @@ controlPlane:
       cluster:
         apiServer:
           extraArgs:
-            feature-gates: DRAPartitionableDevices=true,ImageVolume=true,ResourceHealthStatus=true,UserNamespacesSupport=true,UserNamespacesPodSecurityStandards=true
+            feature-gates: DRAPartitionableDevices=true,ImageVolume=true,ResourceHealthStatus=true,UserNamespacesSupport=true
         controllerManager:
           extraArgs:
             feature-gates:
@@ -408,7 +408,6 @@ controlPlane:
             featureGates:
               ImageVolume: true
               UserNamespacesSupport: true
-              UserNamespacesPodSecurityStandards: true
 
     # Enable K8s Talos API Access
     - |-
