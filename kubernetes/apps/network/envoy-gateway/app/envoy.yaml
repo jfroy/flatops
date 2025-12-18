@@ -25,12 +25,24 @@ spec:
           affinity:
             nodeAffinity:
               preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 100
-                preference:
-                  matchExpressions:
-                  - key: feature.node.kubernetes.io/network-25G
-                    operator: In
-                    values: ["true"]
+                - weight: 100
+                  preference:
+                    matchExpressions:
+                      - key: feature.node.kubernetes.io/network-25G
+                        operator: In
+                        values: ["true"]
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    topologyKey: kubernetes.io/hostname
+                    labelSelector:
+                      matchLabels:
+                        app.kubernetes.io/name: envoy
+                        app.kubernetes.io/component: proxy
+                        app.kubernetes.io/managed-by: envoy-gateway
+                    matchLabelKeys:
+                      - gateway.networking.k8s.io/gateway-name
           tolerations:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
