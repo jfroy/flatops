@@ -21,6 +21,13 @@ spec:
               cpu: 100m
             limits:
               memory: 1Gi
+        pod:
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+      envoyPDB:
+        minAvailable: 1
       envoyService:
         externalTrafficPolicy: Local
   shutdown:

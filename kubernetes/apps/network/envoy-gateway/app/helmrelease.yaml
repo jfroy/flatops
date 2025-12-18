@@ -46,3 +46,8 @@ spec:
           kubernetes:
             deploy:
               type: GatewayNamespace
+    deployment:
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
