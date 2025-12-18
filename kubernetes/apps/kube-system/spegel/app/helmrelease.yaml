@@ -34,11 +34,7 @@ spec:
       retries: 3
   values:
     grafanaDashboard:
-      enabled: true
-      mode: GrafanaOperator
-      grafanaOperator:
-        matchLabels:
-          grafana.internal/instance: grafana
+      enabled: false
     service:
       registry:
         hostPort: 29999
