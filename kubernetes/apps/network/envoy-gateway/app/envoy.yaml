@@ -13,7 +13,7 @@ spec:
     type: Kubernetes
     kubernetes:
       envoyDeployment:
-        replicas: 1
+        replicas: 2
         container:
           imageRepository: mirror.gcr.io/envoyproxy/envoy
           resources:
@@ -22,6 +22,15 @@ spec:
             limits:
               memory: 1Gi
         pod:
+          affinity:
+            nodeAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                preference:
+                  matchExpressions:
+                  - key: feature.node.kubernetes.io/network-25G
+                    operator: In
+                    values: ["true"]
           tolerations:
             - key: node-role.kubernetes.io/control-plane
               operator: Exists
