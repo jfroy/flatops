@@ -395,18 +395,24 @@ controlPlane:
       cluster:
         apiServer:
           extraArgs:
-            feature-gates: DRAPartitionableDevices=true,ImageVolume=true,ResourceHealthStatus=true,UserNamespacesSupport=true
+            feature-gates: DRAPartitionableDevices=true,GangScheduling=true,GenericWorkload=true,ImageVolume=true,PodCertificateRequest=true,ResourceHealthStatus=true,UserNamespacesSupport=true
+            runtime-config: certificates.k8s.io/v1beta1/podcertificaterequests=true,scheduling.k8s.io/v1alpha1=true
         controllerManager:
           extraArgs:
-            feature-gates:
+            feature-gates: DRAPartitionableDevices=true,GangScheduling=true,GenericWorkload=true,ImageVolume=true,PodCertificateRequest=true,ResourceHealthStatus=true,UserNamespacesSupport=true
         scheduler:
           extraArgs:
-            feature-gates: DRAPartitionableDevices=true
+            feature-gates: DRAPartitionableDevices=true,GangScheduling=true,GenericWorkload=true,ImageVolume=true,PodCertificateRequest=true,ResourceHealthStatus=true,UserNamespacesSupport=true
       machine:
         kubelet:
           extraConfig:
             featureGates:
+              DRAPartitionableDevices: true
+              GangScheduling: true
+              GenericWorkload: true
               ImageVolume: true
+              PodCertificateRequest: true
+              ResourceHealthStatus: true
               UserNamespacesSupport: true
 
     # Enable K8s Talos API Access
