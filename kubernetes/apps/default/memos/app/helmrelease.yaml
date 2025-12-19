@@ -72,26 +72,24 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /var/opt/memos
-    route: {}
-      # FIXME(jfroy): switch to chart route when header matching is supported
-      # memos:
-      #   hostnames:
-      #     - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
-      #   parentRefs:
-      #     - name: internal
-      #       namespace: kube-system
-      #   rules:
-      #     - backendRefs:
-      #         - identifier: app
-      #           port: 5230
-      #     - backendRefs:
-      #         - identifier: grpc
-      #           port: 5230
-      #       matches:
-      #         - headers:
-      #             - type: Exact
-      #               name: Content-Type
-      #               value: "application/grpc-web+proto"
+    route:
+      memos:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: grpc
+                port: 5230
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /memos.api.v1
+          - backendRefs:
+              - identifier: app
+                port: 5230
     service:
       app:
         controller: memos
