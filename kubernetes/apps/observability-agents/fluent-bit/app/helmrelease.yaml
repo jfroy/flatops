@@ -43,6 +43,10 @@ spec:
           http_listen 0.0.0.0
           http_port {{ .Values.metricsPort }}
           health_check on
+          storage.path /var/fluent-bit
+          storage.sync normal
+          storage.checksum off
+          storage.backlog.mem_limit 5M
 
       inputs: |-
         [INPUT]
@@ -53,6 +57,7 @@ spec:
           tag kubernetes.*
           skip_empty_lines on
           skip_long_lines on
+          storage.type filesystem
 
       filters: |-
         [FILTER]
@@ -112,6 +117,28 @@ spec:
           json_date_format iso8601
           compress gzip
           log_response_payload false
+          retry_limit false
+          storage.total_limit_size 1G
+    daemonSetVolumes:
+      - name: etcmachineid
+        hostPath:
+          path: /etc/machine-id
+          type: File
+      - name: varflb
+        hostPath:
+          path: /var/fluent-bit
+          type: DirectoryOrCreate
+      - name: varlog
+        hostPath:
+          path: /var/log
+    daemonSetVolumeMounts:
+      - name: etcmachineid
+        mountPath: /etc/machine-id
+        readOnly: true
+      - name: varflb
+        mountPath: /var/fluent-bit
+      - name: varlog
+        mountPath: /var/log
     dashboards:
       enabled: true
     image:
