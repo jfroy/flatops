@@ -43,3 +43,5 @@ spec:
     spegel:
       containerdSock: /run/containerd/containerd.sock
       containerdRegistryConfigPath: /etc/cri/conf.d/hosts
+      registryFilters:
+        - ".*:latest$"
