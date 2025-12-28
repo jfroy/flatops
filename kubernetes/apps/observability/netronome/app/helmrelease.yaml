@@ -58,6 +58,11 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
+    configMaps:
+      dockerenv:
+        suffix: dockerenv
+        data:
+          dockerenv: ""
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -66,6 +71,12 @@ spec:
     persistence:
       data:
         existingClaim: "${APP}"
+      dockerenv:
+        type: configMap
+        identifier: dockerenv
+        globalMounts:
+          - path: /.dockerenv
+            subPath: dockerenv
       download-geoip:
         type: configMap
         name: netronome-download-geoip
