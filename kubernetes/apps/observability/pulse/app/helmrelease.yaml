@@ -39,6 +39,10 @@ spec:
       existingClaim: "${APP}"
     server:
       env:
+        - name: PUBLIC_URL
+          value:
+        - name: PULSE_AUTH_HIDE_LOCAL_LOGIN
+          value: "true"
         - name: TZ
           value: America/Los_Angeles
     monitoring:
