@@ -29,6 +29,7 @@ spec:
               tag: 0.17.0@sha256:31efe52431f576d09608bafc0c1f669629473a42739625d9238461eceeec6ced
             env:
               APP_URL: https://beszel.kantai.xyz
+              DISABLE_PASSWORD_AUTH: "true"
               PORT: &port 8090
               TZ: America/Los_Angeles
             probes:
