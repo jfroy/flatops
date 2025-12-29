@@ -17,7 +17,7 @@ resources:
   - ./kube-prometheus-stack/ks.yaml
   - ./netronome/ks.yaml
   - ./nut-exporter/ks.yaml
-  - ./pulse/ks.yaml
+  # - ./pulse/ks.yaml
   - ./prometheus-operator-crds/ks.yaml
   - ./robusta/ks.yaml
   - ./silence-operator/ks.yaml
