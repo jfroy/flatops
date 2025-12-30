@@ -13,7 +13,6 @@ resources:
   - ./esphome-device-builder/ks.yaml
   # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
-  # - ./gomft/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
   - ./immich/ks.yaml
