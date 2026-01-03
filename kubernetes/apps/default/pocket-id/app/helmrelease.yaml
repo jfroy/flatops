@@ -26,7 +26,7 @@ spec:
           pocket-id:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v1.16.0@sha256:f8cde808e8e840acda25683fc2168e0206e3f3fb1a48cca89d211aafd87eaeef
+              tag: v2.0.1@sha256:83654984afb7eb7bd3d877a578966ed8e58a2b4cd83459af808edf4b76305336
             env:
               APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
               DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
