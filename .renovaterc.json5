@@ -3,14 +3,13 @@
   extends: [
     "config:recommended",
     "docker:enableMajor",
-    // TODO: re-enable automerge after holidays
-    // ":automergeBranch",
-    // ":automergeMinor",
+    ":automergeBranch",
+    ":automergeMinor",
     ":dependencyDashboard",
     ":disableRateLimiting",
     ":semanticCommits",
     ":timezone(America/Los_Angeles)",
-    // "github>jfroy/flatops//.renovate/autoMerge.json5",
+    "github>jfroy/flatops//.renovate/autoMerge.json5",
     "github>jfroy/flatops//.renovate/changelogs.json5",
     "github>jfroy/flatops//.renovate/customManagers.json5",
     "github>jfroy/flatops//.renovate/grafanaDashboards.json5",
