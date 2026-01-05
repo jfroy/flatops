@@ -26,17 +26,24 @@ spec:
           pocket-id:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: v1.16.0@sha256:f8cde808e8e840acda25683fc2168e0206e3f3fb1a48cca89d211aafd87eaeef
+              tag: v2.1.0@sha256:f8ed26e8012ae60d5320735dcdecf7347778e2a31c69a147f5c030e017cb32d9
             env:
+              ANALYTICS_DISABLED: "true"
               APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
               DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
-              KEYS_PATH: /data/keys
+              GEOLITE_DB_PATH: /data/GeoLite2-City.mmdb
               METRICS_ENABLED: "true"
-              OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy-cluster.observability.svc.cluster.local:4317
-              OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+              OTEL_EXPORTER_OTLP_METRICS_COMPRESSION: gzip
+              OTEL_EXPORTER_OTLP_METRICS_ENDPOINT: http://vmagent-kantai.observability.svc.cluster.local:8429/opentelemetry/v1/metrics
+              OTEL_EXPORTER_OTLP_METRICS_PROTOCOL: http/protobuf
               TRUST_PROXY: true
               TZ: America/Los_Angeles
               UPLOAD_PATH: /data/uploads
+            envFrom:
+              - secretRef:
+                  name: pocket-id
+              - secretRef:
+                  name: pocket-id-keys
             probes:
               liveness:
                 enabled: true
