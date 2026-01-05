@@ -20,13 +20,6 @@ spec:
     remediation:
       retries: 3
   values:
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
     controllers:
       homebox:
         annotations:
@@ -38,7 +31,7 @@ spec:
               tag: 18.1.0@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
             envFrom:
               - secretRef:
-                  name: homebox
+                  name: homebox-db
               - secretRef:
                   name: homebox-initdb
         containers:
@@ -52,15 +45,31 @@ spec:
               HBOX_DATABASE_SSL_MODE: disable
               HBOX_LOG_FORMAT: json
               HBOX_LOG_LEVEL: info
+              HBOX_OIDC_ISSUER_URL: https://pid.kantai.xyz
+              HBOX_OIDC_BUTTON_TEXT: "Sign in with Pocket ID"
+              HBOX_OPTIONS_TRUST_PROXY: "true"
+              HBOX_OPTIONS_GITHUB_RELEASE_CHECK: "false"
+              HBOX_OPTIONS_ALLOW_LOCAL_LOGIN: "false"
+              HBOX_OIDC_ENABLED: "true"
+              HBOX_OPTIONS_HOSTNAME: homebox.kantai.xyz
               HBOX_WEB_PORT: &port "7745"
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
                   name: homebox
+              - secretRef:
+                  name: homebox-db
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
       data:
         existingClaim: ${APP}
@@ -72,7 +81,7 @@ spec:
     route:
       homebox:
         hostnames:
-          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+          - homebox.kantai.xyz
         parentRefs:
           - name: envoy-internal
             namespace: network
