@@ -8,7 +8,6 @@ resources:
   - ./echo/ks.yaml
   - ./envoy-gateway/ks.yaml
   - ./external-dns/ks.yaml
-  # - ./k8s-gateway/ks.yaml
   # - ./oauth2-proxy/ks.yaml
   - ./openspeedtest/ks.yaml
 components:
