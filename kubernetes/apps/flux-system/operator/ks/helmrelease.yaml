@@ -38,9 +38,26 @@ spec:
   values:
     resources:
       limits: null
+    serviceMonitor:
+      create: true
     tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
         effect: NoSchedule
-    serviceMonitor:
-      create: true
+    web:
+      config:
+        baseURL: "https://flux.kantai.xyz"
+        authentication:
+          type: OAuth2
+          oauth2:
+            provider: OIDC
+            issuerURL: "https://pid.kantai.xyz"
+  valuesFrom:
+    - kind: Secret
+      name: flux-web-oidc
+      valuesKey: client-id
+      targetPath: web.config.authentication.oauth2.clientID
+    - kind: Secret
+      name: flux-web-oidc
+      valuesKey: client-secret
+      targetPath: web.config.authentication.oauth2.clientSecret
