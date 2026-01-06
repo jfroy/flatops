@@ -46,14 +46,21 @@ spec:
               - containerPort: *saisPort
                 name: http
             probes:
-              liveness: &probe
+              liveness:
                 enabled: true
                 custom: true
                 spec:
-                  httpGet:
-                    path: /
-                    port: http
-              readiness: *probe
+                  exec:
+                    command:
+                      - /bin/sh
+                      - -ec
+                      - |
+                        python3 - <<'PY'
+                        import json, sys, urllib.request
+                        data = urllib.request.urlopen("http://127.0.0.1:4153/api/v1/system/health", timeout=1).read()
+                        j = json.loads(data)
+                        sys.exit(0 if j.get("status") == "ok" else 1)
+                        PY
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
