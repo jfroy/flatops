@@ -28,7 +28,7 @@ spec:
           sais:
             image:
               repository: ghcr.io/skier233/stash-ai-server
-              tag: 0.9.0
+              tag: 0.9.1
             env:
               AI_SERVER_DATA_DIR: /app/data
               AI_SERVER_HOST: 0.0.0.0
