@@ -40,6 +40,8 @@ spec:
             envFrom:
               - secretRef:
                   name: sais
+              - secretRef:
+                  name: sais-db
             ports:
               - containerPort: *saisPort
                 name: http
@@ -93,6 +95,15 @@ spec:
                 nvidia.com/gpu: 1
             workingDir: /config
         initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.1.0@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
+            envFrom:
+              - secretRef:
+                  name: sais-db
+              - secretRef:
+                  name: sais-initdb
           install-plugins:
             image:
               repository: ghcr.io/instrumentisto/rsync-ssh
