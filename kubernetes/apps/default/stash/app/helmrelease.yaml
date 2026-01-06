@@ -35,7 +35,7 @@ spec:
               AI_SERVER_PORT: &saisPort 4153
               AI_SERVER_PLUGINS_DIR: /app/plugins
               STASH_DB_PATH: /stash/stash-go.sqlite
-              STASH_URL: http://stash.default.svc.cluster.local:9999
+              STASH_URL: http://localhost:9999 # NOTE: if the service url is used, stashapi gets EPERM on connect; netpols?
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
@@ -73,6 +73,7 @@ spec:
               STASH_CONFIG_FILE: /config/config.yml
               STASH_DATABASE: /config/stash-go.sqlite
               STASH_GENERATED: /generated
+              STASH_HW_TEST_TIMEOUT: "2"
               STASH_PLUGINS_PATH: /plugins
               STASH_PORT: &port 9999
               STASH_SCRAPERS_PATH: /scrapers
