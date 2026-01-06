@@ -95,15 +95,6 @@ spec:
                 nvidia.com/gpu: 1
             workingDir: /config
         initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.1.0@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
-            envFrom:
-              - secretRef:
-                  name: sais-db
-              - secretRef:
-                  name: sais-initdb
           install-plugins:
             image:
               repository: ghcr.io/instrumentisto/rsync-ssh
@@ -136,6 +127,15 @@ spec:
               limits:
                 nvidia.com/gpu: 1
             restartPolicy: Always
+          sais-initdb:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.1.0@sha256:866f15038ed5185a2b8118821f470bb7ca0df8c4231b8e277446e681ebb1ed84
+            envFrom:
+              - secretRef:
+                  name: sais-db
+              - secretRef:
+                  name: sais-initdb
         pod:
           hostname: stash
           nodeSelector:
@@ -150,30 +150,13 @@ spec:
             supplementalGroups: [4000]
     configMaps:
       dockerenv:
-        suffix: dockerenv
         data:
           dockerenv: ""
+      sais-initdb:
+        data:
+          sais.sql: |
+            CREATE EXTENSION IF NOT EXISTS "vector";
     persistence:
-      sais-data:
-        type: persistentVolumeClaim
-        storageClass: ceph-block
-        accessMode: ReadWriteOnce
-        retain: true
-        size: 1Gi
-        advancedMounts:
-          stash:
-            sais:
-              - path: /app/data
-                subPath: data
-              - path: /app/plugins
-                subPath: plugins
-      sais-plugin:
-        type: image
-        image: registry.kantai.xyz/sais-frontend:0.5.0b2@sha256:eac1c7c1aee019231211b03824eabc824fe6808e9c5009c78b84279d604ae6b6
-        advancedMounts:
-          stash:
-            install-plugins:
-              - path: /install/AIOverhaul
       cache:
         type: emptyDir
         advancedMounts:
@@ -237,6 +220,33 @@ spec:
               - path: /plugins
             stash:
               - path: /plugins
+      sais-data:
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        retain: true
+        size: 1Gi
+        advancedMounts:
+          stash:
+            sais:
+              - path: /app/data
+                subPath: data
+              - path: /app/plugins
+                subPath: plugins
+      sais-initdb:
+        type: configMap
+        identifier: sais-initdb
+        advancedMounts:
+          stash:
+            sais-initdb:
+              - path: /initdb
+      sais-plugin:
+        type: image
+        image: registry.kantai.xyz/sais-frontend:0.5.0b2@sha256:eac1c7c1aee019231211b03824eabc824fe6808e9c5009c78b84279d604ae6b6
+        advancedMounts:
+          stash:
+            install-plugins:
+              - path: /install/AIOverhaul
       scrapers:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
