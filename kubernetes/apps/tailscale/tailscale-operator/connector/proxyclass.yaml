@@ -9,7 +9,7 @@ spec:
       tailscaleContainer:
         env:
           - name: TS_DEBUG_MTU
-            value: "1350"
+            value: "1280"
         resources:
           limits:
             kernel.org/tun: 1
