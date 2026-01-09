@@ -27,6 +27,7 @@ resources:
   - ./open-webui/ks.yaml
   - ./paperless/ks.yaml
   - ./pgadmin/ks.yaml
+  - ./photon/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
