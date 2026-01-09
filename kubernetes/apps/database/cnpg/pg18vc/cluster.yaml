@@ -6,7 +6,8 @@ metadata:
   name: pg18vc
 spec:
   instances: 1
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.0-standard-trixie
+  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.1-standard-trixie
   storage:
     size: 100Gi
     storageClass: openebs-hostpath
@@ -21,9 +22,16 @@ spec:
         serverName: pg18vc-v1
   postgresql:
     extensions:
+      - name: postgis
+        image:
+          # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgis-extension
+          reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.1-18-trixie
+        ld_library_path:
+          - system
       - name: vchord
         image:
-          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v0.5.3@sha256:c310ede47f7f82bd257c3e53806d60680d5899c318ca946fb313efad9a90a78e
+          # renovate: datasource=docker depName=ghcr.io/tensorchord/vchord-scratch
+          reference: ghcr.io/tensorchord/vchord-scratch:pg18-v1.0.0
         dynamic_library_path:
           - /usr/lib/postgresql/18/lib/
         extension_control_path:
@@ -33,22 +41,5 @@ spec:
       shared_buffers: 64MB
     shared_preload_libraries:
       - vchord
-  # externalClusters:
-  #   - name: pg17vc
-  #     connectionParameters:
-  #       host: pg17vc-rw.database.svc.cluster.local
-  #       user: postgres
-  #     password:
-  #       name: pg17vc-superuser-secret
-  #       key: password
   bootstrap:
-    initdb:
-      {}
-      # import:
-      #   type: monolith
-      #   databases:
-      #     - "*"
-      #   roles:
-      #     - "*"
-      #   source:
-      #     externalCluster: pg17vc
+    initdb: {}
