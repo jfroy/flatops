@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app photon
+  name: photon
 spec:
   interval: 1h
   chartRef:
@@ -13,10 +13,12 @@ spec:
   driftDetection:
     mode: enabled
   install:
+    disableWait: true
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
+    disableWait: true
     remediation:
       retries: 3
   values:
@@ -74,3 +76,15 @@ spec:
         ports:
           http:
             port: 2322
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: photon
+            patch: |
+              - op: add
+                path: /spec/progressDeadlineSeconds
+                value: 7200
