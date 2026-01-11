@@ -303,13 +303,13 @@ patches:
 
   # Use GCR mirror for Docker Hub
   # NOTE: Incompatible with Spegel, remove once Spegel can be used again.
-  - |-
-    machine:
-      registries:
-        mirrors:
-          docker.io:
-            endpoints:
-              - https://mirror.gcr.io
+  # - |-
+  #   machine:
+  #     registries:
+  #       mirrors:
+  #         docker.io:
+  #           endpoints:
+  #             - https://mirror.gcr.io
 
   # containerd config
   # - discard_unpacked_layers (spegel, https://spegel.dev/docs/getting-started/#talos)
