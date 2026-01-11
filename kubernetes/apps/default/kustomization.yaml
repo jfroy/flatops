@@ -8,6 +8,7 @@ resources:
   # - ./bookshelf/ks.yaml
   - ./buildkit/ks.yaml
   - ./changedetection/ks.yaml
+  - ./dawarich/ks.yaml
   - ./docker-registry-ui/ks.yaml
   # - ./docling/ks.yaml
   - ./esphome-device-builder/ks.yaml
