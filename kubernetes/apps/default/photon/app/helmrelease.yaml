@@ -46,6 +46,11 @@ spec:
                   httpGet:
                     path: /status
                     port: 2322
+            resources:
+              requests:
+                memory: 1024Mi
+              limits:
+                memory: 10Gi
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
