@@ -28,6 +28,10 @@ spec:
           reference: ghcr.io/cloudnative-pg/postgis-extension:3.6.1-18-trixie
         ld_library_path:
           - system
+      - name: timescaledb
+        image:
+          # NOTE: Private image until PR is merged: https://github.com/cloudnative-pg/postgres-extensions-containers/pull/73
+          reference: registry.kantai.xyz/cloudnative-pg/timescaledb:2.24.0-18-trixie
       - name: vchord
         image:
           # renovate: datasource=docker depName=ghcr.io/tensorchord/vchord-scratch
@@ -38,8 +42,11 @@ spec:
           - /usr/share/postgresql/18/
     parameters:
       max_connections: "100"
+      max_locks_per_transaction: '128'
       shared_buffers: 64MB
+      timescaledb.telemetry_level: 'off'
     shared_preload_libraries:
+      - timescaledb
       - vchord
   bootstrap:
     initdb: {}
