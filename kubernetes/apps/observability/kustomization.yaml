@@ -22,6 +22,7 @@ resources:
   - ./prometheus-operator-crds/ks.yaml
   - ./robusta/ks.yaml
   - ./silence-operator/ks.yaml
+  - ./siren/ks.yaml
   - ./speedtest-exporter/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria/ks.yaml
