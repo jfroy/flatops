@@ -45,7 +45,12 @@
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["major"],
-      matchPackageNames: ["ghcr.io/mendhak/http-https-echo", "ghcr.io/prometheus-community/charts/kube-prometheus-stack"],
+      matchPackageNames: [
+        "ghcr.io/mendhak/http-https-echo",
+        "ghcr.io/prometheus-community/charts/kube-prometheus-stack",
+        "ghcr.io/prometheus-community/charts/prometheus-operator-crds",
+        "ghcr.io/prometheus-community/charts/victoria-metrics-operator-crds",
+      ],
       automerge: true,
     },
     // - Packages which use digest releases
