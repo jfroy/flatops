@@ -43,6 +43,7 @@ resources:
   - ./sonarr/ks.yaml
   - ./spoolman/ks.yaml
   - ./stash/ks.yaml
+  - ./tracearr/ks.yaml
 components:
   - ../../components/common
   - ../../components/volsync-ns
