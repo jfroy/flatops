@@ -6,6 +6,7 @@ resources:
   - ./namespace.yaml
   #
   # - ./bookshelf/ks.yaml
+  - ./booklore/ks.yaml
   - ./buildkit/ks.yaml
   - ./changedetection/ks.yaml
   - ./dawarich/ks.yaml
