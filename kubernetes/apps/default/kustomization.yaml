@@ -40,6 +40,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./registry/ks.yaml
   - ./sabnzbd/ks.yaml
+  - ./shelfmark/ks.yaml
   - ./sonarr/ks.yaml
   - ./spoolman/ks.yaml
   - ./stash/ks.yaml
