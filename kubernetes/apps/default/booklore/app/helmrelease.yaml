@@ -114,6 +114,10 @@ spec:
           booklore:
             mariadb:
               - path: /run/mysqld
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 100Mi
     route:
       booklore:
         hostnames: ["booklore.kantai.xyz"]
