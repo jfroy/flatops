@@ -86,7 +86,6 @@ spec:
               DATABASE_PASSWORD: booklore
               DATABASE_URL: jdbc:mariadb://localhost:3306/booklore
               DATABASE_USERNAME: booklore
-              SWAGGER_ENABLED: "false"
               TZ: America/Los_Angeles
             probes:
               liveness: &probe
@@ -144,8 +143,8 @@ spec:
         advancedMounts:
           booklore:
             booklore:
-              - path: /config
-                subPath: config
+              - path: /app/data
+                subPath: app
             mariadb:
               - path: /var/lib/mysql
                 subPath: mysql
