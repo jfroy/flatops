@@ -169,10 +169,12 @@ spec:
         advancedMounts:
           booklore:
             nginx:
-              - path: /var/log/nginx
-                subPath: log
               - path: /config
                 subPath: config
+              - path: /var/lib/nginx/logs
+                subPath: log
+              - path: /var/lib/nginx/tmp
+                subPath: tmp
             nginx-config:
               - path: /config
                 subPath: config
