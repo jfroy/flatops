@@ -48,7 +48,7 @@ spec:
                       - ping
                       - --socket=/run/mysqld/mysqld.sock
                       - --user=root
-                      - --password=$${MARIADB_ROOT_PASSWORD}
+                      - --password=root
             restartPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
