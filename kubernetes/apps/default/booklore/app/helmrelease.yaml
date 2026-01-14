@@ -79,6 +79,8 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
         pod:
+          labels:
+            pod-security.kantai.xyz/allow-seccomp-unconfined: "true"
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
