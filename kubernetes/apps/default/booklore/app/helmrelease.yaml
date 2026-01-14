@@ -70,6 +70,9 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
+              runAsUser: 100
+              runAsGroup: 101
+              fsGroup: 101
         containers:
           booklore:
             image:
@@ -123,6 +126,9 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
+              runAsUser: 100
+              runAsGroup: 101
+              fsGroup: 101
         pod:
           labels:
             pod-security.kantai.xyz/allow-seccomp-unconfined: "true"
