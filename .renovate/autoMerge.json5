@@ -57,7 +57,10 @@
     {
       matchDatasources: ["docker"],
       matchUpdateTypes: ["digest"],
-      matchPackageNames: ["ghcr.io/squat/generic-device-plugin"],
+      matchPackageNames: [
+        "ghcr.io/lklynet/hypermind",
+        "ghcr.io/squat/generic-device-plugin",
+      ],
       automerge: true,
     },
   ]
