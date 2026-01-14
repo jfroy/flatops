@@ -40,6 +40,18 @@ spec:
                     name: booklore-mariadb
                 - secretRef:
                     name: booklore-mariadb-initdb
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  exec:
+                    command:
+                      - mariadb-admin
+                      - ping
+                      - --socket=/run/mysqld/mysqld.sock
+                      - --user=root
+                      - --password=$${MARIADB_ROOT_PASSWORD}
             restartPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
@@ -106,7 +118,6 @@ spec:
           booklore:
             booklore:
               - path: /etc
-                subPath: etc
       media2:
         type: persistentVolumeClaim
         existingClaim: media-smb-kantai1
@@ -126,6 +137,10 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 100Mi
+        advancedMounts:
+          booklore:
+            mariadb:
+              - path: /tmp
     route:
       booklore:
         hostnames: ["booklore.kantai.xyz"]
