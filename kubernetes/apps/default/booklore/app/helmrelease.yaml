@@ -88,7 +88,9 @@ spec:
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
+              capabilities:
+                drop: ["ALL"]
+                add: ["SETGID", "SETUID"] # container image uses su-exec
               readOnlyRootFilesystem: true
         pod:
           labels:
@@ -111,13 +113,6 @@ spec:
             mariadb:
               - path: /var/lib/mysql
                 subPath: mysql
-      etc:
-        type: emptyDir
-        sizeLimit: 1Mi
-        advancedMounts:
-          booklore:
-            booklore:
-              - path: /etc
       media2:
         type: persistentVolumeClaim
         existingClaim: media-smb-kantai1
@@ -133,6 +128,24 @@ spec:
           booklore:
             mariadb:
               - path: /run/mysqld
+      nginx:
+        type: emptyDir
+        sizeLimit: 200Mi
+        advancedMounts:
+          booklore:
+            booklore:
+              - path: /etc/nginx
+                subPath: etc
+              - path: /var/log/nginx
+                subPath: log
+      nginx-run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 100Mi
+        advancedMounts:
+          booklore:
+            booklore:
+              - path: /run/nginx
       tmp:
         type: emptyDir
         medium: Memory
