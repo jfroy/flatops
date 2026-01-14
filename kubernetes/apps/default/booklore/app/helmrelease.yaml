@@ -154,6 +154,8 @@ spec:
         advancedMounts:
           booklore:
             booklore:
+              - path: /books
+                subPath: library/books
               - path: /bookdrop
                 subPath: library/books/ingest
       mysqld:
