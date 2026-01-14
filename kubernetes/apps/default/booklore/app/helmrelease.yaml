@@ -83,9 +83,8 @@ spec:
               - "-jar"
               - /app/app.jar
             env:
-              INGEST_DIR: /media2/library/books/ingest
-              MARIADB_DATABASE: booklore
-              MARIADB_USER: booklore
+              DATABASE_URL: jdbc:mariadb://localhost:3306/booklore
+              DATABASE_USERNAME: booklore
               SWAGGER_ENABLED: "false"
               TZ: America/Los_Angeles
             envFrom:
