@@ -1,0 +1,17 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "deny-booklore-mariadb-ingress"
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: booklore
+      app.kubernetes.io/instance: booklore
+  ingressDeny:
+    - fromEndpoints:
+        - {}
+      toPorts:
+        - ports:
+            - port: "3306"
+              protocol: TCP
