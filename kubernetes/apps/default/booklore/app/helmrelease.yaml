@@ -93,9 +93,17 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /v1/healthcheck
+                    path: /api/v1/healthcheck
                     port: 8080
               readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/healthcheck
+                    port: 8080
+                  failureThreshold: 10
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
