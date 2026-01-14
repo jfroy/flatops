@@ -60,23 +60,62 @@ spec:
               # NOTE: io_uring is blocked by the default containerd v2 seccomp profile
               # https://github.com/containerd/containerd/pull/9320
               seccompProfile: { type: Unconfined }
+          nginx-config:
+            image:
+              repository: ghcr.io/booklore-app/booklore
+              tag: v1.17.0@sha256:5b594a607fb0d9533d06a850156e2b54877ed0ddd0da8cd1f0240cb38bb6ac70
+            command: ["/bin/sh", "-c"]
+            args: ["envsubst '$${BOOKLORE_PORT}' < /etc/nginx/nginx.conf > /config/nginx.conf"]
+            env:
+              BOOKLORE_PORT: &port 6060
+              TZ: America/Los_Angeles
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         containers:
           booklore:
             image:
               repository: ghcr.io/booklore-app/booklore
               tag: v1.17.0@sha256:5b594a607fb0d9533d06a850156e2b54877ed0ddd0da8cd1f0240cb38bb6ac70
+            command: ["java"]
+            args:
+              - "-jar"
+              - /app/app.jar
             env:
-              BOOKLORE_PORT: &port 6060
-              GROUP_ID: "1000"
               INGEST_DIR: /media2/library/books/ingest
               MARIADB_DATABASE: booklore
               MARIADB_USER: booklore
               SWAGGER_ENABLED: "false"
               TZ: America/Los_Angeles
-              USER_ID: "1000"
             envFrom:
                 - secretRef:
                     name: booklore-mariadb
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8080
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+          nginx:
+            image:
+              repository: ghcr.io/booklore-app/booklore
+              tag: v1.17.0@sha256:5b594a607fb0d9533d06a850156e2b54877ed0ddd0da8cd1f0240cb38bb6ac70
+            env:
+              TZ: America/Los_Angeles
+            command: ["nginx"]
+            args:
+              - "-c"
+              - /config/nginx.conf
+              - -g
+              - "daemon off;"
             probes:
               liveness: &probe
                 enabled: true
@@ -88,9 +127,7 @@ spec:
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities:
-                drop: ["ALL"]
-                add: ["SETGID", "SETUID"] # container image uses su-exec
+              capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
         pod:
           labels:
@@ -101,7 +138,6 @@ spec:
             runAsGroup: 1000
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
-            seccompProfile: { type: RuntimeDefault }
     persistence:
       data:
         existingClaim: "${APP}"
@@ -133,18 +169,21 @@ spec:
         sizeLimit: 200Mi
         advancedMounts:
           booklore:
-            booklore:
-              - path: /etc/nginx
-                subPath: etc
+            nginx:
               - path: /var/log/nginx
                 subPath: log
+              - path: /config
+                subPath: config
+            nginx-config:
+              - path: /config
+                subPath: config
       nginx-run:
         type: emptyDir
         medium: Memory
         sizeLimit: 100Mi
         advancedMounts:
           booklore:
-            booklore:
+            nginx:
               - path: /run/nginx
       tmp:
         type: emptyDir
