@@ -155,7 +155,8 @@ spec:
         advancedMounts:
           booklore:
             booklore:
-              - path: /media2
+              - path: /bookdrop
+                subPath: library/books/ingest
       mysqld:
         type: emptyDir
         medium: Memory
