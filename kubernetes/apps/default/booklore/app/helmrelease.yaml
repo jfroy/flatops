@@ -31,15 +31,12 @@ spec:
               tag: 12.1.2-noble
             env:
               MARIADB_DATABASE: booklore
+              MARIADB_PASSWORD: "booklore"
+              MARIADB_ROOT_PASSWORD: "root"
               MARIADB_USER: booklore
               PGID: "1000"
               PUID: "1000"
               TZ: America/Los_Angeles
-            envFrom:
-                - secretRef:
-                    name: booklore-mariadb
-                - secretRef:
-                    name: booklore-mariadb-initdb
             probes:
               liveness:
                 enabled: true
@@ -83,13 +80,11 @@ spec:
               - "-jar"
               - /app/app.jar
             env:
+              DATABASE_PASSWORD: booklore
               DATABASE_URL: jdbc:mariadb://localhost:3306/booklore
               DATABASE_USERNAME: booklore
               SWAGGER_ENABLED: "false"
               TZ: America/Los_Angeles
-            envFrom:
-                - secretRef:
-                    name: booklore-mariadb
             probes:
               liveness: &probe
                 enabled: true
