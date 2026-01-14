@@ -193,6 +193,8 @@ spec:
         sizeLimit: 100Mi
         advancedMounts:
           booklore:
+            booklore:
+              - path: /tmp
             mariadb:
               - path: /tmp
     route:
