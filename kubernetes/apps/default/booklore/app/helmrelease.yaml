@@ -99,6 +99,14 @@ spec:
             mariadb:
               - path: /var/lib/mysql
                 subPath: mysql
+      etc:
+        type: emptyDir
+        sizeLimit: 1Mi
+        advancedMounts:
+          booklore:
+            booklore:
+              - path: /etc
+                subPath: etc
       media2:
         type: persistentVolumeClaim
         existingClaim: media-smb-kantai1
