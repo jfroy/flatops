@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app tailscale-dns
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/instance: *app
+      app.kubernetes.io/name: k8s-gateway
+  path: ./kubernetes/apps/network/k8s-gateway/tailscale-dns
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
