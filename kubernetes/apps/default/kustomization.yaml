@@ -17,7 +17,7 @@ resources:
   - ./gluetun/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
-  - ./hypermind/ks.yaml
+  # - ./hypermind/ks.yaml
   - ./immich/ks.yaml
   # - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
