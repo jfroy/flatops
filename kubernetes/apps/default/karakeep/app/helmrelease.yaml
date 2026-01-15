@@ -42,6 +42,15 @@ spec:
               - --hide-scrollbars
             env:
               TZ: America/Los_Angeles
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9222
+              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
