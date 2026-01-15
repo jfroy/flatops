@@ -154,6 +154,13 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     persistence:
+      chrome:
+        type: emptyDir
+        sizeLimit: 1Gi
+        advancedMounts:
+          chrome:
+            chrome:
+              - path: /home/chrome
       data:
         existingClaim: "${APP}"
         advancedMounts:
