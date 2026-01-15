@@ -110,6 +110,7 @@ spec:
               - /bin/meilisearch
               - --experimental-dumpless-upgrade
             env:
+              MEILI_ENV: production
               MEILI_NO_ANALYTICS: true
               TZ: America/Los_Angeles
             envFrom:
