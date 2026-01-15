@@ -38,7 +38,8 @@ spec:
     domain: kantai.xyz
     ttl: 1
     service:
-      ipFamilyPolicy: PreferDualStack
+      ipFamily: IPv4
+      ipFamilyPolicy: SingleStack
       loadBalancerClass: tailscale
       port: 53
       type: LoadBalancer
