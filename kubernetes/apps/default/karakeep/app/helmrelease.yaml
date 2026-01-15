@@ -1,0 +1,195 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: karakeep
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      chrome:
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+        containers:
+          chrome:
+            image:
+              repository: gcr.io/zenika-hub/alpine-chrome
+              tag: 124
+            command:
+              - chromium-browser
+            args:
+              - --headless
+              - --no-sandbox
+              - --disable-gpu
+              - --disable-dev-shm-usage
+              - --remote-debugging-address=0.0.0.0
+              - --remote-debugging-port=9222
+              - --hide-scrollbars
+            env:
+              TZ: America/Los_Angeles
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+      karakeep:
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+        containers:
+          karakeep:
+            image:
+              repository: ghcr.io/karakeep-app/karakeep
+              tag: 0.30.0@sha256:2724d4a9a6d13a7fa3babf53b9245767aae56c34f06042a8463ee983c6b41caf
+            env:
+              BROWSER_WEB_URL: http://karakeep-chrome.default.svc.cluster.local:9222
+              COREPACK_INTEGRITY_KEYS: 0
+              CRAWLER_DOWNLOAD_BANNER_IMAGE: true
+              CRAWLER_ENABLE_ADBLOCKER: true
+              CRAWLER_STORE_SCREENSHOT: true
+              DATA_DIR: /data
+              DISABLE_NEW_RELEASE_CHECK: true
+              DISABLE_PASSWORD_AUTH: true
+              DISABLE_SIGNUPS: false
+              INFERENCE_ENABLE_AUTO_SUMMARIZATION: true
+              MEILI_ADDR: http://karakeep-meilisearch.default.svc.cluster.local:7700
+              NEXTAUTH_URL: https://karakeep.kantai.xyz
+              OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: true
+              OAUTH_PROVIDER_NAME: Pocket ID
+              OAUTH_WELLKNOWN_URL: https://pid.kantai.xyz/.well-known/openid-configuration
+              PORT: &webPort 3000
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: karakeep
+              - secretRef:
+                  name: karakeep-keys
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: *webPort
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+      meilisearch:
+        containers:
+          meilisearch:
+            image:
+              repository: docker.io/getmeili/meilisearch
+              tag: v1.32.2@sha256:d3127a6732bf283d5a387ecf42afee969c8e4211e2dbbdd680f307969511be2e
+            args:
+              - /bin/meilisearch
+              - --experimental-dumpless-upgrade
+            env:
+              MEILI_NO_ANALYTICS: true
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: karakeep-keys
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 7700
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values:
+                          - karakeep
+                      - key: app.kubernetes.io/instance
+                        operator: In
+                        values:
+                          - karakeep
+                  topologyKey: kubernetes.io/hostname
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: "${APP}"
+        advancedMounts:
+          karakeep:
+            karakeep:
+              - path: /data
+                subPath: karakeep
+              - path: /meili_data
+                subPath: meilisearch
+          meilisearch:
+            meilisearch:
+              - path: /meili_data
+                subPath: meilisearch
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 100Mi
+      tmp:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Gi
+    route:
+      karakeep:
+        hostnames:
+          - "karakeep.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: karakeep
+                port: *webPort
+    service:
+      karakeep:
+        primary: true
+        controller: karakeep
+        ports:
+          http:
+            port: *webPort
+      chrome:
+        controller: chrome
+        ports:
+          http:
+            port: 9222
+      meilisearch:
+        controller: meilisearch
+        ports:
+          http:
+            port: 7700
