@@ -100,7 +100,9 @@ spec:
         containers:
           server:
             image:
-              repository: ghcr.io/immich-app/immich-server
+              # TODO: switch back to upstream once release with vcord 1.0 is available
+              # https://github.com/immich-app/immich/pull/23845
+              repository: registry.kantai.xyz/immich-app/immich-server
               tag: v2.4.1
             envFrom:
               - secretRef:
