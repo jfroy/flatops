@@ -7,7 +7,7 @@ A GitOps-managed Kubernetes homelab cluster running on [Talos Linux](https://www
 This repository contains the declarative configuration for **kantai**, a bare-metal Kubernetes cluster. The cluster is designed for home infrastructure workloads with a focus on:
 
 - **GitOps-driven operations** via FluxCD
-- **Secure networking** with Cilium in kube-proxy replacement mode
+- **Advanced networking** with Cilium, Envoy Gateway, external-dns, Cloudflare, and cert-manager
 - **Distributed storage** using Rook-Ceph
 - **GPU workloads** with NVIDIA GPU Operator
 - **Comprehensive observability** using VictoriaMetrics and Grafana
@@ -23,29 +23,36 @@ This repository contains the declarative configuration for **kantai**, a bare-me
 | kantai2 | Virtual arm64 control plane and workloads | <ul><li>Apple M2 Mac Mini, 16 GB (mem), 500 GB (block)</li><li>UTM + QEMU hypervisor</li></ul> |
 | kantai3 | Hyper-converged control plane and workloads | <ul><li>AMD Ryzen Embedded V1500B, 32 GB</li><li>NVIDIA T400, 4 GB</li><li>Seagate Exos X18, 18 TB, x6</li><li>NVIDIA ConnectX-3</li><li>QNAP TS-673A</li></ul> |
 
-### Infrastructure Stack
+### Network
 
-```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                              Applications                               │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Envoy Gateway │ external-dns │ Tailscale │ cert-manager │ Pocket ID    │
-├─────────────────────────────────────────────────────────────────────────┤
-│  VictoriaMetrics │ Grafana │ fluent-bit │ kube-prometheus-stack         │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Rook-Ceph │ OpenEBS ZFS │ Samba │ VolSync → Cloudflare R2              │
-├─────────────────────────────────────────────────────────────────────────┤
-│  CloudNative-PG │ NVIDIA GPU Operator │ Multus CNI                      │
-├─────────────────────────────────────────────────────────────────────────┤
-│  Cilium (kube-proxy replacement, BGP, Network Policies)                 │
-├─────────────────────────────────────────────────────────────────────────┤
-│                        Talos Linux + Kubernetes                         │
-└─────────────────────────────────────────────────────────────────────────┘
-```
+**kantai** is connected to an all-[Ubiquiti](https://ui.com/) network, with a [Hi-Capacity Aggregation](https://store.ui.com/us/en/category/switching-aggregation/products/usw-pro-aggregation) as the TOR and a [Dream Machine Pro](https://store.ui.com/us/en/category/all-cloud-gateways/products/udm-pro) as the gateway/router/firewall. Recent versions of Unifi Network and Unifi OS support [BGP](https://help.ui.com/hc/en-us/articles/16271338193559-UniFi-Border-Gateway-Protocol-BGP), which is used to advertise [load balancer addresses](https://docs.cilium.io/en/stable/network/lb-ipam/) and thus provide node-balanced services to the network. The cluster's virtual network is dual-stack IPv4 and IPv6.
 
-### Network infrastructure
+The cluster uses `kantai.xyz` as its public domain. It is registered at [Cloudflare](https://www.cloudflare.com/) which also acts as the DNS authority. Cloudflare also proxies requests for services available from the public internet and [tunnels](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/) them to the cluster for DDOS and privacy protection.
 
-**kantai** sits on top of an all-[Ubiquiti](https://ui.com/) network, with a [Hi-Capacity Aggregation](https://store.ui.com/us/en/category/switching-aggregation/products/usw-pro-aggregation) as the TOR and a [Dream Machine Pro](https://store.ui.com/us/en/category/all-cloud-gateways/products/udm-pro) as the gateway/router/firewall. Recent versions of Unifi Network and Unifi OS support [BGP](https://help.ui.com/hc/en-us/articles/16271338193559-UniFi-Border-Gateway-Protocol-BGP), which is used to advertise load balancer addresses and thus provide node-balanced cluster services to the network.
+The cluster integrates with a [Tailscale](https://tailscale.com/) tailnet for private secure global access.
+
+#### IPv4
+
+- Cluster nodes are connected to the main Ubiquiti network which uses `10.1.0.0/16`.
+- Cilium advertises routes to load-balanced services using [BGP](https://docs.cilium.io/en/stable/network/bgp-control-plane/bgp-control-plane/).
+- A Unifi network matching the load balancer CIDR is programmed to prevent unnecessary NAT hairpinning and allow flows through the firewall.
+- Cilium [masquerades](https://docs.cilium.io/en/stable/network/concepts/masquerading/) pod addresses to node addresses.
+
+| Role            | CIDR           |
+|-----------------|----------------|
+| Pod             | `10.11.0.0/16` |
+| Service         | `10.11.0.0/16` |
+| Cilium LB IPAM  | `10.11.0.0/16` |
+
+#### IPv6
+
+For IPv6 networking, I decided to use globally routable addresses for pods, services, and LB IPAM. This means no masquerading is necessary, which is more in the spirit of IPv6. Routes and firewalls must still be programmed for traffic to flow.
+
+- Cluster nodes are connected to the main Ubiquiti network which receives an IPv6 `/64` prefix via prefix delegation and assigns addresses to clients via [SLAAC](https://en.wikipedia.org/wiki/IPv6#Stateless_address_autoconfiguration_(SLAAC)).
+- 3 additional `/64` prefixes are manually reserved for pods, services, and Cilium [LB IPAM](https://docs.cilium.io/en/stable/network/lb-ipam/).
+- Cilium advertises routes to load-balanced services using [BGP](https://docs.cilium.io/en/stable/network/bgp-control-plane/bgp-control-plane/) (same as IPv4).
+- A Unifi network matching the load balancer CIDR is programmed to prevent unnecessary NAT hairpinning and allow flows through the firewall (same as IPv4).
+- IPv6 masquerading is disabled.
 
 ## 🔧 Core Components
 
@@ -66,34 +73,40 @@ Automated Talos and Kubernetes upgrades are managed by [tuppr](https://github.co
 
 #### Renovate
 
-This repository is constantly updated using [Renovate](https://docs.renovatebot.com/) and [flux-local](https://github.com/allenporter/flux-local). Minor and patch updates are applied automatically while major releases require human approval.
+The repository is constantly updated using [Renovate](https://docs.renovatebot.com/) and [flux-local](https://github.com/allenporter/flux-local). Minor and patch updates are applied automatically while major releases require human approval.
 
 ### Networking
 
 #### Cilium
 
-[Cilium](https://cilium.io/) serves as the CNI in **kube-proxy replacement mode**, providing:
+[Cilium](https://cilium.io/) serves as the CNI in [**kube-proxy replacement mode**](https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/), providing:
 
-- **eBPF-based networking** with native routing
-- **BGP Control Plane** for advertising service IPs to the network with load-balancing
-- **Network Policies** for pod-level traffic control
-- **Bandwidth Manager** with BBR congestion control
-- **IPv4/IPv6 dual-stack** with BIG TCP support
+- [**eBPF-based networking**](https://docs.cilium.io/en/stable/network/ebpf/intro/) with native routing
+- [**BGP control plane**](https://docs.cilium.io/en/stable/network/bgp-control-plane/bgp-control-plane/) for advertising load-balanced services to the Unifi gateway
+- [**LoadBalancer IP Address Management**](https://docs.cilium.io/en/stable/network/lb-ipam/) to assign routable addresses to load-balanced services
+- [**Network policies**](https://docs.cilium.io/en/stable/network/kubernetes/policy/) for pod-level traffic control
+- [**Bandwidth Manager**](https://docs.cilium.io/en/stable/network/kubernetes/bandwidth-manager/) with BBR for bandwith and congestion control
 
 #### Envoy Gateway
 
-[Envoy Gateway](https://gateway.envoyproxy.io/) implements the Kubernetes Gateway API for HTTP/HTTPS routes and load balancing. It provides the primary entry points for cluster services.
+[Envoy Gateway](https://gateway.envoyproxy.io/) provides a complete and up-to-date implemenmtation of the [Kubernetes Gateway API](https://gateway-api.sigs.k8s.io/) with advanced extensions.
+
+An **external** `Gateway` is used for routes that should be available from the public internet (via a [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/)), while an **internal** `Gateway` is used for routes that should only be accessible on the local network or on my tailnet.
 
 #### external-dns
 
-[external-dns](https://github.com/kubernetes-sigs/external-dns) automatically manages DNS records for services:
+ [external-dns](https://github.com/kubernetes-sigs/external-dns) automatically manages DNS records for services:
 
-- **Cloudflare** for public DNS
-- **UniFi** for internal DNS
+- **Cloudflare** for  **external** `Gateway` routes
+- **UniFi** for **internal** `Gateway` routes using [@kashalls's excellent Unifi provider](https://github.com/kashalls/external-dns-unifi-webhook)
 
 #### Tailscale
 
-The [Tailscale Operator](https://tailscale.com/kubernetes-operator) provides secure remote access to cluster services via a mesh VPN, including API server proxy functionality.
+The [Tailscale Operator](https://tailscale.com/kubernetes-operator) integrates the cluster with my tailnet.
+
+- **API Server Proxy** - The Kubernetes API server is accessible over the tailnet via Tailscale's [API server proxy](https://tailscale.com/kb/1437/kubernetes-operator-api-server-proxy) in [auth mode](https://tailscale.com/kb/1437/kubernetes-operator-api-server-proxy#configuring-the-api-server-proxy-in-auth-mode), enabling API server access with tailnet authn/authz.
+- **Split-Horizon DNS** - A [k8s-gateway](https://github.com/k8s-gateway/k8s_gateway) [deployment](./kubernetes/apps/network/k8s-gateway/tailscale-dns/helmrelease.yaml) serves as a `kantai.xyz` split-horizon DNS server on the tailnet for all `HTTPRoute` resources with a `kantai.xyz` hostname, making them resolvable on the tailnet (but not reachable since the Envoy `Gateway` services use the Cilium BGP LoadBalancer class; see next). The [k8s-gateway](https://github.com/k8s-gateway/k8s_gateway) service itself is exposed to the tailnet using a [Tailscale load balancer service](https://tailscale.com/kb/1439/kubernetes-operator-cluster-ingress#exposing-a-cluster-workload-by-using-a-tailscale-load-balancer-service).
+- The Unifi gateway is connected to the tailnet and programmed as a [subnet router](https://tailscale.com/kb/1019/subnets) for the Cilium BGP LoadBalancer's IPv4 CIDR, making all such services reachable over the tailnet.
 
 #### Multus
 
@@ -111,8 +124,7 @@ The [Tailscale Operator](https://tailscale.com/kubernetes-operator) provides sec
 
 [cert-manager](https://cert-manager.io/) automates certificate lifecycle management:
 
-- ACME (Let's Encrypt) certificates for public services
-- Internal CA for cluster services
+- Maintains a wildcard certificate for `kantai.xyz` using Let's Encrypt DNS challenge (Cloudflare API)
 - [trust-manager](https://cert-manager.io/docs/trust-manager/) distributes CA bundles across namespaces
 
 ### Identity & Authentication
@@ -122,7 +134,7 @@ The [Tailscale Operator](https://tailscale.com/kubernetes-operator) provides sec
 [Pocket ID](https://github.com/pocket-id/pocket-id) serves as the in-cluster OIDC provider, enabling:
 
 - Kubernetes API server OIDC authentication
-- OAuth2 authentication for cluster services via Envoy Gateway
+- OIDC authentication for apps that do not natively support it via Envoy Gateway's [`SecurityPolicy` extension](https://gateway.envoyproxy.io/docs/tasks/security/oidc/)
 - Centralized identity management for applications
 
 ### Storage
