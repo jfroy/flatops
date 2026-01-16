@@ -16,7 +16,7 @@
     // - Don't automerge Cilium minor releases; they are basically major releases
     {
       matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium"],
+      matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium", "quay.io/cilium/charts/cilium"],
       matchUpdateTypes: ["major", "minor"],
       automerge: false,
     },
