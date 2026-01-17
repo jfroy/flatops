@@ -28,7 +28,7 @@ spec:
           paperless-gpt:
             image:
               repository: ghcr.io/icereed/paperless-gpt
-              tag: v0.23.0@sha256:90766d15d541162129d0fa47dad5ffb33a02a0c77cbc4cee9007b24b656ba6ce
+              tag: v0.24.0@sha256:15bad5d455b98f21bb7b5d6615f56871ff67a8bb379dc0dd7ba411f4633071a6
             env:
               AUTO_TAG: paperless-gpt-auto
               MANUAL_TAG: paperless-gpt
