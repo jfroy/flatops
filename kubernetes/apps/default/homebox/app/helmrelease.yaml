@@ -52,7 +52,7 @@ spec:
               HBOX_OPTIONS_ALLOW_LOCAL_LOGIN: "false"
               HBOX_OIDC_ENABLED: "true"
               HBOX_OPTIONS_HOSTNAME: homebox.kantai.xyz
-              HBOX_WEB_PORT: &port "7745"
+              HBOX_WEB_PORT: &port 7745
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
