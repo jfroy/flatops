@@ -1,0 +1,127 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: scrutiny
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      scrutiny:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          web:
+            image:
+              repository: ghcr.io/starosdev/scrutiny
+              tag: 1.8.0-web@sha256:a39deb25f68d426eab20dfde2842272483bb1136feee5f0142fcb6023d45deeb
+            env:
+              SCRUTINY_WEB_INFLUXDB_BUCKET: scrutiny
+              SCRUTINY_WEB_INFLUXDB_HOST: localhost
+              SCRUTINY_WEB_INFLUXDB_ORG: scrutiny
+              SCRUTINY_WEB_INFLUXDB_PORT: 8086
+              SCRUTINY_WEB_INFLUXDB_TOKEN: scrutiny1@
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: &web-port 8080
+                  initialDelaySeconds: 30
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+        initContainers:
+          influxdb:
+            image:
+              repository: docker.io/library/influxdb
+              tag: 2.8.0-alpine@sha256:fb537cf0d57937a57eac33efd079ae5b36a1d35437dc1eba1ecb8800a352b62a
+            env:
+              DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: scrutiny1@
+              DOCKER_INFLUXDB_INIT_BUCKET: scrutiny
+              DOCKER_INFLUXDB_INIT_MODE: setup
+              DOCKER_INFLUXDB_INIT_ORG: scrutiny
+              DOCKER_INFLUXDB_INIT_PASSWORD: scrutiny1@
+              DOCKER_INFLUXDB_INIT_RETENTION: 104w
+              DOCKER_INFLUXDB_INIT_USERNAME: admin
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8086
+                  initialDelaySeconds: 30
+              readiness: *probe
+            restartPolicy: Always
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: {drop: ["ALL"]}
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: "${APP}"
+        advancedMounts:
+          scrutiny:
+            web:
+              - path: /opt/scrutiny/config
+                subPath: scrutiny-config
+            influxdb:
+              - path: /var/lib/influxdb2
+                subPath: influxdb2-data
+              - path: /etc/influxdb2
+                subPath: influxdb2-etc
+      tmp:
+        type: emptyDir
+        sizeLimit: 100Mi
+    route:
+      scrutiny:
+        hostnames:
+          - scrutiny.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: scrutiny
+                port: *web-port
+    service:
+      scrutiny:
+        controller: scrutiny
+        ports:
+          http:
+            port: *web-port
+    serviceMonitor:
+      scrutiny:
+        serviceName: scrutiny
+        endpoints:
+          - port: http
+            path: /api/metrics

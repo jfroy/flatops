@@ -1,0 +1,51 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: scrutiny-collector
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      scrutiny-collector:
+        type: daemonset
+        containers:
+          collector:
+            image:
+              repository: ghcr.io/starosdev/scrutiny
+              tag: 1.8.0-collector@sha256:1a154dcb948fe6204438c0bb6f1a0f88ba1765633be60f1e23b8085b6bbb285d
+            env:
+              COLLECTOR_API_ENDPOINT: http://scrutiny.observability.svc.cluster.local:8080
+              COLLECTOR_CRON_SCHEDULE: 0 4 * * *
+              COLLECTOR_RUN_STARTUP: true
+              TZ: America/Los_Angeles
+            securityContext:
+              privileged: true
+              readOnlyRootFilesystem: false
+        pod:
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+    persistence:
+      udev:
+        type: hostPath
+        hostPath: /run/udev
+        hostPathType: Directory
+        globalMounts:
+          - path: /run/udev
+            readOnly: true

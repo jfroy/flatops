@@ -7,6 +7,7 @@ resources:
   # --
   - ./fluent-bit/ks.yaml
   - ./node-exporter/ks.yaml
+  - ./scrutiny-collector/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./telegraf/ks.yaml
 components:
