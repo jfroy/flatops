@@ -42,11 +42,11 @@ The cluster integrates with a [Tailscale](https://tailscale.com/) tailnet for pr
 |-----------------|----------------|
 | Pod             | `10.11.0.0/16` |
 | Service         | `10.11.0.0/16` |
-| Cilium LB IPAM  | `10.11.0.0/16` |
+| Cilium [LB IPAM](https://docs.cilium.io/en/stable/network/lb-ipam/)  | `10.11.0.0/16` |
 
 #### IPv6
 
-For IPv6 networking, I decided to use globally routable addresses for pods, services, and LB IPAM. This means no masquerading is necessary, which is more in the spirit of IPv6. Routes and firewalls must still be programmed for traffic to flow.
+For IPv6 networking, I decided to use globally routable addresses for pods, services, and [LB IPAM](https://docs.cilium.io/en/stable/network/lb-ipam/). This means no masquerading is necessary, which is more in the spirit of IPv6. Routes and firewalls must still be programmed for traffic to flow.
 
 - Cluster nodes are connected to the main Ubiquiti network which receives an IPv6 `/64` prefix via prefix delegation and assigns addresses to clients via [SLAAC](https://en.wikipedia.org/wiki/IPv6#Stateless_address_autoconfiguration_(SLAAC)).
 - 3 additional `/64` prefixes are manually reserved for pods, services, and Cilium [LB IPAM](https://docs.cilium.io/en/stable/network/lb-ipam/).
