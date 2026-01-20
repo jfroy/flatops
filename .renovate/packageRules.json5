@@ -8,13 +8,15 @@
     },
     {
       matchDatasources: ["docker"],
-      matchPackageNames: ["registry.kantai.xyz**/*", "tif.etincelle.cloud**/*"],
+      matchPackageNames: ["registry.kantai.xyz/**", "tif.etincelle.cloud/**"],
       enabled: false
     },
+    // - Disable InfluxDB major releases; keep v1 and v2 separate
     {
       matchDatasources: ["docker"],
-      matchPackageNames: ["docker.io/library/influxdb"],
-      allowedVersions: "<2"
+      matchPackageNames: ["docker.io/library/influxdb", "influxdb"],
+      matchUpdateTypes: ["major"],
+      enabled: false,
     },
   ]
 }
