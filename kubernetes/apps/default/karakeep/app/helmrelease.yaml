@@ -154,6 +154,17 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     persistence:
+      cache:
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        storageClass: ceph-block
+        suffix: cache
+        type: persistentVolumeClaim
+        advancedMounts:
+          karakeep:
+            karakeep:
+              - path: /app/apps/web/.next/cache
+                subPath: web-cache
       chrome:
         type: emptyDir
         sizeLimit: 1Gi
