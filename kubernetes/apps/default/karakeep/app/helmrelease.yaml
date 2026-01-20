@@ -38,7 +38,7 @@ spec:
               - --disable-bluetooth
               - --disable-dev-shm-usage
               - --disable-gpu
-              - --headless
+              - --headless=new
               - --hide-scrollbars
               - --mute-audio
               - --no-sandbox
