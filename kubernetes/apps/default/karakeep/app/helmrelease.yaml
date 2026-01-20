@@ -21,30 +21,28 @@ spec:
       retries: 3
   values:
     controllers:
-      chrome:
-        pod:
-          annotations:
-            reloader.stakater.com/auto: "true"
+      browserless:
         containers:
-          chrome:
+          browserless:
             image:
-              repository: gcr.io/zenika-hub/alpine-chrome
-              tag: 124
-            command:
-              - chromium-browser
-            args:
-              - --disable-audio
-              - --disable-audio-output
-              - --disable-bluetooth
-              - --disable-dev-shm-usage
-              - --disable-gpu
-              - --headless=new
-              - --hide-scrollbars
-              - --mute-audio
-              - --no-sandbox
-              - --remote-debugging-address=0.0.0.0
-              - --remote-debugging-port=9222
+              repository: ghcr.io/browserless/chromium
+              tag: v2.38.3@sha256:e5b4f5b6e1306647eeb4b415cec7844dd0058b00d353e04cedacaf24906b6f28
             env:
+              CONCURRENT: 10
+              DATA_DIR: /profile
+              DOWNLOAD_DIR: /downloads
+              ENABLE_DEBUGGER: false
+              EXTERNAL: http://karakeep-browserless.default.svc.cluster.local
+              HEALTH: true
+              SCREEN_DEPTH: 16
+              SCREEN_HEIGHT: 1024
+              SCREEN_WIDTH: 1920
+              TIMEOUT: 600000 # 10 minutes
+              TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: karakeep-keys
+                    key: BROWSERLESS_TOKEN
               TZ: America/Los_Angeles
             probes:
               liveness: &probe
@@ -52,27 +50,25 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
-                    port: 9222
+                    path: /pressure
+                    port: 3000
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-              readOnlyRootFilesystem: true
-      karakeep:
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
+      karakeep:
         containers:
           karakeep:
             image:
               repository: ghcr.io/karakeep-app/karakeep
               tag: 0.30.0@sha256:2724d4a9a6d13a7fa3babf53b9245767aae56c34f06042a8463ee983c6b41caf
             env:
-              BROWSER_WEB_URL: http://karakeep-chrome.default.svc.cluster.local:9222
               COREPACK_INTEGRITY_KEYS: 0
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
+              CRAWLER_NUM_WORKERS: 10
               CRAWLER_STORE_SCREENSHOT: true
               DATA_DIR: /data
               DISABLE_NEW_RELEASE_CHECK: true
@@ -104,6 +100,9 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
+        pod:
+          annotations:
+            reloader.stakater.com/auto: "true"
       meilisearch:
         containers:
           meilisearch:
@@ -169,13 +168,16 @@ spec:
             karakeep:
               - path: /app/apps/web/.next/cache
                 subPath: web-cache
-      chrome:
+      browserless:
         type: emptyDir
         sizeLimit: 1Gi
         advancedMounts:
-          chrome:
-            chrome:
-              - path: /home/chrome
+          browserless:
+            browserless:
+              - path: /profile
+                subPath: profile
+              - path: /downloads
+                subPath: downloads
       data:
         existingClaim: "${APP}"
         advancedMounts:
@@ -215,11 +217,11 @@ spec:
         ports:
           http:
             port: *webPort
-      chrome:
-        controller: chrome
+      browserless:
+        controller: browserless
         ports:
           http:
-            port: 9222
+            port: 3000
       meilisearch:
         controller: meilisearch
         ports:
