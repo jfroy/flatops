@@ -33,13 +33,16 @@ spec:
             command:
               - chromium-browser
             args:
-              - --headless
-              - --no-sandbox
-              - --disable-gpu
+              - --disable-audio
+              - --disable-audio-output
               - --disable-dev-shm-usage
+              - --disable-gpu
+              - --headless
+              - --hide-scrollbars
+              - --mute-audio
+              - --no-sandbox
               - --remote-debugging-address=0.0.0.0
               - --remote-debugging-port=9222
-              - --hide-scrollbars
             env:
               TZ: America/Los_Angeles
             probes:
