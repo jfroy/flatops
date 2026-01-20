@@ -35,6 +35,7 @@ spec:
             args:
               - --disable-audio
               - --disable-audio-output
+              - --disable-bluetooth
               - --disable-dev-shm-usage
               - --disable-gpu
               - --headless
