@@ -68,7 +68,8 @@ spec:
               COREPACK_INTEGRITY_KEYS: 0
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
               CRAWLER_ENABLE_ADBLOCKER: true
-              CRAWLER_NUM_WORKERS: 2
+              CRAWLER_NUM_WORKERS: 1
+              CRAWLER_SCREENSHOT_TIMEOUT_SEC: 30
               CRAWLER_STORE_SCREENSHOT: true
               DATA_DIR: /data
               DISABLE_NEW_RELEASE_CHECK: true
