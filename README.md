@@ -19,7 +19,7 @@ This repository contains the declarative configuration for **kantai**, a bare-me
 
 | Node | Role | Hardware |
 |------|------|----------|
-| kantai1 | Hyper-converged control plane and workloads | <ul><li>AMD EPYC 7443P, 64 GiB</li><li>NVIDIA RTX 4000 Ada Generation, 24 GB</li><li>Micron 9300 PRO, 4 TB, x7</li><li>Seagate Exos X20, 18 TB, x15</li><li>NVIDIA ConnectX-5</li><li>LSI 9500-8e</li><li>45Drives HL-15</li></ul> |
+| kantai1 | Hyper-converged control plane and workloads | <ul><li>AMD EPYC 7443P, 256 GiB</li><li>NVIDIA RTX 4000 Ada Generation, 24 GB</li><li>Micron 9300 PRO, 4 TB, x7</li><li>Seagate Exos X20, 18 TB, x15</li><li>NVIDIA ConnectX-5</li><li>LSI 9500-8e</li><li>45Drives HL-15</li></ul> |
 | kantai2 | Virtual arm64 control plane and workloads | <ul><li>Apple M2 Mac Mini, 16 GB (mem), 500 GB (block)</li><li>UTM + QEMU hypervisor</li></ul> |
 | kantai3 | Hyper-converged control plane and workloads | <ul><li>AMD Ryzen Embedded V1500B, 32 GB</li><li>NVIDIA T400, 4 GB</li><li>Seagate Exos X18, 18 TB, x6</li><li>NVIDIA ConnectX-3</li><li>QNAP TS-673A</li></ul> |
 
