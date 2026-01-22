@@ -29,8 +29,10 @@ spec:
               tag: v2.21.0@sha256:a08b532be181256318211b6170691e316d29ac04575bc54d59620189953f03aa
             env:
               TZ: America/Los_Angeles
+              UP_INFLUXDB_DISABLE: true
               UP_LOKI_DISABLE: false
               UP_LOKI_URL: http://vlsingle-kantai.observability.svc:9428/insert/loki/api/v1/push
+              UP_PROMETHEUS_DEAD_PORTS: true
               UP_UNIFI_DEFAULT_SAVE_ALARMS: true
               UP_UNIFI_DEFAULT_SAVE_ANOMALIES: true
               UP_UNIFI_DEFAULT_SAVE_DPI: true
@@ -39,7 +41,6 @@ spec:
               UP_UNIFI_DEFAULT_SAVE_SITES: true
               UP_UNIFI_DEFAULT_URL: https://unifi.internal
               UP_UNIFI_DEFAULT_VERIFY_SSL: false
-              UP_INFLUXDB_DISABLE: true
             envFrom:
               - secretRef:
                   name: unpoller
