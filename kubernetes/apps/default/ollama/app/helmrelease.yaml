@@ -28,7 +28,7 @@ spec:
           ollama:
             image:
               repository: docker.io/ollama/ollama
-              tag: 0.15.0@sha256:4e158ee038728a7ec7f2e57fadc8a870f4c30cf7cc336b0d3424514543db1528
+              tag: 0.15.1@sha256:e0ae5354a9e4c85160df4698a45ae360cd0c12ef90e484b12fc870c28f491892
             env:
               OLLAMA_CONTEXT_LENGTH: 8092
               OLLAMA_MODELS: /models
