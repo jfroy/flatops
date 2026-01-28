@@ -54,7 +54,7 @@ spec:
           influxdb:
             image:
               repository: docker.io/library/influxdb
-              tag: 2.8.0-alpine@sha256:fb537cf0d57937a57eac33efd079ae5b36a1d35437dc1eba1ecb8800a352b62a
+              tag: 2.8.0-alpine@sha256:f15dfc604753f53b180364a331b46c2f4bc5c08a665d025982b301efa69bc2f7
             env:
               DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: scrutiny1@
               DOCKER_INFLUXDB_INIT_BUCKET: scrutiny
