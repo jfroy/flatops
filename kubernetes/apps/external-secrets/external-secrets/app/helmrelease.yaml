@@ -55,7 +55,7 @@ spec:
     image:
       # TODO: switch back to upstream (https://github.com/external-secrets/external-secrets/pull/5894)
       repository: registry.kantai.xyz/external-secrets/external-secrets
-      tag: v1.3.1-fix-cache5@sha256:cd929206dcf28782daf3567ac37b29184033c8eb05c39a33d1140517e68f9978
+      tag: v1.3.1-fix-cache6
     livenessProbe:
       enabled: true
     log:
