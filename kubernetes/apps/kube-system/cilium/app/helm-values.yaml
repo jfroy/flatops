@@ -72,6 +72,7 @@ operator:
       effect: NoSchedule
 pmtuDiscovery:
   enabled: true
+policyDenyResponse: icmp
 rollOutCiliumPods: true
 routingMode: native
 securityContext:
