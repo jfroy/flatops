@@ -133,7 +133,7 @@ spec:
             restartPolicy: Always
         pod:
           labels:
-            gluetun: "true"
+            pod-security.kantai.xyz/allow-added-capabilities: "true"
           hostname: qbittorrent
     defaultPodOptions:
       securityContext:

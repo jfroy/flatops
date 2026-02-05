@@ -112,7 +112,7 @@ spec:
               runAsUser: 0
         pod:
           labels:
-            gluetun: "true"
+            pod-security.kantai.xyz/allow-added-capabilities: "true"
           hostname: sabnzbd
     defaultPodOptions:
       securityContext:
