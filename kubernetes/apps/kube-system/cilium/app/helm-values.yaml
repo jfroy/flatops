@@ -9,7 +9,7 @@ bpf:
   datapathMode: veth
   masquerade: true # See https://github.com/siderolabs/talos/issues/8836 (forwardKubeDNSToHost)
   preallocateMaps: true
-  tproxy: true
+  tproxy: true # NOTE: incompatible with netkit
 cgroup:
   automount:
     enabled: false
