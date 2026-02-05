@@ -28,7 +28,7 @@ spec:
           octoeverywhere-bambu-connect:
             image:
               repository: docker.io/octoeverywhere/octoeverywhere
-              tag: 4.6.4@sha256:5f3fd09527f1b75e13ee1a9f32f245535e9689108a7aa825bd834fdca0000e82
+              tag: 4.6.5@sha256:0048add55ae87250336d6b8f2e45c789e0857db28149efa86d5ccaa6837fc373
             env:
               COMPANION_MODE: bambu
               CONNECTION_MODE: local
