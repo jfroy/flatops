@@ -23,7 +23,7 @@ spec:
     controllers:
       onepassword-connect:
         strategy: RollingUpdate
-        replicas: 2
+        replicas: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -98,33 +98,24 @@ spec:
                     port: *syncPort
                   initialDelaySeconds: 15
             securityContext: *csc
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 999
-        runAsGroup: 999
-        fsGroup: 999
-        fsGroupChangePolicy: OnRootMismatch
-        seccompProfile: { type: RuntimeDefault }
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 999
+            runAsGroup: 999
+            fsGroup: 999
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: { type: RuntimeDefault }
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+              effect: NoSchedule
+        podDisruptionBudget:
+          minAvailable: 1
     persistence:
       data:
         type: emptyDir
         sizeLimit: 100Mi
-    rawResources:
-      onepassword-connect:
-        enabled: true
-        apiVersion: policy/v1
-        kind: PodDisruptionBudget
-        spec:
-          minAvailable: 1
-          selector:
-            matchLabels:
-              app: onepassword-connect
-              app.kubernetes.io/component: connect
     service:
       api:
         controller: onepassword-connect
