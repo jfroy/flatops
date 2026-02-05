@@ -54,8 +54,6 @@ spec:
       enabled: true
     livenessProbe:
       enabled: true
-    log:
-      level: debug
     podDisruptionBudget:
       enabled: true
       minAvailable: 1
