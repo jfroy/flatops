@@ -28,7 +28,7 @@ spec:
           docling:
             image:
               repository: ghcr.io/docling-project/docling-serve-cu128
-              tag: v1.11.0@sha256:e6440286b547da36eb63703e9cad4af716969e4c6985507eb75b0a74391706db
+              tag: v1.12.0@sha256:3440ad80ec78f278f0e9637882c54147cf131951ba456a60f97c5f787cf72880
             env:
               DOCLING_DEVICE: cuda
               DOCLING_SERVE_MAX_SYNC_WAIT: 600
