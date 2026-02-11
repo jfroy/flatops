@@ -38,7 +38,7 @@ spec:
           mediamanager:
             image:
               repository: ghcr.io/maxdorninger/mediamanager/mediamanager
-              tag: 1.12.2@sha256:6092302f2f6b3ba931eae5c5f9164d43bcfd61c28b46c11477270328e92f1aa8
+              tag: 1.12.3@sha256:83b80dce26f8cdbbf8afec06784a85e7eedcba05ad4be57d2f70b006304d7a8c
             command: ["/entrypoint.sh"]
             env:
               CONFIG_DIR: /app/config
