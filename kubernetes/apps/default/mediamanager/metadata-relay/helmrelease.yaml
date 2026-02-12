@@ -39,7 +39,7 @@ spec:
           metadata-relay:
             image:
               repository: ghcr.io/maxdorninger/mediamanager/metadata_relay
-              tag: 1.12.2@sha256:72e27b11d588f3ad08d248b8146a47d46f6bb598e635cbea837eea6783740394
+              tag: 1.12.3@sha256:c21927441446d3cf7e3efd3ca1f934466e6049575456457c37594185b2f36a29
             env:
               TZ: America/Los_Angeles
             envFrom:
