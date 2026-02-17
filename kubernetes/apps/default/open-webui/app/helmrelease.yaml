@@ -48,7 +48,7 @@ spec:
           open-webui:
             image:
               repository: ghcr.io/open-webui/open-webui
-              tag: v0.8.2-cuda
+              tag: v0.8.3-cuda
             env:
               #ENABLE_FORWARD_USER_INFO_HEADERS: True
               #ENABLE_PERSISTENT_CONFIG: False
