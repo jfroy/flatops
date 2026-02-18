@@ -39,13 +39,22 @@ spec:
               TZ: America/Los_Angeles
               UPDATE_STRATEGY: PARALLEL
             probes:
-              readiness:
+              liveness: &probe
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /status
                     port: 2322
+              readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /status
+                    port: 2322
+                  failureThreshold: 720
             resources:
               requests:
                 memory: 1024Mi
