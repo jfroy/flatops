@@ -30,7 +30,7 @@ spec:
           photon:
             image:
               repository: ghcr.io/rtuszik/photon-docker
-              tag: 2.0.1
+              tag: 1.3.1
             command: ["uv"]
             args: ["run", "--no-sync", "-m", "src.process_manager"]
             env:
