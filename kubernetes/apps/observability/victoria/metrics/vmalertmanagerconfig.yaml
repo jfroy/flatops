@@ -8,12 +8,6 @@ spec:
     receiver: "blackhole"
     group_by: ["alertname", "job"]
     routes:
-      - receiver: robusta
-        group_interval: 1s
-        group_wait: 1s
-        repeat_interval: 4h
-        matchers: [severity=~.*]
-        continue: true
       - receiver: "blackhole"
         matchers: [alertname=InfoInhibitor]
       - receiver: heartbeat
@@ -75,10 +69,6 @@ spec:
               {{- end }}
             {{- end }}
           {{- end }}
-  - name: 'robusta'
-    webhook_configs:
-      - url: 'http://robusta-runner.observability.svc.cluster.local/api/alerts'
-        send_resolved: true
   inhibit_rules:
     - source_matchers: [severity=critical]
       target_matchers: [severity=~error|warning|info]

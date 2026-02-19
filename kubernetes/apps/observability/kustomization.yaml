@@ -20,7 +20,6 @@ resources:
   - ./nut-exporter/ks.yaml
   # - ./pulse/ks.yaml
   - ./prometheus-operator-crds/ks.yaml
-  - ./robusta/ks.yaml
   - ./scrutiny/ks.yaml
   - ./silence-operator/ks.yaml
   - ./siren/ks.yaml
