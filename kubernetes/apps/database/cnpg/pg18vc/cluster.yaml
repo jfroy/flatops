@@ -30,8 +30,13 @@ spec:
           - system
       - name: timescaledb
         image:
-          # NOTE: Private image until PR is merged: https://github.com/cloudnative-pg/postgres-extensions-containers/pull/73
-          reference: registry.kantai.xyz/cloudnative-pg/timescaledb:2.24.0-18-trixie
+          # NOTE: Personal extension image with the TimescaleDB license extension
+          # TODO: Move to containers or a new cnpg extensions repo
+          reference: registry.kantai.xyz/jfroy/timescaledb:2.24.0-18-trixie
+      - name: timescaledb-toolkit
+        image:
+          # TODO: Move to containers or a new cnpg extensions repo
+          reference: registry.kantai.xyz/jfroy/timescaledb_toolkit:1.22.0-18-trixie
       - name: vchord
         image:
           # renovate: datasource=docker depName=ghcr.io/tensorchord/vchord-scratch
