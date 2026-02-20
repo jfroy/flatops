@@ -49,6 +49,7 @@ spec:
       max_connections: "100"
       max_locks_per_transaction: '128'
       shared_buffers: 64MB
+      timescaledb.max_background_workers: '32'
       timescaledb.max_tuples_decompressed_per_dml_transaction: '0'
       timescaledb.telemetry_level: 'off'
     shared_preload_libraries:
