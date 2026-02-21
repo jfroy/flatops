@@ -26,7 +26,7 @@ spec:
           siren:
             image:
               repository: ghcr.io/shamubernetes/siren
-              tag: 1.4.21@sha256:de5c5949ddfda7ca7eade93f3c8fe203b94c43c04d18d42806ffafd67c8de5de
+              tag: 1.4.23@sha256:1d7a0111f79e9b063861a3c2af71f88bdcdce25963ba5785d851a3a6a7e2d6ed
             env:
               ALERTMANAGER_BASE_URL: http://vmalertmanager-kantai.observability.svc.cluster.local:9093
               PORT: &port 3000
