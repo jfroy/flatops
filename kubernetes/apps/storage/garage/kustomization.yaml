@@ -6,3 +6,4 @@ resources:
   - ./garagebucket.yaml
   - ./garagecluster.yaml
   - ./garagekey.yaml
+  - ./httproute.yaml
