@@ -13,6 +13,12 @@
       matchPackageNames: ["gpu-operator"],
       automerge: false,
     },
+    // - Don't automerge postgres, it needs review
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      automerge: false,
+    },
     // - Don't automerge Cilium minor releases; they are basically major releases
     {
       matchDatasources: ["docker"],
