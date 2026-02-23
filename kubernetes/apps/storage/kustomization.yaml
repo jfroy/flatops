@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./backups/ks.yaml
+  - ./garage/ks.yaml
   - ./kantai1-samba/ks.yaml
   - ./kantai3-samba/ks.yaml
   - ./maintenance/ks.yaml

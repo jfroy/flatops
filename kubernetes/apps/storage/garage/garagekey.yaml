@@ -1,0 +1,12 @@
+---
+apiVersion: garage.rajsingh.info/v1alpha1
+kind: GarageKey
+metadata:
+  name: wave5-kopia
+spec:
+  clusterRef:
+    name: garage
+  bucketPermissions:
+    - bucketRef: wave5-backup
+      read: true
+      write: true

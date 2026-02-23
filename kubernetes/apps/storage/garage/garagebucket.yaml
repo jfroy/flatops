@@ -1,0 +1,10 @@
+---
+apiVersion: garage.rajsingh.info/v1alpha1
+kind: GarageBucket
+metadata:
+  name: wave5-backup
+spec:
+  clusterRef:
+    name: garage
+  quotas:
+    maxSize: 1Ti
