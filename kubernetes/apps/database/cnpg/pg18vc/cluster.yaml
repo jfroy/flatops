@@ -5,7 +5,11 @@ kind: Cluster
 metadata:
   name: pg18vc
 spec:
-  instances: 1
+  instances: 2
+  affinity:
+    enablePodAntiAffinity: false
+    nodeSelector:
+      kubernetes.io/hostname: kantai1
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=docker
   imageName: ghcr.io/cloudnative-pg/postgresql:18.1-standard-trixie
   storage:
