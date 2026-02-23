@@ -6,7 +6,7 @@ metadata:
   name: pg18vc
 spec:
   instances: 1
-  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+  # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=docker
   imageName: ghcr.io/cloudnative-pg/postgresql:18.1-standard-trixie
   storage:
     size: 100Gi
