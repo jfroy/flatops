@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mealie
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      mealie:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.2.0@sha256:ae89578925b480f5972f237dda2f7a37efe36aff500d3e7bd1d3a6a3181e4191
+            envFrom:
+              - secretRef:
+                  name: mealie-db
+              - secretRef:
+                  name: mealie-initdb
+        containers:
+          mealie:
+            image:
+              repository: ghcr.io/mealie-recipes/mealie
+              tag: v3.11.0@sha256:d99fc2844c04288526d6cbecc9ac1b6c32d8ea6054236d56857107bbaf70ea5c
+            env:
+              ALLOW_PASSWORD_LOGIN: "true"
+              ALLOW_SIGNUP: "false"
+              API_PORT: &port 9000
+              BASE_URL: https://mealie.kantai.xyz
+              DB_ENGINE: postgres
+              OIDC_ADMIN_GROUP: mealie_admins
+              OIDC_AUTH_ENABLED: "true"
+              OIDC_CONFIGURATION_URL: https://pid.kantai.xyz/.well-known/openid-configuration
+              OIDC_PROVIDER_NAME: Pocket ID
+              OIDC_REMEMBER_ME: "true"
+              OIDC_SIGNUP_ENABLED: "true"
+              OPENAI_MODEL: gpt-5-mini
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: mealie
+              - secretRef:
+                  name: mealie-db
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/app/about
+                    port: *port
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 911
+            runAsGroup: 911
+            fsGroup: 911
+            fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: ${APP}
+        advancedMounts:
+          mealie:
+            mealie:
+              - path: /app/data
+    route:
+      mealie:
+        hostnames:
+          - mealie.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: mealie
+                port: *port
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /
+    service:
+      mealie:
+        controller: mealie
+        ports:
+          http:
+            port: *port

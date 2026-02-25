@@ -23,6 +23,7 @@ resources:
   - ./karakeep/ks.yaml
   # - ./mediamanager/ks.yaml
   - ./media-smb/ks.yaml
+  - ./mealie/ks.yaml
   - ./memos/ks.yaml
   - ./miniflux/ks.yaml
   # - ./netbox/ks.yaml
