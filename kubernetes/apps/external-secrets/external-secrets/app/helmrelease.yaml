@@ -52,6 +52,10 @@ spec:
           effect: NoSchedule
     grafanaDashboard:
       enabled: true
+    image:
+      # TODO: switch back to upstream (https://github.com/external-secrets/external-secrets/pull/5894)
+      repository: registry.kantai.xyz/external-secrets/external-secrets
+      tag: v2.0.1-fix-cache1
     livenessProbe:
       enabled: true
     podDisruptionBudget:
