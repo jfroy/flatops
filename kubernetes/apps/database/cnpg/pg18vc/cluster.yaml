@@ -11,7 +11,7 @@ spec:
     nodeSelector:
       kubernetes.io/hostname: kantai1
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=docker
-  imageName: ghcr.io/cloudnative-pg/postgresql:18.2-standard-trixie
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.3-standard-trixie
   storage:
     size: 100Gi
     storageClass: openebs-hostpath
