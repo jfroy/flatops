@@ -40,8 +40,10 @@ spec:
   values:
     fullnameOverride: volsync # Required for volsync-perfectra1n fork
     image: &image
-      repository: ghcr.io/perfectra1n/volsync
-      tag: v0.17.8
+      # TODO: switch back to perfectra1n/volsync once job conditions fix is merged
+      # https://github.com/perfectra1n/volsync/pull/27
+      repository: ghcr.io/jfroy/volsync
+      tag: 0.17.8-jobconditions1
     kopia: *image
     rclone: *image
     restic: *image
