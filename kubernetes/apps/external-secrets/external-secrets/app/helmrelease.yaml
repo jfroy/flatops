@@ -55,7 +55,7 @@ spec:
     image:
       # TODO: switch back to upstream (https://github.com/external-secrets/external-secrets/pull/5894)
       repository: registry.kantai.xyz/external-secrets/external-secrets
-      tag: v2.0.1-fix-cache1
+      tag: v2.0.1-fix-cache2@sha256:a152c7d99b12a3cee42e716fa676261c6c5794bebc05ac42a4e1fe410d933c39
     livenessProbe:
       enabled: true
     podDisruptionBudget:
