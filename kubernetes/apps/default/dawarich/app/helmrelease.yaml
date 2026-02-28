@@ -44,8 +44,6 @@ spec:
               repository: ghcr.io/valkey-io/valkey
               tag: 9.0.3@sha256:2bce660b767cb62c8c0ea020e94a230093be63dbd6af4f21b044960517a5842d
             args:
-              - --save
-              - ""
               - --port
               - "6379"
             probes:
@@ -58,6 +56,10 @@ spec:
                       - valkey-cli
                       - ping
             restartPolicy: Always
+            securityContext: &sc
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         containers:
           app:
             image:
@@ -95,10 +97,7 @@ spec:
                     path: /api/v1/health
                     port: 3000
               readiness: *probe
-            securityContext: &sc
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-              readOnlyRootFilesystem: true
+            securityContext: *sc
           sidekick:
             image:
               repository: mirror.gcr.io/freikin/dawarich
@@ -149,6 +148,9 @@ spec:
               - path: /var/app/tmp
                 subPath: app
             sidekick: *mounts
+            valkey:
+              - path: /data
+                subPath: valkey-data
       watched:
         type: emptyDir
         sizeLimit: 100Mi
