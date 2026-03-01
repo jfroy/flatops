@@ -121,7 +121,7 @@ spec:
         existingClaim: ${APP}
         advancedMounts:
           paperless:
-            app:
+            paperless:
               - path: /data
       inbox:
         type: emptyDir
