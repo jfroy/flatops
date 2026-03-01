@@ -35,6 +35,10 @@ spec:
               - --port
               - "6379"
             restartPolicy: Always
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         containers:
           metadata-relay:
             image:
@@ -62,19 +66,26 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        fsGroupChangePolicy: OnRootMismatch
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
     persistence:
       cache:
         type: emptyDir
         sizeLimit: 1Gi
         globalMounts:
           - path: /.cache
+      valkey-data:
+        type: emptyDir
+        sizeLimit: 1Mi
+        advancedMounts:
+          metadata-relay:
+            valkey:
+              - path: /data
     service:
       metadata-relay:
         ports:

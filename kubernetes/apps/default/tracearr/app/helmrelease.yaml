@@ -58,6 +58,10 @@ spec:
                       - valkey-cli
                       - ping
             restartPolicy: Always
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         containers:
           tracearr:
             image:
@@ -114,6 +118,13 @@ spec:
               subPath: image-cache
             - path: /tmp
               subPath: tmp
+      valkey-data:
+        type: emptyDir
+        sizeLimit: 1Mi
+        advancedMounts:
+          tracearr:
+            valkey:
+              - path: /data
     route:
       tracearr:
         hostnames: ["tracearr.kantai.xyz"]

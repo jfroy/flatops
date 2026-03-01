@@ -46,6 +46,10 @@ spec:
               - /certs/ca.crt
               - --tls-auth-clients
               - "no"
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         pod:
           affinity:
             podAffinity:
@@ -58,6 +62,12 @@ spec:
                           values: ["immich"]
                     topologyKey: kubernetes.io/hostname
                   weight: 100
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
     persistence:
       certs:
         type: secret
@@ -65,6 +75,9 @@ spec:
       config:
         type: secret
         name: immich-valkey
+      data:
+        type: emptyDir
+        sizeLimit: 1Mi
     service:
       valkey:
         controller: valkey
