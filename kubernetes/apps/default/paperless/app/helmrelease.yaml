@@ -117,8 +117,12 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
     persistence:
       data:
-        existingClaim: ${APP}
       # TODO: Switch to SMB share at some point.
+        existingClaim: ${APP}
+        advancedMounts:
+          paperless:
+            app:
+              - path: /data
       inbox:
         type: emptyDir
         sizeLimit: 1Mi
@@ -133,7 +137,7 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 100Mi
-      valkey-data:
+      valkey:
         type: emptyDir
         sizeLimit: 1Mi
         advancedMounts:
