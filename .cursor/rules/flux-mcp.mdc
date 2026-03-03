@@ -1,0 +1,59 @@
+---
+description: Guidelines for using the Flux MCP Server to analyze and troubleshoot GitOps pipelines on Kubernetes clusters
+alwaysApply: true
+---
+
+# Flux MCP Server Guidelines
+
+You have access to the `flux-operator-mcp` MCP tools for interacting with Kubernetes clusters running Flux.
+
+## Flux Custom Resources
+
+Flux consists of the following controllers and CRDs:
+
+**Flux Operator**: ResourceSetInputProvider, ResourceSet, FluxReport, FluxInstance
+**Source Controller**: HelmChart, HelmRepository, Bucket, OCIRepository, GitRepository
+**Kustomize Controller**: Kustomization
+**Helm Controller**: HelmRelease
+**Notification Controller**: Receiver, Alert, Provider
+**Image Automation**: ImageUpdateAutomation, ImagePolicy, ImageRepository
+
+For CRD details, call `search_flux_docs` for each resource kind.
+
+## General Rules
+
+- Call `search_flux_docs` when asked about Flux CRDs.
+- Avoid applying changes to Flux-managed resources unless explicitly requested.
+- To create or update resources, generate YAML and call `apply_kubernetes_resource`.
+- Check metadata for `fluxcd` labels to determine if a resource is Flux-managed.
+- After switching context, call `get_flux_instance` to check Flux status.
+- Use `get_kubeconfig_contexts` to find cluster contexts, then `set_kubeconfig_context` to switch.
+- Don't assume `apiVersion` — call `get_kubernetes_api_versions` to find the correct one.
+
+## HelmRelease Troubleshooting
+
+1. Call `get_flux_instance` to check helm-controller status.
+2. Get the HelmRelease with `get_kubernetes_resources`, analyze spec, status, inventory, and events.
+3. Check the managing object (Kustomization or ResourceSet) via annotations.
+4. If `valuesFrom` is present, get all referenced ConfigMaps and Secrets.
+5. Identify the source from `chartRef` or `sourceRef`, analyze its status and events.
+6. If the HelmRelease is failed/in-progress, check managed resources from the inventory.
+7. For failed managed resources, analyze logs with `get_kubernetes_logs`.
+
+## Kustomization Troubleshooting
+
+1. Call `get_flux_instance` to check kustomize-controller status.
+2. Get the Kustomization with `get_kubernetes_resources`, analyze spec, status, inventory, and events.
+3. Check the managing object via annotations.
+4. If `substituteFrom` is present, get all referenced ConfigMaps and Secrets.
+5. Identify the source from `sourceRef`, analyze its status and events.
+6. If the Kustomization is failed/in-progress, check managed resources from the inventory.
+7. For failed managed resources, analyze logs with `get_kubernetes_logs`.
+
+## Cross-Cluster Comparison
+
+1. Use `get_kubeconfig_contexts` to list contexts.
+2. Use `set_kubeconfig_context` to switch to each cluster.
+3. Call `get_flux_instance` on each cluster.
+4. Get the resource on each cluster, including any `valuesFrom`/`substituteFrom` references.
+5. Compare `spec`, `status`, and `events` across clusters.

@@ -2,11 +2,7 @@
   "yaml.schemas": {
     "Kubernetes": "./kubernetes/*.yaml"
   },
-  "vs-kubernetes": {
-    "vs-kubernetes.kubeconfig": "${workspaceFolder}/kubeconfig"
-  },
   "githubPullRequests.remotes": ["origin"],
   "git.rebaseWhenSync": true,
-  "sops.defaults.ageKeyFile": "age.key",
-  "chat.mcp.access": "all"
+  "sops.defaults.ageKeyFile": "age.key"
 }

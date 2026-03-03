@@ -8,3 +8,6 @@ Brewfile.lock.json
 Thumbs.db
 kubeconfig
 talosconfig
+
+# Cursor local config (paths, machine-specific)
+.cursor/mcp.json
