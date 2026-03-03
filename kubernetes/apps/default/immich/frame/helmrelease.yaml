@@ -37,6 +37,11 @@ spec:
               TZ: America/Los_Angeles
               UnitSystem: metric
               WeatherLatLong: "37.773972,-122.431297"
+            envFrom:
+              - secretRef:
+                  name: immichframe
+              - secretRef:
+                  name: immichframe-keys
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
