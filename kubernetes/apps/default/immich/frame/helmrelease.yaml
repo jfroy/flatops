@@ -1,0 +1,67 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immichframe
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      immichframe:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          immichframe:
+            image:
+              repository: ghcr.io/immichframe/immichframe
+              tag: v1.0.32.0@sha256:a0b54ee307d5746cd59518bd3ff60d80bf133b5dbe3202585f8c788d9ce3f2a8
+            env:
+              ClockFormat: "HH:mm"
+              People: "c2b17279-ba6b-4115-835a-1168e78d4a26,a3d1fd47-a0b9-4fd9-8dea-a39d94fb5e0b,ff68bcd6-b18b-465f-acd7-8e6a4def7455,2f905394-9852-47a5-a3ea-f671300c6add,675bf5ae-1ecd-448f-b32a-2bc2acec4950"
+              PhotoDateFormat: "YYYY-MM-DD"
+              Tags: ""
+              TZ: America/Los_Angeles
+              UnitSystem: metric
+              WeatherLatLong: "37.773972,-122.431297"
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+    route:
+      immichframe:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: 8080
+                identifier: immichframe
+    service:
+      immichframe:
+        controller: immichframe
+        ports:
+          http:
+            port: 8080
