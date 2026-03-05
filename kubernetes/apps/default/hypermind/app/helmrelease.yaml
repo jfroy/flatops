@@ -26,7 +26,7 @@ spec:
           hypermind:
             image:
               repository: ghcr.io/lklynet/hypermind
-              tag: latest@sha256:42f92750a4309b1d40a644bc0e9500f1bba6d1b55935aeeff4a9f1626f8a283f
+              tag: latest@sha256:37f43c1fe1a45afd960290a6c8fb89070d0d215f7ccb082c1fc0b935588a7ba0
             env:
               PORT: &port 3000
               TZ: America/Los_Angeles
