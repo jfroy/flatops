@@ -28,7 +28,7 @@ spec:
           changedetection:
             image:
               repository: ghcr.io/dgtlmoon/changedetection.io
-              tag: 0.54.5@sha256:7ce66cb803e08beb238aaf99298c571068ec6a5559b7cc383414e9fcf65ad062
+              tag: 0.54.6@sha256:7611738e564caa08a9b7591a7909e4f6c78d34d289873b9fd7d320af50943419
             env:
               BASE_URL: "https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
               DISABLE_VERSION_CHECK: "true"
