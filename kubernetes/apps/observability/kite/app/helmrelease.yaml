@@ -38,7 +38,7 @@ spec:
           kite:
             image:
               repository: ghcr.io/zxh326/kite
-              tag: v0.7.8@sha256:4371c9a1d1e64c27682bf8d7e5db9bac9e54e7f16f8329eab0b0bf04d3015926
+              tag: v0.9.0@sha256:b642311db993303c6dc90233af60279ddcee8fbfc34babd52be3bd0bb1dc2fa6
             env:
               DB_TYPE: postgres
               HOST: kite.kantai.xyz
