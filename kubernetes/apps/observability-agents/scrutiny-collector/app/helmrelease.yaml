@@ -27,7 +27,7 @@ spec:
           collector:
             image:
               repository: ghcr.io/starosdev/scrutiny
-              tag: 1.47.1-collector@sha256:df3e88dd23822cc1618fb6bc7a45291964604f1dbcb590d5c3c744acd90a390d
+              tag: 1.49.1-collector@sha256:611f96eb4f311be0327c51de1384b11578a1064836e0750ea7e5bb728b9c3865
             env:
               COLLECTOR_API_ENDPOINT: http://scrutiny.observability.svc.cluster.local:8080
               COLLECTOR_CRON_SCHEDULE: 0 4 * * *
