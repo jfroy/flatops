@@ -79,7 +79,7 @@ spec:
         spec:
           containers:
             - name: scrub
-              image: alpine:3.23.3
+              image: alpine:3.23.4
               imagePullPolicy: IfNotPresent
               command:
                 - /bin/sh
