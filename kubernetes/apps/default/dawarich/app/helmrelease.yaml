@@ -128,8 +128,6 @@ spec:
         advancedMounts:
           dawarich:
             app: &mounts
-              - path: /var/app/db
-                subPath: db
               - path: /var/app/public
                 subPath: public
               - path: /var/app/storage
