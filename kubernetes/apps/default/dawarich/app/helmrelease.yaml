@@ -39,6 +39,15 @@ spec:
                   name: dawarich-db
               - secretRef:
                   name: dawarich-initdb
+          sync-assets:
+            image:
+              repository: mirror.gcr.io/freikin/dawarich
+              tag: 1.6.1
+            command: [/bin/sh, -c, rm -rf /var/app/public/assets && cp -r /tmp/public_assets/* /var/app/public/]
+            securityContext: &sc
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
           valkey:
             image:
               repository: ghcr.io/valkey-io/valkey
@@ -58,15 +67,12 @@ spec:
                       - valkey-cli
                       - ping
             restartPolicy: Always
-            securityContext: &sc
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-              readOnlyRootFilesystem: true
+            securityContext: *sc
         containers:
           app:
             image:
               repository: mirror.gcr.io/freikin/dawarich
-              tag: 1.3.1
+              tag: 1.6.1
             command: ["web-entrypoint.sh"]
             args: ["bin/rails", "server", "-p", "3000", "-b", "::"]
             env: &env
@@ -103,7 +109,7 @@ spec:
           sidekick:
             image:
               repository: mirror.gcr.io/freikin/dawarich
-              tag: 1.3.1
+              tag: 1.6.1@sha256:a884f69f19ce0f66992f3872d24544d1e587e133b8a003e072711aafc1e02429
             command: ["sidekiq-entrypoint.sh"]
             args: []
             env: *env
@@ -131,6 +137,9 @@ spec:
               - path: /dawarich_db_data
                 subPath: dawarich_db_data
             sidekick: *mounts
+            sync-assets:
+              - path: /var/app/public
+                subPath: public
       initdb:
         type: configMap
         identifier: dawarich-initdb
