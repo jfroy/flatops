@@ -59,11 +59,3 @@ spec:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
         effect: NoSchedule
-  postRenderers:
-    - kustomize:
-        patches:
-          - patch: |
-              - op: remove
-                path: /spec/template/spec/containers/0/resources/limits
-            target:
-              kind: Deployment
