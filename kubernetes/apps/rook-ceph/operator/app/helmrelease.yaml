@@ -26,10 +26,12 @@ spec:
   driftDetection:
     mode: disabled
   install:
+    disableWait: true
     remediation:
       retries: -1
   upgrade:
     cleanupOnFail: true
+    disableWait: true
     remediation:
       retries: 3
   values:
@@ -54,7 +56,8 @@ spec:
       requests:
         memory: 128Mi # unchangable
         cpu: 100m # unchangable
-      limits: {}
+      limits:
+        memory: 2Gi
     tolerations:
       - key: node-role.kubernetes.io/control-plane
         operator: Exists
