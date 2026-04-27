@@ -41,7 +41,7 @@ spec:
               tag: v0.10.0@sha256:5fe77d402ef251907aaa9c4bb609c1fa01cde39c40a61414c1e35883f988554a
             env:
               DB_TYPE: postgres
-              HOST: kite.kantai.xyz
+              HOST: https://kite.kantai.xyz
             envFrom:
               - secretRef:
                   name: kite-db
