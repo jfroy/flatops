@@ -1,3 +1,5 @@
+/.cursor/mcp.json
+/.mcp.json
 /.private/
 /.task/
 *.crt
@@ -8,6 +10,3 @@ Brewfile.lock.json
 Thumbs.db
 kubeconfig
 talosconfig
-
-# Cursor local config (paths, machine-specific)
-.cursor/mcp.json
