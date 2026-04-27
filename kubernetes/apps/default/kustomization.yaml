@@ -26,9 +26,9 @@ resources:
   - ./miniflux/ks.yaml
   # - ./netbox/ks.yaml
   # - ./octoeverywhere-bambu-connect/ks.yaml
-  - ./ollama/ks.yaml
-  - ./open-webui/ks.yaml
-  - ./paperless/ks.yaml
+  # - ./ollama/ks.yaml
+  # - ./open-webui/ks.yaml
+  # - ./paperless/ks.yaml
   - ./pgadmin/ks.yaml
   - ./photon/ks.yaml
   - ./plex/ks.yaml
