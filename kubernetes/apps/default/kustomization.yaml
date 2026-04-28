@@ -25,6 +25,7 @@ resources:
   - ./memos/ks.yaml
   - ./miniflux/ks.yaml
   # - ./netbox/ks.yaml
+  - ./nextflux/ks.yaml
   # - ./octoeverywhere-bambu-connect/ks.yaml
   # - ./ollama/ks.yaml
   # - ./open-webui/ks.yaml

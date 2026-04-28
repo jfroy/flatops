@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextflux
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      nextflux:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          nextflux:
+            image:
+              repository: docker.io/electh/nextflux
+              tag: latest@sha256:cdff9575f980e18d29b40358b7c9e7066856748600d8ae4c751aa851bedb60d8
+              pullPolicy: Always
+            env:
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 3000
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: { type: RuntimeDefault }
+    persistence:
+      caddy-config:
+        type: emptyDir
+        sizeLimit: 16Mi
+        globalMounts:
+          - path: /config
+      caddy-data:
+        type: emptyDir
+        sizeLimit: 16Mi
+        globalMounts:
+          - path: /data
+    route:
+      nextflux:
+        hostnames: ["{{ .Release.Name }}.kantai.xyz"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      app:
+        controller: nextflux
+        ports:
+          http:
+            port: *port
