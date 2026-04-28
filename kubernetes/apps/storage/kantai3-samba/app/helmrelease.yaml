@@ -73,7 +73,7 @@ spec:
           dbus:
             image:
               repository: ghcr.io/jfroy/dbus-daemon
-              tag: 1.16.2@sha256:16693676b943ebde04a0c754c081234197017a775203c6bb312677decb9a5636
+              tag: 1.16.2@sha256:86ad9615af8e86fb73371f52b2e81c132be9c8e66465f1e2b1e281082e226231
             args:
               - --config-file
               - /config/dbus.conf
