@@ -8,6 +8,7 @@ resources:
   - ./kantai1-samba/ks.yaml
   - ./kantai3-samba/ks.yaml
   - ./maintenance/ks.yaml
+  - ./zfs-volumes/ks.yaml
 components:
   - ../../components/common
 transformers:
