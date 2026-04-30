@@ -28,13 +28,16 @@ spec:
   install:
     disableHooks: true
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     disableHooks: true
     remediation:
       retries: 3
   values:
+    global:
+      imageRegistry: quay.io/
+
     alloy:
       enabled: false
 
@@ -54,31 +57,9 @@ spec:
         name: openebs-hostpath
       analytics:
         enabled: false
-      helperPod:
-        image:
-          registry: quay.io/
 
     zfs-localpv:
-      enabled: true
-      zfsController:
-        tolerations:
-          - key: node-role.kubernetes.io/control-plane
-            operator: Exists
-            effect: NoSchedule
-      zfsNode:
-        encrKeysDir: "/var/zfs"
-        tolerations:
-          - key: node-role.kubernetes.io/control-plane
-            operator: Exists
-            effect: NoSchedule
-      analytics:
-        enabled: false
-      zfs:
-        bin: /usr/local/sbin/zfs
-      crds:
-        csi:
-          volumeSnapshots:
-            enabled: false
+      enabled: false
 
     loki:
       enabled: false
@@ -86,8 +67,13 @@ spec:
     lvm-localpv:
       enabled: false
 
+    rawfile-localpv:
+      enabled: false
+
     mayastor:
       enabled: false
+      alloy:
+        enabled: false
       crds:
         enabled: false
       etcd:
@@ -99,7 +85,7 @@ spec:
         cpuCount: "1"
       localpv-provisioner:
         enabled: false
-      loki-stack:
+      loki:
         enabled: false
       obs:
         callhome:
@@ -118,8 +104,10 @@ spec:
       local:
         lvm:
           enabled: false
+        rawfile:
+          enabled: false
         zfs:
-          enabled: true
+          enabled: false
       replicated:
         mayastor:
           enabled: false
