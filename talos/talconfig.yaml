@@ -278,18 +278,19 @@ patches:
         net.ipv4.tcp_slow_start_after_idle: "0"    # Disable RFC2861 slow start after idle
         user.max_user_namespaces: "49152"          # C000; arbitrary
 
-  # Extra mounts for openebs-hostpath
+  # Extra mounts for openebs-hostpath and local zfs datasets
   - |-
     machine:
       kubelet:
         extraMounts:
+          - destination: /var/mnt
+            type: bind
+            source: /var/mnt
+            options: [bind, rshared, rw]
           - destination: /var/openebs/local
             type: bind
             source: /var/openebs/local
-            options:
-              - bind
-              - rshared
-              - rw
+            options: [bind, rshared, rw]
 
   # Enable Host DNS: https://www.talos.dev/v1.8/talos-guides/network/host-dns/
   - |-
