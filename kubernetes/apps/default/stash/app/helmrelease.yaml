@@ -272,7 +272,7 @@ spec:
               - path: /scrapers
       sss:
         type: persistentVolumeClaim
-        existingClaim: media-smb-kantai3
+        existingClaim: media1
         globalMounts:
           - path: /mnt/citerne/media
       tmp:

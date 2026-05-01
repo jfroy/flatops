@@ -20,7 +20,7 @@ resources:
   # - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
   # - ./mediamanager/ks.yaml
-  - ./media-smb/ks.yaml
+  - ./media-pv/ks.yaml
   - ./mealie/ks.yaml
   - ./memos/ks.yaml
   - ./miniflux/ks.yaml

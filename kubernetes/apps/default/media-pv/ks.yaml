@@ -3,10 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: media-smb-kantai1
+  name: media-pv
 spec:
-  path: ./kubernetes/apps/default/media-smb/kantai1
-  prune: true
+  path: ./kubernetes/apps/default/media-pv/app
+  prune: false  # don't GC local ZFS volumes
   sourceRef:
     kind: GitRepository
     name: flux-system

@@ -97,7 +97,7 @@ spec:
                 readOnly: true
       media2:
         type: persistentVolumeClaim
-        existingClaim: media-smb-kantai1
+        existingClaim: media2
       metadata:
         type: persistentVolumeClaim
         size: 20Gi

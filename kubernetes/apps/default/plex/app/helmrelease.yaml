@@ -103,7 +103,7 @@ spec:
         type: emptyDir
       media2:
         type: persistentVolumeClaim
-        existingClaim: media-smb-kantai1
+        existingClaim: media2
         globalMounts:
           - path: /media2/library
             subPath: library

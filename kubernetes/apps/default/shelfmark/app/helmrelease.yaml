@@ -71,7 +71,7 @@ spec:
         existingClaim: "${APP}"
       media2:
         type: persistentVolumeClaim
-        existingClaim: media-smb-kantai1
+        existingClaim: media2
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
