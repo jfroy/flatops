@@ -11,4 +11,4 @@ spec:
       storage: 160Ti
   storageClassName: ""
   volumeMode: Filesystem
-  volumeName: photos
+  volumeName: default-photos
