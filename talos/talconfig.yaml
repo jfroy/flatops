@@ -163,9 +163,6 @@ nodes:
       wwid: eui.0025385691b1844a
     controlPlane: true
     kernelModules:
-      - name: nvidia
-      - name: nvidia-uvm
-      - name: nvidia-modeset
       - name: nvme-tcp
     machineSpec:
       secureboot: false
@@ -188,9 +185,6 @@ nodes:
           - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
-            - jfroy/siderolabs/glibc
-            - jfroy/siderolabs/nvidia-driver-production
-            - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
