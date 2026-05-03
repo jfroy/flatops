@@ -7,6 +7,7 @@ resources:
   # --
   - ./cilium/ks.yaml
   - ./coredns/ks.yaml
+  - ./cpufreq/ks.yaml
   - ./csi-driver-smb/ks.yaml
   - ./descheduler/ks.yaml
   # - ./gateway-crd/ks.yaml

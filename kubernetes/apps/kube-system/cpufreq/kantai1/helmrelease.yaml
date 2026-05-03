@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cpufreq-kantai1
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      priorityClassName: system-node-critical
+      nodeSelector:
+        kubernetes.io/hostname: kantai1
+      tolerations:
+        - key: node-role.kubernetes.io/control-plane
+          operator: Exists
+          effect: NoSchedule
+    controllers:
+      cpufreq:
+        type: daemonset
+        containers:
+          cpufreq:
+            image:
+              repository: docker.io/library/alpine
+              tag: latest
+            command:
+              - /bin/sh
+              - -c
+              - |
+                for f in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
+                  echo powersave > "$f"
+                done
+                for f in /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference; do
+                  echo balance_power > "$f"
+                done
+                for f in /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq; do
+                  echo 400000 > "$f"
+                done
+                sleep infinity
+            securityContext:
+              privileged: true
+              runAsUser: 0
+              runAsNonRoot: false
+              readOnlyRootFilesystem: true
+    persistence:
+      sys:
+        type: hostPath
+        hostPath: /sys
+        globalMounts:
+          - path: /sys
