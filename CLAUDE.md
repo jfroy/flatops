@@ -30,7 +30,7 @@ flux reconcile helmrelease <name> -n <namespace>
 
 ## Repository Structure
 
-```
+```txt
 kubernetes/
   cluster/          # Root Flux entrypoint (cluster-vap → cluster-apps)
   vap/              # ValidatingAdmissionPolicies (applied first)
@@ -45,27 +45,38 @@ talos/              # talhelper config (talconfig.yaml + SOPS-encrypted secrets)
 bootstrap/          # One-time cluster bootstrap (currently broken/unused)
 ```
 
+## Helm Chart Strategy
+
+Two categories of deployments exist in this cluster:
+
+- **app-template apps** — containerized applications without their own Helm chart. These use the `bjw-s-labs/app-template` chart, which provides a generic, highly-configurable template for deploying arbitrary containers. This covers most user-facing apps under `kubernetes/apps/default/`.
+- **official-chart apps** — cloud-native projects and infrastructure components that ship their own Helm chart (e.g. cert-manager, external-secrets, cilium, CNPG, Flux itself). Always prefer the upstream chart for these; only fall back to app-template if the official chart has a serious problem.
+
+OCIRepository sources are strongly preferred over `HelmRepository` (HTTP/HTTPS) sources. When an upstream chart is not yet available as an OCI artifact, check the [home-operations/charts-mirror](https://github.com/home-operations/charts-mirror) community registry first — it mirrors many popular charts as OCI images at `ghcr.io/home-operations/charts-mirror`.
+
 ## App Pattern (kubernetes/apps/default/)
 
-Most apps follow the same four-file layout:
+App-template apps follow the same four-file layout:
 
-```
+```txt
 <appname>/
   ks.yaml               # Flux Kustomization — registers the app with Flux
   app/
-    helmrelease.yaml    # HelmRelease using bjw-s-labs/app-template via OCIRepository
+    helmrelease.yaml    # HelmRelease — app-template or upstream chart via OCIRepository/HelmRepository
     kustomization.yaml  # Kustomize manifest listing resources in app/
     externalsecret.yaml # Secrets pulled from 1Password via external-secrets
 ```
 
 **`ks.yaml` key points:**
+
 - References `components/volsync` to wire up daily Kopia backups to Cloudflare R2
 - Uses `postBuild.substitute` with `APP: *app` — this variable names the PVC and backup target
 - Optionally `VOLSYNC_CAPACITY` (PVC size) and `APP_SUBDOMAIN` (if subdomain ≠ app name)
 - Postgres apps add `dependsOn: cnpg-pg18vc` in `cnpg-system`
 
 **`helmrelease.yaml` key points:**
-- Use `chartRef.kind: OCIRepository`, name `app-template`, namespace `flux-system`
+
+- app-template apps: `chartRef.kind: OCIRepository`, name `app-template`, namespace `flux-system`; official-chart apps: `chartRef.kind: OCIRepository` pointing to the upstream OCI registry or `ghcr.io/home-operations/charts-mirror` — fall back to `HelmRepository` only if no OCI source exists
 - Standard boilerplate: `driftDetection.mode: enabled`, `install.remediation.retries: -1`, `upgrade.cleanupOnFail: true`
 - All containers get `reloader.stakater.com/auto: "true"` (restarts on secret change)
 - Security context: `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `capabilities: {drop: ["ALL"]}`, `readOnlyRootFilesystem: true`
@@ -73,6 +84,7 @@ Most apps follow the same four-file layout:
 - Postgres apps add an `initContainers.init-db` using `ghcr.io/home-operations/postgres-init`
 
 **`externalsecret.yaml` key points:**
+
 - `ClusterSecretStore` name: `onepassword`
 - App secret uses `dataFrom.extract.key: <appname>`
 - Postgres `-db` secret generates a password via `generators.external-secrets.io/v1alpha1/Password/password32` and populates CNPG connection vars
