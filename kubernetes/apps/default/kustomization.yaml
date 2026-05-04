@@ -7,6 +7,7 @@ resources:
   #
   - ./buildkit/ks.yaml
   - ./changedetection/ks.yaml
+  - ./crd-schema-publisher/ks.yaml
   - ./dawarich/ks.yaml
   - ./docker-registry-ui/ks.yaml
   # - ./docling/ks.yaml
