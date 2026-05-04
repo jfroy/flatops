@@ -52,6 +52,13 @@ spec:
           oauth2:
             provider: OIDC
             issuerURL: "https://pid.kantai.xyz"
+      httpRoute:
+        enabled: true
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - flux.kantai.xyz
   valuesFrom:
     - kind: Secret
       name: flux-web-oidc
