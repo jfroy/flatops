@@ -3,11 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pvforecast
+  name: pvforecast
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
       app.kubernetes.io/part-of: powerwall-dashboard
   path: ./kubernetes/apps/default/pvforecast/app
   prune: true

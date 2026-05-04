@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app autobrr
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/default/autobrr/app
   prune: true
   sourceRef:

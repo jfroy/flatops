@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app scrutiny
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/observability/scrutiny/app

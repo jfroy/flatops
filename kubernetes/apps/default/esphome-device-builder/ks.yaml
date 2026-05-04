@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app esphome-device-builder
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/esphome-device-builder/app

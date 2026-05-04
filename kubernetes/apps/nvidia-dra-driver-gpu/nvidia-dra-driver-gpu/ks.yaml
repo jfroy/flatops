@@ -3,11 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app nvidia-dra-driver-gpu
+  name: nvidia-dra-driver-gpu
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/nvidia-dra-driver-gpu/nvidia-dra-driver-gpu/app
   prune: true
   sourceRef:

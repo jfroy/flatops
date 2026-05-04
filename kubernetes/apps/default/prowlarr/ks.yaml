@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app prowlarr
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/envoy-gateway-oidc
   path: ./kubernetes/apps/default/prowlarr/app

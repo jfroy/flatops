@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app jellyfin
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/jellyfin/app

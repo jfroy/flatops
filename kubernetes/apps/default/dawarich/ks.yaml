@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app dawarich
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/dawarich/app
