@@ -64,6 +64,7 @@
       matchDatasources: ["docker"],
       matchUpdateTypes: ["digest"],
       matchPackageNames: [
+        "docker.io/electh/nextflux",
         "ghcr.io/lklynet/hypermind",
         "ghcr.io/squat/generic-device-plugin",
       ],
