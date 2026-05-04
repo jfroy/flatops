@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app rook-ceph-cluster
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: rook-ceph-operator
     - name: snapshot-controller

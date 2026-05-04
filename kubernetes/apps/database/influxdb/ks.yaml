@@ -7,8 +7,6 @@ metadata:
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/instance: *app
-      app.kubernetes.io/name: *app
       app.kubernetes.io/part-of: powerwall-dashboard
   components:
     - ../../../../components/volsync

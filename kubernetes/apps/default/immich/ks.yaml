@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app immich
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/default/immich/app
   prune: true
   sourceRef:
@@ -28,9 +25,6 @@ kind: Kustomization
 metadata:
   name: &app immichframe
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/immich/frame
@@ -55,8 +49,6 @@ metadata:
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/instance: immich
-      app.kubernetes.io/name: valkey
       app.kubernetes.io/part-of: immich
   path: ./kubernetes/apps/default/immich/valkey
   prune: true

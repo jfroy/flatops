@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app sonarr
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/envoy-gateway-oidc
     - ../../../../components/volsync

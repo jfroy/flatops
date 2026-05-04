@@ -3,13 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app telegraf-powerwall
+  name: telegraf-powerwall
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/instance: *app
-      app.kubernetes.io/name: telegraf
-      app.kubernetes.io/part-of: powerwall-dashboard
   path: ./kubernetes/apps/observability-agents/telegraf/powerwall
   prune: true
   sourceRef:
@@ -24,12 +19,8 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app telegraf-zfs
+  name: telegraf-zfs
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/instance: *app
-      app.kubernetes.io/name: telegraf
   path: ./kubernetes/apps/observability-agents/telegraf/zfs
   prune: true
   sourceRef:

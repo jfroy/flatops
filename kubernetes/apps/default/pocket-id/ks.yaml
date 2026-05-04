@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app pocket-id
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/pocket-id/app

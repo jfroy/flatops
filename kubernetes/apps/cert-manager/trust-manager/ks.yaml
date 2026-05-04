@@ -3,11 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app trust-manager
+  name: trust-manager
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: cert-manager
   path: ./kubernetes/apps/cert-manager/trust-manager/app
@@ -24,11 +21,8 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cluster-ca-bundle
+  name: cluster-ca-bundle
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   dependsOn:
     - name: trust-manager
   path: ./kubernetes/apps/cert-manager/trust-manager/cluster-ca-bundle

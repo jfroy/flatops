@@ -5,10 +5,6 @@ kind: Kustomization
 metadata:
   name: cpufreq-kantai1
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: cpufreq
-      app.kubernetes.io/instance: kantai1
   path: ./kubernetes/apps/kube-system/cpufreq/kantai1
   prune: true
   sourceRef:

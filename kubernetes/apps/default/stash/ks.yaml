@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app stash
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/stash/app

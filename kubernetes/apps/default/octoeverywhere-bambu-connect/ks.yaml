@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app octoeverywhere-bambu-connect
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/octoeverywhere-bambu-connect/app

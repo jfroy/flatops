@@ -3,11 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app k8s-digester
+  name: k8s-digester
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   path: ./kubernetes/apps/kube-system/k8s-digester/app
   prune: true
   sourceRef:

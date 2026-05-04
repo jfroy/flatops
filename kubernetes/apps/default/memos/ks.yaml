@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app memos
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   components:
     - ../../../../components/volsync
   path: ./kubernetes/apps/default/memos/app

@@ -3,12 +3,8 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app mediamanager
+  name: mediamanager
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-      app.kubernetes.io/part-of: mediamanager
   path: ./kubernetes/apps/default/mediamanager/app
   prune: true
   sourceRef:
@@ -23,12 +19,8 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app mediamanager-metadata-relay
+  name: mediamanager-metadata-relay
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-      app.kubernetes.io/part-of: mediamanager
   path: ./kubernetes/apps/default/mediamanager/metadata-relay
   prune: true
   sourceRef:
