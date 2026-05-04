@@ -14,7 +14,7 @@ sonarr:
         rename: true
         standard: default
       season: default
-      series: plex-imdb
+      series: plex-tvdb
     quality_definition:
       type: series
     quality_profiles:
@@ -45,10 +45,10 @@ radarr:
     media_management:
       propers_and_repacks: do_not_prefer
     media_naming:
-      folder: plex-imdb
+      folder: plex-tmdb
       movie:
         rename: true
-        standard: plex-imdb
+        standard: plex-tmdb
     quality_definition:
       type: sqp-uhd
     quality_profiles:
