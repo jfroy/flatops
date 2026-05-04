@@ -6,9 +6,6 @@ metadata:
   annotations:
     gatus.home-operations.com/endpoint: |-
       conditions: ["[STATUS] == 404"]
-  labels:
-    app.kubernetes.io/name: github-webhook
-    app.kubernetes.io/part-of: flux
 spec:
   hostnames:
     - flux-webhook.kantai.xyz
