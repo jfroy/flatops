@@ -4,11 +4,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: flux
-  labels:
-    app.kubernetes.io/component: metrics
-    app.kubernetes.io/instance: flux
-    app.kubernetes.io/name: flux
-    app.kubernetes.io/part-of: flux
 spec:
   namespaceSelector:
     matchNames:
