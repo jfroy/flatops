@@ -42,9 +42,11 @@ sonarr:
     api_key: !env_var SONARR_API_KEY
     quality_profiles:
       - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7  # WEB-2160p (Combined)
-        reset_unmatched_scores: { enabled: true }
+        reset_unmatched_scores:
+          enabled: true
       - trash_id: 20e0fc959f1f1704bed501f23bdae76f  # [Anime] Remux-1080p
-        reset_unmatched_scores: { enabled: true }
+        reset_unmatched_scores:
+          enabled: true
     custom_formats:
       - trash_ids: [...]
         assign_scores_to:
@@ -58,9 +60,9 @@ Do **not** create two separate instance blocks pointing at the same `base_url` t
 
 - `base_url` — unique identifier for the instance in recyclarr's sync state. Renaming or moving has implications.
 - `api_key` — supports `!env_var <NAME>` for ConfigMap-mounted configs in Kubernetes. The env var is read at runtime from the pod environment.
-- `quality_profiles[].trash_id` — pulls the profile definition (qualities, sort order, language, formatItems) from TRaSH-Guides.
+- `quality_profiles[].trash_id` — pulls the profile definition (qualities, sort order, language, formatItems) from TRaSH-Guides. Optional: omit it and use `name` alone when managing a user-defined profile that isn't published in TRaSH.
 - `quality_profiles[].reset_unmatched_scores.enabled: true` — zeroes any per-format score not explicitly set by recyclarr or by TRaSH defaults; prevents Sonarr-UI drift.
-- `delete_old_custom_formats: true` — drops CFs in Sonarr that recyclarr previously created but are no longer in this config. This is the "managed source of truth" mode. With this on, **every CF you want in Sonarr must be in the config** (either explicitly under `custom_formats:` or implicitly via a profile's `formatItems`).
+- `delete_old_custom_formats: true` — drops CFs in Sonarr that recyclarr previously created but are no longer **referenced anywhere** in this config — neither under `custom_formats:` nor via a `quality_profiles[].trash_id` whose `formatItems` includes the CF. This is the "managed source of truth" mode: every CF you want preserved must show up via one of those two paths. CFs imported by a guide-backed profile (via its `formatItems`) are safe; only orphaned ones are deleted.
 
 ## `custom_formats` block semantics
 
