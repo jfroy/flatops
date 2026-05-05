@@ -40,8 +40,6 @@ spec:
             envFrom:
               - secretRef:
                   name: immichframe
-              - secretRef:
-                  name: immichframe-keys
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
