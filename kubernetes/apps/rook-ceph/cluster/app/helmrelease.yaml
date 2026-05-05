@@ -52,7 +52,7 @@ spec:
           mon_max_pg_per_osd: "500"
         mgr:
           mgr/balancer/mode: upmap-read
-      crashcollector:
+      crashCollector:
         disable: true
       csi:
         readAffinity:
@@ -101,22 +101,25 @@ spec:
               operator: Exists
               effect: NoSchedule
       resources:
+        # `limits: {}` (rather than null) is required so server-side apply
+        # accepts the CephCluster manifest — the CRD declares
+        # spec.resources.<daemon>.limits as type: object.
         cleanup:
-          limits: null
+          limits: {}
         crashcollector:
-          limits: null
+          limits: {}
         exporter:
-          limits: null
+          limits: {}
         logcollector:
-          limits: null
+          limits: {}
         mgr:
-          limits: null
+          limits: {}
         mgr-sidecar:
-          limits: null
+          limits: {}
         mon:
-          limits: null
+          limits: {}
         osd:
-          limits: null
+          limits: {}
           requests:
             memory: 16Gi
             cpu: "2"
@@ -211,7 +214,7 @@ spec:
             priorityClassName: system-cluster-critical
             port: 80
             resources:
-              limits: null
+              limits: {}
         storageClass:
           enabled: true
           name: ceph-bucket
@@ -239,4 +242,4 @@ spec:
     toolbox:
       enabled: true
       resources:
-        limits: null
+        limits: {}
