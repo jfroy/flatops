@@ -21,6 +21,9 @@ sonarr:
       - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
         reset_unmatched_scores:
           enabled: true
+      - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+        reset_unmatched_scores:
+          enabled: true
     custom_formats:
       - # FLUX trumps REPACKS
         trash_ids:
@@ -36,6 +39,19 @@ sonarr:
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
         assign_scores_to:
           - trash_id: c4cadd6b35b95f62c3d47a408e53e2f7 # WEB-2160p (Combined)
+      - # Anime: prefer dual audio
+        trash_ids:
+          - 418f50b10f1907201b6cfdf881f467b7 # Anime Dual Audio
+        assign_scores_to:
+          - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+            score: 100
+      - # Anime: neutral preferences (override later if desired)
+        trash_ids:
+          - 026d5aadd1a6b4e550b134cb6c72b3ca # Uncensored
+          - b2550eb333d27b75833e25b8c2557b38 # 10bit
+        assign_scores_to:
+          - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+            score: 0
 
 radarr:
   movies:
