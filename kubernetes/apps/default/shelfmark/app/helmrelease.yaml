@@ -72,6 +72,13 @@ spec:
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
+        advancedMounts:
+          shelfmark:
+            shelfmark:
+              - path: /books
+                subPath: library/books/bookdrop
+              - path: /media2/qbittorrent
+                subPath: qbittorrent
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
