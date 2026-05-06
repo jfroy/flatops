@@ -5,3 +5,12 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+secretGenerator:
+  - name: kite-config
+    files:
+      - config.yaml
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+generatorOptions:
+  disableNameSuffixHash: true

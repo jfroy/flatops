@@ -1,0 +1,22 @@
+---
+oauth:
+  - name: pocket-id
+    enabled: true
+    issuer: https://pid.kantai.xyz
+    clientId: 63791dc6-fc1d-4166-ac44-5ae0357c5cc9
+    clientSecret: ${OIDC_CLIENT_SECRET}
+    scopes: openid,profile,email,groups
+    usernameClaim: email
+    groupsClaim: groups
+
+rbac:
+  roles:
+    - name: admin
+      description: "Administrator role with full access"
+      clusters: ["*"]
+      namespaces: ["*"]
+      resources: ["*"]
+      verbs: ["*"]
+  roleMapping:
+    - name: admin
+      oidcGroups: ["kite-admins"]
