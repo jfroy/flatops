@@ -14,6 +14,7 @@ resources:
   - ./esphome-device-builder/ks.yaml
   # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
+  - ./grimmory/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
   # - ./hypermind/ks.yaml

@@ -1,0 +1,17 @@
+---
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: "deny-grimmory-mariadb-ingress"
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: grimmory
+      app.kubernetes.io/instance: grimmory
+  ingressDeny:
+    - fromEndpoints:
+        - {}
+      toPorts:
+        - ports:
+            - port: "3306"
+              protocol: TCP
