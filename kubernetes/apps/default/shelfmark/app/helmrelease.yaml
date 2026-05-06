@@ -46,7 +46,7 @@ spec:
               AUTH_METHOD: oidc
               DOCKERMODE: "true"
               HIDE_LOCAL_AUTH: "true"
-              INGEST_DIR: /media2/library/books/ingest
+              INGEST_DIR: /books
               OIDC_ADMIN_GROUP: shelfmark-admins
               OIDC_BUTTON_LABEL: Pocket ID
               OIDC_CLIENT_ID: 770b8538-6b43-43d0-809e-8038cc1b9b31
