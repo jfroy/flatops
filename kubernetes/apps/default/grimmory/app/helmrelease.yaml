@@ -131,6 +131,8 @@ spec:
             grimmory:
               - path: /books
                 subPath: library/books
+              - path: /bookdrop
+                subPath: library/books/bookdrop
       mysqld:
         type: emptyDir
         medium: Memory
