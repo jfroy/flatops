@@ -44,6 +44,7 @@ spec:
               - shelfmark.main:app
             env:
               AUTH_METHOD: oidc
+              DOCKERMODE: "true"
               HIDE_LOCAL_AUTH: "true"
               INGEST_DIR: /media2/library/books/ingest
               OIDC_ADMIN_GROUP: shelfmark-admins
