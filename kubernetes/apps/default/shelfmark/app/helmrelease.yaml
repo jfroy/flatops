@@ -43,11 +43,21 @@ spec:
               - 0.0.0.0:8084
               - shelfmark.main:app
             env:
+              AUTH_METHOD: oidc
+              HIDE_LOCAL_AUTH: "true"
               INGEST_DIR: /media2/library/books/ingest
+              OIDC_ADMIN_GROUP: shelfmark-admins
+              OIDC_BUTTON_LABEL: Pocket ID
+              OIDC_CLIENT_ID: 770b8538-6b43-43d0-809e-8038cc1b9b31
+              OIDC_DISCOVERY_URL: https://pid.kantai.xyz/.well-known/openid-configuration
+              OIDC_USE_ADMIN_GROUP: "true"
               TZ: America/Los_Angeles
               # Redirect gunicorn's control socket out of $HOME/.gunicorn/
               # (read-only fs) and into the memory-backed /run volume.
               XDG_RUNTIME_DIR: /run
+            envFrom:
+              - secretRef:
+                  name: shelfmark
             probes:
               liveness: &probe
                 enabled: true
