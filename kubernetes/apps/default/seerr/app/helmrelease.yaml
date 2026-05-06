@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: seerr-chart
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: "3.6.0"
+  url: oci://ghcr.io/seerr-team/seerr/seerr-chart
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: seerr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: seerr-chart
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: seerr
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    securityContext:
+      readOnlyRootFilesystem: true
+    extraEnv:
+      - name: TZ
+        value: America/Los_Angeles
+    extraEnvFrom:
+      - secretRef:
+          name: seerr
+      - secretRef:
+          name: seerr-db
+    config:
+      persistence:
+        existingClaim: seerr
+    volumes:
+      - name: logs
+        emptyDir:
+          sizeLimit: 256Mi
+      - name: next-cache
+        emptyDir:
+          sizeLimit: 1Gi
+      - name: tmp
+        emptyDir:
+          medium: Memory
+          sizeLimit: 128Mi
+    volumeMounts:
+      - name: logs
+        mountPath: /app/config/logs
+      - name: next-cache
+        mountPath: /app/.next/cache
+      - name: tmp
+        mountPath: /tmp
+    route:
+      main:
+        enabled: true
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        hostnames:
+          - seerr.kantai.xyz
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: StatefulSet
+            patch: |
+              - op: add
+                path: /spec/template/spec/initContainers
+                value:
+                  - name: init-db
+                    image: ghcr.io/home-operations/postgres-init:18.3.0@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
+                    envFrom:
+                      - secretRef:
+                          name: seerr-db
+                      - secretRef:
+                          name: seerr-initdb
