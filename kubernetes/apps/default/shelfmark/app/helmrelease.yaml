@@ -45,6 +45,9 @@ spec:
             env:
               INGEST_DIR: /media2/library/books/ingest
               TZ: America/Los_Angeles
+              # Redirect gunicorn's control socket out of $HOME/.gunicorn/
+              # (read-only fs) and into the memory-backed /run volume.
+              XDG_RUNTIME_DIR: /run
             probes:
               liveness: &probe
                 enabled: true
@@ -79,6 +82,12 @@ spec:
                 subPath: library/books/bookdrop
               - path: /media2/qbittorrent
                 subPath: qbittorrent
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Mi
+        globalMounts:
+          - path: /run
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
