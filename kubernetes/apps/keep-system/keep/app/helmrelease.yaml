@@ -1,0 +1,315 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: keephq
+spec:
+  interval: 1h
+  url: https://keephq.github.io/helm-charts
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: keep
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: keep
+      version: 0.1.95
+      sourceRef:
+        kind: HelmRepository
+        name: keephq
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    fullnameOverride: keep
+    # Disable bundled nginx Ingress — HTTPRoute is provided alongside this release.
+    global:
+      ingress:
+        enabled: false
+    # Disable bundled MySQL — backend points at the external CNPG cluster.
+    database:
+      enabled: false
+
+    backend:
+      enabled: true
+      replicaCount: 1
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+        prometheus.io/scrape: "true"
+        prometheus.io/path: /metrics
+        prometheus.io/port: "8080"
+      # Pod-level securityContext — required by `restricted` PSS on this namespace.
+      # The keep-api Dockerfile sets USER keep (uid 1000).
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      service:
+        type: ClusterIP
+        port: 8080
+      databaseConnectionStringFromSecret:
+        enabled: true
+        secretName: keep-db
+        secretKey: DATABASE_CONNECTION_STRING
+      # Disabled: the chart's auto-generated `wait-for-database` initContainer uses
+      # busybox with no securityContext, which violates the namespace's `restricted` PSS.
+      # The `init-db` postgres-init initContainer below already implicitly waits — it
+      # fails (k8s retries) until CNPG is reachable.
+      waitForDatabase:
+        enabled: false
+      env:
+        # Replaces chart defaults entirely. DATABASE_CONNECTION_STRING is injected
+        # by the chart from the keep-db secret via databaseConnectionStringFromSecret.
+        # NEXTAUTH_SECRET / PUSHER_APP_* come in via envFromSecret: keep below.
+        - name: AUTH_TYPE
+          value: NO_AUTH
+        - name: PORT
+          value: "8080"
+        # k8s secret manager — chart auto-creates the Role+RoleBinding (see
+        # templates/role-secret-manager.yaml + role-binding-secret-manager.yaml)
+        # in the release namespace, scoped to the keep ServiceAccount with
+        # verbs [create, delete, get, list, patch] on secrets. K8S_NAMESPACE is
+        # set automatically by the chart via fieldRef: metadata.namespace.
+        - name: SECRET_MANAGER_TYPE
+          value: k8s
+        - name: KEEP_METRICS
+          value: "true"
+        - name: PROMETHEUS_MULTIPROC_DIR
+          value: /tmp/prometheus
+        # Public-facing API URL (used in webhooks, email links, etc.).
+        # Overrides the chart's keep.keepApiUrl helper, which would otherwise fall back
+        # to http://localhost:3000/v2 when global.ingress.enabled=false.
+        - name: KEEP_API_URL
+          value: https://keep.kantai.xyz/v2
+        # Pusher: backend publishes to in-cluster Soketi service
+        - name: PUSHER_HOST
+          value: keep-websocket
+        - name: PUSHER_PORT
+          value: "6001"
+        # gunicorn writes PIDs / sockets to XDG_RUNTIME_DIR — /run is a tmpfs (see extraVolumes)
+        - name: XDG_RUNTIME_DIR
+          value: /run
+      envFromSecret: keep
+      # The chart's extraInitContainers loop in templates/backend.yaml only renders
+      # `imagePullPolicy`, `command`, `args`, `env`, `volumeMounts`, `restartPolicy`
+      # — `envFrom` is silently dropped. We inject it via the postRenderer below.
+      extraInitContainers:
+        - name: init-db
+          image: ghcr.io/home-operations/postgres-init:18.3.0@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
+      extraVolumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: run
+          emptyDir:
+            medium: Memory
+            sizeLimit: 16Mi
+      extraVolumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: run
+          mountPath: /run
+      resources:
+        requests:
+          cpu: 50m
+          memory: 256Mi
+        limits:
+          memory: 1Gi
+
+    frontend:
+      enabled: true
+      replicaCount: 1
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+      # The keep-ui Dockerfile sets USER nextjs (uid 1001).
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        runAsGroup: 1001
+        fsGroup: 1001
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      service:
+        type: ClusterIP
+        port: 3000
+      env:
+        # The chart's frontend pod template recognises four well-known keys via findEnvVar
+        # (NEXTAUTH_URL, API_URL, API_URL_CLIENT, PUSHER_HOST) and renders them itself.
+        # NEXTAUTH_SECRET / PUSHER_APP_KEY come in via envFromSecret: keep below.
+        - name: AUTH_TYPE
+          value: NO_AUTH
+        - name: ENV
+          value: production
+        - name: NODE_ENV
+          value: production
+        - name: HOSTNAME
+          value: 0.0.0.0
+        # next-auth issue 600 workaround — the chart sets this by default; keep it.
+        - name: VERCEL
+          value: "1"
+        - name: FRIGADE_DISABLED
+          value: "true"
+        - name: POSTHOG_DISABLED
+          value: "true"
+        # Public NEXTAUTH base URL (no `/api` suffix — next-auth appends it).
+        - name: NEXTAUTH_URL
+          value: https://keep.kantai.xyz
+        # Server-side fetch from the frontend pod → backend service.
+        - name: API_URL
+          value: http://keep-backend:8080
+        # Browser-side fetch path (relative to current host); matches HTTPRoute /v2 prefix.
+        - name: API_URL_CLIENT
+          value: /v2
+        # Relative pusher path → keep-ui's usePusher() treats it as wsPath on window.location.host.
+        - name: PUSHER_HOST
+          value: /websocket
+        - name: PUSHER_PORT
+          value: "443"
+      envFromSecret: keep
+      extraVolumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 256Mi
+        - name: next-cache
+          emptyDir:
+            sizeLimit: 1Gi
+      extraVolumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: next-cache
+          mountPath: /app/.next/cache
+      resources:
+        requests:
+          cpu: 25m
+          memory: 256Mi
+        limits:
+          memory: 1Gi
+
+    websocket:
+      enabled: true
+      replicaCount: 1
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+      # Soketi's Dockerfile.debian has no USER directive (runs as root by default).
+      # Soketi listens on 6001 (>1024) and only writes /state (emptyDir), so any uid works.
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        fsGroup: 65534
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      service:
+        type: ClusterIP
+        port: 6001
+      # SOKETI_DEFAULT_APP_ID/KEY/SECRET are injected from the keep secret via the
+      # postRenderer below — the chart's websocket template doesn't expose envFromSecret.
+      env:
+        - name: SOKETI_HOST
+          value: 0.0.0.0
+        - name: SOKETI_DEBUG
+          value: "0"
+        - name: SOKETI_USER_AUTHENTICATION_TIMEOUT
+          value: "3000"
+      resources:
+        requests:
+          cpu: 25m
+          memory: 64Mi
+        limits:
+          memory: 256Mi
+
+    deleteSecretJob:
+      image:
+        repository: ghcr.io/jfroy/kubectl-bash
+        tag: rolling
+
+  postRenderers:
+    - kustomize:
+        patches:
+          # Inject the shared `keep` secret into the Soketi container so SOKETI_DEFAULT_APP_*
+          # match the backend's PUSHER_APP_*. The chart's websocket-server.yaml template
+          # only ranges values.websocket.env (no envFrom support), so this is the cleanest fix.
+          - target:
+              kind: Deployment
+              name: keep-websocket
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/envFrom
+                value:
+                  - secretRef:
+                      name: keep
+          # The chart's `extraInitContainers` loop in templates/backend.yaml renders
+          # neither `securityContext` nor `envFrom`, so inject both onto init-db here.
+          # postgres-init's Dockerfile sets USER nobody:nogroup, but the pod-level
+          # runAsUser=1000 overrides it; either works since postgres-init only opens
+          # a libpq connection and needs no special filesystem access.
+          - target:
+              kind: Deployment
+              name: keep-backend
+            patch: |
+              - op: add
+                path: /spec/template/spec/initContainers/0/securityContext
+                value:
+                  allowPrivilegeEscalation: false
+                  readOnlyRootFilesystem: true
+                  capabilities:
+                    drop: ["ALL"]
+              - op: add
+                path: /spec/template/spec/initContainers/0/envFrom
+                value:
+                  - secretRef:
+                      name: keep-db
+                  - secretRef:
+                      name: keep-initdb
+          # The chart's pre-delete hook Job (templates/delete-secret-job.yaml) renders
+          # `securityContext: {}` and no container securityContext, which the cluster's
+          # restricted-pss-policy VAP rejects. Add the minimum required SC. runAsUser is
+          # left unset so the image's own USER directive picks the uid.
+          - target:
+              kind: Job
+              name: delete-keep-secrets
+            patch: |
+              - op: add
+                path: /spec/template/spec/securityContext
+                value:
+                  runAsNonRoot: true
+                  seccompProfile:
+                    type: RuntimeDefault
+              - op: add
+                path: /spec/template/spec/containers/0/securityContext
+                value:
+                  allowPrivilegeEscalation: false
+                  capabilities:
+                    drop: ["ALL"]

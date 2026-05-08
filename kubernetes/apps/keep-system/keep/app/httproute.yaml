@@ -1,0 +1,52 @@
+---
+# Keep ships three components behind one URL.
+# The chart's nginx ingress proxies /v2 → backend (8080), /websocket → soketi (6001), / → frontend (3000),
+# with prefix stripping. We replicate that here on envoy-internal so the chart helpers
+# (API_URL_CLIENT=/v2, PUSHER_HOST=/websocket) work unchanged.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: keep
+spec:
+  hostnames:
+    - keep.kantai.xyz
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  rules:
+    # Backend API: /v2/* → keep-backend:8080/*
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /v2
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: keep-backend
+          port: 8080
+    # Websocket (Soketi): /websocket/* → keep-websocket:6001/*
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /websocket
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: keep-websocket
+          port: 6001
+    # Frontend (default)
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: keep-frontend
+          port: 3000
