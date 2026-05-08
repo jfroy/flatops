@@ -241,6 +241,8 @@ patches:
           maxPods: 400
           serializeImagePulls: false
           serverTLSBootstrap: true
+          shutdownGracePeriod: 5m
+          shutdownGracePeriodCriticalPods: 2m
         nodeIP:
           validSubnets:
             - 10.1.1.0/24
