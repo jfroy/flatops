@@ -101,25 +101,9 @@ spec:
               operator: Exists
               effect: NoSchedule
       resources:
-        # `limits: {}` (rather than null) is required so server-side apply
-        # accepts the CephCluster manifest — the CRD declares
-        # spec.resources.<daemon>.limits as type: object.
-        cleanup:
-          limits: {}
-        crashcollector:
-          limits: {}
-        exporter:
-          limits: {}
-        logcollector:
-          limits: {}
-        mgr:
-          limits: {}
-        mgr-sidecar:
-          limits: {}
-        mon:
-          limits: {}
         osd:
-          limits: {}
+          limits:
+            memory: 16Gi
           requests:
             memory: 16Gi
             cpu: "2"
