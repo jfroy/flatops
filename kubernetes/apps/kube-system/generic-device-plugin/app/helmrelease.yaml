@@ -36,7 +36,7 @@ spec:
           generic-device-plugin:
             image:
               repository: ghcr.io/squat/generic-device-plugin
-              tag: latest@sha256:face0477a34f4eb49502226a28d126403b844c2eaee7ce691e7b9529ca8ab123
+              tag: latest@sha256:7bc1ecec8472be1e5cf1ce534f0438a1d48cc3e2b4997cee924dac4d3dbfc3d3
             args:
               - --config=/config/config.yaml
             ports:
