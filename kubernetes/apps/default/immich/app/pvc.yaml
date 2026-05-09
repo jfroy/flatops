@@ -8,7 +8,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 160Ti
-  storageClassName: ""
+      storage: 1Ti
+  storageClassName: zfs-static
   volumeMode: Filesystem
   volumeName: default-photos

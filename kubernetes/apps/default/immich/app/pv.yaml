@@ -10,11 +10,12 @@ spec:
     - ReadWriteOnce
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
-  local:
-    path: /var/mnt/reservoir/photos
+  storageClassName: zfs-static
   mountOptions:
     - noatime
+  csi:
+    driver: zfs-static-csi.jfroy.github.com
+    volumeHandle: reservoir/photos
   nodeAffinity:
     required:
       nodeSelectorTerms:
