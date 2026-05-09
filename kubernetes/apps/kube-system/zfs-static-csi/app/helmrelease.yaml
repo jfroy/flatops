@@ -10,7 +10,7 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: "0.2"
+    tag: "0.3"
   url: oci://ghcr.io/jfroy/charts/zfs-static-csi
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
@@ -33,7 +33,6 @@ spec:
     remediation:
       retries: 3
   values:
-    nodeSelector: {}
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
