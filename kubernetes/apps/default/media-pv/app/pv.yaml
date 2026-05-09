@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: default-media2
+  name: default-media1
 spec:
   capacity:
     storage: 246Ti
@@ -10,9 +10,12 @@ spec:
     - ReadWriteOnce
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
-  local:
-    path: /var/mnt/reservoir/media2
+  storageClassName: zfs-static
+  mountOptions:
+    - noatime
+  csi:
+    driver: zfs-static-csi.jfroy.github.com
+    volumeHandle: reservoir/media1
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -25,7 +28,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: default-media1
+  name: default-media2
 spec:
   capacity:
     storage: 246Ti
@@ -33,9 +36,12 @@ spec:
     - ReadWriteOnce
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  storageClassName: ""
-  local:
-    path: /var/mnt/reservoir/media1
+  storageClassName: zfs-static
+  mountOptions:
+    - noatime
+  csi:
+    driver: zfs-static-csi.jfroy.github.com
+    volumeHandle: reservoir/media2
   nodeAffinity:
     required:
       nodeSelectorTerms:
