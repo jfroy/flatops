@@ -109,6 +109,10 @@ spec:
         # gunicorn writes PIDs / sockets to XDG_RUNTIME_DIR — /run is a tmpfs (see extraVolumes)
         - name: XDG_RUNTIME_DIR
           value: /run
+        # `keep provider build_cache` (run by entrypoint.sh) writes providers_cache.json
+        # to CWD (=/app, which is read-only). Redirect to the /tmp tmpfs.
+        - name: PROVIDERS_CACHE_FILE
+          value: /tmp/providers_cache.json
       envFromSecret: keep
       # The chart's extraInitContainers loop in templates/backend.yaml only renders
       # `imagePullPolicy`, `command`, `args`, `env`, `volumeMounts`, `restartPolicy`
@@ -243,6 +247,11 @@ spec:
           value: "0"
         - name: SOKETI_USER_AUTHENTICATION_TIMEOUT
           value: "3000"
+        # Soketi transitively imports pm2, which on init tries to mkdir $HOME/.pm2
+        # — but nobody's default HOME is /nonexistent (read-only). Point HOME at the
+        # existing /state emptyDir mount so pm2's bootstrap succeeds silently.
+        - name: HOME
+          value: /state
       resources:
         requests:
           cpu: 25m
