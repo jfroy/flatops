@@ -20,6 +20,7 @@ resources:
   - ./reloader/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
+  - ./zfs-static-csi/ks.yaml
 components:
   - ../../components/common
 transformers:
