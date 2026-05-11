@@ -1,0 +1,29 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: oneuptime-db-init
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: init-db
+          # renovate: datasource=docker depName=ghcr.io/home-operations/postgres-init
+          image: ghcr.io/home-operations/postgres-init:18.3.0@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          envFrom:
+            - secretRef:
+                name: oneuptime-db
+            - secretRef:
+                name: oneuptime-initdb

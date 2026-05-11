@@ -1,0 +1,178 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: oneuptime
+spec:
+  hostnames:
+    - oneuptime.kantai.xyz
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  rules:
+    # Path rewrites — nginx rewrote these before forwarding to app:3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /status-page-api/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/status-page/
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /status-page-sso-api/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/identity/status-page-sso/
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /status-page-identity-api/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/identity/status-page/
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /public-dashboard-api/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/dashboard/
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /.well-known
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/status-page/.well-known
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /notification
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/notification
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /identity
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/identity
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /file
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/file
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /heartbeat
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /incoming-request
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /l/
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/short-link/redirect-to-shortlink/
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /workers
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /api/workers
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /fluentd/logs
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /fluentd/v1/logs
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002
+    # Catch-all: all other paths pass through to app:3002 unchanged
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: oneuptime-app
+          port: 3002

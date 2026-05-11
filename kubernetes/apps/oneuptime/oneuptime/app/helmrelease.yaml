@@ -1,0 +1,129 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrepository-source-v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: oneuptime
+spec:
+  url: https://helm-chart.oneuptime.com/
+  interval: 1h
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: oneuptime
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: oneuptime
+      version: 10.1.7
+      sourceRef:
+        kind: HelmRepository
+        name: oneuptime
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    # PostgreSQL: external CNPG cluster
+    postgresql:
+      enabled: false
+    externalPostgres:
+      host: pg18vc-rw.database.svc.cluster.local
+      port: 5432
+      username: oneuptime
+      database: oneuptime
+      existingSecret:
+        name: oneuptime-db
+        passwordKey: POSTGRES_PASSWORD
+
+    # Redis: chart-bundled
+    redis:
+      enabled: true
+      master:
+        podSecurityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+          runAsGroup: 999
+          fsGroup: 999
+          seccompProfile:
+            type: RuntimeDefault
+        containerSecurityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+
+    # ClickHouse: chart-bundled
+    clickhouse:
+      enabled: true
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+
+    # Nginx: disabled — HTTPRoute used instead
+    nginx:
+      enabled: false
+
+    # Home (marketing page): disabled for self-hosted
+    home:
+      enabled: false
+
+    # App config
+    host: oneuptime.kantai.xyz
+    httpProtocol: https
+
+    # App container security context
+    app:
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+      podSecurityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop: ["ALL"]
+
+    # Probes security contexts
+    probes:
+      one:
+        podSecurityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        containerSecurityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+      two:
+        podSecurityContext:
+          runAsNonRoot: true
+          runAsUser: 1000
+          runAsGroup: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        containerSecurityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
