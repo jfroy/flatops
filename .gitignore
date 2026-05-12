@@ -1,11 +1,18 @@
-/.cursor/mcp.json
+# editors and agents
+/.claude/
+/.cursor/
 /.mcp.json
 /.private/
+/.remember/
 /.task/
 /.worktrees/
+
+# secrets
 *.crt
 *.key*
 .decrypted~*
-.DS_Store
 kubeconfig
 talosconfig
+
+# others
+.DS_Store
