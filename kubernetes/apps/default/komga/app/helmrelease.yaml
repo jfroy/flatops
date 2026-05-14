@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: komga
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  driftDetection:
+    mode: enabled
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      komga:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          komga:
+            image:
+              repository: ghcr.io/gotson/komga
+              tag: 1.24.4@sha256:dae630271561b642d47c9723803ec77900d1f0a803fbe6a42da69db5b21ebaeb
+            env:
+              KOMGA_OAUTH2ACCOUNTCREATION: "true"
+              SERVER_PORT: &port 25600
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_POCKETID_AUTHORIZATION_GRANT_TYPE: authorization_code
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_POCKETID_CLIENT_AUTHENTICATION_METHOD: none
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_POCKETID_CLIENT_ID: a6ae3c49-9747-440f-8d6b-512645f64900
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_POCKETID_CLIENT_NAME: Pocket ID
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_POCKETID_PROVIDER: pocketid
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_POCKETID_REDIRECT_URI: "{baseUrl}/{action}/oauth2/code/{registrationId}"
+              SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_POCKETID_SCOPE: openid,email
+              SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_POCKETID_ISSUER_URI: https://pid.kantai.xyz
+              SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_POCKETID_USER_NAME_ATTRIBUTE: sub
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: komga
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /actuator/health
+                    port: *port
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: { type: RuntimeDefault }
+    persistence:
+      config:
+        existingClaim: ${APP}
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media2
+        advancedMounts:
+          komga:
+            komga:
+              - path: /data
+                subPath: library/manga
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    route:
+      komga:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: komga
+    service:
+      komga:
+        controller: komga
+        ports:
+          http:
+            port: *port

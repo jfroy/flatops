@@ -21,6 +21,7 @@ resources:
   - ./immich/ks.yaml
   # - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
+  - ./komga/ks.yaml
   # - ./mediamanager/ks.yaml
   - ./media-pv/ks.yaml
   - ./mealie/ks.yaml
