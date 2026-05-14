@@ -1,7 +1,6 @@
+commonAnnotations:
+  fluxcd.controlplane.io/reconcileArtifactEvery: 1h
 instance:
-  distribution:
-    artifact: oci://ghcr.io/controlplaneio-fluxcd/flux-operator-manifests:v0.48.0
-    version: 2.x
   cluster:
     networkPolicy: false
   components:
@@ -37,13 +36,7 @@ instance:
       - patch: |
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --concurrent=8
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --kube-api-qps=500
-          - op: add
-            path: /spec/template/spec/containers/0/args/-
-            value: --kube-api-burst=1000
+            value: --concurrent=10
           - op: add
             path: /spec/template/spec/containers/0/args/-
             value: --requeue-dependency=5s
@@ -101,11 +94,11 @@ instance:
         target:
           kind: Deployment
           name: source-controller
-      - # Disable chart digest tracking
+      - # Default to retry on failure and disable chart digest tracking
         patch: |-
           - op: add
             path: /spec/template/spec/containers/0/args/-
-            value: --feature-gates=DisableChartDigestTracking=true
+            value: --feature-gates=DefaultToRetryOnFailure=true,DisableChartDigestTracking=true
         target:
           kind: Deployment
           name: helm-controller
