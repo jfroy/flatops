@@ -42,9 +42,6 @@ spec:
               SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_POCKETID_ISSUER_URI: https://pid.kantai.xyz
               SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_POCKETID_USER_NAME_ATTRIBUTE: sub
               TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: komga
             probes:
               liveness: &probe
                 enabled: true
