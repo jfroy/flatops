@@ -39,6 +39,7 @@ spec:
               TRUST_PROXY: true
               TZ: America/Los_Angeles
               UPLOAD_PATH: /data/uploads
+              VERSION_CHECK_DISABLED: true
             envFrom:
               - secretRef:
                   name: pocket-id
