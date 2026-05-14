@@ -43,6 +43,7 @@ spec:
         serviceAccount:
           identifier: multus
     defaultPodOptions:
+      automountServiceAccountToken: true
       hostNetwork: true
       tolerations:
         - key: node-role.kubernetes.io/control-plane

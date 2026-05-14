@@ -85,6 +85,7 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: {drop: ["ALL"]}
         pod:
+          automountServiceAccountToken: true
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
