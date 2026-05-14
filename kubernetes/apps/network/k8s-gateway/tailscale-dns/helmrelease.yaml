@@ -23,17 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: k8s-gateway
-  driftDetection:
-    mode: enabled
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    crds: CreateReplace
-    remediation:
-      retries: 3
   values:
     domain: kantai.xyz
     ttl: 1

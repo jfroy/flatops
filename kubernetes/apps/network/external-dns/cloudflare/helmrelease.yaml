@@ -9,19 +9,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: external-dns
-  driftDetection:
-    mode: enabled
   install:
-    crds: CreateReplace
     disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
-    remediation:
-      retries: 3
   upgrade:
-    cleanupOnFail: true
-    crds: CreateReplace
     disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
-    remediation:
-      retries: 3
   values:
     fullnameOverride: *app
     domainFilters: ["kantai.xyz"]

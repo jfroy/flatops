@@ -18,26 +18,31 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: victoria-operator
+  labels:
+    kantai.xyz/no-hr-defaults: "true"
 spec:
   interval: 1h
   chartRef:
     kind: OCIRepository
     name: victoria-metrics-operator
   driftDetection:
-    mode: enabled
     ignore:
       - paths: ["/metadata/labels/app.kubernetes.io~1name"]
         target:
           kind: VMServiceScrape
+    mode: enabled
   install:
     crds: Skip
-    remediation:
-      retries: -1
+  rollback:
+    cleanupOnFail: true
   upgrade:
     cleanupOnFail: true
     crds: Skip
+    strategy:
+      name: RemediateOnFailure
     remediation:
-      retries: 3
+      remediateLastFailure: true
+      retries: 2
   values:
     crds:
       enabled: false

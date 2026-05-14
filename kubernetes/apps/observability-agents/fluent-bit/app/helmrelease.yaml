@@ -22,14 +22,6 @@ spec:
     kind: OCIRepository
     name: fluent-bit
   interval: 1h
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      strategy: rollback
-      retries: 3
   values:
     config:
       service: |-

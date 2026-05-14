@@ -14,19 +14,10 @@ spec:
         kind: HelmRepository
         name: ngc-nvidia
         namespace: flux-system
-  driftDetection:
-    mode: enabled
   install:
-    crds: CreateReplace
     disableOpenAPIValidation: true
-    remediation:
-      retries: 3
   upgrade:
-    cleanupOnFail: true
-    crds: CreateReplace
     disableOpenAPIValidation: true
-    remediation:
-      retries: 3
   values:
     nfd:
       enabled: false

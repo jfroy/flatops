@@ -28,16 +28,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: alloy
-  driftDetection:
-    mode: enabled
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: -1
-  upgrade:
-    crds: CreateReplace
-    remediation:
-      retries: 3
   values:
     alloy:
       configMap:

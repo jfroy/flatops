@@ -77,7 +77,8 @@ App-template apps follow the same four-file layout:
 **`helmrelease.yaml` key points:**
 
 - app-template apps: `chartRef.kind: OCIRepository`, name `app-template`, namespace `flux-system`; official-chart apps: `chartRef.kind: OCIRepository` pointing to the upstream OCI registry or `ghcr.io/home-operations/charts-mirror` — fall back to `HelmRepository` only if no OCI source exists
-- Standard boilerplate: `driftDetection.mode: enabled`, `install.remediation.retries: -1`, `upgrade.cleanupOnFail: true`
+- **Do not add install/upgrade/rollback boilerplate** — `kubernetes/cluster/ks.yaml` injects global defaults into every HelmRelease via a nested Kustomization patch: `driftDetection.mode: enabled`, `install.crds: CreateReplace`, `rollback.cleanupOnFail: true`, `upgrade.cleanupOnFail: true`, `upgrade.crds: CreateReplace`, `upgrade.strategy.name: RemediateOnFailure`, `upgrade.remediation.remediateLastFailure: true`, `upgrade.remediation.retries: 2`
+- To opt a HelmRelease out of global defaults (e.g. needs `crds: Skip` or `driftDetection.mode: disabled`), add `labels: { kantai.xyz/no-hr-defaults: "true" }` to the HelmRelease `metadata` and set all required fields explicitly
 - All containers get `reloader.stakater.com/auto: "true"` (restarts on secret change)
 - Security context: `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `capabilities: {drop: ["ALL"]}`, `readOnlyRootFilesystem: true`
 - Routes use `parentRefs: [{name: envoy-internal, namespace: network}]` for LAN/tailnet-only services, `envoy-external` for public internet
