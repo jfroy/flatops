@@ -28,15 +28,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: metrics-server
-  driftDetection:
-    mode: enabled
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     args:
       - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname

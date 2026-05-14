@@ -18,6 +18,8 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: rook-ceph-cluster
+  labels:
+    kantai.xyz/no-hr-defaults: "true"
 spec:
   interval: 1h
   chartRef:
@@ -27,13 +29,16 @@ spec:
     mode: disabled
   install:
     disableWait: true
-    remediation:
-      retries: -1
+  rollback:
+    cleanupOnFail: true
   upgrade:
     cleanupOnFail: true
     disableWait: true
+    strategy:
+      name: RemediateOnFailure
     remediation:
-      retries: 3
+      remediateLastFailure: true
+      retries: 2
   values:
     cephClusterSpec:
       annotations:

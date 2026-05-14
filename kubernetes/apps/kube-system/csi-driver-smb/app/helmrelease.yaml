@@ -28,12 +28,3 @@ spec:
   chartRef:
     kind: OCIRepository
     name: csi-driver-smb
-  driftDetection:
-    mode: enabled
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3

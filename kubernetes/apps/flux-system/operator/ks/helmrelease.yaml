@@ -26,15 +26,6 @@ spec:
     kind: OCIRepository
     name: flux-operator
     namespace: flux-system
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    crds: CreateReplace
-    remediation:
-      retries: 3
   values:
     resources:
       limits: null

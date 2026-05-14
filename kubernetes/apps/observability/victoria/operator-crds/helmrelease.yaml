@@ -23,14 +23,3 @@ spec:
   chartRef:
     kind: OCIRepository
     name: victoria-metrics-operator-crds
-  driftDetection:
-    mode: enabled
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    crds: CreateReplace
-    remediation:
-      retries: 3

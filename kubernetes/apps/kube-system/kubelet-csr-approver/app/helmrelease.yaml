@@ -23,15 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: kubelet-csr-approver
-  driftDetection:
-    mode: enabled
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   valuesFrom:
     - kind: ConfigMap
       name: kubelet-csr-approver-helm-values

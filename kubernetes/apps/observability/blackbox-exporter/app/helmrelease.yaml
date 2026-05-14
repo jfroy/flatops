@@ -23,16 +23,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: blackbox-exporter
-  driftDetection:
-    mode: enabled
-  install:
-    crds: CreateReplace
-    remediation:
-      retries: -1
-  upgrade:
-    crds: CreateReplace
-    remediation:
-      retries: 3
   values:
     fullnameOverride: blackbox-exporter
     config:

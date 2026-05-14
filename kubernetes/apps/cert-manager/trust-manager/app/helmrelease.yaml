@@ -22,15 +22,6 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: jetstack
-  driftDetection:
-    mode: enabled
-  install:
-    remediation:
-      retries: -1
-  upgrade:
-    cleanupOnFail: true
-    remediation:
-      retries: 3
   values:
     app:
       metrics:
