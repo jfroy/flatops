@@ -22,8 +22,6 @@ spec:
               tag: 10.11.8@sha256:93227545077893cc9516f28b3adb733b67bc4691f41b6167428a2a0e3220b81c
             env:
               JELLYFIN_AutoDiscovery: "false"
-              # JELLYFIN_EnableMetrics: "true"
-              JELLYFIN_KnownProxies: "10.11.1.251,10.11.2.91,10.11.3.59"
               NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
               TZ: America/Los_Angeles
             ports:
@@ -37,9 +35,6 @@ spec:
                   httpGet:
                     path: /health
                     port: http
-                  initialDelaySeconds: 0
-                  timeoutSeconds: 1
-                  periodSeconds: 5
                   failureThreshold: 30
               liveness: &probes
                 enabled: true
@@ -48,10 +43,6 @@ spec:
                   httpGet:
                     path: /health
                     port: http
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
               readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
@@ -60,34 +51,38 @@ spec:
             resources:
               limits:
                 nvidia.com/gpu: 1
+        pod:
+          nodeSelector:
+            nvidia.com/gpu.present: "true"
+          runtimeClassName: nvidia
+      vue:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
           vue:
             image:
               repository: ghcr.io/jellyfin/jellyfin-vue
-              tag: unstable.2025-05-15.f3ced5d
+              tag: unstable.2025-05-15.f3ced5d@sha256:f7315798b5c43c27835dcbde25fda7af4e417ef5c769ca78b6fa8f3ca20801c1
             env:
-              DEFAULT_SERVERS: localhost:8096
+              DEFAULT_SERVERS: https://jellyfin.kantai.xyz
               DISABLE_SERVER_SELECTION: "true"
               TZ: America/Los_Angeles
             ports:
               - containerPort: 80
                 name: http
             probes:
-              liveness: &probes
+              liveness: &vue-probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /
                     port: http
-              readiness: *probes
+              readiness: *vue-probes
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
-        pod:
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -104,19 +99,47 @@ spec:
         size: 500Gi
         type: persistentVolumeClaim
         storageClass: ceph-block
+        advancedMounts:
+          jellyfin:
+            jellyfin:
+              - path: /cache
       config:
         existingClaim: ${APP}
+        advancedMounts:
+          jellyfin:
+            jellyfin:
+              - path: /config
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
-        globalMounts:
-          - path: /media2/library
-            subPath: library
-            readOnly: true
+        advancedMounts:
+          jellyfin:
+            jellyfin:
+              - path: /media2/library
+                subPath: library
+                readOnly: true
       tmp:
         type: emptyDir
-        medium: Memory
         sizeLimit: 1Gi
+        advancedMounts:
+          jellyfin:
+            jellyfin:
+              - path: /tmp
+      vue-cache:
+        type: emptyDir
+        sizeLimit: 1Gi
+        advancedMounts:
+          vue:
+            vue:
+              - path: /var/cache/nginx
+      vue-run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Mi
+        advancedMounts:
+          vue:
+            vue:
+              - path: /run
     route:
       jellyfin:
         hostnames:
@@ -136,7 +159,7 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - name: jellyfin
+              - name: jellyfin-vue
                 port: 80
     service:
       jellyfin:
@@ -144,7 +167,10 @@ spec:
         ports:
           http:
             port: 8096
-          vue:
+      vue:
+        controller: vue
+        ports:
+          http:
             port: 80
     # TODO: enable metrics after upstream PR is merged and released
     # https://github.com/jellyfin/jellyfin/pull/14052
