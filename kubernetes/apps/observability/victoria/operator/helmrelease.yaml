@@ -44,11 +44,6 @@ spec:
       remediateLastFailure: true
       retries: 2
   values:
-    image:
-      repository: ghcr.io/victoriametrics/operator
-    env:
-      - name: VM_CONTAINERREGISTRY
-        value: "ghcr.io"
     crds:
       enabled: false
     fullnameOverride: victoria-operator
