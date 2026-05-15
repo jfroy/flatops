@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://csp.kantai.xyz/operator.victoriametrics.com/vlagent_v1.json
+apiVersion: operator.victoriametrics.com/v1
+kind: VLAgent
+metadata:
+  name: kantai
+spec:
+  k8sCollector:
+    enabled: true
+  remoteWrite:
+    - url: http://vlsingle-kantai.observability.svc.cluster.local:9428/insert/native
+  tolerations:
+    - key: node-role.kubernetes.io/control-plane
+      operator: Exists
+      effect: NoSchedule

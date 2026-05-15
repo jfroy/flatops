@@ -3,9 +3,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: fluent-bit
+  name: &app vlagent
 spec:
-  path: ./kubernetes/apps/observability-agents/fluent-bit/app
+  commonMetadata:
+    labels:
+      app.kubernetes.io/instance: kantai
+      app.kubernetes.io/name: *app
+  path: ./kubernetes/apps/observability-agents/vlagent/app
   prune: true
   sourceRef:
     kind: GitRepository

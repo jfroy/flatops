@@ -5,11 +5,11 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
-  - ./fluent-bit/ks.yaml
   - ./node-exporter/ks.yaml
   - ./scrutiny-collector/ks.yaml
   - ./smartctl-exporter/ks.yaml
   - ./telegraf/ks.yaml
+  - ./vlagent/ks.yaml
 components:
   - ../../components/common
 transformers:
