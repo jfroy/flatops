@@ -191,14 +191,15 @@ The [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-op
 
 ### Observability
 
-#### Metrics: VictoriaMetrics
+#### Metrics and Logs: VictoriaMetrics
 
-The [VictoriaMetrics Operator](https://docs.victoriametrics.com/operator/) manages the metrics stack:
+The [VictoriaMetrics Operator](https://docs.victoriametrics.com/operator/) manages the metrics and logs stack:
 
-- **VMSingle** for metrics storage (12-week retention on Ceph block storage)
-- **VMAgent** for metric collection
-- **VMAlert** + **VMAlertmanager** for alerting
-- OpenTelemetry integration with Prometheus naming
+- [**VMSingle**](https://docs.victoriametrics.com/victoriametrics/single-server-victoriametrics/) for metrics storage (12-week retention on Ceph block storage)
+- [**VMAgent**](https://docs.victoriametrics.com/victoriametrics/vmagent/) for metric collection
+- [**VMAlert**](https://docs.victoriametrics.com/victoriametrics/vmalert/) + [**VMAlertmanager**](https://docs.victoriametrics.com/victoriametrics/vmalertmanager/) for alerting
+- [**VLAgent**](https://docs.victoriametrics.com/victorialogs/vlagent/) + [**VLSingle**](https://docs.victoriametrics.com/victorialogs/) for logs
+- [OpenTelemetry](https://docs.victoriametrics.com/victoriametrics/single-server-victoriametrics/#sending-data-via-opentelemetry) integration with Prometheus naming
 
 #### Dashboards: Grafana Operator
 
@@ -207,10 +208,6 @@ The [Grafana Operator](https://grafana.github.io/grafana-operator/) manages Graf
 - Declarative dashboard management via `GrafanaDashboard` CRDs
 - Automated datasource configuration
 - Integrated with VictoriaMetrics
-
-#### Logs: fluent-bit
-
-[fluent-bit](https://fluentbit.io/) collects container logs from all nodes, running as a DaemonSet in the observability-agents namespace.
 
 #### kube-prometheus-stack
 
