@@ -29,7 +29,7 @@ spec:
           miniflux:
             image:
               repository: ghcr.io/miniflux/miniflux
-              tag: 2.2.19
+              tag: 2.3.0
             env:
               BASE_URL: https://miniflux.kantai.xyz
               # CREATE_ADMIN: "1"
