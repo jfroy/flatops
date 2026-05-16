@@ -33,7 +33,7 @@ spec:
           - name: envoy-internal
             namespace: network
         hostnames:
-          - csp.kantai.xyz
+          - crd.kantai.xyz
     persistence:
       enabled: true
       size: 1Gi
