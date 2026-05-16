@@ -33,7 +33,7 @@ spec:
           sync-assets:
             image:
               repository: mirror.gcr.io/freikin/dawarich
-              tag: 1.6.1
+              tag: 1.7.7
             command: [/bin/sh, -c, rm -rf /var/app/public/assets && cp -r /tmp/public_assets/* /var/app/public/]
             securityContext: &sc
               allowPrivilegeEscalation: false
@@ -63,7 +63,7 @@ spec:
           app:
             image:
               repository: mirror.gcr.io/freikin/dawarich
-              tag: 1.6.1
+              tag: 1.7.7
             command: ["web-entrypoint.sh"]
             args: ["bin/rails", "server", "-p", "3000", "-b", "::"]
             env: &env
@@ -109,7 +109,7 @@ spec:
           sidekick:
             image:
               repository: mirror.gcr.io/freikin/dawarich
-              tag: 1.6.1@sha256:a884f69f19ce0f66992f3872d24544d1e587e133b8a003e072711aafc1e02429
+              tag: 1.7.7@sha256:f7eea22def731ef98f0644b191c477917790bb0e5449b0014bac2f349ce178a7
             command: ["sidekiq-entrypoint.sh"]
             args: []
             env: *env
