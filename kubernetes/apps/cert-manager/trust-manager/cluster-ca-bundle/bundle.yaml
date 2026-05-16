@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/trust.cert-manager.io/bundle_v1alpha1.json
 apiVersion: trust.cert-manager.io/v1alpha1
 kind: Bundle
 metadata:

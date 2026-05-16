@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
@@ -11,7 +11,7 @@ spec:
       grafana.internal/instance: grafana
   url: https://grafana.com/api/dashboards/12683/revisions/26/download
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:
@@ -23,7 +23,7 @@ spec:
       grafana.internal/instance: grafana
   url: https://grafana.com/api/dashboards/14950/revisions/17/download
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadashboard_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadashboard_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDashboard
 metadata:

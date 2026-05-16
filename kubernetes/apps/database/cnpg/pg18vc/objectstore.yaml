@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/barmancloud.cnpg.io/objectstore_v1.json
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
 metadata:

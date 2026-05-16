@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -17,7 +17,7 @@ spec:
     url: http://vmalertmanager-kantai.observability.svc.cluster.local:9093
   uid: alertmanager
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -37,7 +37,7 @@ spec:
     url: http://influxdb.database.svc.cluster.local:8086
   uid: influxdb
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -57,7 +57,7 @@ spec:
     url: http://vmsingle-kantai.observability.svc:8429
   uid: prometheus
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -73,7 +73,7 @@ spec:
     url: http://vmsingle-kantai.observability.svc:8429
   uid: victoriametrics
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
@@ -89,7 +89,7 @@ spec:
     url: http://vlsingle-kantai.observability.svc:9428
   uid: victorialogs
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/grafana.integreatly.org/grafanadatasource_v1beta1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/grafana.integreatly.org/grafanadatasource_v1beta1.json
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:

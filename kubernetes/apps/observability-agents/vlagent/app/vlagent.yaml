@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://csp.kantai.xyz/operator.victoriametrics.com/vlagent_v1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/operator.victoriametrics.com/vlagent_v1.json
 apiVersion: operator.victoriametrics.com/v1
 kind: VLAgent
 metadata:

@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/cilium.io/ciliumbgpadvertisement_v2.json
 apiVersion: cilium.io/v2
 kind: CiliumBGPAdvertisement
 metadata:

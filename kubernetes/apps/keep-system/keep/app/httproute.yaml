@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/gateway.networking.k8s.io/httproute_v1.json
 # Keep ships three components behind one URL.
 # The chart's nginx ingress proxies /v2 → backend (8080), /websocket → soketi (6001), / → frontend (3000),
 # with prefix stripping. We replicate that here on envoy-internal so the chart helpers

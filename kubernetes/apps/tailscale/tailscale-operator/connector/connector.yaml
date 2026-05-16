@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/tailscale.com/connector_v1alpha1.json
 apiVersion: tailscale.com/v1alpha1
 kind: Connector
 metadata:
