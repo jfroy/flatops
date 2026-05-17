@@ -23,6 +23,9 @@ additionalMachineCertSans: *sans
 cniConfig:
   name: none
 
+imageFactory:
+  registryURL: tif.etincelle.cloud
+
 nodes:
   - hostname: "kantai1"
     ipAddress: "10.1.1.1"
