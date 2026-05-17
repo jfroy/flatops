@@ -1,12 +1,17 @@
 ---
-# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/helmrepository_v1.json
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/ocirepository_v1.json
 apiVersion: source.toolkit.fluxcd.io/v1
-kind: HelmRepository
+kind: OCIRepository
 metadata:
-  name: jetstack
+  name: trust-manager
 spec:
   interval: 1h
-  url: https://charts.jetstack.io
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.22.1
+  url: oci://quay.io/jetstack/charts/trust-manager
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
@@ -15,13 +20,9 @@ metadata:
   name: trust-manager
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: trust-manager
-      version: v0.22.1
-      sourceRef:
-        kind: HelmRepository
-        name: jetstack
+  chartRef:
+    kind: OCIRepository
+    name: trust-manager
   values:
     app:
       metrics:
