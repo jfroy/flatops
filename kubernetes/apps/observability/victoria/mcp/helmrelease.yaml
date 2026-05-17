@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: victoria-metrics-mcp
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
+    operation: copy
+  url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-mcp
+  ref:
+    tag: 0.2.0
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-metrics-mcp
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: victoria-metrics-mcp
+  values:
+    vm:
+      type: single
+      entrypoint: http://vmsingle-kantai.observability.svc:8429
+    mcp:
+      mode: http
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 65534
+      runAsGroup: 65534
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop: ["ALL"]
+      readOnlyRootFilesystem: true
+    route:
+      enabled: true
+      parentRefs:
+        - name: envoy-internal
+          namespace: network
+      hostnames:
+        - vm-mcp.kantai.xyz
