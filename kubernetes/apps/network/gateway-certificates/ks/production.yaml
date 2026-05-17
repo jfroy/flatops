@@ -9,9 +9,12 @@ spec:
   dnsNames:
     - kantai.xyz
     - "*.kantai.xyz"
-  duration: 160h
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
     group: cert-manager.io
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Always
   secretName: xyz-kantai-production-tls
