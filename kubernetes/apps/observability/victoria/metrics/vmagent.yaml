@@ -7,6 +7,7 @@ metadata:
 spec:
   extraArgs:
     opentelemetry.usePrometheusNaming: "true"
+    promscrape.maxScrapeSize: "33554432" # 32MB
   remoteWrite:
     - url: "http://vmsingle-kantai.observability.svc:8428/api/v1/write"
   remoteWriteSettings:
