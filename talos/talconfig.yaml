@@ -23,9 +23,6 @@ additionalMachineCertSans: *sans
 cniConfig:
   name: none
 
-imageFactory:
-  registryURL: tif.etincelle.cloud
-
 nodes:
   - hostname: "kantai1"
     ipAddress: "10.1.1.1"
@@ -55,6 +52,7 @@ nodes:
       secureboot.kantai.xyz: "true"
     schematic:
       customization:
+        bootloader: sd-boot
         extraKernelArgs:
           - -selinux
           - lsm=landlock,lockdown,yama,apparmor,bpf
@@ -67,12 +65,12 @@ nodes:
           includeWellKnownCertificates: true
         systemExtensions:
           officialExtensions:
-            - jfroy/siderolabs/glibc
-            - jfroy/siderolabs/nvidia-driver-production
-            - jfroy/siderolabs/zfs
             - siderolabs/amd-ucode
-            - siderolabs/iscsi-tools
+            - siderolabs/nvidia-container-toolkit-production
+            - siderolabs/nvidia-gdrdrv-device
+            - siderolabs/nvidia-open-gpu-kernel-modules-production
             - siderolabs/util-linux-tools
+            - siderolabs/zfs
     patches:
       # sysctls
       - |-
@@ -126,13 +124,13 @@ nodes:
       secureboot.kantai.xyz: "true"
     schematic:
       customization:
+        bootloader: sd-boot
         extraKernelArgs:
           - -selinux
           - lsm=landlock,lockdown,yama,apparmor,bpf
           - lsm.debug
         systemExtensions:
           officialExtensions:
-            - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
     nodeTaints:
       node-role.kubernetes.io/control-plane: :NoSchedule
@@ -166,18 +164,16 @@ nodes:
       node-role.kubernetes.io/control-plane: :NoSchedule
     schematic:
       customization:
+        bootloader: sd-boot
         extraKernelArgs:
           - -selinux
           - lsm=landlock,lockdown,yama,apparmor,bpf
           - lsm.debug
           - amd_pstate=active
           - spec_rstack_overflow=microcode
-          - zfs.zfs_arc_max=6871947674
-          - zfs.zfs_arc_shrinker_limit=0
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
-            - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
     patches:
       # sysctls
