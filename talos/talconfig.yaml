@@ -63,6 +63,8 @@ nodes:
           - spec_rstack_overflow=microcode
           - zfs.zfs_arc_max=26843545600
           - zfs.zfs_arc_shrinker_limit=0
+        secureboot:
+          includeWellKnownCertificates: true
         systemExtensions:
           officialExtensions:
             - jfroy/siderolabs/glibc
