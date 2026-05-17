@@ -24,7 +24,6 @@ spec:
     kind: OCIRepository
     name: tuppr
   values:
-    replicaCount: 2
     monitoring:
       serviceMonitor:
         enabled: true
@@ -36,3 +35,11 @@ spec:
           enabled: true
           matchLabels:
             dashboards: grafana
+    replicaCount: 2
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: tuppr
