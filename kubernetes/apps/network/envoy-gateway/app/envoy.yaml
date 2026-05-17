@@ -100,7 +100,6 @@ spec:
         certificateRefs:
           - kind: Secret
             name: xyz-kantai-production-tls
-            namespace: ingress-certificates
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -157,7 +156,6 @@ spec:
         certificateRefs:
           - kind: Secret
             name: xyz-kantai-production-tls
-            namespace: ingress-certificates
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1

@@ -6,9 +6,10 @@ metadata:
   name: letsencrypt-production
 spec:
   acme:
-    server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
       name: letsencrypt-production
+    profile: shortlived
+    server: https://acme-v02.api.letsencrypt.org/directory
     solvers:
       - dns01:
           cloudflare:
@@ -17,4 +18,4 @@ spec:
               key: api-token
         selector:
           dnsZones:
-            - "kantai.xyz"
+            - kantai.xyz
