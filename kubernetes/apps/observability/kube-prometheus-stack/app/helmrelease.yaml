@@ -64,6 +64,9 @@ spec:
           - action: drop
             sourceLabels: ["__name__"]
             regex: workqueue_(work|queue)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: apiserver_watch_(list_duration|cache_read_wait)_seconds_bucket
 
     kubelet:
       serviceMonitor:
