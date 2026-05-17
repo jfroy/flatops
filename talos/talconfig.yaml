@@ -193,15 +193,6 @@ nodes:
             net.ipv6.conf.enp1s0.forwarding: "1"
             vm.nr_hugepages: "2048"
 
-      # udev rules
-      # - set all disks to no scheduler (optimal setting for Ceph and ZFS)
-      - |-
-        machine:
-          udev:
-            rules:
-              # set all disks to `none` scheduler (optimal setting for Ceph and ZFS)
-              - SUBSYSTEM=="block", ENV{DEVTYPE}=="disk", ATTR{queue/scheduler}="none"
-
 patches:
   # Disable search domain everywhere
   - |-
