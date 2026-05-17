@@ -354,25 +354,27 @@ controlPlane:
       cluster:
         apiServer:
           extraArgs:
-            feature-gates: DRAPartitionableDevices=true,GangScheduling=true,GenericWorkload=true,ImageVolume=true,PodCertificateRequest=true,ResourceHealthStatus=true,UserNamespacesSupport=true
-            runtime-config: certificates.k8s.io/v1beta1/podcertificaterequests=true,scheduling.k8s.io/v1alpha1=true
+            feature-gates: DRANodeAllocatableResources=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,GangScheduling=true,GenericWorkload=true,PodCertificateRequest=true,TopologyAwareWorkloadScheduling=true,WorkloadAwarePreemption=true,WorkloadWithJob=true
+            runtime-config: certificates.k8s.io/v1beta1/podcertificaterequests=true,scheduling.k8s.io/v1alpha2=true
         controllerManager:
           extraArgs:
-            feature-gates: DRAPartitionableDevices=true,GangScheduling=true,GenericWorkload=true,ImageVolume=true,PodCertificateRequest=true,ResourceHealthStatus=true,UserNamespacesSupport=true
+            feature-gates: DRANodeAllocatableResources=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,GangScheduling=true,GenericWorkload=true,PodCertificateRequest=true,TopologyAwareWorkloadScheduling=true,WorkloadAwarePreemption=true,WorkloadWithJob=true
         scheduler:
           extraArgs:
-            feature-gates: DRAPartitionableDevices=true,GangScheduling=true,GenericWorkload=true,ImageVolume=true,PodCertificateRequest=true,ResourceHealthStatus=true,UserNamespacesSupport=true
+            feature-gates: DRANodeAllocatableResources=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,GangScheduling=true,GenericWorkload=true,PodCertificateRequest=true,TopologyAwareWorkloadScheduling=true,WorkloadAwarePreemption=true,WorkloadWithJob=true
       machine:
         kubelet:
           extraConfig:
             featureGates:
-              DRAPartitionableDevices: true
+              DRANodeAllocatableResources: true
+              DRAResourcePoolStatus: true
+              DRAWorkloadResourceClaims: true
               GangScheduling: true
               GenericWorkload: true
-              ImageVolume: true
               PodCertificateRequest: true
-              ResourceHealthStatus: true
-              UserNamespacesSupport: true
+              TopologyAwareWorkloadScheduling: true
+              WorkloadAwarePreemption: true
+              WorkloadWithJob: true
 
     # Enable K8s Talos API Access
     - |-
