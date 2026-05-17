@@ -21,7 +21,6 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.43.1.10611@sha256:a9c3723cb31cc9621df27cf5801184c290293adf1df2bfaea4b8b6fc01dbfd96
             env:
-              NVIDIA_DRIVER_CAPABILITIES: all
               PLEX_ADVERTISE_URL: http://plex.internal:22400,http://10.1.1.1:22400
               PLEX_NO_AUTH_NETWORKS: 10.1.0.0/16,10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
               PLEX_PREFERENCE_0: TreatWanIpAsLocal=0
@@ -58,12 +57,10 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: false
             resources:
+              requests:
+                nvidia.com/gpu: 1
               limits:
                 nvidia.com/gpu: 1
-        pod:
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true

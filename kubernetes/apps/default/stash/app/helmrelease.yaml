@@ -64,7 +64,6 @@ spec:
             env:
               AI_BACKEND_BASE_URL: https://stash.kantai.xyz/sais
               HOME: /config
-              NVIDIA_DRIVER_CAPABILITIES: compute,utility,video
               STASH_BLOBS_PATH: /blobs
               STASH_BLOBS_STORAGE: FILESYSTEM
               STASH_CACHE: /cache
@@ -124,6 +123,8 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
+              requests:
+                nvidia.com/gpu: 1
               limits:
                 nvidia.com/gpu: 1
             restartPolicy: Always
@@ -138,9 +139,6 @@ spec:
                   name: sais-initdb
         pod:
           hostname: stash
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000

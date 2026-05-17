@@ -22,7 +22,6 @@ spec:
               tag: 10.11.8@sha256:93227545077893cc9516f28b3adb733b67bc4691f41b6167428a2a0e3220b81c
             env:
               JELLYFIN_AutoDiscovery: "false"
-              NVIDIA_DRIVER_CAPABILITIES: compute,video,utility
               TZ: America/Los_Angeles
             ports:
               - containerPort: 8096
@@ -51,10 +50,6 @@ spec:
             resources:
               limits:
                 nvidia.com/gpu: 1
-        pod:
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
       vue:
         annotations:
           reloader.stakater.com/auto: "true"

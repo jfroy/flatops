@@ -37,6 +37,8 @@ spec:
                     port: http
               readiness: *probes
             resources:
+              requests:
+                nvidia.com/gpu: 1
               limits:
                 nvidia.com/gpu: 1
             securityContext:
@@ -44,9 +46,6 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
         pod:
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
           securityContext:
             runAsNonRoot: true
             runAsUser: 1001

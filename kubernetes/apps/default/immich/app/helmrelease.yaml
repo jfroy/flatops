@@ -49,10 +49,6 @@ spec:
             securityContext: &csc
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
-        pod:
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
       microservices:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -81,10 +77,6 @@ spec:
               limits:
                 nvidia.com/gpu: 1
             securityContext: *csc
-        pod:
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
       server:
         annotations:
           reloader.stakater.com/auto: "true"

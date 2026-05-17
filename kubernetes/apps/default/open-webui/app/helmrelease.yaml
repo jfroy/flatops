@@ -121,9 +121,6 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
         pod:
-          nodeSelector:
-            nvidia.com/gpu.present: "true"
-          runtimeClassName: nvidia
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
