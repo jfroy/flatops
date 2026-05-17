@@ -36,6 +36,7 @@ nodes:
       - name: nvme-tcp
       - name: vfio-pci
     machineSpec:
+      arch: amd64
       secureboot: true
       useUKI: true
     networkInterfaces:
@@ -114,6 +115,7 @@ nodes:
     kernelModules:
       - name: nvme-tcp
     machineSpec:
+      arch: arm64
       secureboot: true
       useUKI: true
     networkInterfaces:
@@ -154,6 +156,7 @@ nodes:
     kernelModules:
       - name: nvme-tcp
     machineSpec:
+      arch: amd64
       secureboot: false
       useUKI: true
     networkInterfaces:
