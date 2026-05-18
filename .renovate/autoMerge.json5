@@ -40,6 +40,13 @@
       matchUpdateTypes: ["major", "minor"],
       automerge: false,
     },
+    // - Don't automerge Ceph image major/minor; storage updates need review
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["quay.io/ceph/ceph"],
+      matchUpdateTypes: ["major", "minor"],
+      automerge: false,
+    },
     // - Don't automerge Samba; updates are disruptive
     {
       matchDatasources: ["docker"],
