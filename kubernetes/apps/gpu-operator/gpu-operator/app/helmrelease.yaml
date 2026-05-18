@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: gpu-operator
-      version: v25.10.0
+      version: v26.3.1
       sourceRef:
         kind: HelmRepository
         name: ngc-nvidia
@@ -19,16 +19,6 @@ spec:
   upgrade:
     disableOpenAPIValidation: true
   values:
-    nfd:
-      enabled: false
-    cdi:
-      enabled: true
-    devicePlugin:
-      repository: ghcr.io/jfroy
-      version: 53c0912d # https://github.com/NVIDIA/k8s-device-plugin/pull/1505
-      config:
-        name: time-slicing-config-all
-        default: any
     dcgmExporter:
       env:
         - name: KUBERNETES_VIRTUAL_GPUS
@@ -42,38 +32,17 @@ spec:
             targetLabel: instance
             replacement: $1
             action: replace
+    devicePlugin:
+      config:
+        name: time-slicing-config-all
+        default: any
     driver:
       enabled: false
-    migManager:
-      enabled: false
-    operator:
-      defaultRuntime: containerd
-      resources:
-        limits: null
-    sandboxDevicePlugin:
+    hostPaths:
+      driverInstallDir: /usr/local
+    nfd:
       enabled: false
     toolkit:
-      repository: registry.kantai.xyz/nvidia
-      version: f77b36be # v1.18.0 with patches for Talos
-      # These environment variables are stored in the cluster policy CR. The operator uses them to
-      # create the toolkit daemonset resource.
-      env:
-        # Talos /etc is read-only. `CONTAINERD_CONFIG` is read by the operator to override the
-        # config file path in the toolkit daemonset. `RUNTIME_DROP_IN_CONFIG` is similar, but for
-        # the containerd drop-in config.
-        - name: CONTAINERD_CONFIG
-          value: /var/nvidia/etc/containerd.toml
-        - name: RUNTIME_DROP_IN_CONFIG
-          value: /var/nvidia/etc/containerd/conf.d/99-nvidia.toml
-        # Talos does not recover if containerd is restarted with SIGHUP.
-        # https://github.com/siderolabs/talos/issues/9271
-        # https://github.com/siderolabs/talos/issues/10980
-        - name: RUNTIME_RESTART_MODE
-          value: none
-      installDir: "/var/nvidia"
-    vfioManager:
-      enabled: false
-    vgpuDeviceManager:
       enabled: false
   postRenderers:
     - kustomize:
