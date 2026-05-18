@@ -40,6 +40,8 @@ spec:
       remediateLastFailure: true
       retries: 2
   values:
+    cephImage:
+      tag: v20.2.1-20260402
     cephClusterSpec:
       annotations:
         # Avoid duplicate metrics from the ServiceMonitor and scrape annotations.
