@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: notifier
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  interval: 1h
+  values:
+    controllers:
+      notifier:
+        replicas: 1
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          notifier:
+            image:
+              repository: ghcr.io/home-operations/webhook
+              tag: 2.8.3@sha256:b5a6defe3462a7bba13342bb878b20504f3699644a442039dad21285edca0082
+            env:
+              WEBHOOK__PORT: &port 80
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: "{{ .Release.Name }}"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: {drop: ["ALL"]}
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      notifier:
+        ports:
+          http:
+            port: *port
+    persistence:
+      config:
+        type: configMap
+        name: notifier-hooks
+        defaultMode: 0775
+        globalMounts:
+          - readOnly: true

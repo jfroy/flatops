@@ -30,6 +30,7 @@ resources:
   - ./miniflux/ks.yaml
   # - ./netbox/ks.yaml
   - ./nextflux/ks.yaml
+  - ./notifier/ks.yaml
   # - ./octoeverywhere-bambu-connect/ks.yaml
   # - ./ollama/ks.yaml
   # - ./open-webui/ks.yaml
