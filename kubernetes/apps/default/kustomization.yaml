@@ -12,6 +12,7 @@ resources:
   - ./docker-registry-ui/ks.yaml
   # - ./docling/ks.yaml
   - ./esphome-device-builder/ks.yaml
+  - ./familynido/ks.yaml
   # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
   - ./grimmory/ks.yaml

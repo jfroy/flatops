@@ -1,0 +1,176 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: familynido
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      api:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.3.0@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
+            envFrom:
+              - secretRef:
+                  name: familynido-db
+              - secretRef:
+                  name: familynido-initdb
+        containers:
+          api:
+            image:
+              repository: ghcr.io/pablitofernandez/familynido-api
+              tag: 0.1.2
+            command:
+              - dotnet
+            args:
+              - FamilyNido.Api.dll
+            env:
+              ASPNETCORE_ENVIRONMENT: Production
+              ASPNETCORE_HTTP_PORTS: "8080"
+              ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+              Family__DefaultTimeZone: America/Los_Angeles
+              Cors__AllowedOrigins__0: https://family.kantai.xyz
+              Oidc__Authority: https://pid.kantai.xyz
+              Oidc__ClientId: 1a98773f-3a86-4bb7-a372-4f82bdf45976
+              Oidc__RequireHttpsMetadata: "true"
+              Email__AppBaseUrl: https://family.kantai.xyz
+            envFrom:
+              - secretRef:
+                  name: familynido
+              - secretRef:
+                  name: familynido-db
+            probes:
+              liveness: &apiProbe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/live
+                    port: 8080
+              readiness: *apiProbe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+      web:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          web:
+            image:
+              repository: ghcr.io/pablitofernandez/familynido-web
+              tag: 0.1.2
+            probes:
+              liveness: &webProbe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthz
+                    port: 8080
+              readiness: *webProbe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [4000]
+    persistence:
+      data:
+        existingClaim: ${APP}
+        advancedMounts:
+          api:
+            api:
+              - path: /app/data/files
+                subPath: files
+              - path: /home/familynido/.aspnet/DataProtection-Keys
+                subPath: keys
+      nginx-config:
+        type: configMap
+        name: familynido-nginx-config
+        advancedMounts:
+          web:
+            web:
+              - path: /etc/nginx/nginx.conf
+                subPath: nginx.conf
+                readOnly: true
+              - path: /etc/nginx/conf.d/default.conf
+                subPath: default.conf
+                readOnly: true
+      nginx-cache:
+        type: emptyDir
+        advancedMounts:
+          web:
+            web:
+              - path: /var/cache/nginx
+      nginx-run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Mi
+        advancedMounts:
+          web:
+            web:
+              - path: /run
+    service:
+      api:
+        controller: api
+        ports:
+          http:
+            port: 8080
+      web:
+        controller: web
+        ports:
+          http:
+            port: 8080
+    route:
+      familynido:
+        hostnames:
+          - family.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: api
+                port: 8080
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /api/
+          - backendRefs:
+              - identifier: api
+                port: 8080
+            matches:
+              - path:
+                  type: Exact
+                  value: /signin-oidc
+          - backendRefs:
+              - identifier: api
+                port: 8080
+            matches:
+              - path:
+                  type: Exact
+                  value: /signout-callback-oidc
+          - backendRefs:
+              - identifier: web
+                port: 8080
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /

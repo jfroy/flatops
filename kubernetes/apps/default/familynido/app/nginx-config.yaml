@@ -1,0 +1,92 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: familynido-nginx-config
+data:
+  nginx.conf: |
+    pid /run/nginx.pid;
+    worker_processes auto;
+    error_log /var/log/nginx/error.log warn;
+
+    events {
+        worker_connections 1024;
+    }
+
+    http {
+        include /etc/nginx/mime.types;
+        default_type application/octet-stream;
+
+        log_format json_combined escape=json
+            '{"time":"$time_iso8601",'
+            '"remote_addr":"$remote_addr",'
+            '"method":"$request_method",'
+            '"uri":"$request_uri",'
+            '"status":$status,'
+            '"bytes_sent":$body_bytes_sent,'
+            '"request_time":$request_time,'
+            '"http_referer":"$http_referer",'
+            '"http_user_agent":"$http_user_agent",'
+            '"http_x_forwarded_for":"$http_x_forwarded_for"}';
+
+        access_log /var/log/nginx/access.log json_combined;
+
+        sendfile on;
+        keepalive_timeout 65;
+
+        include /etc/nginx/conf.d/*.conf;
+    }
+
+  default.conf: |
+    server {
+        listen 8080;
+        listen [::]:8080;
+        server_name _;
+
+        root /usr/share/nginx/html;
+        index index.html;
+
+        absolute_redirect off;
+
+        gzip on;
+        gzip_comp_level 6;
+        gzip_min_length 1024;
+        gzip_types text/plain text/css application/javascript application/json
+            application/manifest+json image/svg+xml text/xml;
+
+        location ~* \.(?:js|css|woff2?|ttf|otf|eot|ico|svg|png|jpg|jpeg|gif|webp|avif)$ {
+            expires 1y;
+            add_header Cache-Control "public, immutable";
+            try_files $uri =404;
+        }
+
+        location ~* (ngsw-worker\.js|ngsw\.json|safety-worker\.js|worker-basic\.min\.js|manifest\.webmanifest)$ {
+            add_header Cache-Control "no-cache, no-store, must-revalidate";
+            try_files $uri =404;
+        }
+
+        location = /healthz {
+            access_log off;
+            return 200 "ok\n";
+            add_header Content-Type text/plain;
+        }
+
+        location = / {
+            if ($http_accept_language ~* "^en") {
+                return 302 /en/;
+            }
+            return 302 /es/;
+        }
+
+        location /es/ {
+            try_files $uri $uri/ /es/index.html;
+        }
+        location /en/ {
+            try_files $uri $uri/ /en/index.html;
+        }
+
+        location / {
+            if ($http_accept_language ~* "^en") { return 302 /en$request_uri; }
+            return 302 /es$request_uri;
+        }
+    }
