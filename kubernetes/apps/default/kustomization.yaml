@@ -17,6 +17,7 @@ resources:
   - ./grimmory/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
+  - ./houndarr/ks.yaml
   # - ./hypermind/ks.yaml
   - ./immich/ks.yaml
   # - ./jellyfin/ks.yaml
