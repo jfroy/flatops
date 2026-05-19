@@ -5,7 +5,6 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   # --
-  # - ./alloy/ks.yaml
   - ./beszel/ks.yaml
   - ./blackbox-exporter/ks.yaml
   - ./dozzle/ks.yaml
