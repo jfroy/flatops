@@ -155,13 +155,20 @@ spec:
         sizeLimit: 1Gi
         globalMounts:
           - path: /var/log/samba
-      media:
+      media1:
         type: persistentVolumeClaim
-        existingClaim: storage-media-kantai1-zfs
+        existingClaim: media1
         advancedMounts:
           kantai1-samba:
             smbd:
-              - path: /media
+              - path: /media1
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media2
+        advancedMounts:
+          kantai1-samba:
+            smbd:
+              - path: /media2
       run:
         type: emptyDir
         medium: Memory

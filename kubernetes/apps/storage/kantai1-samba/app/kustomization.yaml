@@ -6,7 +6,6 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./networkpolicy.yaml
-  - ./pvc.yaml
   - ./service.yaml
 configMapGenerator:
   - name: kantai1-avahi

@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: storage-media1
+spec:
+  capacity:
+    storage: 246Ti
+  accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zfs-static
+  mountOptions:
+    - noatime
+  csi:
+    driver: zfs-static-csi.jfroy.github.com
+    volumeHandle: reservoir/media1
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - kantai1
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: storage-media2
+spec:
+  capacity:
+    storage: 246Ti
+  accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zfs-static
+  mountOptions:
+    - noatime
+  csi:
+    driver: zfs-static-csi.jfroy.github.com
+    volumeHandle: reservoir/media2
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - kantai1

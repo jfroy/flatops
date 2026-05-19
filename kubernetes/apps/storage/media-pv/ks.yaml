@@ -3,10 +3,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: zfs-volumes
+  name: media-pv
 spec:
-  path: ./kubernetes/apps/storage/zfs-volumes/resources
-  prune: false  # don't GC zfs volumes to avoid unwanted DR
+  path: ./kubernetes/apps/storage/media-pv/ks
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
