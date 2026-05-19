@@ -5,5 +5,5 @@ kind: Kustomization
 resources:
   - ./ceph-packet-drops.yaml
   - ./cnpg-cluster-instances-on-same-node.yaml
-  - ./kube-cpu-overcommit.yaml
+  - ./kube-overcommit.yaml
   - ./zfs-scrub.yaml
