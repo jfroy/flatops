@@ -57,7 +57,7 @@ spec:
           vue:
             image:
               repository: ghcr.io/jellyfin/jellyfin-vue
-              tag: unstable.2026-05-17.d390e86@sha256:9c285be2ba54eff7469ac5b1539c7d6fd6dcd7306d38cc81707c1fb9c79dcde7
+              tag: unstable.2026-05-18.e60a2ee@sha256:15789e83dca672d78c5537811e8174ee994718f9b6c67656679ba0a34edd3085
             env:
               DEFAULT_SERVERS: https://jellyfin.kantai.xyz
               DISABLE_SERVER_SELECTION: "true"
