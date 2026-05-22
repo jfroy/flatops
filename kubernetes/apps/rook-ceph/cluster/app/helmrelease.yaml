@@ -42,7 +42,7 @@ spec:
   values:
     cephImage:
       # renovate: datasource=docker depName=quay.io/ceph/ceph versioning=loose
-      tag: v20.2.1-20260402
+      tag: v20.2.1
     cephClusterSpec:
       annotations:
         # Avoid duplicate metrics from the ServiceMonitor and scrape annotations.
