@@ -4,3 +4,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./helmrelease.yaml
+configMapGenerator:
+  - name: jellyfin-vue-config
+    files:
+      - config.json=./configmaps/jellyfin-vue-config.json
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+generatorOptions:
+  disableNameSuffixHash: true

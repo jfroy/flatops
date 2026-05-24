@@ -58,9 +58,9 @@ spec:
             image:
               repository: ghcr.io/jellyfin/jellyfin-vue
               tag: unstable.2026-05-18.e60a2ee@sha256:15789e83dca672d78c5537811e8174ee994718f9b6c67656679ba0a34edd3085
+            command: ["nginx"]
+            args: ["-g", "daemon off;"]
             env:
-              DEFAULT_SERVERS: https://jellyfin.kantai.xyz
-              DISABLE_SERVER_SELECTION: "true"
               TZ: America/Los_Angeles
             ports:
               - containerPort: 80
@@ -89,7 +89,7 @@ spec:
     persistence:
       cache:
         type: persistentVolumeClaim
-        prefix: jellyfin
+        suffix: cache
         accessMode: ReadWriteOnce
         size: 100Gi
         storageClass: ceph-block
@@ -103,6 +103,15 @@ spec:
           jellyfin:
             jellyfin:
               - path: /config
+      config-vue:
+        type: configMap
+        name: jellyfin-vue-config
+        advancedMounts:
+          vue:
+            vue:
+              - path: /usr/share/nginx/html/config.json
+                subPath: config.json
+                readOnly: true
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
