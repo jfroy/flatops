@@ -19,7 +19,7 @@ spec:
           etampe:
             image:
               repository: ghcr.io/jfroy/etampe
-              tag: 0.3.0@sha256:ffca74c57113a2143fb8ff66d34e264256f2449989f64b2937a218acdf327ea6
+              tag: 0.3.1@sha256:9f074be5336187f57e12338e0f606dfee21c45f136fe01af6c0e1c6e8af7a614
             envFrom:
               - secretRef:
                   name: etampe
