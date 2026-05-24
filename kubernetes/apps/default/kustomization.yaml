@@ -22,7 +22,7 @@ resources:
   - ./houndarr/ks.yaml
   # - ./hypermind/ks.yaml
   - ./immich/ks.yaml
-  # - ./jellyfin/ks.yaml
+  - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
   - ./komga/ks.yaml
   # - ./mediamanager/ks.yaml
