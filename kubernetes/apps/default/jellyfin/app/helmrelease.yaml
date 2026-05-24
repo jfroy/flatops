@@ -88,11 +88,10 @@ spec:
         supplementalGroups: [44, 4000]
     persistence:
       cache:
-        accessMode: ReadWriteOnce
-        enabled: true
-        retain: true
-        size: 500Gi
         type: persistentVolumeClaim
+        prefix: jellyfin
+        accessMode: ReadWriteOnce
+        size: 100Gi
         storageClass: ceph-block
         advancedMounts:
           jellyfin:
@@ -113,6 +112,10 @@ spec:
               - path: /media2/library
                 subPath: library
                 readOnly: true
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 1Mi
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
@@ -120,21 +123,13 @@ spec:
           jellyfin:
             jellyfin:
               - path: /tmp
-      vue-cache:
-        type: emptyDir
-        sizeLimit: 1Gi
-        advancedMounts:
+                subPath: jellyfin
           vue:
             vue:
+              - path: /tmp
+                subPath: vue
               - path: /var/cache/nginx
-      vue-run:
-        type: emptyDir
-        medium: Memory
-        sizeLimit: 1Mi
-        advancedMounts:
-          vue:
-            vue:
-              - path: /run
+                subPath: nginx
     route:
       jellyfin:
         hostnames:
