@@ -84,6 +84,8 @@ spec:
                 subPath: library/books/bookdrop
               - path: /media2/qbittorrent
                 subPath: qbittorrent
+              - path: /media2/sabnzbd
+                subPath: sabnzbd
       run:
         type: emptyDir
         medium: Memory
