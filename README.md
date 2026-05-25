@@ -41,8 +41,8 @@ The cluster integrates with a [Tailscale](https://tailscale.com/) tailnet for pr
 | Role            | CIDR           |
 |-----------------|----------------|
 | Pod             | `10.11.0.0/16` |
-| Service         | `10.11.0.0/16` |
-| Cilium [LB IPAM](https://docs.cilium.io/en/stable/network/lb-ipam/)  | `10.11.0.0/16` |
+| Service         | `10.12.0.0/16` |
+| Cilium [LB IPAM](https://docs.cilium.io/en/stable/network/lb-ipam/)  | `10.10.0.0/16` |
 
 #### IPv6
 
