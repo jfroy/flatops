@@ -1,0 +1,152 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Flate
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  filter:
+    name: Flate - Filter
+    runs-on: ubuntu-latest
+    outputs:
+      changed-files: ${{ steps.changed-files.outputs.changed_files }}
+    steps:
+      - name: Get Changed Files
+        id: changed-files
+        uses: bjw-s-labs/action-changed-files@a9a36fb08ce06db9b02fbd8026cc2c0945eb9841 # v0.6.0
+        with:
+          patterns: kubernetes/**/*
+
+  flate:
+    if: ${{ needs.filter.outputs.changed-files != '[]' }}
+    needs: filter
+    name: Flate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    strategy:
+      matrix:
+        kind:
+          - helmrelease
+          - kustomization
+      fail-fast: false
+    steps:
+      - name: Checkout Pull Request Branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          path: pull
+          persist-credentials: false
+          sparse-checkout: kubernetes/
+
+      - name: Checkout Default Branch
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          path: default
+          persist-credentials: false
+          sparse-checkout: kubernetes/
+
+      - name: Setup Mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        with:
+          cache: false
+          tool_versions: |
+            github:home-operations/flate latest
+
+      - name: Run flate test
+        env:
+          KIND: ${{ matrix.kind }}
+        run: flate test "$KIND" --path ./pull --path-orig ./default
+
+      - name: Run flate diff
+        id: diff
+        env:
+          KIND: ${{ matrix.kind }}
+        run: |
+          {
+            echo 'diff<<EOF'
+            flate diff "$KIND" --path ./pull --path-orig ./default
+            echo 'EOF'
+          } >> $GITHUB_OUTPUT
+
+      - if: ${{ steps.diff.outputs.diff != '' }}
+        name: Load Secrets
+        id: load-secrets
+        uses: 1password/load-secrets-action@92467eb28f72e8255933372f1e0707c567ce2259 # v4.0.0 # zizmor: ignore[unpinned-tools]
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          GITHUB_BOT_APP_CLIENT_ID: op://kubernetes/github-bot/GITHUB_BOT_APP_CLIENT_ID
+          GITHUB_BOT_APP_PRIVATE_KEY: op://kubernetes/github-bot/GITHUB_BOT_APP_PRIVATE_KEY
+
+      - if: ${{ steps.diff.outputs.diff != '' }}
+        name: Generate Token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ steps.load-secrets.outputs.GITHUB_BOT_APP_CLIENT_ID }}
+          private-key: ${{ steps.load-secrets.outputs.GITHUB_BOT_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
+
+      - if: ${{ steps.diff.outputs.diff != '' }}
+        name: Add or Update Comment
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          DIFF: ${{ steps.diff.outputs.diff }}
+          KIND: ${{ matrix.kind }}
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const { DIFF, KIND } = process.env;
+            const label = { helmrelease: "HelmRelease", kustomization: "Kustomization" }[KIND];
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const marker = `<!-- Sticky Pull Request Comment${issue_number}/kubernetes/${KIND} -->`;
+            const body = [
+              marker,
+              `<details open><summary>${label} diff</summary>`,
+              ``,
+              "```diff",
+              DIFF,
+              "```",
+              ``,
+              `</details>`,
+              ``,
+              `<sub>[Workflow run](${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId})</sub>`,
+            ].join("\n");
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100,
+            });
+            const existing = comments.find(c => c.body?.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+  success:
+    if: ${{ !cancelled() }}
+    needs:
+      - flate
+    name: Flate - Success
+    runs-on: ubuntu-latest
+    steps:
+      - name: Any jobs failed?
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: All jobs passed or skipped?
+        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        run: echo "All jobs passed or skipped" && echo "${{ toJSON(needs.*.result) }}"
