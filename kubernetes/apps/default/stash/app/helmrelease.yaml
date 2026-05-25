@@ -89,6 +89,8 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
             resources:
+              requests:
+                nvidia.com/gpu: 1
               limits:
                 nvidia.com/gpu: 1
             workingDir: /config
