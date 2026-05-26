@@ -13,6 +13,16 @@
     },
     {
       matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/tensorchord/vchord-scratch"],
+      versioning: "regex:^pg(?<compatibility>\\d+)-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+    },
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["ghcr.io/cloudnative-pg/postgis-extension"],
+      versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>\\d+-\\w+)$"
+    },
+    {
+      matchDatasources: ["docker"],
       matchPackageNames: ["registry.kantai.xyz/**", "tif.etincelle.cloud/**"],
       enabled: false
     },
