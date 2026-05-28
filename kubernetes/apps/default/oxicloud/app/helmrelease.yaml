@@ -39,12 +39,13 @@ spec:
               OXICLOUD_ENABLE_TRASH: "true"
               OXICLOUD_OIDC_ADMIN_GROUPS: "oxicloud-admins"
               OXICLOUD_OIDC_AUTO_PROVISION: "true"
+              OXICLOUD_OIDC_DISABLE_PASSWORD_LOGIN: "true"
               OXICLOUD_OIDC_ENABLED: "true"
               OXICLOUD_OIDC_FRONTEND_URL: https://oxicloud.kantai.xyz
               OXICLOUD_OIDC_ISSUER_URL: https://pid.kantai.xyz
               OXICLOUD_OIDC_PROVIDER_NAME: Pocket ID
               OXICLOUD_OIDC_REDIRECT_URI: https://oxicloud.kantai.xyz/api/auth/oidc/callback
-              OXICLOUD_OIDC_SCOPES: openid profile email
+              OXICLOUD_OIDC_SCOPES: openid profile email groups
               OXICLOUD_S3_BUCKET: oxicloud
               OXICLOUD_S3_ENDPOINT_URL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
               OXICLOUD_S3_FORCE_PATH_STYLE: "true"
