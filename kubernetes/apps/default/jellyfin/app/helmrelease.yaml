@@ -97,6 +97,11 @@ spec:
           jellyfin:
             jellyfin:
               - path: /cache
+                subPath: cache
+              - path: /config/metadata
+                subPath: metadata
+              - path: /config/data/trickplay
+                subPath: data/trickplay
       config:
         existingClaim: ${APP}
         advancedMounts:
