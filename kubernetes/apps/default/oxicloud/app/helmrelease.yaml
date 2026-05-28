@@ -52,6 +52,7 @@ spec:
               OXICLOUD_SERVER_HOST: 0.0.0.0
               OXICLOUD_SERVER_PORT: &port 8086
               OXICLOUD_STORAGE_BACKEND: s3
+              OXICLOUD_STORAGE_PATH: /data
               OXICLOUD_TRUST_PROXY_CIDR: 10.11.0.0/16
               OXICLOUD_WOPI_ENABLED: "false"
               OXICLOUD_OIDC_CLIENT_ID: 1519628e-f43f-42ff-94dd-29ca6b0ec862
@@ -106,6 +107,11 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile: { type: RuntimeDefault }
     persistence:
+      data:
+        type: persistentVolumeClaim
+        storageClass: ceph-block
+        accessMode: ReadWriteOnce
+        size: 100Gi
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
