@@ -1,0 +1,123 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: oxicloud
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      oxicloud:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.3.0@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
+            envFrom:
+              - secretRef:
+                  name: oxicloud-db
+              - secretRef:
+                  name: oxicloud-initdb
+        containers:
+          oxicloud:
+            image:
+              repository: docker.io/diocrafts/oxicloud
+              tag: 0.5.6@sha256:8f5dc1911f7c5990b4366097dc4c0cce975da2f1e769cbab403605f77d486ffa
+            command: ["oxicloud"]
+            env:
+              OXICLOUD_BASE_URL: https://oxicloud.kantai.xyz
+              OXICLOUD_ENABLE_AUTH: "true"
+              OXICLOUD_ENABLE_FILE_SHARING: "true"
+              OXICLOUD_ENABLE_SEARCH: "true"
+              OXICLOUD_ENABLE_TRASH: "true"
+              OXICLOUD_OIDC_ADMIN_GROUPS: "oxicloud-admins"
+              OXICLOUD_OIDC_AUTO_PROVISION: "true"
+              OXICLOUD_OIDC_ENABLED: "true"
+              OXICLOUD_OIDC_FRONTEND_URL: https://oxicloud.kantai.xyz
+              OXICLOUD_OIDC_ISSUER_URL: https://pid.kantai.xyz
+              OXICLOUD_OIDC_PROVIDER_NAME: Pocket ID
+              OXICLOUD_OIDC_REDIRECT_URI: https://oxicloud.kantai.xyz/api/auth/oidc/callback
+              OXICLOUD_OIDC_SCOPES: openid profile email
+              OXICLOUD_S3_BUCKET: oxicloud
+              OXICLOUD_S3_ENDPOINT_URL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
+              OXICLOUD_S3_FORCE_PATH_STYLE: "true"
+              OXICLOUD_S3_REGION: us-west-1
+              OXICLOUD_SERVER_HOST: 0.0.0.0
+              OXICLOUD_SERVER_PORT: &port 8086
+              OXICLOUD_STORAGE_BACKEND: s3
+              OXICLOUD_TRUST_PROXY_CIDR: 10.11.0.0/16
+              OXICLOUD_WOPI_ENABLED: "false"
+              OXICLOUD_OIDC_CLIENT_ID: 1519628e-f43f-42ff-94dd-29ca6b0ec862
+              OXICLOUD_OIDC_CLIENT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: oxicloud
+                    key: OXICLOUD_OIDC_CLIENT_SECRET
+              OXICLOUD_S3_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: oxicloud-obc
+                    key: AWS_ACCESS_KEY_ID
+              OXICLOUD_S3_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: oxicloud-obc
+                    key: AWS_SECRET_ACCESS_KEY
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: oxicloud-db
+              - secretRef:
+                  name: oxicloud-keys
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: *port
+              readiness: *probe
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: *port
+                  failureThreshold: 30
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            runAsGroup: 1001
+            fsGroup: 1001
+            fsGroupChangePolicy: OnRootMismatch
+            seccompProfile: { type: RuntimeDefault }
+    persistence:
+      tmp:
+        type: emptyDir
+        sizeLimit: 1Gi
+    route:
+      oxicloud:
+        hostnames: ["oxicloud.kantai.xyz"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      oxicloud:
+        controller: oxicloud
+        ports:
+          http:
+            port: *port
