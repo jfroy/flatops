@@ -157,6 +157,13 @@ spec:
           sais.sql: |
             CREATE EXTENSION IF NOT EXISTS "vector";
     persistence:
+      bulk-transcode-plugin:
+        type: image
+        image: registry.kantai.xyz/stash/bulk-transcode:latest@sha256:ef916bda71586294a8ebdf2ef32815def4cf7baca8ec77855a0c53bd06e81bfe
+        advancedMounts:
+          stash:
+            install-plugins:
+              - path: /install/bulk_transcode
       cache:
         type: emptyDir
         advancedMounts:
