@@ -58,36 +58,36 @@ spec:
                 path: /dev
                 type: Directory
               name: dev
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: zfs-scrub-kantai1
-spec:
-  schedule: "0 2 1 * *" # 02:00 on the 1st of every month
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          containers:
-            - name: scrub
-              image: alpine:3.23.4
-              imagePullPolicy: IfNotPresent
-              command:
-                - /bin/sh
-                - -c
-                - chroot /host /usr/local/sbin/zpool scrub -w reservoir
-              securityContext:
-                privileged: true
-                runAsUser: 0
-              volumeMounts:
-                - mountPath: /host
-                  name: host
-          nodeSelector:
-            kubernetes.io/hostname: kantai1
-          restartPolicy: OnFailure
-          volumes:
-            - hostPath:
-                path: /
-                type: Directory
-              name: host
+# ---
+# apiVersion: batch/v1
+# kind: CronJob
+# metadata:
+#   name: zfs-scrub-kantai1
+# spec:
+#   schedule: "0 2 1 * *" # 02:00 on the 1st of every month
+#   jobTemplate:
+#     spec:
+#       template:
+#         spec:
+#           containers:
+#             - name: scrub
+#               image: alpine:3.23.4
+#               imagePullPolicy: IfNotPresent
+#               command:
+#                 - /bin/sh
+#                 - -c
+#                 - chroot /host /usr/local/sbin/zpool scrub -w reservoir
+#               securityContext:
+#                 privileged: true
+#                 runAsUser: 0
+#               volumeMounts:
+#                 - mountPath: /host
+#                   name: host
+#           nodeSelector:
+#             kubernetes.io/hostname: kantai1
+#           restartPolicy: OnFailure
+#           volumes:
+#             - hostPath:
+#                 path: /
+#                 type: Directory
+#               name: host
