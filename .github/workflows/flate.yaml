@@ -45,16 +45,14 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - name: Setup Mise
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+      - uses: home-operations/flate/action@main
         with:
-          cache: false
-          tool_versions: |
-            github:home-operations/flate latest
+          cache: true
 
       - name: Run flate diff
         env:
           FLATE_PATH: ./kubernetes/cluster
+          FLATE_ALLOW_MISSING_SECRETS: "true"
           KIND: ${{ matrix.kind }}
         run: |
           flate diff "$KIND" > "$KIND.diff"
