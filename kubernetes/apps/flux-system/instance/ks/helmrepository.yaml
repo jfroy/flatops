@@ -6,4 +6,4 @@ metadata:
   name: ngc-nvidia
 spec:
   interval: 1h
-  url: https://helm.ngc.nvidia.com/nvidia
+  url: https://helm.ngc.nvidia.com/nvidia/
