@@ -13,6 +13,7 @@ concurrency:
 
 permissions:
   contents: read
+  packages: read
 
 jobs:
   filter:
@@ -33,6 +34,7 @@ jobs:
     name: Flate
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       matrix:
         kind:
           - helmrelease
@@ -49,10 +51,21 @@ jobs:
         with:
           cache: true
 
+      - name: Login to GHCR
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.0.0
+        env:
+          DOCKER_CONFIG: ${{ runner.temp }}/docker-config
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
       - name: Run flate diff
         env:
-          FLATE_PATH: ./kubernetes/cluster
           FLATE_ALLOW_MISSING_SECRETS: "true"
+          FLATE_CONCURRENCY: "4"
+          FLATE_PATH: ./kubernetes/cluster
+          FLATE_REGISTRY_CONFIG: ${{ runner.temp }}/docker-config/config.json
           KIND: ${{ matrix.kind }}
         run: |
           flate diff "$KIND" > "$KIND.diff"
