@@ -48,7 +48,7 @@ spec:
         - name: envoy-internal
           namespace: network
       hostnames:
-        - "zot.kantai.xyz"
+        - "registry.kantai.xyz"
     persistence: true
     pvc:
       create: true
