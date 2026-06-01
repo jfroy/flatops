@@ -6,6 +6,7 @@ metadata:
   name: gpu-operator
 spec:
   interval: 1h
+  targetNamespace: gpu-operator
   chart:
     spec:
       chart: gpu-operator
