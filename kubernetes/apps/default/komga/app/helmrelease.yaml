@@ -65,6 +65,8 @@ spec:
             komga:
               - path: /data
                 subPath: library/manga
+              - path: /bookdrop
+                subPath: library/books/bookdrop
       tmp:
         type: emptyDir
         globalMounts:
