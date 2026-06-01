@@ -205,6 +205,7 @@ spec:
   tcpKeepalive: {}
   timeout:
     http:
+      maxStreamDuration: 0s
       requestTimeout: 0s
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/gateway.envoyproxy.io/clienttrafficpolicy_v1alpha1.json
@@ -231,3 +232,4 @@ spec:
   timeout:
     http:
       requestReceivedTimeout: 0s
+      streamIdleTimeout: 1h
