@@ -4,8 +4,9 @@ name: Flate
 
 on:
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
+  push:
+    branches: ['renovate/**']
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
