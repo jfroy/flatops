@@ -81,7 +81,7 @@ jobs:
           retention-days: 1
 
   comment:
-    if: ${{ !cancelled() && needs.flate.result != 'skipped' }}
+    if: ${{ !cancelled() && needs.flate.result != 'skipped' && github.event_name == 'pull_request' }}
     needs: flate
     name: Flate - Comment
     runs-on: ubuntu-latest
@@ -163,7 +163,6 @@ jobs:
     if: ${{ !cancelled() }}
     needs:
       - flate
-      - comment
     name: Flate - Success
     runs-on: ubuntu-latest
     steps:
