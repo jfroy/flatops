@@ -46,6 +46,7 @@ resources:
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
   - ./radarr/ks.yaml
+  - ./readur/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./seerr/ks.yaml

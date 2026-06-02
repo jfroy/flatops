@@ -1,0 +1,112 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: readur
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      readur:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.3.0@sha256:6fa1f331cddd2eb0b6afa7b8d3685c864127a81ab01c3d9400bc3ff5263a51cf
+            envFrom:
+              - secretRef:
+                  name: readur-db
+              - secretRef:
+                  name: readur-initdb
+        containers:
+          readur:
+            image:
+              repository: ghcr.io/readur/readur
+              tag: 2.9.1@sha256:16aa8b1d7df218ab0f4fc57fbf890d125020fca416bc3555aa7731e7329020dc
+            env:
+              ALLOW_LOCAL_AUTH: false
+              AUTO_CREATE_USERS: true
+              OCR_LANGUAGE: eng
+              OIDC_AUTO_REGISTER: true
+              OIDC_ENABLED: true
+              OIDC_CLIENT_ID: 8dcfe9f6-0835-443a-86fd-c1adf74b0fd7
+              OIDC_ISSUER_URL: https://pid.kantai.xyz
+              OIDC_REDIRECT_URI: https://readur.kantai.xyz/api/auth/oidc/callback
+              RUST_LOG: debug
+              RUST_BACKTRACE: full
+              SECURE_COOKIES: true
+              SERVER_ADDRESS: 0.0.0.0:8000
+              S3_ACCESS_KEY_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: readur-s3-obc
+                    key: AWS_ACCESS_KEY_ID
+              S3_BUCKET_NAME: readur-s3
+              S3_ENABLED: "true"
+              S3_ENDPOINT_URL: http://default.svc.cluster.local:80
+              S3_REGION: us-west-1
+              S3_SECRET_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: readur-s3-obc
+                    key: AWS_SECRET_ACCESS_KEY
+              STORAGE_BACKEND: s3
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: readur
+              - secretRef:
+                  name: readur-db
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/health
+                    port: &port 8000
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    route:
+      readur:
+        hostnames:
+          - readur.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: readur
+    service:
+      readur:
+        controller: readur
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
+      s3:
+        controller: readur
+        forceRename: readur-s3
+        type: ExternalName
+        externalName: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+        ports:
+          http:
+            port: 80
