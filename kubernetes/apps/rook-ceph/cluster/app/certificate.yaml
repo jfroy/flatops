@@ -1,16 +1,20 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: ceph-objectstore
+  name: xyz-kantai-s3-production
 spec:
-  secretName: ceph-objectstore-tls
-  duration: 2160h  # 90d
+  commonName: s3.kantai.xyz
+  dnsNames:
+    - s3.kantai.xyz
+    - "*.s3.kantai.xyz"
   issuerRef:
-    name: cluster-ca
+    name: letsencrypt-production
     kind: ClusterIssuer
     group: cert-manager.io
-  commonName: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
-  dnsNames:
-    - rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
-    - rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+    rotationPolicy: Always
+  secretName: xyz-kantai-s3-production-tls

@@ -205,8 +205,17 @@ spec:
             instances: 2
             priorityClassName: system-cluster-critical
             port: 80
-            resources:
-              limits: {}
+            # TLS for virtual-host-style S3 (browsers + apps that only do
+            # vhost addressing. Serves the public *.s3.kantai.xyz cert on the
+            # LoadBalancer and the in-cluster ClusterIP (reached via a CoreDNS
+            # rewrite). Plaintext port 80 serves in-cluster path-style clients.
+            securePort: 443
+            sslCertificateRef: xyz-kantai-s3-production-tls
+          # Accept virtual-host bucket requests of the form
+          # <bucket>.s3.kantai.xyz.
+          hosting:
+            dnsNames:
+              - s3.kantai.xyz
         storageClass:
           enabled: true
           name: ceph-bucket
@@ -233,5 +242,3 @@ spec:
             namespace: network
     toolbox:
       enabled: true
-      resources:
-        limits: {}

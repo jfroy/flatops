@@ -24,6 +24,14 @@ servers:
         configBlock: |-
           lameduck 5s
       - name: ready
+      # Resolve virtual-host-style S3 (<bucket>.s3.kantai.xyz) to the in-cluster
+      # RGW ClusterIP so apps that only support vhost addressing reach object
+      # storage without hairpinning through the LoadBalancer IP.
+      - name: rewrite
+        parameters: stop
+        configBlock: |-
+          name regex (.*)\.s3\.kantai\.xyz\.?$ rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+          answer auto
       - name: kubernetes
         parameters: cluster.local in-addr.arpa ip6.arpa
         configBlock: |-
