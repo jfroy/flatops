@@ -50,7 +50,7 @@ spec:
                     key: AWS_ACCESS_KEY_ID
               S3_BUCKET_NAME: readur-s3
               S3_ENABLED: "true"
-              S3_ENDPOINT_URL: http://default.svc.cluster.local:80
+              S3_ENDPOINT_URL: https://s3.kantai.xyz
               S3_REGION: us-west-1
               S3_SECRET_ACCESS_KEY:
                 valueFrom:
@@ -102,11 +102,3 @@ spec:
         ports:
           http:
             port: *port
-      s3:
-        controller: readur
-        forceRename: readur-s3
-        type: ExternalName
-        externalName: rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
-        ports:
-          http:
-            port: 80
