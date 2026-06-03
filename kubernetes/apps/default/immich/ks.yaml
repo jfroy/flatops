@@ -45,6 +45,34 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app immich-pet-tagger
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/part-of: immich
+  components:
+    - ../../../../components/volsync
+  dependsOn:
+    - name: immich
+  path: ./kubernetes/apps/default/immich/pet-tagger
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+  postBuild:
+    substitute:
+      APP: *app
+      APP_SUBDOMAIN: ipt
+      VOLSYNC_CAPACITY: 1Gi
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: immich-valkey
 spec:
   commonMetadata:

@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: immich-pet-tagger
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      immich-pet-tagger:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          immich-pet-tagger:
+            image:
+              repository: ghcr.io/tedornitier/immich-pet-tagger
+              tag: v1.4.0-cuda@sha256:a6eb34e21984bd23e7fe470583f8bbab1fc5794ac987f05cabebb876bcd4a8ca
+            env:
+              GPU_WORKERS: 2
+              IMMICH_EXTERNAL_URL: https://photos.kantai.xyz
+              IMMICH_URL: http://immich-server.default.svc.cluster.local:2283
+              TZ: America/Los_Angeles
+              XDG_CACHE_HOME: /cache
+            envFrom:
+              - secretRef:
+                  name: immich-pet-tagger
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 8000
+              readiness: *probe
+            resources:
+              requests:
+                nvidia.com/gpu: 1
+              limits:
+                nvidia.com/gpu: 1
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: ${APP}
+      tmp:
+        type: emptyDir
+        sizeLimit: 100Mi
+    route:
+      immich-pet-tagger:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                identifier: immich-pet-tagger
+    service:
+      immich-pet-tagger:
+        controller: immich-pet-tagger
+        ports:
+          http:
+            port: *port
