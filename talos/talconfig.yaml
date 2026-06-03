@@ -345,8 +345,8 @@ controlPlane:
           extraArgs:
             disable-admission-plugins: PodSecurity
             enable-aggregator-routing: true
-            oidc-client-id: "${OIDC_CLIENT_ID}"
-            oidc-issuer-url: "${OIDC_ISSUER_URL}"
+            oidc-client-id: 287821e5-f31e-4073-9b2c-c30775e9fee6
+            oidc-issuer-url: https://pid.kantai.xyz
             oidc-username-claim: email
 
     # Feature gates
