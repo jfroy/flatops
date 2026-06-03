@@ -1,4 +1,18 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: kopiur
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.0.2
+  url: oci://ghcr.io/home-operations/charts/kopiur
+---
 # yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -6,13 +20,9 @@ metadata:
   name: kopiur
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: ./deploy/helm/kopiur
-      reconcileStrategy: Revision
-      sourceRef:
-        kind: GitRepository
-        name: kopiur
+  chartRef:
+    kind: OCIRepository
+    name: kopiur
   values:
     installCRDs: true
     installScope: cluster
