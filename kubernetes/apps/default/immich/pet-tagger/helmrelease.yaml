@@ -20,6 +20,9 @@ spec:
             image:
               repository: ghcr.io/tedornitier/immich-pet-tagger
               tag: v1.4.0-cuda@sha256:a6eb34e21984bd23e7fe470583f8bbab1fc5794ac987f05cabebb876bcd4a8ca
+            args:
+              - python
+              - /app/main.py
             env:
               GPU_WORKERS: 2
               IMMICH_EXTERNAL_URL: https://photos.kantai.xyz
@@ -29,6 +32,7 @@ spec:
             envFrom:
               - secretRef:
                   name: immich-pet-tagger
+            workingDir: /cache
             probes:
               liveness: &probe
                 enabled: true
@@ -55,6 +59,13 @@ spec:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
     persistence:
+      cache:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        storageClass: ceph-block
+        size: 10Gi
+        globalMounts:
+          - path: /cache
       data:
         existingClaim: ${APP}
       tmp:
