@@ -39,8 +39,6 @@ spec:
               OIDC_CLIENT_ID: 8dcfe9f6-0835-443a-86fd-c1adf74b0fd7
               OIDC_ISSUER_URL: https://pid.kantai.xyz
               OIDC_REDIRECT_URI: https://readur.kantai.xyz/api/auth/oidc/callback
-              RUST_LOG: debug
-              RUST_BACKTRACE: full
               SECURE_COOKIES: true
               SERVER_ADDRESS: 0.0.0.0:8000
               S3_ACCESS_KEY_ID:
