@@ -25,7 +25,7 @@ spec:
               IMMICH_EXTERNAL_URL: https://photos.kantai.xyz
               IMMICH_URL: http://immich-server.default.svc.cluster.local:2283
               TZ: America/Los_Angeles
-              XDG_CACHE_HOME: /cache
+              XDG_CONFIG_HOME: /data/config
             envFrom:
               - secretRef:
                   name: immich-pet-tagger
