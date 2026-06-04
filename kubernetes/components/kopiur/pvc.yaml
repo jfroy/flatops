@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: "${APP}"
+spec:
+  accessModes: ["ReadWriteOnce"]
+  dataSourceRef:
+    apiGroup: kopiur.home-operations.com
+    kind: Restore
+    name: "${APP}-restore"
+  resources:
+    requests:
+      storage: "${KOPIUR_CAPACITY:=1Gi}"
+  storageClassName: ceph-block

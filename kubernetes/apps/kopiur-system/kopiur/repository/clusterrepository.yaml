@@ -1,0 +1,24 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/kopiur.home-operations.com/clusterrepository_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: ClusterRepository
+metadata:
+  name: kopiur-r2
+spec:
+  allowedNamespaces:
+    all: true
+  backend:
+    s3:
+      bucket: kantai-kopiur-1
+      endpoint: https://2e8a5ea1691a53a5843e2eb2ef6dddeb.r2.cloudflarestorage.com
+      auth:
+        secretRef:
+          name: kopiur-r2
+          namespace: kopiur-system
+  encryption:
+    passwordSecretRef:
+      name: kopiur-r2
+      namespace: kopiur-system
+      key: KOPIA_PASSWORD
+  create:
+    enabled: true

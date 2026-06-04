@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/kopiur.home-operations.com/maintenance_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: Maintenance
+metadata:
+  name: kopiur-r2
+spec:
+  repository:
+    kind: ClusterRepository
+    name: kopiur-r2
+  ownership:
+    owner: kopiur-system
+    takeoverPolicy: Never
+  schedule:
+    timezone: Etc/UTC
+    quick:
+      cron: "0 12 * * *"
+    full:
+      cron: "0 13 * * 0"

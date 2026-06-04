@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/kopiur.home-operations.com/backupconfig_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: BackupConfig
+metadata:
+  name: "${APP}"
+spec:
+  repository:
+    kind: ClusterRepository
+    name: kopiur-r2
+  sources:
+    - pvc:
+        name: "${APP}"
+  copyMethod: Snapshot
+  volumeSnapshotClassName: ceph-block
+  retention:
+    keepDaily: 7
+    keepWeekly: 4
+    keepMonthly: 12
