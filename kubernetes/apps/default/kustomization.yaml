@@ -35,7 +35,7 @@ resources:
   # - ./octoeverywhere-bambu-connect/ks.yaml
   # - ./ollama/ks.yaml
   # - ./open-webui/ks.yaml
-  - ./oxicloud/ks.yaml
+  # - ./oxicloud/ks.yaml
   # - ./paperless/ks.yaml
   - ./pgadmin/ks.yaml
   - ./photon/ks.yaml
