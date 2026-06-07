@@ -49,6 +49,7 @@ spec:
         existingSecret: renovate-operator
         secretKey: oidc-client-secret
         sessionSecretKey: session-key
+        redirectUrl: https://renovate.kantai.xyz/auth/callback
     valkey:
       enabled: true
       auth:
