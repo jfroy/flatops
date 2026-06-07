@@ -30,10 +30,17 @@ spec:
       hostnames:
         - renovate.kantai.xyz
       parentRefs:
-        - name: envoy-external
+        - name: envoy-internal
           namespace: network
     webhook:
       enabled: true
+      route:
+        enabled: true
+        hostnames:
+          - renovate-webhook.kantai.xyz
+        parentRefs:
+          - name: envoy-external
+            namespace: network
     # auth:
     #   github:
     #     enabled: true
