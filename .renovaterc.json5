@@ -20,6 +20,7 @@
     "github>jfroy/flatops//.renovate/talosFactory.json5",
   ],
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
+  gitIgnoredAuthors: ["29139614+renovate[bot]@users.noreply.github.com"],
   hostRules: [
     {
       matchHost: "registry.kantai.xyz",
