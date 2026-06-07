@@ -10,7 +10,7 @@ spec:
     - jfroy/*
   skipForks: true
   secretRef: github-jfroy-bot-auth-token
-  image: ghcr.io/renovatebot/renovate:43.214.4
+  image: ghcr.io/renovatebot/renovate:43.214.5
   schedule: 0 * * * *
   parallelism: 10
   securityContext:
