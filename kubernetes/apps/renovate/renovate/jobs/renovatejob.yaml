@@ -9,7 +9,7 @@ spec:
   discoveryFilters:
     - jfroy/flatops
   secretRef: github-jfroy-bot-auth-token
-  image: ghcr.io/renovatebot/renovate:43.214.3
+  image: ghcr.io/renovatebot/renovate:43.214.4
   schedule: 0 * * * *
   parallelism: 1
   securityContext:
