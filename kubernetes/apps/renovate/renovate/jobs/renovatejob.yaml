@@ -1,0 +1,67 @@
+---
+apiVersion: renovate-operator.mogenius.com/v1alpha1
+kind: RenovateJob
+metadata:
+  name: flatops
+spec:
+  provider:
+    name: github
+  discoveryFilters:
+    - jfroy/flatops
+  secretRef: github-jfroy-bot-auth-token
+  image: ghcr.io/renovatebot/renovate:43.214.3
+  schedule: 0 * * * *
+  parallelism: 1
+  securityContext:
+    pod:
+      runAsNonRoot: true
+      runAsUser: 12021
+      runAsGroup: 12021
+      fsGroup: 12021
+      seccompProfile:
+        type: RuntimeDefault
+    container:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      capabilities:
+        drop: ["ALL"]
+      seccompProfile:
+        type: RuntimeDefault
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      memory: 1Gi
+  webhook:
+    enabled: true
+    authentication:
+      enabled: false
+  extraEnv:
+    - name: LOG_LEVEL
+      value: debug
+    - name: CONTAINERBASE_CACHE_DIR
+      value: /tmp/containerbase/cache
+    - name: RENOVATE_PLATFORM_COMMIT
+      value: enabled
+    - name: DOCKERHUB_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: docker-hub-token
+          key: DOCKERHUB_USERNAME
+    - name: DOCKERHUB_TOKEN
+      valueFrom:
+        secretKeyRef:
+          name: docker-hub-token
+          key: DOCKERHUB_TOKEN
+    - name: RENOVATE_HOST_RULES
+      value: >-
+        [
+          {
+            "hostType": "docker",
+            "matchHost": "docker.io",
+            "username": "$(DOCKERHUB_USERNAME)",
+            "password": "$(DOCKERHUB_TOKEN)"
+          }
+        ]
