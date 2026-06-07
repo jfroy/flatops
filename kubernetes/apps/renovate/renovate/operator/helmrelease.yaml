@@ -34,14 +34,14 @@ spec:
           namespace: network
     webhook:
       enabled: true
-    auth:
-      github:
-        enabled: true
-        clientId: Iv23li6vvjqdgaiJgDNU
-        existingSecret: renovate-operator-auth
-        secretKey: client-secret
-        sessionSecretKey: session-secret
-        redirectUrl: https://renovate.kantai.xyz/auth/callback
+    # auth:
+    #   github:
+    #     enabled: true
+    #     clientId: Iv23li6vvjqdgaiJgDNU
+    #     existingSecret: renovate-operator-auth
+    #     secretKey: client-secret
+    #     sessionSecretKey: session-secret
+    #     redirectUrl: https://renovate.kantai.xyz/auth/callback
     valkey:
       enabled: true
       auth:
