@@ -1,0 +1,6 @@
+kubernetes:
+  schemaUrl: "https://crd.kantai.xyz/{groupSeg}{kindLower}_{versionLower}.json"
+renderers:
+  flate:
+    path: kubernetes
+
