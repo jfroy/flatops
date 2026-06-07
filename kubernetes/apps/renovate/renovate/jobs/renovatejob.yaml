@@ -7,11 +7,11 @@ spec:
   provider:
     name: github
   discoveryFilters:
-    - jfroy/*
+  - jfroy/*
   skipForks: true
   secretRef: github-jfroy-bot-auth-token
   image: ghcr.io/renovatebot/renovate:43.214.5
-  schedule: 0 * * * *
+  schedule: 0,30 * * * *
   parallelism: 10
   securityContext:
     pod:

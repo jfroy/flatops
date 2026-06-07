@@ -21,6 +21,7 @@
   ],
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
   gitIgnoredAuthors: ["29139614+renovate[bot]@users.noreply.github.com"],
+  rebaseWhen: "conflicted",
   hostRules: [
     {
       matchHost: "registry.kantai.xyz",
