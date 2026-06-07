@@ -8,6 +8,7 @@ spec:
     name: github
   discoveryFilters:
     - jfroy/*
+  skipForks: true
   secretRef: github-jfroy-bot-auth-token
   image: ghcr.io/renovatebot/renovate:43.214.4
   schedule: 0 * * * *
