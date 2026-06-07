@@ -41,14 +41,14 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-    # auth:
-    #   github:
-    #     enabled: true
-    #     clientId: Iv23li6vvjqdgaiJgDNU
-    #     existingSecret: renovate-operator-auth
-    #     secretKey: client-secret
-    #     sessionSecretKey: session-secret
-    #     redirectUrl: https://renovate.kantai.xyz/auth/callback
+    auth:
+      oidc:
+        enabled: true
+        issuerUrl: https://pid.kantai.xyz
+        clientId: bd4cdb27-ff5e-4fff-88a9-46409429e3e4
+        existingSecret: renovate-operator
+        secretKey: oidc-client-secret
+        sessionSecretKey: session-key
     valkey:
       enabled: true
       auth:
