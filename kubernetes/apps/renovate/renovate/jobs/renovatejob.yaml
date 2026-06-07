@@ -2,7 +2,7 @@
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
 metadata:
-  name: flatops
+  name: github-jfroy-bot
 spec:
   provider:
     name: github
