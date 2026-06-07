@@ -57,3 +57,9 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
+      dashboard:
+        enabled: true
+        grafanaDashboard:
+          allowCrossNamespaceImport: true
+    rbac:
+      ownNamespaceOnly: true
