@@ -25,6 +25,9 @@ spec:
     name: renovate-operator
   values:
     fullnameOverride: renovate-operator
+    deployment:
+      annotations:
+        reloader.stakater.com/auto: "true"
     route:
       enabled: true
       hostnames:
