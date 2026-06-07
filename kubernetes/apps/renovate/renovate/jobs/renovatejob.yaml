@@ -7,7 +7,7 @@ spec:
   provider:
     name: github
   discoveryFilters:
-    - jfroy/flatops
+    - jfroy/*
   secretRef: github-jfroy-bot-auth-token
   image: ghcr.io/renovatebot/renovate:43.214.4
   schedule: 0 * * * *
