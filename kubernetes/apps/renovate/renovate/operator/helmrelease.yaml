@@ -25,6 +25,9 @@ spec:
     name: renovate-operator
   values:
     fullnameOverride: renovate-operator
+    config:
+      logStorage:
+        mode: valkey
     deployment:
       annotations:
         reloader.stakater.com/auto: "true"
