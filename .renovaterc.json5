@@ -3,7 +3,6 @@
   extends: [
     "config:recommended",
     "docker:enableMajor",
-    ":automergeBranch",
     ":automergeMinor",
     ":dependencyDashboard",
     ":disableRateLimiting",
