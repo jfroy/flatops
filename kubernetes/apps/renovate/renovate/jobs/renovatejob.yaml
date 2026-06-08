@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://crd.kantai.xyz/renovate-operator.mogenius.com/renovatejob_v1alpha1.json
 apiVersion: renovate-operator.mogenius.com/v1alpha1
 kind: RenovateJob
 metadata:
@@ -13,22 +14,6 @@ spec:
   image: ghcr.io/renovatebot/renovate:43.214.5
   schedule: 0,30 * * * *
   parallelism: 10
-  securityContext:
-    pod:
-      runAsNonRoot: true
-      runAsUser: 12021
-      runAsGroup: 12021
-      fsGroup: 12021
-      seccompProfile:
-        type: RuntimeDefault
-    container:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      capabilities:
-        drop: ["ALL"]
-      seccompProfile:
-        type: RuntimeDefault
   resources:
     requests:
       cpu: 100m
@@ -45,8 +30,6 @@ spec:
   extraEnv:
     - name: LOG_LEVEL
       value: debug
-    - name: CONTAINERBASE_CACHE_DIR
-      value: /tmp/containerbase/cache
     - name: RENOVATE_PLATFORM_COMMIT
       value: enabled
     - name: DOCKERHUB_USERNAME
