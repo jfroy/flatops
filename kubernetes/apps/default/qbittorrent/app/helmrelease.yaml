@@ -104,7 +104,7 @@ spec:
           vuetorrent:
             image:
               repository: ghcr.io/jfroy/vuetorrent
-              tag: 2.34.0@sha256:12d04b8f96fd8aabbd88baf0920bf3f94fabdba1b1e5a44b92aba4b0effff388
+              tag: 2.34.0@sha256:431a8fbf6da91f9076f313745dde6e1bc23c57a9605c3e7ab150c9a193490425
             command:
               - "/bin/sh"
               - "-c"
