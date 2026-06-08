@@ -38,6 +38,8 @@ nodes:
       - name: nvidia-modeset
       - name: nvme-tcp
       - name: vfio-pci
+      - name: vhost_net
+      - name: vhost_vsock
     machineSpec:
       arch: amd64
       secureboot: true
@@ -70,6 +72,7 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
+            - siderolabs/kata-containers
             - siderolabs/nvidia-container-toolkit-production
             - siderolabs/nvidia-gdrdrv-device
             - siderolabs/nvidia-open-gpu-kernel-modules-production
@@ -158,6 +161,9 @@ nodes:
     controlPlane: true
     kernelModules:
       - name: nvme-tcp
+      - name: vfio-pci
+      - name: vhost_net
+      - name: vhost_vsock
     machineSpec:
       arch: amd64
       secureboot: false
@@ -180,6 +186,7 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/amd-ucode
+            - siderolabs/kata-containers
             - siderolabs/util-linux-tools
     patches:
       # sysctls
