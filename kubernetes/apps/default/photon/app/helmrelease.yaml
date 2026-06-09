@@ -50,7 +50,7 @@ spec:
                   failureThreshold: 720
             resources:
               requests:
-                memory: 1024Mi
+                memory: 4Gi
               limits:
                 memory: 10Gi
             securityContext:
