@@ -44,6 +44,8 @@ spec:
       # renovate: datasource=docker depName=quay.io/ceph/ceph versioning=loose
       tag: v20.2.1
     cephClusterSpec:
+      disruptionManagement:
+        managePodBudgets: false
       annotations:
         # Avoid duplicate metrics from the ServiceMonitor and scrape annotations.
         # "If no mgr annotations are set, prometheus scrape annotations will be set by default."

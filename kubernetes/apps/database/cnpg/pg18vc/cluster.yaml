@@ -6,6 +6,7 @@ metadata:
   name: pg18vc
 spec:
   instances: 2
+  enablePDB: false
   affinity:
     enablePodAntiAffinity: false
     nodeSelector:

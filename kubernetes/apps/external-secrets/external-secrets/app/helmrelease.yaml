@@ -31,16 +31,14 @@ spec:
   values:
     certController:
       podDisruptionBudget:
-        enabled: true
-        minAvailable: 1
+        enabled: false
     extendedMetricLabels: true
     grafanaDashboard:
       enabled: true
     livenessProbe:
       enabled: true
     podDisruptionBudget:
-      enabled: true
-      minAvailable: 1
+      enabled: false
     serviceMonitor:
       enabled: true
       interval: 1m
@@ -64,5 +62,4 @@ spec:
           duration: 2160h # 90d
       lookaheadInterval: 240h # 10d
       podDisruptionBudget:
-        enabled: true
-        minAvailable: 1
+        enabled: false

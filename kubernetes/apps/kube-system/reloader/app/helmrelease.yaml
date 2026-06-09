@@ -32,8 +32,7 @@ spec:
           capabilities: { drop: ["ALL"] }
           readOnlyRootFilesystem: true
       podDisruptionBudget:
-        enabled: true
-        minAvailable: 1
+        enabled: false
       podMonitor:
         enabled: true
         namespace: kube-system
