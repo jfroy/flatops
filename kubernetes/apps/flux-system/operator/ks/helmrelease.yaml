@@ -31,10 +31,6 @@ spec:
       limits: null
     serviceMonitor:
       create: true
-    tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
     web:
       config:
         baseURL: "https://flux.kantai.xyz"

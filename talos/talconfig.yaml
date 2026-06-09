@@ -141,7 +141,8 @@ nodes:
           officialExtensions:
             - siderolabs/util-linux-tools
     nodeTaints:
-      node-role.kubernetes.io/control-plane: :NoSchedule
+      node-role.kubernetes.io/control-plane: :PreferNoSchedule
+      node.kantai.xyz/low-memory: :PreferNoSchedule
     patches:
       # sysctls
       - |-
@@ -173,7 +174,7 @@ nodes:
         dhcp: true
         mtu: 1500
     nodeTaints:
-      node-role.kubernetes.io/control-plane: :NoSchedule
+      node-role.kubernetes.io/control-plane: :PreferNoSchedule
     schematic:
       customization:
         bootloader: sd-boot

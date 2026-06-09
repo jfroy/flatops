@@ -62,10 +62,6 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     persistence:
       config:
         type: configMap

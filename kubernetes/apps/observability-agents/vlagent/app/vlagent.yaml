@@ -9,7 +9,3 @@ spec:
     enabled: true
   remoteWrite:
     - url: http://vlsingle-kantai.observability.svc.cluster.local:9428/insert/native
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule

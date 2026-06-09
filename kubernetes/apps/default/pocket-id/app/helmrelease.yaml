@@ -58,10 +58,6 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [100]
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     persistence:
       data:
         existingClaim: ${APP}

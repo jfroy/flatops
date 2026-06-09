@@ -15,10 +15,6 @@ spec:
       priorityClassName: system-node-critical
       nodeSelector:
         kubernetes.io/hostname: kantai1
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     controllers:
       cpufreq:
         type: daemonset

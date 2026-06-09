@@ -95,10 +95,6 @@ spec:
             "ips": ["10.1.2.4/16"]
           }]
       shareProcessNamespace: true
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     persistence:
       config-avahi:
         type: configMap

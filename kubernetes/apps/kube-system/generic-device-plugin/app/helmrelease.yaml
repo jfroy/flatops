@@ -13,10 +13,6 @@ spec:
   values:
     defaultPodOptions:
       priorityClassName: system-node-critical
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     controllers:
       generic-device-plugin:
         type: daemonset

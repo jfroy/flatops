@@ -83,10 +83,6 @@ spec:
                 - RemovePodsViolatingNodeTaints
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingInterPodAntiAffinity
-    tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
     service:
       enabled: true
     serviceMonitor:

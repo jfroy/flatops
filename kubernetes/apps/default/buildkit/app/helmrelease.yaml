@@ -88,11 +88,6 @@ spec:
                         operator: In
                         values:
                           - arm64
-          tolerations:
-            # The only arm64 node in the cluster is a control plane node
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
     defaultPodOptions:
       annotations:
         reloader.stakater.com/auto: "true"
