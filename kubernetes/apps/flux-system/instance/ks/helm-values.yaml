@@ -16,21 +16,6 @@ instance:
     interval: 1h
   kustomize:
     patches:
-      # Allow flux components to run on control plane nodes
-      - patch: |
-          apiVersion: apps/v1
-          kind: Deployment
-          metadata:
-            name: all
-          spec:
-            template:
-              spec:
-                tolerations:
-                  - key: node-role.kubernetes.io/control-plane
-                    operator: Exists
-                    effect: NoSchedule
-        target:
-          kind: Deployment
       # Increase the number of reconciliations that can be performed in parallel
       # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
       - patch: |

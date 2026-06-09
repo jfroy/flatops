@@ -46,10 +46,6 @@ spec:
           restartPolicy: OnFailure
           securityContext:
             fsGroup: 1000
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
           volumes:
             - name: data
               persistentVolumeClaim:

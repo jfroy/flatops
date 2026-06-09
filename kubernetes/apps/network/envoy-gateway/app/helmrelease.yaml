@@ -26,12 +26,6 @@ spec:
   values:
     global:
       imageRegistry: mirror.gcr.io
-    certgen:
-      job:
-        tolerations:
-          - key: node-role.kubernetes.io/control-plane
-            operator: Exists
-            effect: NoSchedule
     config:
       envoyGateway:
         extensionApis:
@@ -41,9 +35,3 @@ spec:
           kubernetes:
             deploy:
               type: GatewayNamespace
-    deployment:
-      pod:
-        tolerations:
-          - key: node-role.kubernetes.io/control-plane
-            operator: Exists
-            effect: NoSchedule

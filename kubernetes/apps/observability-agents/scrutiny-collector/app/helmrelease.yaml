@@ -31,11 +31,6 @@ spec:
             securityContext:
               privileged: true
               readOnlyRootFilesystem: false
-        pod:
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
     persistence:
       collector-config:
         type: configMap

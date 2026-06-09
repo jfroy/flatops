@@ -27,14 +27,6 @@ spec:
     csi:
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableLiveness: true
-      pluginTolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
-      provisionerTolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
       serviceMonitor:
         enabled: true
     image:
@@ -47,7 +39,3 @@ spec:
         cpu: 100m # unchangable
       limits:
         memory: 2Gi
-    tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule

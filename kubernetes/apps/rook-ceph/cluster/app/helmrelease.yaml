@@ -104,10 +104,6 @@ spec:
                   operator: NotIn
                   values:
                     - kantai2
-          tolerations:
-            - key: node-role.kubernetes.io/control-plane
-              operator: Exists
-              effect: NoSchedule
       resources:
         osd:
           limits:

@@ -42,10 +42,6 @@ spec:
       defaultTags:
         - "tag:k8s-operator-kantai"
       hostname: kantai
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
     proxyConfig:
       defaultTags: "tag:k8s-kantai"
     apiServerProxyConfig:

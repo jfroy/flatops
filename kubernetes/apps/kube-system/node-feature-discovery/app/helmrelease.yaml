@@ -24,25 +24,8 @@ spec:
     kind: OCIRepository
     name: node-feature-discovery
   values:
-    worker:
-      tolerations:
-        - key: "node-role.kubernetes.io/control-plane"
-          operator: "Equal"
-          value: ""
-          effect: "NoSchedule"
     topologyUpdater:
       enable: false
       createCRDs: true
-      tolerations:
-        - key: "node-role.kubernetes.io/control-plane"
-          operator: "Equal"
-          value: ""
-          effect: "NoSchedule"
-    gc:
-      tolerations:
-        - key: "node-role.kubernetes.io/control-plane"
-          operator: "Equal"
-          value: ""
-          effect: "NoSchedule"
     prometheus:
       enable: true

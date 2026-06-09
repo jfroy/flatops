@@ -28,7 +28,3 @@ spec:
       replicaCount: 2
       serviceMonitor:
         create: true
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule

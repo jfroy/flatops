@@ -263,10 +263,6 @@ spec:
           # - name: etcd-server-tls
           #   mountPath: "/etc/etcd/certs/server"
           #   readOnly: true
-      tolerations:
-        - key: node-role.kubernetes.io/control-plane
-          operator: Exists
-          effect: NoSchedule
       volumes: []
       ##
       ## TLS client configuration

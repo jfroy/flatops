@@ -31,10 +31,6 @@ envoy:
   prometheus:
     serviceMonitor:
       enabled: true
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
 gatewayAPI:
   enabled: false
   enableAlpn: true
@@ -66,10 +62,6 @@ localRedirectPolicies:
 operator:
   replicas: 2
   rollOutPods: true
-  tolerations:
-    - key: node-role.kubernetes.io/control-plane
-      operator: Exists
-      effect: NoSchedule
 pmtuDiscovery:
   enabled: true
 policyDenyResponse: icmp

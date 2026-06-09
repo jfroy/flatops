@@ -60,7 +60,3 @@ spec:
           group: cert-manager.io
     serviceMonitor:
       enabled: true
-    tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
