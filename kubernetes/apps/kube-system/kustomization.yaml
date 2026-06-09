@@ -18,6 +18,7 @@ resources:
   - ./multus/ks.yaml
   - ./node-feature-discovery/ks.yaml
   - ./reloader/ks.yaml
+  - ./runtimes/ks.yaml
   - ./snapshot-controller/ks.yaml
   - ./spegel/ks.yaml
   - ./zfs-static-csi/ks.yaml
