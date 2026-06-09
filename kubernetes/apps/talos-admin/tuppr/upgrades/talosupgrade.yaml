@@ -17,6 +17,7 @@ spec:
       expr: |-
         status.ceph.health in ['HEALTH_OK']
   policy:
+    nodrain: true
     placement: hard
     rebootMode: powercycle
     timeout: 1h
