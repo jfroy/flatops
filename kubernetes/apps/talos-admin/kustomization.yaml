@@ -5,7 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./talos-backup/ks.yaml
-  # - ./tuppr/ks.yaml
+  - ./tuppr/ks.yaml
 components:
   - ../../components/common
   - ../../components/volsync-ns
