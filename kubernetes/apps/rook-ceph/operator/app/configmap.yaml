@@ -7,5 +7,4 @@ metadata:
 data:
   ceph.conf: |
     [client]
-    # disable the in‑memory RBD cache
     rbd_cache = false
