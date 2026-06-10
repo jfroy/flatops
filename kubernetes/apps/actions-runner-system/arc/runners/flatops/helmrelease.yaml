@@ -23,6 +23,19 @@ spec:
         resources:
           requests:
             storage: 10Gi
+    listenerTemplate:
+      spec:
+        securityContext:
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        containers:
+          - name: listener
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
     controllerServiceAccount:
       name: arc
       namespace: actions-runner-system
