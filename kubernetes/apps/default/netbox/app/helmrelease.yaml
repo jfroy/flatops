@@ -37,8 +37,9 @@ spec:
         BACKEND: storages.backends.s3.S3Storage
         OPTIONS:
           bucket_name: netbox
-          endpoint_url: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+          endpoint_url: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443
           region_name: auto
+          verify: /certs/ca-certificates.crt
     plugins: []
     preferIPv4: true
     releaseCheck:
@@ -55,6 +56,14 @@ spec:
               name: netbox-db
           - secretRef:
               name: netbox-initdb
+    extraVolumes:
+      - name: ca-certificates
+        configMap:
+          name: cluster-ca-certificates.crt
+    extraVolumeMounts:
+      - name: ca-certificates
+        mountPath: /certs
+        readOnly: true
     resourcesPreset: none
     metrics:
       enabled: true

@@ -47,7 +47,8 @@ spec:
               OXICLOUD_OIDC_REDIRECT_URI: https://oxicloud.kantai.xyz/api/auth/oidc/callback
               OXICLOUD_OIDC_SCOPES: openid profile email groups
               OXICLOUD_S3_BUCKET: oxicloud
-              OXICLOUD_S3_ENDPOINT_URL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
+              OXICLOUD_S3_ENDPOINT_URL: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443
+              AWS_CA_BUNDLE: /certs/ca-certificates.crt
               OXICLOUD_S3_FORCE_PATH_STYLE: "true"
               OXICLOUD_S3_REGION: us-west-1
               OXICLOUD_SERVER_HOST: 0.0.0.0
@@ -108,6 +109,11 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile: { type: RuntimeDefault }
     persistence:
+      ca-certificates:
+        type: configMap
+        name: cluster-ca-certificates.crt
+        globalMounts:
+          - path: /certs
       data:
         type: persistentVolumeClaim
         storageClass: ceph-block

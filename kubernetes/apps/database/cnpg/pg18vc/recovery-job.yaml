@@ -60,13 +60,23 @@ spec:
                   name: pg18vc-obc
                   key: AWS_SECRET_ACCESS_KEY
             - name: RCLONE_CONFIG_CEPH_ENDPOINT
-              value: "http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80"
+              value: "https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443"
+            - name: RCLONE_CONFIG_CEPH_CA_CERT
+              value: /certs/ca-certificates.crt
+          volumeMounts:
+            - name: ca-certificates
+              mountPath: /certs
+              readOnly: true
           securityContext:
             allowPrivilegeEscalation: false
             capabilities: { drop: ["ALL"] }
             readOnlyRootFilesystem: true
             seccompProfile: { type: RuntimeDefault }
       restartPolicy: OnFailure
+      volumes:
+        - name: ca-certificates
+          configMap:
+            name: cluster-ca-certificates.crt
       securityContext:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch

@@ -9,7 +9,10 @@ spec:
     data:
       compression: bzip2
     destinationPath: s3://pg18vc/
-    endpointURL: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local:80
+    endpointURL: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443
+    endpointCA:
+      name: cluster-ca-secret
+      key: ca.crt
     s3Credentials:
       accessKeyId:
         name: pg18vc-obc
