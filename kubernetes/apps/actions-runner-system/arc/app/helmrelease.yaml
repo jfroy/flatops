@@ -24,6 +24,7 @@ spec:
     kind: OCIRepository
     name: gha-runner-scale-set-controller
   values:
+    fullnameOverride: *name
     podSecurityContext:
       runAsNonRoot: true
       seccompProfile:

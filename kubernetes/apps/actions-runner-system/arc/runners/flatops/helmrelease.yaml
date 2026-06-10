@@ -24,7 +24,7 @@ spec:
           requests:
             storage: 10Gi
     controllerServiceAccount:
-      name: actions-runner-controller
+      name: arc
       namespace: actions-runner-system
     template:
       spec:
