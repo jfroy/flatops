@@ -26,9 +26,6 @@ spec:
   values:
     cainjector:
       featureGates: CAInjectorMerging=true
-    extraArgs:
-      - --default-certificate-duration=168h
-      - --default-certificate-renew-before=24h
     config:
       apiVersion: controller.config.cert-manager.io/v1alpha1
       kind: ControllerConfiguration

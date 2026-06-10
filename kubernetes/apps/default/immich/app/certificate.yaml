@@ -5,8 +5,8 @@ metadata:
   name: immich-valkey
 spec:
   secretName: immich-valkey-tls
-  duration: 2160h  # 90d
-  renewBefore: 360h # 15d
+  duration: 168h
+  renewBefore: 24h
   subject:
     organizations:
       - immich-valkey

@@ -11,6 +11,8 @@ spec:
     - rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
     - s3.kantai.xyz
     - "*.s3.kantai.xyz"
+  duration: 168h
+  renewBefore: 24h
   issuerRef:
     name: cluster-ca
     kind: ClusterIssuer

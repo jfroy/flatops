@@ -6,7 +6,8 @@ metadata:
   name: pg18vc
 spec:
   secretName: pg18vc-tls
-  duration: 2160h  # 90d
+  duration: 168h
+  renewBefore: 24h
   issuerRef:
     name: cluster-ca
     kind: ClusterIssuer
