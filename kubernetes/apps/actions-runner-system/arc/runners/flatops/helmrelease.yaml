@@ -23,6 +23,9 @@ spec:
         resources:
           requests:
             storage: 10Gi
+    controllerServiceAccount:
+      name: arc
+      namespace: actions-runner-system
     listenerTemplate:
       spec:
         securityContext:
@@ -33,12 +36,7 @@ spec:
           - name: listener
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
-    controllerServiceAccount:
-      name: arc
-      namespace: actions-runner-system
+              capabilities: { drop: ["ALL"] }
     template:
       spec:
         runtimeClassName: kata
@@ -46,6 +44,7 @@ spec:
           fsGroup: 1001
           fsGroupChangePolicy: OnRootMismatch
           runAsNonRoot: true
+          runAsUser: 1001
           seccompProfile:
             type: RuntimeDefault
         containers:
@@ -58,6 +57,4 @@ spec:
                 value: "false"
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
+              capabilities: { drop: ["ALL"] }
