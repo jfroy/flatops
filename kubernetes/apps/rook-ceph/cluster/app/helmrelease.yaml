@@ -208,7 +208,7 @@ spec:
             # LoadBalancer and the in-cluster ClusterIP (reached via a CoreDNS
             # rewrite). Plaintext port 80 serves in-cluster path-style clients.
             securePort: 443
-            sslCertificateRef: xyz-kantai-s3-production-tls
+            sslCertificateRef: cluster-s3-tls
           # Accept virtual-host bucket requests of the form
           # <bucket>.s3.kantai.xyz.
           hosting:
