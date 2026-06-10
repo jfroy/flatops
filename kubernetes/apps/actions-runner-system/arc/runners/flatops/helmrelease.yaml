@@ -32,6 +32,9 @@ spec:
         securityContext:
           fsGroup: 1001
           fsGroupChangePolicy: OnRootMismatch
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
         containers:
           - name: runner
             image: ghcr.io/home-operations/actions-runner:2.335.1
@@ -40,3 +43,8 @@ spec:
             env:
               - name: ACTIONS_RUNNER_REQUIRE_JOB_CONTAINER
                 value: "false"
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
