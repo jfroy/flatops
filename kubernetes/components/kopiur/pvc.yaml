@@ -11,5 +11,5 @@ spec:
     name: "${APP}-restore"
   resources:
     requests:
-      storage: "${KOPIUR_CAPACITY:=1Gi}"
+      storage: "${APP_CAPACITY:=1Gi}"
   storageClassName: ceph-block

@@ -9,16 +9,22 @@ spec:
     all: true
   backend:
     s3:
-      bucket: kantai-kopiur-1
-      endpoint: https://2e8a5ea1691a53a5843e2eb2ef6dddeb.r2.cloudflarestorage.com
       auth:
         secretRef:
           name: kopiur-r2
           namespace: kopiur-system
+      bucket: kantai-kopiur-1
+      endpoint: 2e8a5ea1691a53a5843e2eb2ef6dddeb.r2.cloudflarestorage.com
+      prefix: ""
+  create:
+    enabled: true
+  credentialProjection:
+    allowed: true
   encryption:
     passwordSecretRef:
       name: kopiur-r2
       namespace: kopiur-system
       key: KOPIA_PASSWORD
-  create:
-    enabled: true
+  identityDefaults:
+    hostnameExpr: "namespace"
+    usernameExpr: "namespace + '-' + policyName"

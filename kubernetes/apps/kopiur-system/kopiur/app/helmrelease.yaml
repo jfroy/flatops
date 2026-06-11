@@ -24,11 +24,27 @@ spec:
     kind: OCIRepository
     name: kopiur
   values:
-    installCRDs: true
+    grafanaDashboard:
+      enabled: true
+      grafanaOperator:
+        enabled: true
+        matchLabels:
+          grafana.internal/instance: grafana
     installScope: cluster
     metrics:
+      prometheusRule:
+        enabled: true
       serviceMonitor:
         enabled: true
+    secretProjection:
+      enabled: true
     webhook:
       certManager:
+        issuerRef:
+          name: cluster-ca
+          kind: ClusterIssuer
+          group: cert-manager.io
+      serviceMonitor:
         enabled: true
+      tls:
+        mode: cert-manager
