@@ -11,5 +11,5 @@ spec:
   schedule:
     concurrencyPolicy: Forbid
     cron: "H 2 * * *"
-    jitter: 30m
+    jitter: 2m
     runOnCreate: false
