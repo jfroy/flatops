@@ -8,7 +8,7 @@ spec:
   dataSourceRef:
     apiGroup: kopiur.home-operations.com
     kind: Restore
-    name: "${APP}-restore"
+    name: "${APP}"
   resources:
     requests:
       storage: "${APP_CAPACITY:=1Gi}"
