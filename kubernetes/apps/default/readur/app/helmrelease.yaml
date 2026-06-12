@@ -33,7 +33,6 @@ spec:
             env:
               ALLOW_LOCAL_AUTH: false
               AUTO_CREATE_USERS: true
-              AWS_CA_BUNDLE: /certs/ca-certificates.crt
               RUST_LOG: debug
               RUST_BACKTRACE: "1"
               OCR_LANGUAGE: eng
@@ -58,6 +57,7 @@ spec:
                   secretKeyRef:
                     name: readur-s3-obc
                     key: AWS_SECRET_ACCESS_KEY
+              SSL_CERT_FILE: /certs/ca-certificates.crt
               STORAGE_BACKEND: s3
               TZ: America/Los_Angeles
             envFrom:
