@@ -11,7 +11,7 @@ spec:
     operation: copy
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator
   ref:
-    tag: 0.63.1
+    tag: 0.64.1
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
