@@ -28,10 +28,12 @@ spec:
       - name: init-db
         image: ghcr.io/home-operations/postgres-init:18.4.0@sha256:5086f94abc783f1147d7c2a32c01db00ab594820026e4f6a82ac2af3dbde7fc7
         env:
-          - name: PGSSLMODE
-            value: verify-full
+          - name: INIT_POSTGRES_USER_FLAGS
+            value: --createrole
           - name: PGSSLROOTCERT
             value: /certs/ca-certificates.crt
+          - name: PGSSLMODE
+            value: verify-full
         envFrom:
           - secretRef:
               name: toolhive-registry-db
