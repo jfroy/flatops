@@ -33,6 +33,7 @@ spec:
             env:
               ALLOW_LOCAL_AUTH: false
               AUTO_CREATE_USERS: true
+              AWS_CA_BUNDLE: /certs/ca-certificates.crt
               OCR_LANGUAGE: eng
               OIDC_AUTO_REGISTER: true
               OIDC_ENABLED: true
@@ -82,6 +83,12 @@ spec:
         runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      ca-certificates:
+        type: configMap
+        name: cluster-ca-certificates.crt
+        globalMounts:
+          - path: /certs
     route:
       readur:
         hostnames:
