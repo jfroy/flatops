@@ -33,8 +33,6 @@ spec:
             env:
               ALLOW_LOCAL_AUTH: false
               AUTO_CREATE_USERS: true
-              RUST_LOG: debug
-              RUST_BACKTRACE: "1"
               OCR_LANGUAGE: eng
               OIDC_AUTO_REGISTER: true
               OIDC_ENABLED: true
