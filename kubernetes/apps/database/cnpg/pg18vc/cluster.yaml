@@ -19,6 +19,9 @@ spec:
   superuserSecret:
     name: pg18vc-superuser-secret
   enableSuperuserAccess: true
+  certificates:
+    serverCASecret: cluster-ca-secret
+    serverTLSSecret: pg18vc-tls
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
