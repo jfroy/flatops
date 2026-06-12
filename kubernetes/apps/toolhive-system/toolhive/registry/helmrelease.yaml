@@ -1,0 +1,91 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: toolhive-registry-server
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.4.6
+  url: oci://ghcr.io/stacklok/toolhive-registry-server
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: toolhive-registry-server
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: toolhive-registry-server
+  interval: 1h
+  values:
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    initContainers:
+      - name: init-db
+        image: ghcr.io/home-operations/postgres-init:18.4.0@sha256:5086f94abc783f1147d7c2a32c01db00ab594820026e4f6a82ac2af3dbde7fc7
+        env:
+          - name: PGSSLMODE
+            value: verify-full
+          - name: PGSSLROOTCERT
+            value: /certs/ca-certificates.crt
+        envFrom:
+          - secretRef:
+              name: toolhive-registry-db
+          - secretRef:
+              name: toolhive-registry-initdb
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 65534
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+          - name: cluster-ca
+            mountPath: /certs
+            readOnly: true
+    extraEnv:
+      - name: THV_REGISTRY_DATABASE_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            name: toolhive-registry-db
+            key: THV_REGISTRY_DATABASE_PASSWORD
+      - name: PGSSLROOTCERT
+        value: /certs/ca-certificates.crt
+    extraVolumes:
+      - name: cluster-ca
+        configMap:
+          name: cluster-ca-certificates.crt
+    extraVolumeMounts:
+      - name: cluster-ca
+        mountPath: /certs
+        readOnly: true
+    config:
+      sources:
+        - name: toolhive
+          git:
+            repository: https://github.com/stacklok/toolhive-catalog.git
+            branch: main
+            path: pkg/catalog/toolhive/data/registry-upstream.json
+          syncPolicy:
+            interval: 30m
+      registries:
+        - name: default
+          sources: ["toolhive"]
+      auth:
+        mode: anonymous
+      database:
+        host: pg18vc-rw.database.svc.cluster.local
+        port: 5432
+        user: toolhive_registry
+        database: toolhive_registry
+        sslMode: verify-ca
+        maxOpenConns: 10
+        maxIdleConns: 5
+        connMaxLifetime: 30m
