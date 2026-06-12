@@ -34,6 +34,8 @@ spec:
               ALLOW_LOCAL_AUTH: false
               AUTO_CREATE_USERS: true
               AWS_CA_BUNDLE: /certs/ca-certificates.crt
+              RUST_LOG: debug
+              RUST_BACKTRACE: "1"
               OCR_LANGUAGE: eng
               OIDC_AUTO_REGISTER: true
               OIDC_ENABLED: true
