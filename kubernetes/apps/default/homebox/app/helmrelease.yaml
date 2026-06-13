@@ -29,7 +29,7 @@ spec:
           homebox:
             image:
               repository: ghcr.io/sysadminsmedia/homebox
-              tag: 0.25.0@sha256:6506480a3dfadd2cc885fa97b32d11b0ee28ec58629fa34a76afdb4ac540c7fc
+              tag: 0.26.0@sha256:56e880b62309b7cf1e43f024bdbe407723ca4ac2eda22ff5b2418fe507ba5e47
             env:
               HBOX_OPTIONS_CHECK_GITHUB_RELEASE: "false"
               HBOX_DATABASE_DRIVER: postgres
