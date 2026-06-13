@@ -50,6 +50,8 @@ spec:
                   name: homebox
               - secretRef:
                   name: homebox-db
+              - secretRef:
+                  name: homebox-keys
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
