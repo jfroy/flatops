@@ -19,7 +19,7 @@ spec:
           echo:
             image:
               repository: ghcr.io/mendhak/http-https-echo
-              tag: 40
+              tag: 41
             env:
               HTTP_PORT: &port 80
               LOG_WITHOUT_NEWLINE: true
