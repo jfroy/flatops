@@ -7,7 +7,6 @@ resources:
   - ./cluster.yaml
   - ./cronjob.yaml
   - ./externalsecret.yaml
-  - ./gatus.yaml
   - ./objectbucketclaim.yaml
   - ./objectstore.yaml
   - ./podmonitor.yaml

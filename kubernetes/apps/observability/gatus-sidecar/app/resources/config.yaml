@@ -16,10 +16,16 @@ endpoints:
     interval: 1m
     conditions:
       - "[CONNECTED] == true"
+  - name: pg18vc
+    group: services
+    url: tcp://pg18vc-rw.database.svc.cluster.local:5432
+    interval: 1m
+    conditions:
+      - "[CONNECTED] == true"
 metrics: true
 storage:
-  type: postgres
-  path: postgres://${INIT_POSTGRES_USER}:${INIT_POSTGRES_PASS}@${INIT_POSTGRES_HOST}:5432/${INIT_POSTGRES_DBNAME}
+  type: sqlite
+  path: ${GATUS_CONFIG_PATH}/gatus.db
   caching: true
 ui:
   title: Status | Gatus

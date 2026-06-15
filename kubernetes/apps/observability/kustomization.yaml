@@ -9,7 +9,7 @@ resources:
   - ./blackbox-exporter/ks.yaml
   - ./dozzle/ks.yaml
   - ./exportarr/ks.yaml
-  - ./gatus/ks.yaml
+  - ./gatus-sidecar/ks.yaml
   - ./grafana/ks.yaml
   # - ./idrac-exporter/ks.yaml
   - ./kite/ks.yaml
