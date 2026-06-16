@@ -42,7 +42,7 @@ spec:
   values:
     cephImage:
       # renovate: datasource=docker depName=quay.io/ceph/ceph versioning=loose
-      tag: v20.2.1
+      tag: v20.2.2
     cephClusterSpec:
       disruptionManagement:
         managePodBudgets: false
