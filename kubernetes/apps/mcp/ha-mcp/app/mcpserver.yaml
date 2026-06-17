@@ -55,7 +55,12 @@ spec:
           volumeMounts:
             - name: cache
               mountPath: /.cache
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: cache
+          emptyDir:
+            sizeLimit: 100Mi
+        - name: tmp
           emptyDir:
             sizeLimit: 100Mi
