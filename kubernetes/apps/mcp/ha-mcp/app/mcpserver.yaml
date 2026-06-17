@@ -36,30 +36,29 @@ spec:
     - name: ha-mcp
       key: HOMEASSISTANT_TOKEN
   podTemplateSpec:
-    spec:
-      securityContext:
-        fsGroup: 1000
-        seccompProfile:
-          type: RuntimeDefault
-      containers:
-        - name: mcp
-          command:
-            - ha-mcp-web
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop: ["ALL"]
-            runAsNonRoot: true
-          volumeMounts:
-            - name: home
-              mountPath: /home/mcpuser
-            - name: tmp
-              mountPath: /tmp
-      volumes:
-        - name: home
-          emptyDir:
-            sizeLimit: 10Mi
-        - name: tmp
-          emptyDir:
-            medium: Memory
-            sizeLimit: 10Mi
+    securityContext:
+      fsGroup: 1000
+      seccompProfile:
+        type: RuntimeDefault
+    containers:
+      - name: mcp
+        command:
+          - ha-mcp-web
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          runAsNonRoot: true
+        volumeMounts:
+          - name: home
+            mountPath: /home/mcpuser
+          - name: tmp
+            mountPath: /tmp
+    volumes:
+      - name: home
+        emptyDir:
+          sizeLimit: 10Mi
+      - name: tmp
+        emptyDir:
+          medium: Memory
+          sizeLimit: 10Mi
