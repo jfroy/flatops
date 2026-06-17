@@ -6,7 +6,7 @@ metadata:
   name: ha-mcp
 spec:
   # renovate: datasource=docker depName=ghcr.io/homeassistant-ai/ha-mcp
-  image: ghcr.io/homeassistant-ai/ha-mcp:4.22.1
+  image: ghcr.io/homeassistant-ai/ha-mcp:7.8.1
   transport: streamable-http
   mcpPort: 8086
   proxyPort: 8080
