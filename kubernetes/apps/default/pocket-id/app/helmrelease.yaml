@@ -19,7 +19,7 @@ spec:
           pocket-id:
             image:
               repository: registry.kantai.xyz/pocket-id/pocket-id
-              tag: development@sha256:741f959fb8926986881fadd5a74fc2aae31446b1949ef8c837270e96a66f87bb
+              tag: development@sha256:96155b82d641eabbecbc2866909264c0a2c84cd5cd9dca1f59e5c28d9c0fcc92
             env:
               ANALYTICS_DISABLED: "true"
               APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
