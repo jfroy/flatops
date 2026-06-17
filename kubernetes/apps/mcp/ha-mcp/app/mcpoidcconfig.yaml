@@ -8,3 +8,4 @@ spec:
   type: inline
   inline:
     issuer: https://pid.kantai.xyz
+    jwksAllowPrivateIP: true
