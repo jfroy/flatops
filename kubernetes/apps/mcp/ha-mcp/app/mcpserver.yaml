@@ -10,6 +10,11 @@ spec:
   transport: streamable-http
   mcpPort: 8086
   proxyPort: 8080
+  resourceOverrides:
+    proxyDeployment:
+      env:
+        - name: TOOLHIVE_DEBUG
+          value: "true"
   permissionProfile:
     type: builtin
     name: network
