@@ -51,15 +51,9 @@ spec:
               drop: ["ALL"]
             runAsNonRoot: true
           volumeMounts:
-            - name: home
-              mountPath: /home/mcpuser
-            - name: tmp
-              mountPath: /tmp
+            - name: cache
+              mountPath: /.cache
       volumes:
-        - name: home
+        - name: cache
           emptyDir:
-            sizeLimit: 10Mi
-        - name: tmp
-          emptyDir:
-            medium: Memory
-            sizeLimit: 10Mi
+            sizeLimit: 100Mi
