@@ -20,8 +20,10 @@ spec:
     name: network
   oidcConfigRef:
     name: ha-mcp
-    audience: https://ha-mcp.kantai.xyz
-    resourceUrl: https://ha-mcp.kantai.xyz
+    # trailing slash: pocket-id normalizes the RFC 8707 resource and stamps
+    # aud="https://ha-mcp.kantai.xyz/"; the proxy does an exact-string aud check.
+    audience: https://ha-mcp.kantai.xyz/
+    resourceUrl: https://ha-mcp.kantai.xyz/
     scopes:
       - openid
       - profile
