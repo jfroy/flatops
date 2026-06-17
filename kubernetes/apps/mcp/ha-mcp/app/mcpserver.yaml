@@ -1,0 +1,65 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: ha-mcp
+spec:
+  # renovate: datasource=docker depName=ghcr.io/homeassistant-ai/ha-mcp
+  image: ghcr.io/homeassistant-ai/ha-mcp:4.12.0
+  transport: streamable-http
+  mcpPort: 8086
+  proxyPort: 8080
+  permissionProfile:
+    type: builtin
+    name: network
+  oidcConfigRef:
+    name: ha-mcp
+    audience: https://ha-mcp.kantai.xyz
+    resourceUrl: https://ha-mcp.kantai.xyz
+    scopes:
+      - openid
+      - profile
+      - email
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+  env:
+    - name: HOMEASSISTANT_URL
+      value: https://hass.nouvelle.house
+    - name: BACKUP_HINT
+      value: normal
+  secrets:
+    - name: ha-mcp
+      key: HOMEASSISTANT_TOKEN
+  podTemplateSpec:
+    spec:
+      securityContext:
+        fsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mcp
+          command:
+            - ha-mcp-web
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            runAsNonRoot: true
+          volumeMounts:
+            - name: home
+              mountPath: /home/mcpuser
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: home
+          emptyDir:
+            sizeLimit: 10Mi
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 10Mi
