@@ -1,0 +1,54 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: toolhive-proxy-securitycontext
+spec:
+  failurePolicy: Fail
+  reinvocationPolicy: Never
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  matchConditions:
+    - name: is-toolhive-pod
+      expression: >-
+        has(object.metadata.labels) &&
+        object.metadata.labels[?'toolhive'].orValue('') == 'true'
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          Object{
+            spec: Object.spec{
+              securityContext: Object.spec.securityContext{
+                seccompProfile: Object.spec.securityContext.seccompProfile{
+                  type: "RuntimeDefault"
+                }
+              }
+            }
+          }
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          lists.range(object.spec.containers.size()).map(i,
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(i) + "/securityContext/capabilities",
+              value: Object.spec.containers.securityContext.capabilities{drop: ["ALL"]}
+            })
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: toolhive-proxy-securitycontext-binding
+spec:
+  policyName: toolhive-proxy-securitycontext
+  matchResources:
+    namespaceSelector:
+      matchExpressions:
+        - key: pod-security.kubernetes.io/enforce
+          operator: In
+          values: ["restricted"]
