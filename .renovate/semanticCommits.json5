@@ -37,11 +37,20 @@
       semanticCommitType: "ci",
       semanticCommitScope: "github-action",
       commitMessageTopic: "action {{depName}}",
+      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}}):",
     },
     {
       matchDatasources: ["github-releases"],
       semanticCommitScope: "github-release",
       commitMessageTopic: "release {{depName}}",
+      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}}):",
+    },
+    {
+      matchManagers: ["mise"],
+      semanticCommitType: "chore",
+      semanticCommitScope: "mise",
+      commitMessageTopic: "tool {{depName}}",
+      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}}):",
     },
   ],
 }
