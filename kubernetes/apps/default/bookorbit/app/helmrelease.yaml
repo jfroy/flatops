@@ -93,6 +93,8 @@ spec:
             bookorbit:
               - path: /books
                 subPath: library/books
+              - path: /manga
+                subPath: library/manga
       tmp:
         type: emptyDir
     route:
