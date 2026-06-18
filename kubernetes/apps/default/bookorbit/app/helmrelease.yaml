@@ -1,0 +1,113 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: bookorbit
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    configMaps:
+      initdb:
+        data:
+          bookorbit.sql: |
+            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+            CREATE EXTENSION IF NOT EXISTS "pg_trgm";
+            CREATE EXTENSION IF NOT EXISTS "vector";
+    controllers:
+      bookorbit:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.4.0@sha256:5086f94abc783f1147d7c2a32c01db00ab594820026e4f6a82ac2af3dbde7fc7
+            envFrom:
+              - secretRef:
+                  name: bookorbit-db
+              - secretRef:
+                  name: bookorbit-initdb
+        containers:
+          bookorbit:
+            image:
+              repository: ghcr.io/bookorbit/bookorbit
+              tag: 1.10.0@sha256:be53a38b88d18c702a7f9759b3fc4e1584f583a66baa9ee0c66a50595fe1611c
+            env:
+              APP_URL: https://bookorbit.kantai.xyz
+              CLIENT_URL: https://bookorbit.kantai.xyz
+              NODE_ENV: production
+              NODE_MAX_OLD_SPACE_SIZE: 2048
+              OIDC_ALLOW_LOCAL_ISSUERS: true
+              PORT: &port 3000
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: bookorbit
+              - secretRef:
+                  name: bookorbit-db
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: *port
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    persistence:
+      data:
+        existingClaim: "${APP}"
+        advancedMounts:
+          bookorbit:
+            bookorbit:
+              - path: /data
+      initdb:
+        type: configMap
+        identifier: initdb
+        advancedMounts:
+          bookorbit:
+            init-db:
+              - path: /initdb
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media2
+        advancedMounts:
+          bookorbit:
+            bookorbit:
+              - path: /books
+                subPath: library/books
+      tmp:
+        type: emptyDir
+    route:
+      bookorbit:
+        hostnames: ["bookorbit.kantai.xyz"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: bookorbit
+    service:
+      bookorbit:
+        controller: bookorbit
+        ports:
+          http:
+            port: *port

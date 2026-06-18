@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   #
+  - ./bookorbit/ks.yaml
   - ./buildkit/ks.yaml
   - ./changedetection/ks.yaml
   - ./crd-schema-publisher/ks.yaml
