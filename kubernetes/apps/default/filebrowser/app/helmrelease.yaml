@@ -1,0 +1,94 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: filebrowser
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      filebrowser:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          filebrowser:
+            image:
+              repository: ghcr.io/gtsteffaniak/filebrowser
+              tag: 1.4.0-stable@sha256:2cd949cd06c058576773c5b8400c854478a64c4f364b1e2bea275819847f099b
+            env:
+              FILEBROWSER_CONFIG: /etc/filebrowser/config.yaml
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: filebrowser
+              - secretRef:
+                  name: filebrowser-keys
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8080
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [4000]
+            seccompProfile: { type: RuntimeDefault }
+    persistence:
+      config-file:
+        type: configMap
+        name: filebrowser-config
+        advancedMounts:
+          filebrowser:
+            filebrowser:
+              - path: /etc/filebrowser/config.yaml
+                subPath: config.yaml
+                readOnly: true
+      cache:
+        type: emptyDir
+      data:
+        existingClaim: ${APP}
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media2
+        advancedMounts:
+          filebrowser:
+            filebrowser:
+              - path: /media2
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    route:
+      filebrowser:
+        hostnames:
+          - fb.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: filebrowser
+    service:
+      filebrowser:
+        controller: filebrowser
+        ports:
+          http:
+            port: *port

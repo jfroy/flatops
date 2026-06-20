@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  listen: "0.0.0.0"
+  baseURL: "/"
+  database: "/data/database.db"
+  cacheDir: "/cache"
+  sources:
+    - path: "/media2"
+      name: "media2"
+auth:
+  methods:
+    password:
+      enabled: false
+    oidc:
+      enabled: true
+      adminGroup: "filebrowser-admins"
+      clientId: "26677bb3-316f-41a1-a63b-e4af01f25adc"
+      issuerUrl: "https://pid.kantai.xyz"
+      scopes: "openid email profile groups"
+frontend:
+  name: "FileBrowser Quantum"
