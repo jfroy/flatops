@@ -23,7 +23,7 @@ spec:
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --gateway-name=envoy-external
+      - --gateway-label-filter=external-dns.kantai.xyz/cloudflare
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-cloudflare-secret
     policy: sync
