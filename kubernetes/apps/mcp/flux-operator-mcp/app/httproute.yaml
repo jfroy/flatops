@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: flux-operator-mcp
+spec:
+  hostnames:
+    - flux-mcp.kantai.xyz
+  parentRefs:
+    - name: envoy-internal
+      namespace: network
+  rules:
+    - backendRefs:
+        - name: mcp-flux-operator-mcp-proxy
+          port: 8080

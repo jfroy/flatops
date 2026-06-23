@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/toolhive.stacklok.dev/mcpoidcconfig_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPOIDCConfig
+metadata:
+  name: flux-operator-mcp
+spec:
+  type: inline
+  inline:
+    issuer: https://pid.kantai.xyz
+    jwksAllowPrivateIP: true

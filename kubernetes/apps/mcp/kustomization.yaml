@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ./namespace.yaml
   - ./ha-mcp/ks.yaml
+  - ./flux-operator-mcp/ks.yaml
 components:
   - ../../components/common
 transformers:

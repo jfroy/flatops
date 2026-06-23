@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: flux-operator-mcp
+spec:
+  # renovate: datasource=docker depName=ghcr.io/controlplaneio-fluxcd/flux-operator-mcp
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.52.0
+  transport: streamable-http
+  mcpPort: 8086
+  proxyPort: 8080
+  # Use the dedicated read-only SA (rbac.yaml); the server talks to the kube
+  # API via in-cluster config, authenticating as this account.
+  serviceAccount: flux-operator-mcp
+  args:
+    - serve
+    - --transport=http
+    - --port=8086
+    - --read-only
+  permissionProfile:
+    type: builtin
+    name: network
+  oidcConfigRef:
+    name: flux-operator-mcp
+    # trailing slash: pocket-id normalizes the RFC 8707 resource and stamps
+    # aud="https://flux-mcp.kantai.xyz/"; the proxy does an exact-string aud check.
+    audience: https://flux-mcp.kantai.xyz/
+    resourceUrl: https://flux-mcp.kantai.xyz/
+    scopes:
+      - openid
+      - profile
+      - email
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 512Mi
+  podTemplateSpec:
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: mcp
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: tmp
+          emptyDir:
+            sizeLimit: 100Mi
