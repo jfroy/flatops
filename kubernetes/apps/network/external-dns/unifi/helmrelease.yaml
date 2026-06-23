@@ -9,10 +9,6 @@ spec:
   chartRef:
     kind: OCIRepository
     name: external-dns
-  install:
-    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
-  upgrade:
-    disableSchemaValidation: true # Ref: https://github.com/kubernetes-sigs/external-dns/issues/5206
   values:
     fullnameOverride: *app
     domainFilters: ["kantai.xyz", "internal"]
