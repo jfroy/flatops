@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app external-dns-cloudflare
+  name: &app external-dns-cloudflare-proxied
 spec:
   interval: 1h
   chartRef:
@@ -20,13 +20,16 @@ spec:
             key: api-token
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
-      - --gateway-label-filter=external-dns.kantai.xyz/cloudflare
+      - --cloudflare-proxied
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --gateway-label-filter=external-dns.kantai.xyz/cloudflare-proxied
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-cloudflare-secret
     policy: sync
     serviceMonitor:
       enabled: true
-    sources: ["gateway-httproute"]
+    sources: ["crd", "gateway-httproute"]
     triggerLoopOnEvent: true
     txtOwnerId: kantai
     txtPrefix: edns.
