@@ -29,6 +29,6 @@ spec:
     sources: ["gateway-httproute"]
     triggerLoopOnEvent: true
     txtOwnerId: kantai
-    txtPrefix: edns.
+    txtPrefix: edns-cf.
     provider:
       name: cloudflare
