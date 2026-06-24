@@ -1,0 +1,36 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app edns-cf-crd
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: external-dns
+  values:
+    fullnameOverride: *app
+    domainFilters: ["kantai.xyz"]
+    env:
+      - name: CF_API_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-cloudflare-secret
+            key: api-token
+    extraArgs:
+      - --cloudflare-dns-records-per-page=1000
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --label-filter=external-dns.kantai.xyz/cloudflare
+    podAnnotations:
+      secret.reloader.stakater.com/reload: external-dns-cloudflare-secret
+    policy: sync
+    serviceMonitor:
+      enabled: true
+    sources: ["crd"]
+    triggerLoopOnEvent: true
+    txtOwnerId: cf-crd
+    txtPrefix: edns.
+    provider:
+      name: cloudflare
