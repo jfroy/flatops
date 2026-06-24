@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: xz-kantai-k8s
+  labels:
+    external-dns.kantai.xyz/cloudflare: "true"
+spec:
+  endpoints:
+    - dnsName: "k8s.kantai.xyz"
+      recordType: A
+      targets: ["10.10.10.10"]
