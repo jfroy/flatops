@@ -8,3 +8,4 @@ resources:
   - ./helmrelease.yaml
   - ./networkpolicy.yaml
   - ./observability.yaml
+  - ./ocirepository.yaml

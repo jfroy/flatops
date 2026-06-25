@@ -6,3 +6,4 @@ resources:
   - ./configmap.yaml
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
+  - ./ocirepository.yaml

@@ -12,6 +12,19 @@ spec:
   ref:
     tag: 5.0.1
   url: oci://ghcr.io/bjw-s-labs/helm/app-template
-  # TODO: Add verify back once running flux 2.8
-  # verify:
-  #   provider: cosign
+  verify:
+    provider: cosign
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: flux-instance
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.52.0
+  url: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-instance

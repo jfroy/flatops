@@ -1,22 +1,4 @@
 ---
-# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/ocirepository_v1.json
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: OCIRepository
-metadata:
-  name: cloudnative-pg
-spec:
-  interval: 1h
-  layerSelector:
-    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
-    operation: copy
-  ref:
-    tag: 0.28.3
-  url: oci://ghcr.io/cloudnative-pg/charts/cloudnative-pg
-  # TODO: enable cosign once flux v2.8 is deployed
-  # https://github.com/fluxcd/flux2/releases/tag/v2.7.3
-  # verify:
-  #   provider: cosign
----
 # yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
