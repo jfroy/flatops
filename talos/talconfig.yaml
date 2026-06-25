@@ -328,6 +328,7 @@ controlPlane:
           extraArgs:
             bind-address: 0.0.0.0
             node-cidr-mask-size-ipv6: "108"
+            terminated-pod-gc-threshold: "100"
         coreDNS:
           disabled: true
         proxy:
