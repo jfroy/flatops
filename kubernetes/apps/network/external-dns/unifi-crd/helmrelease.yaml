@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app edns-unifi
+  name: &app edns-unifi-crd
 spec:
   interval: 1h
   chartRef:
@@ -12,16 +12,18 @@ spec:
   values:
     fullnameOverride: *app
     extraArgs:
-      - --gateway-label-filter=external-dns.kantai.xyz/unifi
+      - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
+      - --crd-source-kind=DNSEndpoint
+      - --label-filter=external-dns.kantai.xyz/unifi
     logLevel: debug
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-unifi
     policy: sync
     serviceMonitor:
       enabled: true
-    sources: ["gateway-httproute", "service"]
+    sources: ["crd"]
     triggerLoopOnEvent: true
-    txtOwnerId: unifi
+    txtOwnerId: unifi-crd
     txtPrefix: edns.
     provider:
       name: webhook

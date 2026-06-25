@@ -83,9 +83,25 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: external-dns-unifi
+  name: edns-unifi
 spec:
   path: ./kubernetes/apps/network/external-dns/unifi
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: edns-unifi-crd
+spec:
+  path: ./kubernetes/apps/network/external-dns/unifi-crd
   prune: true
   sourceRef:
     kind: GitRepository

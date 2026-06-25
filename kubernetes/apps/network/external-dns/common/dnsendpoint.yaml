@@ -11,3 +11,59 @@ spec:
     - dnsName: "k8s.kantai.xyz"
       recordType: A
       targets: ["10.10.10.10"]
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloud-etincelle-ds
+  labels:
+    external-dns.kantai.xyz/cloudflare: "true"
+    external-dns.kantai.xyz/unifi: "true"
+spec:
+  endpoints:
+    - dnsName: "ds.etincelle.cloud"
+      recordType: A
+      targets: ["10.1.0.2"]
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloud-etincelle-ds
+  labels:
+    external-dns.kantai.xyz/cloudflare: "true"
+    external-dns.kantai.xyz/unifi: "true"
+spec:
+  endpoints:
+    - dnsName: "registry.etincelle.cloud"
+      recordType: A
+      targets: ["10.1.0.2"]
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloud-etincelle-ds
+  labels:
+    external-dns.kantai.xyz/cloudflare: "true"
+    external-dns.kantai.xyz/unifi: "true"
+spec:
+  endpoints:
+    - dnsName: "static.etincelle.cloud"
+      recordType: A
+      targets: ["10.1.0.2"]
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: cloud-etincelle-ds
+  labels:
+    external-dns.kantai.xyz/cloudflare: "true"
+    external-dns.kantai.xyz/unifi: "true"
+spec:
+  endpoints:
+    - dnsName: "tif.etincelle.cloud"
+      recordType: A
+      targets: ["10.1.0.2"]

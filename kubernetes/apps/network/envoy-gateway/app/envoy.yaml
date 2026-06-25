@@ -141,6 +141,7 @@ metadata:
         hide-url: true
   labels:
     external-dns.kantai.xyz/cloudflare: "true"
+    external-dns.kantai.xyz/unifi: "true"
 spec:
   gatewayClassName: envoy
   listeners:
