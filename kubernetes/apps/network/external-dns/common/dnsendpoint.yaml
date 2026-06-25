@@ -30,7 +30,7 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: cloud-etincelle-ds
+  name: cloud-etincelle-registry
   labels:
     external-dns.kantai.xyz/cloudflare: "true"
     external-dns.kantai.xyz/unifi: "true"
@@ -44,7 +44,7 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: cloud-etincelle-ds
+  name: cloud-etincelle-static
   labels:
     external-dns.kantai.xyz/cloudflare: "true"
     external-dns.kantai.xyz/unifi: "true"
@@ -58,7 +58,7 @@ spec:
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: cloud-etincelle-ds
+  name: cloud-etincelle-tif
   labels:
     external-dns.kantai.xyz/cloudflare: "true"
     external-dns.kantai.xyz/unifi: "true"
