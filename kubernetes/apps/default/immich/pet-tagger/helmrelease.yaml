@@ -28,11 +28,9 @@ spec:
               IMMICH_EXTERNAL_URL: https://photos.kantai.xyz
               IMMICH_URL: http://immich-server.default.svc.cluster.local:2283
               TZ: America/Los_Angeles
-              XDG_CONFIG_HOME: /data/config
             envFrom:
               - secretRef:
                   name: immich-pet-tagger
-            workingDir: /cache
             probes:
               liveness: &probe
                 enabled: true
@@ -59,15 +57,11 @@ spec:
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
     persistence:
-      cache:
+      data:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce
         storageClass: ceph-block
         size: 10Gi
-        globalMounts:
-          - path: /cache
-      data:
-        existingClaim: ${APP}
       tmp:
         type: emptyDir
         sizeLimit: 100Mi
