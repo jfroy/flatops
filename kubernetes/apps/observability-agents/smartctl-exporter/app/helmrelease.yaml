@@ -19,7 +19,7 @@ spec:
     fullnameOverride: *app
     image:
       repository: ghcr.io/home-operations/smartctl-exporter
-      tag: 0.14.0@sha256:59fe2aeefcfba34c61d184cf2463195e19da1c8e4f3b04eac4c3c1542b30f27e
+      tag: 0.14.0@sha256:1ce54f6215b4e92ce600d292e6f88af100146521a8e54f449adf3c0f333a9571
     prometheusRules:
       enabled: false
     serviceMonitor:
