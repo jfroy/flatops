@@ -18,16 +18,14 @@ resources:
   - ./filebrowser/ks.yaml
   # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
-  - ./grimmory/ks.yaml
+  # - ./grimmory/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
   - ./houndarr/ks.yaml
-  # - ./hypermind/ks.yaml
   - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
   - ./komga/ks.yaml
-  # - ./mediamanager/ks.yaml
   - ./media-pv/ks.yaml
   - ./mealie/ks.yaml
   - ./memos/ks.yaml
