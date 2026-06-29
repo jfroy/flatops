@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-blackbox-exporter
   ref:
-    tag: 11.13.0
+    tag: 11.15.0
