@@ -26,6 +26,7 @@ resources:
   - ./jellyfin/ks.yaml
   - ./karakeep/ks.yaml
   - ./komga/ks.yaml
+  - ./labby/ks.yaml
   - ./media-pv/ks.yaml
   - ./mealie/ks.yaml
   - ./memos/ks.yaml
