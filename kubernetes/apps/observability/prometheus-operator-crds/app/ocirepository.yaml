@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-operator-crds
   ref:
-    tag: 30.0.0
+    tag: 30.0.1
