@@ -19,7 +19,7 @@ spec:
           immichframe:
             image:
               repository: ghcr.io/immichframe/immichframe
-              tag: v1.0.33.0@sha256:1680d2f63a89fa0db6e5a7c5c497bed27a47f314efe18e1f11cff1dea1910f57
+              tag: v1.0.34.0@sha256:8c7b0d2d18f54f78903be78e60f09ff7542e05596c6dee96a82fd500bf169eba
             env:
               ClockFormat: "HH:mm"
               People: "c2b17279-ba6b-4115-835a-1168e78d4a26,a3d1fd47-a0b9-4fd9-8dea-a39d94fb5e0b,ff68bcd6-b18b-465f-acd7-8e6a4def7455,2f905394-9852-47a5-a3ea-f671300c6add,675bf5ae-1ecd-448f-b32a-2bc2acec4950"
