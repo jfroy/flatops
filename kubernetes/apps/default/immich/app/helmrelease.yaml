@@ -65,7 +65,7 @@ spec:
             env:
               IMMICH_MEDIA_LOCATION: /photos
               IMMICH_TELEMETRY_INCLUDE: all
-              IMMICH_TRUSTED_PROXIES: 10.11.1.251,10.11.2.91,10.11.3.59
+              IMMICH_TRUSTED_PROXIES: 10.11.0.0/16
               IMMICH_WORKERS_EXCLUDE: api
               NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
               TZ: America/Los_Angeles
@@ -93,7 +93,7 @@ spec:
             env:
               IMMICH_MEDIA_LOCATION: /photos
               IMMICH_TELEMETRY_INCLUDE: all
-              IMMICH_TRUSTED_PROXIES: 10.11.1.251,10.11.2.91,10.11.3.59
+              IMMICH_TRUSTED_PROXIES: 10.11.0.0/16
               IMMICH_WORKERS_INCLUDE: api
               NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
               TZ: America/Los_Angeles
