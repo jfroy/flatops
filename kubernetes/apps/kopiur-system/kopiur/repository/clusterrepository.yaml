@@ -25,6 +25,3 @@ spec:
       name: kopiur-r2
       namespace: kopiur-system
       key: KOPIA_PASSWORD
-  identityDefaults:
-    hostnameExpr: "namespace"
-    usernameExpr: "namespace + '-' + policyName"
