@@ -1,0 +1,30 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/kopiur.home-operations.com/snapshotpolicy_v1alpha1.json
+apiVersion: kopiur.home-operations.com/v1alpha1
+kind: SnapshotPolicy
+metadata:
+  name: ${APP}
+spec:
+  compression:
+    compressor: zstd
+    neverCompress: ["*.zip", "*.gz", "*.jpeg", "*.webp", "*.mp4"]
+  copyMethod: Snapshot
+  repository:
+    kind: ClusterRepository
+    name: kopiur-r2
+  retention:
+    keepDaily: 7
+    keepHourly: 24
+    keepWeekly: 4
+    keepMonthly: 12
+  sources:
+    - pvc:
+        name: ${APP}
+  verification:
+    deep:
+      schedule:
+        cron: H 5 1 * *
+    quick:
+      schedule:
+        cron: H 3 * * *
+  volumeSnapshotClassName: ${KOPIUR_SNAPSHOTCLASS:=ceph-block}
