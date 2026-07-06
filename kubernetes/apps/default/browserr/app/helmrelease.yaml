@@ -43,7 +43,7 @@ spec:
           browserr:
             image:
               repository: ghcr.io/janpuc/browserr
-              tag: 1.1.0@sha256:84198b9cc0a22d03e80bf27192677f8ed30a7c29ffe1f63d0ee9fadc26a5d899
+              tag: 1.2.0@sha256:3ba025efc6dd515a7e1c5655bafb8e7ed571dd43f27daab135a9b8abb67522ce
             env:
               AUTH_MODE: seerr
               DEFAULT_REGION: US
