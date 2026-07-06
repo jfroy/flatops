@@ -10,20 +10,21 @@ spec:
     kind: OCIRepository
     name: kopiur
   values:
-    grafanaDashboard:
-      enabled: true
-      grafanaOperator:
+    features:
+      credentialProjection:
         enabled: true
-        matchLabels:
-          grafana.internal/instance: grafana
     installScope: cluster
-    metrics:
+    monitoring:
+      dashboards:
+        enabled: true
+        grafanaOperator:
+          enabled: true
+          matchLabels:
+            grafana.internal/instance: grafana
       prometheusRule:
         enabled: true
       serviceMonitor:
         enabled: true
-    secretProjection:
-      enabled: true
     webhook:
       certManager:
         issuerRef:
