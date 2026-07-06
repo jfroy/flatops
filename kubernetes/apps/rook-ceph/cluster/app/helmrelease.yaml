@@ -8,6 +8,7 @@ metadata:
     kantai.xyz/no-hr-defaults: "true"
 spec:
   interval: 1h
+  timeout: 10m
   chartRef:
     kind: OCIRepository
     name: rook-ceph-cluster
