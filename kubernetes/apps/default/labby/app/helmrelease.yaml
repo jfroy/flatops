@@ -26,7 +26,7 @@ spec:
           labby:
             image:
               repository: ghcr.io/samuelloranger/labby
-              tag: 1.6.0@sha256:ec4b33337727475a807ab14bd6e70d24f4015188620c949d688b1bb5499329a4
+              tag: 1.6.0@sha256:633e5aa32769b4dce37edcd8e0542c79fd4013a7e5413758ecd6965352499110
             env:
               TZ: America/Los_Angeles
               PORT: &port 8080
