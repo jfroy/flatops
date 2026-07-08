@@ -59,7 +59,7 @@ spec:
           vue:
             image:
               repository: ghcr.io/jellyfin/jellyfin-vue
-              tag: unstable.2026-07-06.7169c5d@sha256:d7f26387d9991dd175004f0a38ed7365608b505d9b1ee95972e40897c4b5a1d5
+              tag: unstable.2026-07-08.3cd7f1d@sha256:2e9ff3d92939ef068331b01d5fb97131bb30237edb68c7039a47f7f633802287
             command: ["nginx"]
             args: ["-g", "daemon off;"]
             env:
