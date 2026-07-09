@@ -20,7 +20,7 @@ spec:
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.0.1-cuda
+              tag: v3.0.2-cuda
             env:
               MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ViT-SO400M-16-SigLIP2-384__webli
               MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ViT-SO400M-16-SigLIP2-384__webli
@@ -56,7 +56,7 @@ spec:
           microservices:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.0.1
+              tag: v3.0.2
             envFrom:
               - secretRef:
                   name: immich-db
@@ -84,7 +84,7 @@ spec:
           server:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.0.1
+              tag: v3.0.2
             envFrom:
               - secretRef:
                   name: immich-db
