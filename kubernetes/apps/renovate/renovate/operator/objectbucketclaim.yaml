@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://crd.kantai.xyz/objectbucket.io/objectbucketclaim_v1alpha1.json
+---
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: renovate-obc
+spec:
+  bucketName: renovate
+  storageClassName: ceph-bucket

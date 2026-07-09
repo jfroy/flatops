@@ -13,7 +13,7 @@ spec:
     fullnameOverride: renovate-operator
     config:
       logStorage:
-        mode: valkey
+        mode: s3
     deployment:
       annotations:
         reloader.stakater.com/auto: "true"
@@ -24,6 +24,11 @@ spec:
       parentRefs:
         - name: envoy-internal
           namespace: network
+    s3:
+      bucket: renovate
+      endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+      forcePathStyle: true
+      existingSecret: renovate-operator-s3
     webhook:
       enabled: true
       route:
@@ -46,9 +51,7 @@ spec:
         sessionSecretKey: session-key
         redirectUrl: https://renovate.kantai.xyz/auth/callback
     valkey:
-      enabled: true
-      auth:
-        enabled: false
+      enabled: false
     metrics:
       enabled: true
       serviceMonitor:

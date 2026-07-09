@@ -5,5 +5,7 @@ kind: Kustomization
 resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
+  - ./objectbucketclaim.yaml
   - ./ocirepository.yaml
   - ./prometheusrule.yaml
+  - ./secretstore.yaml
