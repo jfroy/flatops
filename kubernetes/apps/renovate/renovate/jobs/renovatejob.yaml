@@ -21,6 +21,7 @@ spec:
       memory: 128Mi
     limits:
       memory: 1Gi
+  runtimeClassName: kata
   webhook:
     enabled: true
     authentication:
@@ -28,6 +29,8 @@ spec:
       secretRef:
         name: webhook-token
         key: token
+    sync:
+      enabled: true
   extraEnv:
     - name: LOG_LEVEL
       value: debug
