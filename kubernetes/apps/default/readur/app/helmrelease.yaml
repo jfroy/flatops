@@ -89,6 +89,17 @@ spec:
         name: cluster-ca-certificates.crt
         globalMounts:
           - path: /certs
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+      uploads:
+        type: persistentVolumeClaim
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        storageClass: ceph-block
+        globalMounts:
+          - path: /app/uploads
     route:
       readur:
         hostnames:
