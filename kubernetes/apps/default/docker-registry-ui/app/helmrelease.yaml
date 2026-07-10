@@ -16,7 +16,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          docker-registry-ui:
             image:
               repository: ghcr.io/eznix86/docker-registry-ui
               tag: 1.4.0@sha256:55033ce39c35bdb85112693ff58dc691872774c31ac649a8cbeb5214e1f803fc
@@ -68,7 +68,7 @@ spec:
         globalMounts:
           - path: /tmp
     route:
-      app:
+      docker-registry-ui:
         hostnames:
           - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
         parentRefs:
@@ -77,9 +77,9 @@ spec:
         rules:
           - backendRefs:
               - port: *port
-                name: app
+                identifier: docker-registry-ui
     service:
-      app:
+      docker-registry-ui:
         controller: docker-registry-ui
         ports:
           http:
