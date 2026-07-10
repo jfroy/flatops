@@ -28,6 +28,7 @@ spec:
       bucket: renovate
       endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
       forcePathStyle: true
+      cachePrefix: renovate-cache/
       existingSecret: renovate-operator-s3
     webhook:
       enabled: true
