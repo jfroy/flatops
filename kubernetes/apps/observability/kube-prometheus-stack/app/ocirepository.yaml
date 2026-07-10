@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
   ref:
-    tag: 87.13.0
+    tag: 87.14.0
