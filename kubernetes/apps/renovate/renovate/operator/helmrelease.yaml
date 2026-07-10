@@ -26,7 +26,7 @@ spec:
           namespace: network
     s3:
       bucket: renovate
-      endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+      endpoint: http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
       forcePathStyle: true
       existingSecret: renovate-operator-s3
     webhook:
