@@ -1,0 +1,86 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: docker-registry-ui
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      docker-registry-ui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/eznix86/docker-registry-ui
+              tag: 1.4.0@sha256:55033ce39c35bdb85112693ff58dc691872774c31ac649a8cbeb5214e1f803fc
+            env:
+              DATABASE_CONNECTION: sqlite
+              DATABASE_URL: /data/ui.db
+              OIDC_CLIENT_ID: a15e3f2f-c421-44f3-bf79-b9bde6577a22
+              OIDC_ISSUER_URL: https://pid.kantai.xyz
+              OIDC_REDIRECT_URI: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz/oauth/callback
+              REGISTRY_SETTINGS_ETINCELLE_PUBLIC_HOST: registry.etincelle.cloud
+              REGISTRY_SETTINGS_PUBLIC_HOST: registry.kantai.xyz
+              REGISTRY_URL_ETINCELLE: https://registry.etincelle.cloud
+              REGISTRY_URL: http://zot.default.svc.cluster.local:5000
+              SERVER_HOST: 0.0.0.0
+              SERVER_PORT: &port 3000
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: docker-registry-ui
+              - secretRef:
+                  name: docker-registry-ui-keys
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: *port
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /data
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    route:
+      app:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: app
+    service:
+      app:
+        controller: docker-registry-ui
+        ports:
+          http:
+            port: *port
