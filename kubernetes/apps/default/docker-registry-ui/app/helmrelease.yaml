@@ -44,7 +44,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /
+                    path: /healthz
                     port: *port
               readiness: *probe
             securityContext:
