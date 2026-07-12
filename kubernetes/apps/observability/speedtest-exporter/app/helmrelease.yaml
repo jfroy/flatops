@@ -22,7 +22,7 @@ spec:
           speedtest-exporter:
             image:
               repository: ghcr.io/heathcliff26/speedtest-exporter
-              tag: v1.6.1
+              tag: v1.6.2
             args:
               - -config
               - /config/config.yaml
