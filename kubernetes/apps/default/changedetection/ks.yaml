@@ -21,3 +21,5 @@ spec:
       APP: *app
       APP_SUBDOMAIN: cd
       KOPIUR_CAPACITY: 10Gi
+      KOPIUR_UID: "999"
+      KOPIUR_GID: "999"
