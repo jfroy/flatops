@@ -6,7 +6,7 @@ metadata:
   name: &app talos-backup
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/talos-admin/talos-backup/app
   prune: true
   sourceRef:
@@ -21,4 +21,4 @@ spec:
       APP: *app
       # renovate: datasource=docker depName=ghcr.io/jfroy/siderolabs/imager
       TALOS_VERSION: v1.12.2
-      VOLSYNC_CAPACITY: 50Gi
+      KOPIUR_CAPACITY: 50Gi

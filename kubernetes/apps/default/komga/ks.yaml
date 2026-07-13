@@ -6,7 +6,7 @@ metadata:
   name: &app komga
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/default/komga/app
   prune: true
   sourceRef:
@@ -19,4 +19,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 2Gi
+      KOPIUR_CAPACITY: 2Gi

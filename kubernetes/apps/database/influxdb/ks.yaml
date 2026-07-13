@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/part-of: powerwall-dashboard
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/database/influxdb/app
   prune: true
   sourceRef:
@@ -22,4 +22,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 200Gi
+      KOPIUR_CAPACITY: 200Gi

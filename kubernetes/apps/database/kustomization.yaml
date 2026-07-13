@@ -8,6 +8,6 @@ resources:
   - ./namespace.yaml
 components:
   - ../../components/common
-  - ../../components/volsync-ns
+  - ../../components/kopiur/secret
 transformers:
   - ./transformers

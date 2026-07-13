@@ -26,7 +26,7 @@ metadata:
   name: &app immichframe
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/default/immich/frame
   prune: true
   sourceRef:

@@ -6,7 +6,7 @@ metadata:
   name: &app esphome-device-builder
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/default/esphome-device-builder/app
   prune: true
   sourceRef:
@@ -20,7 +20,7 @@ spec:
     substitute:
       APP: *app
       APP_SUBDOMAIN: esphdb
-      VOLSYNC_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 1Gi
     substituteFrom:
       - kind: Secret
         name: esphome-device-builder-ipv6-config
