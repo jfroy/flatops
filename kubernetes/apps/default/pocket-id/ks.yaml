@@ -6,7 +6,7 @@ metadata:
   name: &app pocket-id
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/default/pocket-id/app
   prune: true
   sourceRef:
@@ -20,4 +20,4 @@ spec:
     substitute:
       APP: *app
       APP_SUBDOMAIN: pid
-      VOLSYNC_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 1Gi

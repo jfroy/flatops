@@ -7,7 +7,7 @@ metadata:
 spec:
   components:
     - ../../../../components/envoy-gateway-oidc
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/default/sonarr/app
   prune: true
   sourceRef:
@@ -20,4 +20,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 1Gi
+      KOPIUR_CAPACITY: 1Gi

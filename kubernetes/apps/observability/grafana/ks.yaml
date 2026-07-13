@@ -22,7 +22,7 @@ metadata:
   name: grafana-instance
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   dependsOn:
     - name: grafana-operator
   path: ./kubernetes/apps/observability/grafana/instance
@@ -37,7 +37,7 @@ spec:
   postBuild:
     substitute:
       APP: grafana-data
-      VOLSYNC_CAPACITY: 10Gi
+      KOPIUR_CAPACITY: 10Gi
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1

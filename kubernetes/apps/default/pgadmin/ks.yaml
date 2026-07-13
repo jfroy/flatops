@@ -6,7 +6,7 @@ metadata:
   name: &app pgadmin
 spec:
   components:
-    - ../../../../components/volsync
+    - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/default/pgadmin/app
   prune: true
   sourceRef:
@@ -19,4 +19,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      VOLSYNC_CAPACITY: 100Mi
+      KOPIUR_CAPACITY: 100Mi

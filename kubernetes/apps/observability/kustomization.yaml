@@ -25,6 +25,6 @@ resources:
   - ./victoria/ks.yaml
 components:
   - ../../components/common
-  - ../../components/volsync-ns
+  - ../../components/kopiur/secret
 transformers:
   - ./transformers
