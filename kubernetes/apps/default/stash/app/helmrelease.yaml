@@ -70,7 +70,7 @@ spec:
               STASH_CONFIG_FILE: /config/config.yml
               STASH_DATABASE: /config/stash-go.sqlite
               STASH_GENERATED: /generated
-              STASH_HW_TEST_TIMEOUT: "2"
+              STASH_HW_TEST_TIMEOUT: "10"
               STASH_PLUGINS_PATH: /plugins
               STASH_PORT: &port 9999
               STASH_SCRAPERS_PATH: /scrapers
