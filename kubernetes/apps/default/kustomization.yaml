@@ -42,6 +42,7 @@ resources:
   # - ./paperless/ks.yaml
   - ./pgadmin/ks.yaml
   - ./photon/ks.yaml
+  - ./pinchflat/ks.yaml
   - ./plex/ks.yaml
   - ./pocket-id/ks.yaml
   - ./prowlarr/ks.yaml
