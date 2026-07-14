@@ -7,6 +7,10 @@ metadata:
 spec:
   allowedNamespaces:
     all: true
+  catalog:
+    periodicRefresh: true
+    retain:
+      perIdentity: 0
   backend:
     s3:
       auth:
