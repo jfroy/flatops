@@ -59,6 +59,7 @@ resources:
   - ./spoolman/ks.yaml
   - ./stash/ks.yaml
   - ./tracearr/ks.yaml
+  - ./ytptube/ks.yaml
   - ./zot/ks.yaml
 components:
   - ../../components/common

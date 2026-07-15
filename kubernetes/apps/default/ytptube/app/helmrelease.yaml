@@ -1,0 +1,104 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ytptube
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      ytptube:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          ytptube:
+            image:
+              repository: ghcr.io/arabcoders/ytptube
+              tag: v2.5.10@sha256:453e5682f6698cdf2adad66c5aa8c08efa0b9d8480e4ec9f62da55a242af3a08
+            env:
+              TZ: America/Los_Angeles
+              XDG_CACHE_HOME: /tmp
+              YTP_DOWNLOAD_PATH: /downloads
+              YTP_FLARESOLVERR_URL: http://localhost:8191/v1
+              YTP_PORT: &port 8081
+              YTP_TEMP_PATH: /downloads
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/ping
+                    port: *port
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        initContainers:
+          flaresolverr:
+            image:
+              repository: ghcr.io/flaresolverr/flaresolverr
+              tag: v3.5.0@sha256:139dfee1c6f89249c8d665d1333a42e8ec74ec0a86bc6bb1c8461e10d3a66a47
+            restartPolicy: Always
+            env:
+              HOME: /tmp
+              LOG_LEVEL: info
+              TZ: America/Los_Angeles
+            probes:
+              liveness: &fsprobe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 8191
+              readiness: *fsprobe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: false  # flaresolverr patches /app/chromedriver
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [4000]
+    persistence:
+      config:
+        existingClaim: ${APP}
+        globalMounts:
+          - path: /config
+      media:
+        type: persistentVolumeClaim
+        existingClaim: media2
+        globalMounts:
+          - path: /downloads
+            subPath: library/youtube
+      tmp:
+        type: emptyDir
+    route:
+      ytptube:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - name: ytptube
+                port: *port
+    service:
+      ytptube:
+        controller: ytptube
+        type: ClusterIP
+        ports:
+          http:
+            port: *port
