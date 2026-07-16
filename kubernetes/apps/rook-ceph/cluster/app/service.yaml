@@ -1,17 +1,16 @@
 ---
-# LoadBalancer for virtual-host-style S3 from browsers on LAN/tailnet.
-# Cilium BGP advertises the assigned IP; RGW terminates TLS with the
-# *.s3.kantai.xyz cert. external-dns registers the bare s3.kantai.xyz at the
-# assigned LB IP (it cannot emit wildcards) — the *.s3.kantai.xyz wildcard is
-# a manual static record in UniFi (LAN) and Tailscale split-DNS (tailnet),
-# both pointing at this LB IP. In-cluster apps do NOT use this path; they
-# reach the RGW ClusterIP via the CoreDNS rewrite.
+# LoadBalancer for virtual-host-style S3. Cilium BGP advertises a pinned IP
+# (10.10.10.11); RGW terminates TLS with the *.s3.kantai.xyz cert. DNS for
+# s3.kantai.xyz and the *.s3.kantai.xyz wildcard is published to Cloudflare
+# (unproxied) via a DNSEndpoint. LAN resolve via upstream to Cloudflare;
+# tailnet clients resolve via a split-DNS entry. UniFi cannot serve wildcards.
+# In-cluster resolves via the CoreDNS rewrite.
 apiVersion: v1
 kind: Service
 metadata:
   name: rook-ceph-rgw-ceph-objectstore-lb
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: s3.kantai.xyz
+    lbipam.cilium.io/ips: 10.10.10.11
 spec:
   type: LoadBalancer
   loadBalancerClass: io.cilium/bgp-control-plane
