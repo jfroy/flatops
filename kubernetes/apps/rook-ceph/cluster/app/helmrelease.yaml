@@ -187,6 +187,8 @@ spec:
               compression_mode: aggressive
           preservePoolsOnDelete: true
           gateway:
+            annotations:
+              secret.reloader.stakater.com/reload: cluster-s3-tls
             instances: 2
             priorityClassName: system-cluster-critical
             port: 80
