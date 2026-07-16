@@ -192,10 +192,11 @@ spec:
             instances: 2
             priorityClassName: system-cluster-critical
             port: 80
-            # TLS for virtual-host-style S3 (browsers + apps that only do
-            # vhost addressing. Serves the public *.s3.kantai.xyz cert on the
-            # LoadBalancer and the in-cluster ClusterIP (reached via a CoreDNS
-            # rewrite). Plaintext port 80 serves in-cluster path-style clients.
+            # RGW terminates TLS with the internal cluster-ca cert, whose SANs
+            # include the rook-ceph-rgw-*.svc names. In-cluster vhost clients
+            # reach 443 via the CoreDNS *.s3.kantai.xyz rewrite and trust
+            # cluster-ca. Public TLS for external clients is terminated by the
+            # envoy-internal gateway.
             securePort: 443
             sslCertificateRef: cluster-s3-tls
           # Accept virtual-host bucket requests of the form

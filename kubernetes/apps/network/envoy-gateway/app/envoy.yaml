@@ -95,7 +95,7 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: xyz-kantai-production-tls
+            name: xyz-kantai-tls
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
@@ -154,7 +154,9 @@ spec:
       tls:
         certificateRefs:
           - kind: Secret
-            name: xyz-kantai-production-tls
+            name: xyz-kantai-tls
+          - kind: Secret
+            name: xyz-kantai-s3-tls
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/gateway.envoyproxy.io/envoypatchpolicy_v1alpha1.json
 apiVersion: gateway.envoyproxy.io/v1alpha1
