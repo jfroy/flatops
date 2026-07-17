@@ -24,21 +24,15 @@ servers:
         configBlock: |-
           lameduck 5s
       - name: ready
-      # Resolve virtual-host-style S3 (<bucket>.s3.kantai.xyz) to the in-cluster
-      # RGW ClusterIP so apps that only support vhost addressing reach object
-      # storage without hairpinning through the LoadBalancer IP.
-      - name: rewrite
-        parameters: stop
-        configBlock: |-
-          name regex (.*)\.s3\.kantai\.xyz\.?$ rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
-          answer auto
       - name: kubernetes
         parameters: cluster.local in-addr.arpa ip6.arpa
         configBlock: |-
           pods verified
           fallthrough in-addr.arpa ip6.arpa
-      - name: autopath
-        parameters: "@kubernetes"
+      # autopath is intentionally omitted. It answers the first search-domain
+      # form of a query (e.g. <name>.default.svc.cluster.local) by resolving
+      # the bare name via forward/upstream. That would bypass the dedicated
+      # s3.kantai.xyz zone block below.
       - name: forward
         parameters: . /etc/resolv.conf
       - name: cache
@@ -50,6 +44,30 @@ servers:
       - name: loadbalance
       - name: prometheus
         parameters: 0.0.0.0:9153
+      - name: log
+        configBlock: |-
+          class error
+  # Authoritative in-cluster zone for S3 object storage. Both the apex
+  # (s3.kantai.xyz, path-style) and <bucket>.s3.kantai.xyz (virtual-host style)
+  # are rewritten to the S3 service and answered by the kubernetes plugin.
+  # There is deliberately no forward so queries cannot leave the cluster.
+  - zones:
+      - zone: s3.kantai.xyz
+        scheme: dns://
+        use_tcp: true
+    port: 53
+    plugins:
+      - name: errors
+      - name: rewrite
+        parameters: stop
+        configBlock: |-
+          name regex (.*\.)?s3\.kantai\.xyz\.?$ rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
+          answer auto
+      - name: kubernetes
+        parameters: cluster.local
+        configBlock: |-
+          pods verified
+      - name: cache
       - name: log
         configBlock: |-
           class error
