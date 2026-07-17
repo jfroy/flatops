@@ -3,22 +3,18 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cluster-s3
+  name: xyz-kantai-s3
 spec:
   commonName: s3.kantai.xyz
   dnsNames:
-    - rook-ceph-rgw-ceph-objectstore.rook-ceph.svc
-    - rook-ceph-rgw-ceph-objectstore.rook-ceph.svc.cluster.local
     - s3.kantai.xyz
     - "*.s3.kantai.xyz"
-  duration: 168h
-  renewBefore: 24h
   issuerRef:
-    name: cluster-ca
+    name: letsencrypt-production
     kind: ClusterIssuer
     group: cert-manager.io
   privateKey:
     algorithm: ECDSA
     size: 256
     rotationPolicy: Always
-  secretName: cluster-s3-tls
+  secretName: xyz-kantai-s3-tls

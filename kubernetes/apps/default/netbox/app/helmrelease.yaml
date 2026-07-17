@@ -23,7 +23,7 @@ spec:
         BACKEND: storages.backends.s3.S3Storage
         OPTIONS:
           bucket_name: netbox
-          endpoint_url: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443
+          endpoint_url: https://s3.kantai.xyz
           region_name: auto
           verify: /certs/ca-certificates.crt
     plugins: []

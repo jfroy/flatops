@@ -18,23 +18,3 @@ spec:
     size: 256
     rotationPolicy: Always
   secretName: xyz-kantai-tls
----
-# yaml-language-server: $schema=https://crd.kantai.xyz/cert-manager.io/certificate_v1.json
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: xyz-kantai-s3
-spec:
-  commonName: s3.kantai.xyz
-  dnsNames:
-    - s3.kantai.xyz
-    - "*.s3.kantai.xyz"
-  issuerRef:
-    name: letsencrypt-production
-    kind: ClusterIssuer
-    group: cert-manager.io
-  privateKey:
-    algorithm: ECDSA
-    size: 256
-    rotationPolicy: Always
-  secretName: xyz-kantai-s3-tls

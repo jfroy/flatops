@@ -9,7 +9,7 @@ spec:
     data:
       compression: bzip2
     destinationPath: s3://pg18vc/
-    endpointURL: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443
+    endpointURL: https://s3.kantai.xyz
     endpointCA:
       name: cluster-ca-secret
       key: ca.crt

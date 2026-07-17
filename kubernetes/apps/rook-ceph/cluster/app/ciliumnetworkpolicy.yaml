@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/cilium.io/ciliumnetworkpolicy_v2.json
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: rook-ceph-rgw-ingress
+spec:
+  endpointSelector:
+    matchLabels:
+      app.kubernetes.io/name: ceph-rgw
+      app.kubernetes.io/instance: ceph-objectstore
+  ingress:
+    - fromCIDR:
+        - 10.1.0.0/16
+        - 100.64.0.0/10
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP

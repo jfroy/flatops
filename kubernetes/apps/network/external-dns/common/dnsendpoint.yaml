@@ -3,7 +3,7 @@
 apiVersion: externaldns.k8s.io/v1alpha1
 kind: DNSEndpoint
 metadata:
-  name: xz-kantai-k8s
+  name: xyz-kantai-k8s
   labels:
     external-dns.kantai.xyz/cloudflare: "true"
 spec:
@@ -11,6 +11,22 @@ spec:
     - dnsName: "k8s.kantai.xyz"
       recordType: A
       targets: ["10.10.10.10"]
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/externaldns.k8s.io/dnsendpoint_v1alpha1.json
+apiVersion: externaldns.k8s.io/v1alpha1
+kind: DNSEndpoint
+metadata:
+  name: xyz-kantai-s3
+  labels:
+    external-dns.kantai.xyz/cloudflare: "true"
+spec:
+  endpoints:
+    - dnsName: "s3.kantai.xyz"
+      recordType: A
+      targets: ["10.10.10.11"]
+    - dnsName: "*.s3.kantai.xyz"
+      recordType: A
+      targets: ["10.10.10.11"]
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/externaldns.k8s.io/dnsendpoint_v1alpha1.json
 apiVersion: externaldns.k8s.io/v1alpha1

@@ -188,22 +188,19 @@ spec:
           preservePoolsOnDelete: true
           gateway:
             annotations:
-              secret.reloader.stakater.com/reload: cluster-s3-tls
+              secret.reloader.stakater.com/reload: xyz-kantai-s3-tls
             instances: 2
             priorityClassName: system-cluster-critical
             port: 80
-            # RGW terminates TLS with the internal cluster-ca cert, whose SANs
-            # include the rook-ceph-rgw-*.svc names. In-cluster vhost clients
-            # reach 443 via the CoreDNS *.s3.kantai.xyz rewrite and trust
-            # cluster-ca. Public TLS for external clients is terminated by the
-            # envoy-internal gateway.
             securePort: 443
-            sslCertificateRef: cluster-s3-tls
-          # Accept virtual-host bucket requests of the form
-          # <bucket>.s3.kantai.xyz.
+            sslCertificateRef: xyz-kantai-s3-tls
           hosting:
             dnsNames:
               - s3.kantai.xyz
+            advertiseEndpoint:
+              dnsName: rgw.s3.kantai.xyz
+              port: 443
+              useTls: true
         storageClass:
           enabled: true
           name: ceph-bucket

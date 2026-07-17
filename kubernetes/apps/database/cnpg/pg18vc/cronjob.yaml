@@ -64,7 +64,7 @@ spec:
                       name: pg18vc-obc
                       key: AWS_SECRET_ACCESS_KEY
                 - name: RCLONE_CONFIG_CEPH_ENDPOINT
-                  value: "https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443"
+                  value: "https://s3.kantai.xyz"
                 - name: RCLONE_CONFIG_CEPH_CA_CERT
                   value: /certs/ca-certificates.crt
               volumeMounts:

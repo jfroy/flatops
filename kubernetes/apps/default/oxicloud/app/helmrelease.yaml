@@ -47,7 +47,7 @@ spec:
               OXICLOUD_OIDC_REDIRECT_URI: https://oxicloud.kantai.xyz/api/auth/oidc/callback
               OXICLOUD_OIDC_SCOPES: openid profile email groups
               OXICLOUD_S3_BUCKET: oxicloud
-              OXICLOUD_S3_ENDPOINT_URL: https://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:443
+              OXICLOUD_S3_ENDPOINT_URL: https://s3.kantai.xyz
               AWS_CA_BUNDLE: /certs/ca-certificates.crt
               OXICLOUD_S3_FORCE_PATH_STYLE: "true"
               OXICLOUD_S3_REGION: us-west-1
