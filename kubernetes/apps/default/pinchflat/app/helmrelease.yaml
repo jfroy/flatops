@@ -19,7 +19,7 @@ spec:
           pinchflat:
             image:
               repository: ghcr.io/communitymaintained/pinchflat
-              tag: 1.4.0@sha256:397222c1c3eb01bf9dc061162d1ae3c7b8a584a1dc8b24c151dbfb1b10708fdd
+              tag: 1.4.1@sha256:2aecbf20c167b26aa00a06fa692d9c16105f50fbecaeca5541f280712a2c7f36
             env:
               LOG_LEVEL: info
               TZ: America/Los_Angeles
