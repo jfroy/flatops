@@ -18,7 +18,7 @@ spec:
           collector:
             image:
               repository: ghcr.io/starosdev/scrutiny
-              tag: 1.66.0-collector-zfs@sha256:3f33362fae0a4337ea5bee981750f053214444c24f00a500fb3a63363e7adda2
+              tag: 1.67.0-collector-zfs@sha256:d7faa5ffcaba1246da90c9f92985807ccb58b35b93777cc9bee6279981c62edd
             env:
               COLLECTOR_ZFS_API_ENDPOINT: http://scrutiny.observability.svc.cluster.local:8080
               COLLECTOR_ZFS_CRON_SCHEDULE: "0 * * * *"
