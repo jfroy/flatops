@@ -19,7 +19,7 @@ spec:
           esphdb:
             image:
               repository: ghcr.io/home-operations/esphome
-              tag: "2026.7.0@sha256:02e4805250f466dcead3f3d7f2491b10cc9b0819407dedd61474f3383f8420ce"
+              tag: "2026.7.0@sha256:aeeafd9673472e3f9ed476a7cf927a6835c2e6bd05316ef3d01f0306ef26e2dd"
             env:
               - name: ESPHOME_DATA_DIR
                 value: /data
