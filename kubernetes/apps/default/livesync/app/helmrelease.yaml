@@ -1,0 +1,142 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: livesync
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      couchdb:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          couchdb:
+            image:
+              repository: docker.io/library/couchdb
+              tag: 3.5.2@sha256:7feb744b60195233219f3fa801cbc2384efa24b28c76a5d1f3e93efe6557f921
+            env:
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: livesync
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /_up
+                    port: &port 5984
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+          bootstrap:
+            image:
+              repository: docker.io/curlimages/curl
+              tag: 8.12.1@sha256:94e9e444bcba979c2ea12e27ae39bee4cd10bc7041a472c4727a558e213744e6
+            command: ["/bin/sh", "-c"]
+            args:
+              - |
+                set -u
+                COUCHDB_URL="http://localhost:5984"
+                VAULT_DB="vault"
+
+                put_ok() {
+                  case "$1" in
+                    200|201|409|412) return 0 ;;
+                    *) return 1 ;;
+                  esac
+                }
+
+                until curl -sf -o /dev/null "$COUCHDB_URL/_up"; do
+                  echo "waiting for couchdb..."
+                  sleep 2
+                done
+
+                while true; do
+                  ok=1
+                  for db in _users _replicator _global_changes "$VAULT_DB"; do
+                    code=$(curl -s -o /dev/null -w '%{http_code}' -u "$COUCHDB_USER:$COUCHDB_PASSWORD" -X PUT "$COUCHDB_URL/$db")
+                    put_ok "$code" || { echo "failed to create db $db: $code"; ok=0; }
+                  done
+
+                  code=$(curl -s -o /dev/null -w '%{http_code}' -u "$COUCHDB_USER:$COUCHDB_PASSWORD" \
+                    -H 'Content-Type: application/json' \
+                    -X PUT "$COUCHDB_URL/_users/org.couchdb.user:$SYNC_USER" \
+                    -d "{\"name\":\"$SYNC_USER\",\"password\":\"$SYNC_PASSWORD\",\"roles\":[],\"type\":\"user\"}")
+                  put_ok "$code" || { echo "failed to create sync user: $code"; ok=0; }
+
+                  code=$(curl -s -o /dev/null -w '%{http_code}' -u "$COUCHDB_USER:$COUCHDB_PASSWORD" \
+                    -H 'Content-Type: application/json' \
+                    -X PUT "$COUCHDB_URL/$VAULT_DB/_security" \
+                    -d "{\"members\":{\"names\":[\"$SYNC_USER\"],\"roles\":[]},\"admins\":{\"names\":[],\"roles\":[]}}")
+                  put_ok "$code" || { echo "failed to set vault security: $code"; ok=0; }
+
+                  [ "$ok" = 1 ] && echo "bootstrap ok" || echo "bootstrap incomplete, retrying in 5m"
+                  sleep 300
+                done
+            envFrom:
+              - secretRef:
+                  name: livesync
+              - secretRef:
+                  name: livesync-sync
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 5984
+        runAsGroup: 5984
+        fsGroup: 5984
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      data:
+        existingClaim: ${APP}
+        advancedMounts:
+          couchdb:
+            couchdb:
+              - path: /opt/couchdb/data
+      local-d:
+        type: emptyDir
+        advancedMounts:
+          couchdb:
+            couchdb:
+              - path: /opt/couchdb/etc/local.d
+      couchdb-config:
+        type: configMap
+        name: livesync-couchdb-config
+        advancedMounts:
+          couchdb:
+            couchdb:
+              - path: /opt/couchdb/etc/local.d/custom.ini
+                subPath: custom.ini
+                readOnly: true
+      tmp:
+        type: emptyDir
+    route:
+      livesync:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: couchdb
+                port: *port
+    service:
+      couchdb:
+        controller: couchdb
+        ports:
+          http:
+            port: *port
