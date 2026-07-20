@@ -41,7 +41,7 @@ spec:
           bootstrap:
             image:
               repository: docker.io/curlimages/curl
-              tag: 8.12.1@sha256:94e9e444bcba979c2ea12e27ae39bee4cd10bc7041a472c4727a558e213744e6
+              tag: 8.21.0@sha256:7c12af72ceb38b7432ab85e1a265cff6ae58e06f95539d539b654f2cfa64bb13
             command: ["/bin/sh", "-c"]
             args:
               - |
