@@ -70,6 +70,9 @@ spec:
       cache:
         type: emptyDir
         sizeLimit: 50Gi
+        globalMounts:
+          - path: /cache
+          - path: /config/.cache
       data:
         existingClaim: ${APP}
         globalMounts:
