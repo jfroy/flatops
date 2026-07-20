@@ -3,11 +3,12 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app esphome-device-builder
+  name: &app esphome
+  namespace: default
 spec:
   components:
     - ../../../../components/kopiur/backup
-  path: ./kubernetes/apps/default/esphome-device-builder/app
+  path: ./kubernetes/apps/default/esphome/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -19,8 +20,7 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      APP_SUBDOMAIN: esphdb
       KOPIUR_CAPACITY: 1Gi
     substituteFrom:
       - kind: Secret
-        name: esphome-device-builder-ipv6-config
+        name: esphome-ipv6-config

@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: esphome-device-builder
+  name: esphome
 spec:
   interval: 30m
   chartRef:
@@ -12,7 +12,7 @@ spec:
     namespace: flux-system
   values:
     controllers:
-      esphome-device-builder:
+      esphome:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -79,7 +79,7 @@ spec:
             subPath: data
       entrypoint:
         type: configMap
-        name: esphome-device-builder-entrypoint
+        name: esphome-entrypoint
         defaultMode: 0755
         globalMounts:
           - path: /entrypoint.sh
@@ -91,7 +91,7 @@ spec:
         sizeLimit: 128Mi
       secrets:
         type: secret
-        name: esphome-device-builder-secrets
+        name: esphome-secrets
         globalMounts:
           - path: /config/secrets.yaml
             subPath: secrets.yaml
@@ -108,10 +108,10 @@ spec:
         rules:
           - backendRefs:
               - port: *port
-                name: esphome-device-builder
+                name: esphome
     service:
-      esphome-device-builder:
-        controller: esphome-device-builder
+      esphome:
+        controller: esphome
         type: ClusterIP
         ports:
           http:

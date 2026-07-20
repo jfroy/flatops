@@ -6,7 +6,7 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
 configMapGenerator:
-  - name: esphome-device-builder-entrypoint
+  - name: esphome-entrypoint
     files:
       - ./configmaps/entrypoint.sh
     options:

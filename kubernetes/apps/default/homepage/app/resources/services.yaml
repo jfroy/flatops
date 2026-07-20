@@ -97,14 +97,14 @@
     - homeassistant:
         icon: sh-home-assistant-light.webp
         href: https://hass.nouvelle.house/
-    - esphomedb:
+    - esphome:
         icon: sh-esphome-light.webp
-        href: https://esphdb.kantai.xyz/
+        href: https://esphome.kantai.xyz/
         namespace: default
-        app: esphome-device-builder
+        app: esphome
         widget:
           type: esphome
-          url: https://esphdb.kantai.xyz/
+          url: https://esphome.kantai.xyz/
     - gatus:
         icon: sh-gatus-light.webp
         href: https://status.kantai.xyz/

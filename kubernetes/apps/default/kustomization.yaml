@@ -13,7 +13,7 @@ resources:
   - ./dawarich/ks.yaml
   - ./docker-registry-ui/ks.yaml
   # - ./docling/ks.yaml
-  - ./esphome-device-builder/ks.yaml
+  - ./esphome/ks.yaml
   - ./etampe/ks.yaml
   # - ./familynido/ks.yaml
   - ./filebrowser/ks.yaml

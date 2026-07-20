@@ -46,7 +46,7 @@ spec:
         - key: app.kubernetes.io/name
           operator: NotIn
           values:
-            - esphome-device-builder
+            - esphome
 ---
 # Privileged Containers
 apiVersion: admissionregistration.k8s.io/v1
@@ -229,7 +229,7 @@ spec:
         - key: app.kubernetes.io/name
           operator: NotIn
           values:
-            - esphome-device-builder
+            - esphome
             - plex
 ---
 # Host Probes / Lifecycle Hooks
