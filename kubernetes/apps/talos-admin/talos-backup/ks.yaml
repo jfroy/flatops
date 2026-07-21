@@ -19,6 +19,4 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      # renovate: datasource=docker depName=ghcr.io/siderolabs/imager
-      TALOS_VERSION: v1.12.2
       KOPIUR_CAPACITY: 50Gi
