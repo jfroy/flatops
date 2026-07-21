@@ -7,13 +7,13 @@
       matchPackageNames: ["/siderolabs/"],
       automerge: false,
     },
-    // - Don't automerge gpu-operator; requires custom image build
+    // - Don't automerge gpu-operator
     {
       matchDatasources: ["helm"],
       matchPackageNames: ["gpu-operator"],
       automerge: false,
     },
-    // - Don't automerge postgres, it needs review
+    // - Don't automerge postgres
     {
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
@@ -84,5 +84,10 @@
       ],
       automerge: true,
     },
+    // - Automerge Grafana dashboards
+    {
+      matchDatasources: ["custom.grafana-dashboards"],
+      automerge: true,
+    }
   ]
 }
