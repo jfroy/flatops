@@ -5,6 +5,8 @@ kind: Kustomization
 metadata:
   name: kantai1-samba
 spec:
+  dependsOn:
+    - name: storage-pv
   path: ./kubernetes/apps/storage/kantai1-samba/app
   prune: true
   sourceRef:

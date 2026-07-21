@@ -140,6 +140,20 @@ spec:
             smbd:
               - path: /config
                 readOnly: true
+      homeassistant-backup:
+        type: persistentVolumeClaim
+        existingClaim: homeassistant-backup
+        advancedMounts:
+          kantai1-samba:
+            smbd:
+              - path: /shares/homeassistant-backup
+      jf:
+        type: persistentVolumeClaim
+        existingClaim: jf
+        advancedMounts:
+          kantai1-samba:
+            smbd:
+              - path: /shares/jf
       lock:
         type: emptyDir
         medium: Memory
@@ -157,14 +171,14 @@ spec:
         advancedMounts:
           kantai1-samba:
             smbd:
-              - path: /media1
+              - path: /shares/media1
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
         advancedMounts:
           kantai1-samba:
             smbd:
-              - path: /media2
+              - path: /shares/media2
       run:
         type: emptyDir
         medium: Memory

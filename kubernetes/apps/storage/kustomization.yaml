@@ -8,7 +8,7 @@ resources:
   - ./kantai1-samba/ks.yaml
   # - ./kantai3-samba/ks.yaml
   - ./maintenance/ks.yaml
-  - ./media-pv/ks.yaml
+  - ./storage-pv/ks.yaml
 components:
   - ../../components/common
 transformers:
