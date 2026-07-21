@@ -1,6 +1,6 @@
 ---
 # renovate: datasource=docker depName=ghcr.io/siderolabs/imager
-talosVersion: v1.13.2
+talosVersion: v1.13.7
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.36.2
 
