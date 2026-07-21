@@ -18,7 +18,7 @@ spec:
                         operator: Exists
           containers:
             - name: talos-backup
-              image: ghcr.io/siderolabs/talosctl:v1.12.2
+              image: ghcr.io/siderolabs/talosctl:v1.13.7
               command:
                 - /talosctl
                 - etcd
