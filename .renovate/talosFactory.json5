@@ -2,17 +2,23 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   customDatasources: {
     "talos-factory": {
-      defaultRegistryUrlTemplate: "https://factory.talos.dev/versions",
+      defaultRegistryUrlTemplate: "https://tif.etincelle.cloud/versions",
       format: "json",
       transformTemplates: ['{"releases": [$.{"version": $}]}'],
     },
   },
   customManagers: [
     {
+      // File pattern targets the `talos/` directory convention used by
+      // home-operations/cluster-template and similar layouts. Override
+      // `managerFilePatterns` if your Talos configs live elsewhere.
+      description: "Process Talos Factory installer images and topf talosVersion",
       customType: "regex",
-      managerFilePatterns: ["/talos\\/.*\\.yaml(?:\\.j2)?$/"],
+      managerFilePatterns: ["/talos\\/.*\\.ya?ml(?:\\.j2)?$/"],
       matchStrings: [
-        "factory\\.talos\\.dev\\/[^/]+\\/[^:]+:(?<currentValue>v\\S+)",
+        "tif\\.etincelle\\.cloud\\/[^/]+\\/[^:]+:(?<currentValue>v\\S+)",
+        // topf.yaml `talosVersion:` (bare or v-prefixed; topf trims the leading v)
+        "talosVersion:\\s*[\"']?(?<currentValue>v?[0-9][^\"'\\s]*)",
       ],
       datasourceTemplate: "custom.talos-factory",
       versioningTemplate: "semver",
@@ -21,7 +27,6 @@
   ],
   packageRules: [
     {
-      addLabels: ["renovate/talos"],
       matchDatasources: ["custom.talos-factory"],
       semanticCommitScope: "container",
       commitMessageTopic: "{{depName}}",
