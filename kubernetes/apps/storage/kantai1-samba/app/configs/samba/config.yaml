@@ -4,6 +4,8 @@ configs:
     globals:
       - default
     shares:
+      - homeassistant-backup
+      - jf
       - media1
       - media2
 globals:
