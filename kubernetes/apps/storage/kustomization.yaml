@@ -6,7 +6,6 @@ resources:
   - ./namespace.yaml
   - ./backups/ks.yaml
   - ./kantai1-samba/ks.yaml
-  # - ./kantai3-samba/ks.yaml
   - ./maintenance/ks.yaml
   - ./storage-pv/ks.yaml
 components:
