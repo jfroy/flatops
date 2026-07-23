@@ -55,6 +55,7 @@ nodes:
         ignore: true
     nodeLabels:
       secureboot.kantai.xyz: "true"
+      node.kantai.xyz/high-cpu: "true"
     schematic:
       customization:
         bootloader: sd-boot

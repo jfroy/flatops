@@ -18,6 +18,8 @@ spec:
       v: 4
     deschedulerPolicyAPIVersion: descheduler/v1alpha2
     deschedulerPolicy:
+      metricsProviders:
+        - source: KubernetesMetrics
       profiles:
         - name: default
           pluginConfig:

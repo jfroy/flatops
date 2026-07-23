@@ -11,12 +11,22 @@ spec:
     name: app-template
     namespace: flux-system
   values:
+    defaultPodOptions:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                  - key: node.kantai.xyz/high-cpu
+                    operator: In
+                    values: ["true"]
     controllers:
       esphome:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          esphdb:
+          esphome:
             image:
               repository: ghcr.io/home-operations/esphome
               tag: "2026.7.2@sha256:ff3aaa840f8cc971a65f1a1d369d7c1362a5a2a97588c8040f5ebdb0a22b1289"
