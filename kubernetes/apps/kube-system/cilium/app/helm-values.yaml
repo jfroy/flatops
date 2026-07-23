@@ -63,9 +63,15 @@ localRedirectPolicies:
 operator:
   replicas: 2
   rollOutPods: true
+  resources:
+    requests:
+      cpu: 25m
 pmtuDiscovery:
   enabled: true
 policyDenyResponse: icmp
+resources:
+  requests:
+    cpu: 100m
 rollOutCiliumPods: true
 routingMode: native
 securityContext:
