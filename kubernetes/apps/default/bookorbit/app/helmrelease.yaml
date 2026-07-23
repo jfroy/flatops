@@ -95,6 +95,8 @@ spec:
                 subPath: library/books
               - path: /manga
                 subPath: library/manga
+              - path: /manga-adult
+                subPath: library/manga-adult
       tmp:
         type: emptyDir
     route:
