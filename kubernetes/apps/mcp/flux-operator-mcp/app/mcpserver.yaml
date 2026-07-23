@@ -6,7 +6,7 @@ metadata:
   name: flux-operator-mcp
 spec:
   # renovate: datasource=docker depName=ghcr.io/controlplaneio-fluxcd/flux-operator-mcp
-  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.55.0
+  image: ghcr.io/controlplaneio-fluxcd/flux-operator-mcp:v0.56.0
   transport: streamable-http
   mcpPort: 8086
   proxyPort: 8080
