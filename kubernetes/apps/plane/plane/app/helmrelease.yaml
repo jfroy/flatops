@@ -1,0 +1,102 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: plane
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: plane-ce
+      version: 1.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: plane
+  driftDetection:
+    mode: enabled
+    ignore:
+      # Chart stamps `timestamp: now` on every pod template each render; ignore it so
+      # drift correction does not roll all pods every reconcile.
+      - paths: ["/spec/template/metadata/annotations/timestamp"]
+  values:
+    # renovate: datasource=github-releases depName=makeplane/plane
+    planeVersion: v1.3.1
+    ingress:
+      enabled: false
+      # Ingress disabled (we use HTTPRoute), but appHost still drives WEB_URL / CORS env.
+      appHost: plane.kantai.xyz
+    postgres:
+      local_setup: false
+    redis:
+      local_setup: true
+      storageClass: ceph-block
+      volumeSize: 100Mi
+    rabbitmq:
+      local_setup: true
+      storageClass: ceph-block
+      volumeSize: 100Mi
+      default_user: plane
+    minio:
+      local_setup: false
+    env:
+      default_cluster_domain: cluster.local
+      docstore_bucket: plane
+      aws_region: us-west-1
+      aws_s3_endpoint_url: https://s3.kantai.xyz
+  valuesFrom:
+    - kind: Secret
+      name: plane
+      valuesKey: SECRET_KEY
+      targetPath: env.secret_key
+    - kind: Secret
+      name: plane
+      valuesKey: LIVE_SERVER_SECRET_KEY
+      targetPath: env.live_server_secret_key
+    - kind: Secret
+      name: plane
+      valuesKey: RABBITMQ_DEFAULT_PASS
+      targetPath: rabbitmq.default_password
+    - kind: Secret
+      name: plane-db
+      valuesKey: PGDB_REMOTE_URL
+      targetPath: env.pgdb_remote_url
+    - kind: Secret
+      name: plane-obc
+      valuesKey: AWS_ACCESS_KEY_ID
+      targetPath: env.aws_access_key
+    - kind: Secret
+      name: plane-obc
+      valuesKey: AWS_SECRET_ACCESS_KEY
+      targetPath: env.aws_secret_access_key
+  postRenderers:
+    - kustomize:
+        patches:
+          # Chart hardcodes WEB_URL to http://; TLS terminates at the gateway.
+          - target:
+              kind: ConfigMap
+              name: plane-app-vars
+            patch: |
+              - op: replace
+                path: /data/WEB_URL
+                value: https://plane.kantai.xyz
+          # Create the plane role + database in CNPG before migrations run.
+          - target:
+              kind: Job
+              name: plane-api-migrate-.*
+            patch: |
+              - op: add
+                path: /spec/template/spec/initContainers
+                value:
+                  - name: init-db
+                    image: ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
+                    envFrom:
+                      - secretRef:
+                          name: plane-db
+                      - secretRef:
+                          name: plane-initdb
+                    securityContext:
+                      allowPrivilegeEscalation: false
+                      readOnlyRootFilesystem: true
+                      capabilities:
+                        drop: ["ALL"]
