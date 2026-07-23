@@ -19,7 +19,7 @@ spec:
           pocket-id:
             image:
               repository: registry.kantai.xyz/pocket-id/pocket-id
-              tag: latest-distroless-amd64@sha256:ab2a51c603d8e12bd34aa99ae9a2a550b2ee9ee62b65c2b0068daf93a3b01b2e
+              tag: latest-distroless-amd64@sha256:400158c6b6960f0ba114768785d25acf262daa68b50f798069b0f4612254915f
             env:
               ANALYTICS_DISABLED: "true"
               APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
