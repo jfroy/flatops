@@ -16,7 +16,7 @@ resources:
   - ./esphome/ks.yaml
   - ./etampe/ks.yaml
   # - ./familynido/ks.yaml
-  - ./filebrowser/ks.yaml
+  # - ./filebrowser/ks.yaml
   # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
   # - ./grimmory/ks.yaml
