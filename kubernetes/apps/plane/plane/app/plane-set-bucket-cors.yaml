@@ -1,0 +1,78 @@
+---
+# Sets a CORS policy on the `plane` RGW bucket so the browser SPA (plane.kantai.xyz)
+# can PUT/GET attachments directly against s3.kantai.xyz via presigned URLs.
+#
+# Plane only auto-configures CORS on its bundled MinIO; with external S3
+# (minio.local_setup=false) it never does, and Rook's ObjectBucketClaim has no
+# CORS passthrough (only bucketPolicy / bucketLifecycle). So CORS is imperative,
+# out-of-band bucket state. This Job is NOT wired into kustomization.yaml — it is a
+# manual, on-demand runbook, re-applied only if the bucket is rebuilt:
+#   kubectl -n plane delete job plane-set-bucket-cors --ignore-not-found
+#   kubectl -n plane apply -f ./set-bucket-cors-job.yaml
+#
+# Targets the internal RGW service directly (not s3.kantai.xyz) — the envoy L7 hop
+# breaks SigV4 request signing.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: plane-set-bucket-cors
+spec:
+  backoffLimit: 3
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: setcors
+          image: docker.io/amazon/aws-cli:2.31.34@sha256:5298b656f8b825f6fd43f7f5281a91b95579723472e2cf961fd8462b48281206
+          command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              aws --endpoint-url http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80 \
+                s3api put-bucket-cors --bucket plane --cors-configuration '{
+                  "CORSRules": [
+                    {
+                      "AllowedOrigins": ["https://plane.kantai.xyz"],
+                      "AllowedMethods": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+                      "AllowedHeaders": ["*"],
+                      "ExposeHeaders": ["ETag"],
+                      "MaxAgeSeconds": 3600
+                    }
+                  ]
+                }'
+              echo "CORS applied; reading back:"
+              aws --endpoint-url http://rook-ceph-rgw-ceph-objectstore.rook-ceph.svc:80 \
+                s3api get-bucket-cors --bucket plane
+          env:
+            - name: HOME
+              value: /tmp
+            - name: AWS_EC2_METADATA_DISABLED
+              value: "true"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: plane-obc
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: plane-obc
+                  key: AWS_SECRET_ACCESS_KEY
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }
+            readOnlyRootFilesystem: true
+            seccompProfile: { type: RuntimeDefault }
+      volumes:
+        - name: tmp
+          emptyDir: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
