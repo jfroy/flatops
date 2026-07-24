@@ -69,6 +69,9 @@ spec:
           - path: /tmp
     route:
       docker-registry-ui:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 401"]
         hostnames:
           - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
         parentRefs:
