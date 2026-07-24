@@ -116,3 +116,15 @@ spec:
                       readOnlyRootFilesystem: true
                       capabilities:
                         drop: ["ALL"]
+          # Entrypoint runs `celery worker` with no --concurrency, so the prefork pool
+          # sizes to the node's core count and OOMs on a many-core node. Cap it.
+          - target:
+              kind: Deployment
+              name: plane-worker-wl
+            patch: |
+              - op: replace
+                path: /spec/template/spec/containers/0/command
+                value:
+                  - /bin/bash
+                  - -c
+                  - python manage.py wait_for_db && python manage.py wait_for_migrations && celery -A plane worker -l info --concurrency=4
