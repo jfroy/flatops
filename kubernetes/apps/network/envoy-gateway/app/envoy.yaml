@@ -134,10 +134,6 @@ metadata:
   annotations:
     gatus.home-operations.com/endpoint: |-
       group: internal
-      guarded: true
-      ui:
-        hide-hostname: true
-        hide-url: true
   labels:
     external-dns.kantai.xyz/cloudflare: "true"
     external-dns.kantai.xyz/unifi: "true"
