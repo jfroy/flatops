@@ -22,6 +22,20 @@ spec:
   values:
     # renovate: datasource=github-releases depName=makeplane/plane
     planeVersion: v1.3.1
+    web:
+      image: docker.io/makeplane/plane-frontend
+    space:
+      image: docker.io/makeplane/plane-space
+    admin:
+      image: docker.io/makeplane/plane-admin
+    live:
+      image: docker.io/makeplane/plane-live
+    api:
+      image: docker.io/makeplane/plane-backend
+    worker:
+      image: docker.io/makeplane/plane-backend
+    beatworker:
+      image: docker.io/makeplane/plane-backend
     ingress:
       enabled: false
       # Ingress disabled (we use HTTPRoute), but appHost still drives WEB_URL / CORS env.
