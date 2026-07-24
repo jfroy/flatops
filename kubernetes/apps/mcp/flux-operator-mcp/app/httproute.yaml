@@ -8,8 +8,6 @@ spec:
   hostnames:
     - flux-mcp.kantai.xyz
   parentRefs:
-    - name: envoy-internal
-      namespace: network
     - name: envoy-external
       namespace: network
   rules:

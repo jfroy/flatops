@@ -75,8 +75,6 @@ spec:
         hostnames:
           - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
         parentRefs:
-          - name: envoy-internal
-            namespace: network
           - name: envoy-external
             namespace: network
         rules:
