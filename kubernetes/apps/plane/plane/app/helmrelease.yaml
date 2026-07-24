@@ -34,8 +34,10 @@ spec:
       image: docker.io/makeplane/plane-backend
     worker:
       image: docker.io/makeplane/plane-backend
+      memoryLimit: 2000Mi
     beatworker:
       image: docker.io/makeplane/plane-backend
+      memoryLimit: 1500Mi
     ingress:
       enabled: false
       # Ingress disabled (we use HTTPRoute), but appHost still drives WEB_URL / CORS env.
