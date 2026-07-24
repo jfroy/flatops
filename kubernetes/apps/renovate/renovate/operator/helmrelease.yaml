@@ -36,7 +36,7 @@ spec:
         enabled: true
         annotations:
           gatus.home-operations.com/endpoint: |-
-            conditions: ["[STATUS] == 401"]
+            conditions: ["[STATUS] == 404"]
         hostnames:
           - renovate-webhook.kantai.xyz
         parentRefs:
