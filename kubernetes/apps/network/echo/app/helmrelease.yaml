@@ -17,14 +17,11 @@ spec:
       enabled: true
       annotations:
         gatus.home-operations.com/endpoint: |-
-          group: external
           conditions: ["[STATUS] == 200"]
       hostnames:
         - "{{ .Release.Name }}.kantai.xyz"
       parentRefs:
         - name: envoy-external
-          namespace: network
-        - name: envoy-internal
           namespace: network
     monitoring:
       serviceMonitor:
