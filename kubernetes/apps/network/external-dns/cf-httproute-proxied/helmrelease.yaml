@@ -20,6 +20,7 @@ spec:
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
       - --cloudflare-proxied
+      - --default-targets=external.kantai.xyz
       - --gateway-label-filter=external-dns.kantai.xyz/cloudflare-proxied
     podAnnotations:
       secret.reloader.stakater.com/reload: external-dns-cloudflare-secret

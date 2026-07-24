@@ -72,19 +72,18 @@ kind: Gateway
 metadata:
   name: envoy-external
   annotations:
-    # NOTE: external-dns target for routes using this gateway; sends traffic to CF tunnel
-    external-dns.alpha.kubernetes.io/target: &hostname external.kantai.xyz
     gatus.home-operations.com/endpoint: |-
       client:
         dns-resolver: tcp://1.1.1.1:53
       group: external
   labels:
     external-dns.kantai.xyz/cloudflare-proxied: "true"
+    external-dns.kantai.xyz/unifi: "true"
 spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: *hostname
+      external-dns.alpha.kubernetes.io/hostname: external.kantai.xyz
   listeners:
     - name: https
       protocol: HTTPS
