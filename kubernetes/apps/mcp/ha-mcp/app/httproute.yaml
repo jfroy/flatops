@@ -10,6 +10,8 @@ spec:
   parentRefs:
     - name: envoy-internal
       namespace: network
+    - name: envoy-external
+      namespace: network
   rules:
     - backendRefs:
         - name: mcp-ha-mcp-proxy

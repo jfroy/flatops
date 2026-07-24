@@ -31,7 +31,7 @@ spec:
               OTEL_EXPORTER_OTLP_METRICS_COMPRESSION: gzip
               OTEL_EXPORTER_OTLP_METRICS_ENDPOINT: http://vmagent-kantai.observability.svc.cluster.local:8429/opentelemetry/v1/metrics
               OTEL_EXPORTER_OTLP_METRICS_PROTOCOL: http/protobuf
-              TRUST_PROXY: true
+              TRUST_PROXY: 10.11.0.0/16
               TZ: America/Los_Angeles
               UPLOAD_PATH: /data/uploads
               VERSION_CHECK_DISABLED: true
@@ -76,6 +76,8 @@ spec:
           - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
         parentRefs:
           - name: envoy-internal
+            namespace: network
+          - name: envoy-external
             namespace: network
         rules:
           - backendRefs:
