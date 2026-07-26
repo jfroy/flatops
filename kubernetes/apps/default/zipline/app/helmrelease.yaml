@@ -1,0 +1,124 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: zipline
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      zipline:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
+            envFrom:
+              - secretRef:
+                  name: zipline-db
+              - secretRef:
+                  name: zipline-initdb
+        containers:
+          zipline:
+            image:
+              repository: ghcr.io/diced/zipline
+              tag: 4.6.4@sha256:3e3a57520e0bdf614b74676c4fe0f14c430215b6f659133ce108edc54a167a8c
+            env:
+              CORE_DEFAULT_DOMAIN: zipline.kantai.xyz
+              CORE_HOSTNAME: 0.0.0.0
+              CORE_PORT: &port 3000
+              CORE_RETURN_HTTPS_URLS: "true"
+              CORE_TEMP_DIRECTORY: /tmp/zipline
+              CORE_TRUST_PROXY: "true"
+              DATASOURCE_S3_ACCESS_KEY_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: zipline-obc
+                    key: AWS_ACCESS_KEY_ID
+              DATASOURCE_S3_BUCKET: zipline
+              DATASOURCE_S3_ENDPOINT: https://s3.kantai.xyz
+              DATASOURCE_S3_REGION: us-west-1
+              DATASOURCE_S3_SECRET_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: zipline-obc
+                    key: AWS_SECRET_ACCESS_KEY
+              DATASOURCE_TYPE: s3
+              FEATURES_HEALTHCHECK: "true"
+              FEATURES_METRICS_ENABLED: "true"
+              FEATURES_OAUTH_REGISTRATION: "true"
+              FEATURES_THUMBNAILS_ENABLED: "true"
+              FEATURES_THUMBNAILS_FORMAT: "webp"
+              FEATURES_USER_REGISTRATION: "false"
+              FEATURES_VERSION_CHECKING: "false"
+              NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
+              OAUTH_BYPASS_LOCAL_LOGIN: "true"
+              OAUTH_OIDC_AUTHORIZE_URL: https://pid.kantai.xyz/authorize
+              OAUTH_OIDC_CLIENT_ID: 02d13fb7-4170-4eaf-87d1-e49495d4a603
+              OAUTH_OIDC_REDIRECT_URI: https://zipline.kantai.xyz/api/auth/oauth/oidc
+              OAUTH_OIDC_TOKEN_URL: https://pid.kantai.xyz/api/oidc/token
+              OAUTH_OIDC_USERINFO_URL: https://pid.kantai.xyz/api/oidc/userinfo
+              TZ: America/Los_Angeles
+              ZIPLINE_NO_COLOR: "true"
+            envFrom:
+              - secretRef:
+                  name: zipline
+              - secretRef:
+                  name: zipline-keys
+              - secretRef:
+                  name: zipline-db
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/healthcheck
+                    port: *port
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    persistence:
+      ca-certificates:
+        type: configMap
+        name: cluster-ca-certificates.crt
+        globalMounts:
+          - path: /certs
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    route:
+      zipline:
+        hostnames:
+          - zipline.kantai.xyz
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: zipline
+    service:
+      zipline:
+        controller: zipline
+        ports:
+          http:
+            port: *port
