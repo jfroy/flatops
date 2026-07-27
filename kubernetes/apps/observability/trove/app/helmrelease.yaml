@@ -19,7 +19,7 @@ spec:
           server:
             image:
               repository: ghcr.io/techdox/trove-server
-              tag: 0.17.0@sha256:998237dd24eaa68709a90b24881c4bce01f91e74d7ba74947b64464e1e0fcb79
+              tag: 0.17.1@sha256:967eaaa4dc7b9dfae6b127eeb83b7fd1521f7bb1bcbcba1b0f6f7a1125af8b2e
             env:
               TROVE_BOOTSTRAP_AGENT: kubernetes
               TROVE_OIDC_CLIENT_ID: cf3a4457-dbe5-411c-8bbb-9ae6795c4f95
