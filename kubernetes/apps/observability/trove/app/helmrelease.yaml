@@ -64,6 +64,8 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
+        pod:
+          automountServiceAccountToken: true
         serviceAccount:
           identifier: trove-agent-k8s
     defaultPodOptions:
