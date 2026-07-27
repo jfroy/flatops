@@ -31,6 +31,8 @@ spec:
                   name: trove
               - secretRef:
                   name: trove-token
+              - secretRef:
+                  name: trove-api-token
             probes:
               liveness: &probe
                 enabled: true
@@ -105,3 +107,19 @@ spec:
         ports:
           http:
             port: *port
+    serviceMonitor:
+      server:
+        service:
+          identifier: server
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            authorization:
+              type: Bearer
+              credentials:
+                name: trove-api-token
+                key: TROVE_API_TOKEN
+            metricRelabelings:
+              - action: labeldrop
+                regex: (pod)
