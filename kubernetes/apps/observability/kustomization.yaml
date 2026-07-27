@@ -21,6 +21,7 @@ resources:
   - ./silence-operator/ks.yaml
   - ./siren/ks.yaml
   - ./speedtest-exporter/ks.yaml
+  - ./trove/ks.yaml
   - ./unpoller/ks.yaml
   - ./victoria/ks.yaml
 components:
