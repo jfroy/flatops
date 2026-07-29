@@ -25,6 +25,7 @@ spec:
               TROVE_OIDC_CLIENT_ID: cf3a4457-dbe5-411c-8bbb-9ae6795c4f95
               TROVE_OIDC_ISSUER: https://pid.kantai.xyz
               TROVE_OIDC_REDIRECT_URL: https://trove.kantai.xyz/oauth2/callback
+              SQLITE_TMPDIR: /tmp
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
@@ -89,6 +90,12 @@ spec:
           server:
             server:
               - path: /data
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          server:
+            server:
+              - path: /tmp
     route:
       trove:
         hostnames:
