@@ -10,5 +10,10 @@ spec:
     mediaType: "application/vnd.cncf.helm.chart.content.v1.tar+gzip"
     operation: copy
   url: oci://ghcr.io/victoriametrics/helm-charts/victoria-metrics-operator-crds
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://token.actions.githubusercontent.com$
+        subject: ^https://github.com/VictoriaMetrics/helm-charts/.*$
   ref:
     tag: 0.13.1

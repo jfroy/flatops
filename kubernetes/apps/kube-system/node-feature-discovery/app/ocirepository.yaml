@@ -12,3 +12,8 @@ spec:
   ref:
     tag: 0.19.0
   url: oci://registry.k8s.io/nfd/charts/node-feature-discovery
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://accounts.google.com$
+        subject: ^krel-trust@k8s-releng-prod\.iam\.gserviceaccount\.com$

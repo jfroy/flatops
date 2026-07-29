@@ -12,3 +12,8 @@ spec:
   ref:
     tag: "3.9.0"
   url: oci://ghcr.io/seerr-team/seerr/seerr-chart
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://token.actions.githubusercontent.com$
+        subject: ^https://github.com/seerr-team/seerr/.*$

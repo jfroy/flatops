@@ -11,3 +11,8 @@ spec:
   ref:
     tag: 1.5.0
   url: oci://ghcr.io/stacklok/toolhive-registry-server
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://token.actions.githubusercontent.com$
+        subject: ^https://github.com/stacklok/toolhive-registry-server/.*$

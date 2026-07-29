@@ -12,3 +12,8 @@ spec:
   ref:
     tag: 5.5.0
   url: oci://ghcr.io/mogenius/helm-charts/renovate-operator
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://token.actions.githubusercontent.com$
+        subject: ^https://github.com/mogenius/renovate-operator/.*$

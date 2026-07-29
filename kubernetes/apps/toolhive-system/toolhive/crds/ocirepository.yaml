@@ -11,3 +11,8 @@ spec:
   ref:
     tag: 0.41.0
   url: oci://ghcr.io/stacklok/toolhive/toolhive-operator-crds
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://token.actions.githubusercontent.com$
+        subject: ^https://github.com/stacklok/toolhive/.*$
