@@ -7,6 +7,7 @@ resources:
   #
   - ./instance/ks.yaml
   - ./konflate/ks.yaml
+  - ./ocharted/ks.yaml
   - ./operator/ks.yaml
 components:
   - ../../components/common

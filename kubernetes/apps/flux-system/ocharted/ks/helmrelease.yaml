@@ -1,0 +1,41 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ocharted
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: ocharted
+  values:
+    replicaCount: 2
+    podDisruptionBudget:
+      enabled: true
+    config:
+      # The registry is anonymous, so the allowlist is the SSRF boundary.
+      upstreamAllowlist:
+        - "*.github.io" # metrics-server, descheduler, external-dns, ceph-csi-operator
+        - raw.githubusercontent.com # csi-driver-smb
+        - helm.ngc.nvidia.com # nvidia gpu-operator
+        - pkgs.tailscale.com # tailscale-operator
+    httpRoute:
+      enabled: true
+      annotations:
+        gatus.home-operations.com/endpoint: |-
+          path: /healthz
+          conditions: ["[STATUS] == 200"]
+      hostnames:
+        - "{{ .Release.Name }}.kantai.xyz"
+      parentRefs:
+        - name: envoy-internal
+          namespace: network
+    monitoring:
+      serviceMonitor:
+        enabled: true
+    resources:
+      requests:
+        cpu: 10m
+      limits:
+        memory: 512Mi
