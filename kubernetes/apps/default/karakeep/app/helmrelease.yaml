@@ -128,20 +128,6 @@ spec:
         pod:
           annotations:
             reloader.stakater.com/auto: "true"
-          affinity:
-            podAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/name
-                        operator: In
-                        values:
-                          - karakeep
-                      - key: app.kubernetes.io/instance
-                        operator: In
-                        values:
-                          - karakeep
-                  topologyKey: kubernetes.io/hostname
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -178,12 +164,16 @@ spec:
             karakeep:
               - path: /data
                 subPath: karakeep
-              - path: /meili_data
-                subPath: meilisearch
+      meili:
+        accessMode: ReadWriteOnce
+        size: 5Gi
+        storageClass: ceph-block
+        suffix: meili
+        type: persistentVolumeClaim
+        advancedMounts:
           meilisearch:
             meilisearch:
               - path: /meili_data
-                subPath: meilisearch
       run:
         type: emptyDir
         medium: Memory
