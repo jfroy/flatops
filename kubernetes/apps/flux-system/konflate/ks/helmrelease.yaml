@@ -17,6 +17,8 @@ spec:
       publicUrl: https://{{ .Release.Name }}.kantai.xyz
       mcp: true
       verifyImages: true
+      maxDiffConcurrency: 2
+      renderConcurrency: "8"
     secret:
       existingSecret: konflate
     httpRoute:
@@ -36,4 +38,5 @@ spec:
       requests:
         cpu: 50m
       limits:
-        memory: 1Gi
+        cpu: 2
+        memory: 2Gi
