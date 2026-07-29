@@ -12,3 +12,8 @@ spec:
   ref:
     tag: 0.4.3
   url: oci://ghcr.io/home-operations/charts/konflate
+  verify:
+    provider: cosign
+    matchOIDCIdentity:
+      - issuer: ^https://token.actions.githubusercontent.com$
+        subject: ^https://github.com/home-operations/konflate/.*$
