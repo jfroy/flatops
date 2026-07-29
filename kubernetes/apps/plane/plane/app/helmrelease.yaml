@@ -6,13 +6,9 @@ metadata:
   name: plane
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: plane-ce
-      version: 1.6.0
-      sourceRef:
-        kind: HelmRepository
-        name: plane
+  chartRef:
+    kind: OCIRepository
+    name: plane
   driftDetection:
     mode: enabled
     ignore:

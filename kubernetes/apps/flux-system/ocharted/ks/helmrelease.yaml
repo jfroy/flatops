@@ -17,9 +17,10 @@ spec:
       # The registry is anonymous, so the allowlist is the SSRF boundary.
       upstreamAllowlist:
         - "*.github.io" # metrics-server, descheduler, external-dns, ceph-csi-operator
-        - raw.githubusercontent.com # csi-driver-smb
         - helm.ngc.nvidia.com # nvidia gpu-operator
+        - helm.plane.so # plane-ce
         - pkgs.tailscale.com # tailscale-operator
+        - raw.githubusercontent.com # csi-driver-smb
     httpRoute:
       enabled: true
       annotations:

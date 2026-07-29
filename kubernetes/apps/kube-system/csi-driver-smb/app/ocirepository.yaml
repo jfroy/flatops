@@ -11,9 +11,4 @@ spec:
     operation: copy
   ref:
     tag: 1.20.3
-  url: oci://ghcr.io/home-operations/charts-mirror/csi-driver-smb
-  verify:
-    provider: cosign
-    matchOIDCIdentity:
-      - issuer: ^https://token.actions.githubusercontent.com$
-        subject: ^https://github.com/home-operations/charts-mirror.*$
+  url: oci://ocharted.kantai.xyz/raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts/csi-driver-smb

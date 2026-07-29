@@ -9,8 +9,8 @@
     },
     // - Don't automerge gpu-operator
     {
-      matchDatasources: ["helm"],
-      matchPackageNames: ["gpu-operator"],
+      matchDatasources: ["docker"],
+      matchPackageNames: ["**/gpu-operator"],
       automerge: false,
     },
     // - Don't automerge postgres
@@ -22,7 +22,7 @@
     // - Don't automerge Cilium minor releases; they are basically major releases
     {
       matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/home-operations/charts-mirror/cilium", "quay.io/cilium/charts/cilium"],
+      matchPackageNames: ["quay.io/cilium/charts/cilium"],
       matchUpdateTypes: ["major", "minor"],
       automerge: false,
     },
