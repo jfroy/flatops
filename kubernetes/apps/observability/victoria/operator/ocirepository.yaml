@@ -16,4 +16,4 @@ spec:
       - issuer: ^https://token.actions.githubusercontent.com$
         subject: ^https://github.com/VictoriaMetrics/helm-charts/.*$
   ref:
-    tag: 0.66.3
+    tag: 0.67.0
