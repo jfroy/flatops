@@ -98,6 +98,9 @@ spec:
               - path: /tmp
     route:
       trove:
+        annotations:
+          gatus.home-operations.com/endpoint: |-
+            conditions: ["[STATUS] == 401"]
         hostnames:
           - trove.kantai.xyz
         parentRefs:
