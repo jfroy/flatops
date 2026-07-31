@@ -33,7 +33,7 @@ resources:
   - ./mealie/ks.yaml
   - ./memos/ks.yaml
   - ./miniflux/ks.yaml
-  # - ./netbox/ks.yaml
+  - ./netbox/ks.yaml
   - ./nextflux/ks.yaml
   # - ./notifier/ks.yaml
   # - ./octoeverywhere-bambu-connect/ks.yaml

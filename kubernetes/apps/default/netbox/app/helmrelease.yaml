@@ -53,8 +53,17 @@ spec:
     resourcesPreset: none
     metrics:
       enabled: true
-      serviceMonitor:
+      granian:
         enabled: true
+        serviceMonitor:
+          enabled: true
+    httpRoute:
+      enabled: true
+      parentRefs:
+        - name: envoy-internal
+          namespace: network
+      hostnames:
+        - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
     postgresql:
       enabled: false
     externalDatabase:
@@ -65,8 +74,19 @@ spec:
       existingSecretName: netbox-db
       existingSecretKey: DB_PASSWORD
     valkey:
-      enabled: true
-      architecture: standalone
+      enabled: false
+    tasksDatabase:
+      host: netbox-valkey.default.svc.cluster.local
+      port: 6379
+      database: 0
+      existingSecretName: netbox-valkey
+      existingSecretKey: VALKEY_PASSWORD
+    cachingDatabase:
+      host: netbox-valkey.default.svc.cluster.local
+      port: 6379
+      database: 1
+      existingSecretName: netbox-valkey
+      existingSecretKey: VALKEY_PASSWORD
     housekeeping:
       enabled: false
     worker:
