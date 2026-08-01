@@ -27,18 +27,19 @@ spec:
       backends:
         - social_core.backends.open_id_connect.OpenIdConnectAuth
       autoCreateUser: true
-    extraEnvs:
-      - name: SOCIAL_AUTH_OIDC_OIDC_ENDPOINT
-        value: https://pid.kantai.xyz
-      - name: SOCIAL_AUTH_OIDC_KEY
-        value: b81b4d7b-b011-4cbc-8396-79fd40a6fa1e
-      - name: SOCIAL_AUTH_OIDC_SCOPE
-        value: openid,profile,email
-      - name: SOCIAL_AUTH_OIDC_SECRET
-        valueFrom:
-          secretKeyRef:
-            name: netbox-oidc
-            key: OIDC_CLIENT_SECRET
+    extraConfig:
+      - values:
+          SOCIAL_AUTH_OIDC_OIDC_ENDPOINT: https://pid.kantai.xyz
+          SOCIAL_AUTH_OIDC_KEY: b81b4d7b-b011-4cbc-8396-79fd40a6fa1e
+          SOCIAL_AUTH_OIDC_SCOPE:
+            - openid
+            - profile
+            - email
+      - secret:
+          secretName: netbox-oidc
+          items:
+            - key: oidc.yaml
+              path: oidc.yaml
     storages:
       default:
         BACKEND: storages.backends.s3.S3Storage
