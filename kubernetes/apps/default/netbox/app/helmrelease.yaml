@@ -18,6 +18,27 @@ spec:
     admins:
       - ["jfroy", "jf@devklog.net"]
     loginRequired: true
+    email:
+      server: etampe.default.svc.cluster.local
+      port: 2525
+      from: "netbox@kantai.xyz"
+    remoteAuth:
+      enabled: true
+      backends:
+        - social_core.backends.open_id_connect.OpenIdConnectAuth
+      autoCreateUser: true
+    extraEnvs:
+      - name: SOCIAL_AUTH_OIDC_OIDC_ENDPOINT
+        value: https://pid.kantai.xyz
+      - name: SOCIAL_AUTH_OIDC_KEY
+        value: b81b4d7b-b011-4cbc-8396-79fd40a6fa1e
+      - name: SOCIAL_AUTH_OIDC_SCOPE
+        value: openid,profile,email
+      - name: SOCIAL_AUTH_OIDC_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: netbox-oidc
+            key: OIDC_CLIENT_SECRET
     storages:
       default:
         BACKEND: storages.backends.s3.S3Storage
@@ -88,9 +109,9 @@ spec:
       existingSecretName: netbox-valkey
       existingSecretKey: VALKEY_PASSWORD
     housekeeping:
-      enabled: false
+      enabled: true
     worker:
-      enabled: false
+      enabled: true
   valuesFrom:
     - targetPath: storages.default.OPTIONS.access_key
       kind: Secret
