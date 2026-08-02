@@ -12,7 +12,7 @@ spec:
   skipForks: true
   secretRef: github-jfroy-bot-auth-token
   # renovate: datasource=docker depName=ghcr.io/jfroy/renovate
-  image: ghcr.io/jfroy/renovate:43.257.6@sha256:62189ab8bb42b5d222c0cc556676b1d17e29c20e68cab2326e3daa4977cb3ad4
+  image: ghcr.io/jfroy/renovate:44.6.0@sha256:ccee5c1412e4201fc41270871669d835d338944a10c13e275480f908487a6a49
   schedule: 0,30 * * * *
   parallelism: 10
   resources:
