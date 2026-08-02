@@ -13,10 +13,9 @@ spec:
       reloader.stakater.com/auto: "true"
     superuser:
       name: jfroy
-      email: jf@devklog.net
-      # existingSecret: ?
+      email: jf@lesroy.net
     admins:
-      - ["jfroy", "jf@devklog.net"]
+      - ["jfroy", "jf@lesroy.net"]
     loginRequired: true
     email:
       server: etampe.default.svc.cluster.local
