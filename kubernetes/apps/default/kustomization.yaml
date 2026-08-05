@@ -40,7 +40,7 @@ resources:
   # - ./ollama/ks.yaml
   # - ./open-webui/ks.yaml
   # - ./oxicloud/ks.yaml
-  # - ./paperless/ks.yaml
+  - ./paperless/ks.yaml
   - ./pgadmin/ks.yaml
   - ./photon/ks.yaml
   # - ./pinchflat/ks.yaml

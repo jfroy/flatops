@@ -43,11 +43,13 @@ spec:
           paperless:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
-              tag: 2.20.15@sha256:6c86cad803970ea782683a8e80e7403444c5bf3cf70de63b4d3c8e87500db92f
+              tag: 3.0.5@sha256:65a4cabf0169ea7fbd90ab7bb28ba3f8b5909613635acda1a03ad606f34b456b
             env:
               PAPERLESS_ACCOUNT_ALLOW_SIGNUPS: false
+              PAPERLESS_ALLAUTH_TRUSTED_PROXY_COUNT: 1
               PAPERLESS_APPS: allauth.socialaccount.providers.openid_connect
-              PAPERLESS_CONSUMER_POLLING: 360
+              PAPERLESS_ARCHIVE_FILE_GENERATION: auto
+              PAPERLESS_CONSUMER_POLLING_INTERVAL: 360
               PAPERLESS_CONSUMER_RECURSIVE: true
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: true
               PAPERLESS_CONSUMPTION_DIR: /inbox
@@ -62,7 +64,6 @@ spec:
               PAPERLESS_ENABLE_FLOWER: true
               PAPERLESS_MEDIA_ROOT: /data
               PAPERLESS_OCR_LANGUAGE: eng
-              PAPERLESS_OCR_SKIP_ARCHIVE_FILE: with_text
               PAPERLESS_OCR_USER_ARGS: '{"invalidate_digital_signatures": true}'
               PAPERLESS_PORT: &port 8000
               PAPERLESS_READ_CACHE_TTL: 300 # 5 minutes
@@ -74,8 +75,6 @@ spec:
               PAPERLESS_TIME_ZONE: America/Los_Angeles
               PAPERLESS_URL: https://paperless.kantai.xyz
               PAPERLESS_WEBSERVER_WORKERS: 2
-              USERMAP_GID: 1000
-              USERMAP_UID: 1000
             envFrom:
               - configMapRef:
                   name: paperless-env
@@ -93,7 +92,7 @@ spec:
               startup:
                 enabled: true
                 spec:
-                  failureThreshold: 30
+                  failureThreshold: 60
                   periodSeconds: 5
             securityContext:
               allowPrivilegeEscalation: false
