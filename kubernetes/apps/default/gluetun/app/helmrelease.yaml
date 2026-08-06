@@ -25,15 +25,18 @@ spec:
               tag: v3.41.3@sha256:970fdef9eedb103e2f49a5c6716322d52053bc91fa67e6eebe32cfe43f315b50
             args:
               - update
-              - -enduser
+              - -providers
+              - airvpn
             env:
+              STORAGE_SERVERS_DIRECTORY_PATH: /gluetun/servers/
               TZ: America/Los_Angeles
-              UPDATER_VPN_SERVICE_PROVIDERS: airvpn
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/hostname: kantai1
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -43,7 +46,7 @@ spec:
     persistence:
       gluetun-update:
         type: persistentVolumeClaim
-        size: 1Mi
+        size: 30Mi
         accessMode: ReadWriteOnce
         storageClass: ceph-block
         globalMounts:

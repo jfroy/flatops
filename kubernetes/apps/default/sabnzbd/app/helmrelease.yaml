@@ -53,22 +53,20 @@ spec:
               tag: v3.41.3@sha256:970fdef9eedb103e2f49a5c6716322d52053bc91fa67e6eebe32cfe43f315b50
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
-              DOT: off
-              DOT_CACHING: off
-              DOT_IPV6: off
-              FIREWALL_DEBUG: on
+              DNS_CACHING: off
+              DNS_SERVER: off
+              DNS_UPSTREAM_IPV6: off
               FIREWALL_INPUT_PORTS: "80,9999"
+              FIREWALL_IPTABLES_LOG_LEVEL: debug
+              HEALTH_RESTART_VPN: off
               HEALTH_SERVER_ADDRESS: ":9999"
-              HEALTH_SERVER_DISABLE_LOOP: on
               LOG_LEVEL: debug
               PUBLICIP_API: cloudflare
-              STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
-              UPDATER_PERIOD: 24h
+              STORAGE_SERVERS_DIRECTORY_PATH: /gluetun/servers/
+              TZ: America/Los_Angeles
               VERSION_INFORMATION: off
               VPN_INTERFACE: wg0
-              VPN_IPV6_SERVER: off
               VPN_TYPE: wireguard
-              TZ: America/Los_Angeles
             envFrom:
               - secretRef:
                   name: gluetun-sabnzbd-secret
@@ -78,7 +76,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /check/
+                    path: /
                     port: 9999
                   periodSeconds: 30
                   timeoutSeconds: 10
@@ -87,10 +85,11 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /check/
+                    path: /
                     port: 9999
                   initialDelaySeconds: 10
                   timeoutSeconds: 10
+                  failureThreshold: 12
             resources:
               limits:
                 kernel.org/tun: 1
@@ -106,6 +105,8 @@ spec:
             pod-security.kantai.xyz/allow-added-capabilities: "true"
           hostname: sabnzbd
     defaultPodOptions:
+      nodeSelector:
+        kubernetes.io/hostname: kantai1
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
