@@ -46,6 +46,7 @@ spec:
       - litellm
       - litellm-keys
       - litellm-s3-obc
+      - litellm-oidc
 
     envVars:
       TZ: America/Los_Angeles
@@ -53,6 +54,11 @@ spec:
       S3_REGION_NAME: us-west-1
       S3_ENDPOINT_URL: https://s3.kantai.xyz
       LITELLM_MODE: PRODUCTION
+      PROXY_BASE_URL: https://litellm.kantai.xyz
+      GENERIC_AUTHORIZATION_ENDPOINT: https://pid.kantai.xyz/authorize
+      GENERIC_TOKEN_ENDPOINT: https://pid.kantai.xyz/api/oidc/token
+      GENERIC_USERINFO_ENDPOINT: https://pid.kantai.xyz/api/oidc/userinfo
+      GENERIC_SCOPE: "openid profile email"
 
     db:
       useExisting: true
