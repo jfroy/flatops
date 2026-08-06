@@ -20,12 +20,16 @@ spec:
       runAsGroup: 1000
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
+      seccompProfile:
+        type: RuntimeDefault
     securityContext:
       allowPrivilegeEscalation: false
       capabilities: { drop: ["ALL"] }
       readOnlyRootFilesystem: true
       runAsNonRoot: true
       runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
 
     masterkeySecretName: litellm-keys
     masterkeySecretKey: PROXY_MASTER_KEY
@@ -74,6 +78,8 @@ spec:
           readOnlyRootFilesystem: true
           runAsNonRoot: true
           runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
 
     migrationJob:
       enabled: true
