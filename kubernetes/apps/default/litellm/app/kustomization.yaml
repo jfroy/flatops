@@ -8,3 +8,6 @@ resources:
   - ./objectbucketclaim.yaml
   - ./helmrelease.yaml
   - ./httproute.yaml
+  - ./servicemonitor.yaml
+  - ./prometheusrule.yaml
+  - ./grafanadashboard.yaml
