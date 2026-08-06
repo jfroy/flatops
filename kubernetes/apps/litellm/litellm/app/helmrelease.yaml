@@ -12,6 +12,7 @@ spec:
     name: litellm
   values:
     replicaCount: 1
+    logLevel: ERROR
     podAnnotations:
       reloader.stakater.com/auto: "true"
     podSecurityContext:
@@ -44,6 +45,7 @@ spec:
       S3_BUCKET_NAME: litellm-s3
       S3_REGION_NAME: us-west-1
       S3_ENDPOINT_URL: https://s3.kantai.xyz
+      LITELLM_MODE: PRODUCTION
 
     db:
       useExisting: true
@@ -98,17 +100,22 @@ spec:
           litellm_params:
             model: anthropic/claude-sonnet-5
             api_key: os.environ/ANTHROPIC_API_KEY
+            rust: true
         - model_name: claude-opus-5
           litellm_params:
             model: anthropic/claude-opus-5
             api_key: os.environ/ANTHROPIC_API_KEY
+            rust: true
         - model_name: claude-fable-5
           litellm_params:
             model: anthropic/claude-fable-5
             api_key: os.environ/ANTHROPIC_API_KEY
+            rust: true
       general_settings:
         master_key: os.environ/PROXY_MASTER_KEY
         store_model_in_db: false
+        database_connection_pool_limit: 10
+        proxy_batch_write_at: 60
       litellm_settings:
         callbacks: ["prometheus", "s3_v2"]
         s3_callback_params:
@@ -116,6 +123,9 @@ spec:
           s3_region_name: os.environ/S3_REGION_NAME
           s3_endpoint_url: os.environ/S3_ENDPOINT_URL
           s3_use_virtual_hosted_style: true
+        request_timeout: 600
+        set_verbose: false
+        json_logs: true
 
     # No Gateway API support in this chart — HTTPRoute is hand-written (Task 4).
     ingress:
