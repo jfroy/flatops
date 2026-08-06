@@ -55,6 +55,7 @@ spec:
         name: litellm-db
         usernameKey: DATABASE_USERNAME
         passwordKey: DATABASE_PASSWORD
+        readReplicaUrlKey: DATABASE_URL_READ_REPLICA
       deployStandalone: false
     redis:
       enabled: false
