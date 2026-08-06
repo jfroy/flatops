@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/gateway.networking.k8s.io/httproute_v1.json
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  labels:
+    app.kubernetes.io/name: litellm
+  name: litellm
+spec:
+  hostnames:
+    - litellm.kantai.xyz
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: envoy-internal
+      namespace: network
+  rules:
+    - backendRefs:
+        - name: litellm
+          port: 4000
