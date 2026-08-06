@@ -12,6 +12,13 @@ spec:
     name: litellm
   values:
     replicaCount: 1
+    # Verified 2026-08-06: cosign verify --key
+    # https://raw.githubusercontent.com/BerriAI/litellm/main/cosign.pub
+    # ghcr.io/berriai/litellm-database@sha256:af7ff0444278be40f7615764d1562ac557df6103cba052e886915a7e1e944c27
+    # — signature valid. Renovate keeps this tag+digest pair current but does not re-run
+    # cosign; re-verify manually on any out-of-band bump.
+    image:
+      tag: "1.95.0@sha256:af7ff0444278be40f7615764d1562ac557df6103cba052e886915a7e1e944c27"
     logLevel: ERROR
     podAnnotations:
       reloader.stakater.com/auto: "true"
