@@ -48,6 +48,8 @@ spec:
               DNS_CACHING: off
               DNS_SERVER: off
               DNS_UPSTREAM_IPV6: off
+              DNS_UPSTREAM_PLAIN_ADDRESSES: 1.1.1.1:53,1.0.0.1:53
+              DNS_UPSTREAM_RESOLVER_TYPE: plain
               FIREWALL_INPUT_PORTS: "80,9999"
               FIREWALL_IPTABLES_LOG_LEVEL: debug
               HEALTH_RESTART_VPN: off
