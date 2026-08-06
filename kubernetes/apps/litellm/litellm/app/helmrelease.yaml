@@ -12,12 +12,13 @@ spec:
     name: litellm
   values:
     replicaCount: 1
-    # Verified 2026-08-06: cosign verify --key
-    # https://raw.githubusercontent.com/BerriAI/litellm/main/cosign.pub
-    # ghcr.io/berriai/litellm-database@sha256:af7ff0444278be40f7615764d1562ac557df6103cba052e886915a7e1e944c27
-    # — signature valid. Renovate keeps this tag+digest pair current but does not re-run
-    # cosign; re-verify manually on any out-of-band bump.
     image:
+      # Verified 2026-08-06: cosign verify --key
+      # https://raw.githubusercontent.com/BerriAI/litellm/main/cosign.pub
+      # ghcr.io/berriai/litellm-database@sha256:af7ff0444278be40f7615764d1562ac557df6103cba052e886915a7e1e944c27
+      # — signature valid. Renovate tracks this tag+digest via the marker below but does not
+      # re-run cosign; re-verify manually whenever this bumps.
+      # renovate: datasource=docker depName=ghcr.io/berriai/litellm-database versioning=loose
       tag: "1.95.0@sha256:af7ff0444278be40f7615764d1562ac557df6103cba052e886915a7e1e944c27"
     logLevel: ERROR
     podAnnotations:
@@ -47,6 +48,7 @@ spec:
       - litellm-keys
       - litellm-s3-obc
       - litellm-oidc
+      - litellm-salt
 
     envVars:
       TZ: America/Los_Angeles
@@ -59,6 +61,7 @@ spec:
       GENERIC_TOKEN_ENDPOINT: https://pid.kantai.xyz/api/oidc/token
       GENERIC_USERINFO_ENDPOINT: https://pid.kantai.xyz/api/oidc/userinfo
       GENERIC_SCOPE: "openid profile email"
+      GENERIC_USER_ID_ATTRIBUTE: sub
 
     db:
       useExisting: true
@@ -178,3 +181,12 @@ spec:
                     mountPath: /.cache
                   - name: npm
                     mountPath: /.npm
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: litellm
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/envFrom/3/secretRef/optional
+                value: true
