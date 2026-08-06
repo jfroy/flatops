@@ -1,0 +1,115 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/BerriAI/litellm/main/helm/litellm-helm/values.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: litellm
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: litellm
+  values:
+    replicaCount: 1
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities: { drop: ["ALL"] }
+      readOnlyRootFilesystem: true
+
+    masterkeySecretName: litellm-keys
+    masterkeySecretKey: PROXY_MASTER_KEY
+
+    environmentSecrets:
+      - litellm
+      - litellm-keys
+      - litellm-s3-obc
+
+    envVars:
+      TZ: America/Los_Angeles
+      S3_BUCKET_NAME: litellm-s3
+      S3_REGION_NAME: us-west-1
+      S3_ENDPOINT_URL: https://s3.kantai.xyz
+
+    db:
+      useExisting: true
+      database: litellm
+      endpoint: pg18vc-rw.database.svc.cluster.local
+      secret:
+        name: litellm-db
+        usernameKey: DATABASE_USERNAME
+        passwordKey: DATABASE_PASSWORD
+      deployStandalone: false
+    redis:
+      enabled: false
+
+    # Creates the "litellm" role/database in CNPG before the container starts.
+    # Also referenced (via the &initDb / *initDb YAML anchor, not a copy) by
+    # migrationJob.extraInitContainers below: the migration Job is a Helm
+    # pre-upgrade hook that runs *before* this Deployment, so without it
+    # there the migration would hit a database that doesn't exist yet on
+    # first install. postgres-init is idempotent, so running it twice (hook
+    # Job, then this Deployment) is safe.
+    extraInitContainers: &initDb
+      - name: init-db
+        image: ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
+        envFrom:
+          - secretRef:
+              name: litellm-db
+          - secretRef:
+              name: litellm-initdb
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: { drop: ["ALL"] }
+          readOnlyRootFilesystem: true
+
+    migrationJob:
+      enabled: true
+      hooks:
+        argocd:
+          enabled: false
+        helm:
+          enabled: true
+      extraInitContainers: *initDb
+
+    proxyConfigMap:
+      create: true
+    proxy_config:
+      model_list:
+        - model_name: claude-sonnet-5
+          litellm_params:
+            model: anthropic/claude-sonnet-5
+            api_key: os.environ/ANTHROPIC_API_KEY
+        - model_name: claude-opus-5
+          litellm_params:
+            model: anthropic/claude-opus-5
+            api_key: os.environ/ANTHROPIC_API_KEY
+        - model_name: claude-fable-5
+          litellm_params:
+            model: anthropic/claude-fable-5
+            api_key: os.environ/ANTHROPIC_API_KEY
+      general_settings:
+        master_key: os.environ/PROXY_MASTER_KEY
+        store_model_in_db: false
+      litellm_settings:
+        callbacks: ["prometheus", "s3_v2"]
+        s3_callback_params:
+          s3_bucket_name: os.environ/S3_BUCKET_NAME
+          s3_region_name: os.environ/S3_REGION_NAME
+          s3_endpoint_url: os.environ/S3_ENDPOINT_URL
+          s3_use_virtual_hosted_style: true
+
+    # No Gateway API support in this chart — HTTPRoute is hand-written (Task 4).
+    ingress:
+      enabled: false
+    # No auth support on the chart's toggle and /metrics/ requires bearer auth —
+    # hand-written ServiceMonitor instead (Task 5).
+    serviceMonitor:
+      enabled: false

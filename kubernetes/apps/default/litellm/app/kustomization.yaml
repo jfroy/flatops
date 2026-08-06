@@ -6,3 +6,4 @@ resources:
   - ./ocirepository.yaml
   - ./externalsecret.yaml
   - ./objectbucketclaim.yaml
+  - ./helmrelease.yaml
