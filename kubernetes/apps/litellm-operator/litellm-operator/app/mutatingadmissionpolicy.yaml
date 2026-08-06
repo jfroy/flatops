@@ -1,0 +1,127 @@
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: litellm-securitycontext
+spec:
+  failurePolicy: Fail
+  reinvocationPolicy: Never
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  matchConditions:
+    - name: is-litellm-proxy-pod
+      expression: >-
+        has(object.metadata.labels) &&
+        object.metadata.labels[?'app.kubernetes.io/managed-by'].orValue('') == 'litellm-operator'
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          Object{
+            spec: Object.spec{
+              securityContext: Object.spec.securityContext{
+                runAsNonRoot: true,
+                runAsUser: 1000,
+                runAsGroup: 1000,
+                fsGroup: 1000,
+                fsGroupChangePolicy: "OnRootMismatch",
+                seccompProfile: Object.spec.securityContext.seccompProfile{
+                  type: "RuntimeDefault"
+                }
+              }
+            }
+          }
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          lists.range(object.spec.containers.size()).map(i,
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(i) + "/securityContext",
+              value: Object.spec.containers.securityContext{
+                allowPrivilegeEscalation: false,
+                readOnlyRootFilesystem: true,
+                capabilities: Object.spec.containers.securityContext.capabilities{
+                  drop: ["ALL"]
+                }
+              }
+            })
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: litellm-securitycontext-binding
+spec:
+  policyName: litellm-securitycontext
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: litellm
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: litellm-init-db
+spec:
+  failurePolicy: Fail
+  reinvocationPolicy: Never
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  matchConditions:
+    - name: is-litellm-proxy-pod
+      expression: >-
+        has(object.metadata.labels) &&
+        object.metadata.labels[?'app.kubernetes.io/managed-by'].orValue('') == 'litellm-operator'
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          Object{
+            spec: Object.spec{
+              initContainers: [
+                Object.spec.initContainers{
+                  name: "init-db",
+                  image: "ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec",
+                  envFrom: [
+                    Object.spec.initContainers.envFrom{
+                      secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-db"}
+                    },
+                    Object.spec.initContainers.envFrom{
+                      secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-initdb"}
+                    }
+                  ],
+                  securityContext: Object.spec.initContainers.securityContext{
+                    allowPrivilegeEscalation: false,
+                    readOnlyRootFilesystem: true,
+                    runAsNonRoot: true,
+                    runAsUser: 1000,
+                    capabilities: Object.spec.initContainers.securityContext.capabilities{
+                      drop: ["ALL"]
+                    },
+                    seccompProfile: Object.spec.initContainers.securityContext.seccompProfile{
+                      type: "RuntimeDefault"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: litellm-init-db-binding
+spec:
+  policyName: litellm-init-db
+  matchResources:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: litellm

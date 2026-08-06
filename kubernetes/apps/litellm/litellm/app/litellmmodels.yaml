@@ -1,0 +1,92 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: claude-sonnet-5
+spec:
+  proxyRef: litellm
+  modelName: claude-sonnet-5
+  params:
+    model: anthropic/claude-sonnet-5
+    apiKeyRef:
+      name: litellm
+      key: ANTHROPIC_API_KEY
+    additional:
+      rust: true
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: claude-opus-5
+spec:
+  proxyRef: litellm
+  modelName: claude-opus-5
+  params:
+    model: anthropic/claude-opus-5
+    apiKeyRef:
+      name: litellm
+      key: ANTHROPIC_API_KEY
+    additional:
+      rust: true
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: claude-fable-5
+spec:
+  proxyRef: litellm
+  modelName: claude-fable-5
+  params:
+    model: anthropic/claude-fable-5
+    apiKeyRef:
+      name: litellm
+      key: ANTHROPIC_API_KEY
+    additional:
+      rust: true
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  # Kubernetes object names can't contain dots — spec.modelName (below) keeps the real
+  # dotted name clients call.
+  name: gpt-5-6-sol
+spec:
+  proxyRef: litellm
+  modelName: gpt-5.6-sol
+  params:
+    model: openai/gpt-5.6-sol
+    apiKeyRef:
+      name: litellm
+      key: OPENAI_API_KEY
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: gpt-5-6-terra
+spec:
+  proxyRef: litellm
+  modelName: gpt-5.6-terra
+  params:
+    model: openai/gpt-5.6-terra
+    apiKeyRef:
+      name: litellm
+      key: OPENAI_API_KEY
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: gpt-5-6-luna
+spec:
+  proxyRef: litellm
+  modelName: gpt-5.6-luna
+  params:
+    model: openai/gpt-5.6-luna
+    apiKeyRef:
+      name: litellm
+      key: OPENAI_API_KEY
