@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/monitoring.coreos.com/servicemonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    app.kubernetes.io/name: litellm
+  name: litellm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: litellm
+      app.kubernetes.io/instance: litellm
+  namespaceSelector:
+    matchNames:
+      - litellm
+  endpoints:
+    - port: http
+      path: /metrics/
+      scheme: http
+      interval: 30s
+      scrapeTimeout: 10s
+      authorization:
+        type: Bearer
+        credentials:
+          name: litellm-keys
+          key: PROXY_MASTER_KEY

@@ -1,0 +1,204 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: litellm
+spec:
+  interval: 1h
+  timeout: 15m
+  chartRef:
+    kind: OCIRepository
+    name: litellm
+  values:
+    replicaCount: 1
+    image:
+      # Verified 2026-08-06: cosign verify --key
+      # https://raw.githubusercontent.com/BerriAI/litellm/main/cosign.pub
+      # ghcr.io/berriai/litellm-database@sha256:af7ff0444278be40f7615764d1562ac557df6103cba052e886915a7e1e944c27
+      # — signature valid. Renovate tracks this tag+digest via the marker below but does not
+      # re-run cosign; re-verify manually whenever this bumps.
+      # renovate: datasource=docker depName=ghcr.io/berriai/litellm-database versioning=loose
+      tag: "1.95.0@sha256:af7ff0444278be40f7615764d1562ac557df6103cba052e886915a7e1e944c27"
+    logLevel: ERROR
+    podAnnotations:
+      reloader.stakater.com/auto: "true"
+    podSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: OnRootMismatch
+      seccompProfile:
+        type: RuntimeDefault
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities: { drop: ["ALL"] }
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+      seccompProfile:
+        type: RuntimeDefault
+
+    masterkeySecretName: litellm-keys
+    masterkeySecretKey: PROXY_MASTER_KEY
+
+    environmentSecrets:
+      - litellm
+      - litellm-keys
+      - litellm-s3-obc
+      - litellm-oidc
+      - litellm-salt
+
+    envVars:
+      TZ: America/Los_Angeles
+      S3_BUCKET_NAME: litellm-s3
+      S3_REGION_NAME: us-west-1
+      S3_ENDPOINT_URL: https://s3.kantai.xyz
+      LITELLM_MODE: PRODUCTION
+      PROXY_BASE_URL: https://litellm.kantai.xyz
+      GENERIC_AUTHORIZATION_ENDPOINT: https://pid.kantai.xyz/authorize
+      GENERIC_TOKEN_ENDPOINT: https://pid.kantai.xyz/api/oidc/token
+      GENERIC_USERINFO_ENDPOINT: https://pid.kantai.xyz/api/oidc/userinfo
+      GENERIC_SCOPE: "openid profile email"
+      GENERIC_USER_ID_ATTRIBUTE: sub
+
+    db:
+      useExisting: true
+      database: litellm
+      endpoint: pg18vc-rw.database.svc.cluster.local
+      secret:
+        name: litellm-db
+        usernameKey: DATABASE_USERNAME
+        passwordKey: DATABASE_PASSWORD
+        readReplicaUrlKey: DATABASE_URL_READ_REPLICA
+      deployStandalone: false
+    redis:
+      enabled: false
+
+    # Creates the "litellm" role/database in CNPG before the container starts.
+    # Also referenced (via the &initDb / *initDb YAML anchor, not a copy) by
+    # migrationJob.extraInitContainers below: the migration Job is a Helm
+    # pre-upgrade hook that runs *before* this Deployment, so without it
+    # there the migration would hit a database that doesn't exist yet on
+    # first install. postgres-init is idempotent, so running it twice (hook
+    # Job, then this Deployment) is safe.
+    extraInitContainers: &initDb
+      - name: init-db
+        image: ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec
+        envFrom:
+          - secretRef:
+              name: litellm-db
+          - secretRef:
+              name: litellm-initdb
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: { drop: ["ALL"] }
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+
+    migrationJob:
+      enabled: true
+      hooks:
+        argocd:
+          enabled: false
+        helm:
+          enabled: true
+      extraInitContainers: *initDb
+
+    proxyConfigMap:
+      create: true
+    proxy_config:
+      model_list:
+        - model_name: claude-sonnet-5
+          litellm_params:
+            model: anthropic/claude-sonnet-5
+            api_key: os.environ/ANTHROPIC_API_KEY
+            rust: true
+        - model_name: claude-opus-5
+          litellm_params:
+            model: anthropic/claude-opus-5
+            api_key: os.environ/ANTHROPIC_API_KEY
+            rust: true
+        - model_name: claude-fable-5
+          litellm_params:
+            model: anthropic/claude-fable-5
+            api_key: os.environ/ANTHROPIC_API_KEY
+            rust: true
+        - model_name: gpt-5.6-sol
+          litellm_params:
+            model: openai/gpt-5.6-sol
+            api_key: os.environ/OPENAI_API_KEY
+        - model_name: gpt-5.6-terra
+          litellm_params:
+            model: openai/gpt-5.6-terra
+            api_key: os.environ/OPENAI_API_KEY
+        - model_name: gpt-5.6-luna
+          litellm_params:
+            model: openai/gpt-5.6-luna
+            api_key: os.environ/OPENAI_API_KEY
+      general_settings:
+        master_key: os.environ/PROXY_MASTER_KEY
+        store_model_in_db: false
+        database_connection_pool_limit: 10
+        proxy_batch_write_at: 60
+      litellm_settings:
+        callbacks: ["prometheus", "s3_v2"]
+        s3_callback_params:
+          s3_bucket_name: os.environ/S3_BUCKET_NAME
+          s3_region_name: os.environ/S3_REGION_NAME
+          s3_endpoint_url: os.environ/S3_ENDPOINT_URL
+          s3_use_virtual_hosted_style: true
+        request_timeout: 600
+        set_verbose: false
+        json_logs: true
+
+    # No Gateway API support in this chart — HTTPRoute is hand-written (Task 4).
+    ingress:
+      enabled: false
+    # No auth support on the chart's toggle and /metrics/ requires bearer auth —
+    # hand-written ServiceMonitor instead (Task 5).
+    serviceMonitor:
+      enabled: false
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: batch
+              version: v1
+              kind: Job
+              name: litellm-migrations
+            patch: |
+              - op: add
+                path: /spec/template/spec/volumes
+                value:
+                  - name: tmp
+                    emptyDir:
+                      sizeLimit: 500Mi
+                  - name: cache
+                    emptyDir:
+                      sizeLimit: 500Mi
+                  - name: npm
+                    emptyDir:
+                      sizeLimit: 500Mi
+              - op: add
+                path: /spec/template/spec/containers/0/volumeMounts
+                value:
+                  - name: tmp
+                    mountPath: /tmp
+                  - name: cache
+                    mountPath: /.cache
+                  - name: npm
+                    mountPath: /.npm
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: litellm
+            patch: |
+              - op: add
+                path: /spec/template/spec/containers/0/envFrom/3/secretRef/optional
+                value: true

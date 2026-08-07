@@ -3,11 +3,9 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app pinchflat
+  name: &app litellm
 spec:
-  components:
-    - ../../../../components/kopiur/backup
-  path: ./kubernetes/apps/default/pinchflat/app
+  path: ./kubernetes/apps/litellm/litellm/app
   prune: true
   sourceRef:
     kind: GitRepository
@@ -15,8 +13,7 @@ spec:
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
-  timeout: 5m
+  timeout: 10m
   postBuild:
     substitute:
       APP: *app
-      KOPIUR_CAPACITY: 100Mi
