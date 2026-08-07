@@ -57,7 +57,7 @@ spec:
           tracearr:
             image:
               repository: ghcr.io/connorgallopo/tracearr
-              tag: 2.0.0@sha256:2aa63d4b96e96b0ef474e86757ca5208ba42e0ac020f5d6f95782dfed4c43686
+              tag: 2.0.1@sha256:3d57d9b032b4a57919c48c919c16c3d6640b83f9116feb2c2cdf907747702ec8
             env:
               CORS_ORIGIN: "https://tracearr.kantai.xyz"
               HOST: "0.0.0.0"
