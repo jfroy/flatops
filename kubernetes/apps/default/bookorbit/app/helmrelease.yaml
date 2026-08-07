@@ -36,7 +36,7 @@ spec:
           bookorbit:
             image:
               repository: ghcr.io/bookorbit/bookorbit
-              tag: 2.4.0@sha256:b179cbee249fbb050a6aa8fde337eb3867c925012a43e18f7214ba987b0a90b5
+              tag: 2.5.0@sha256:e131834be597819000e44d580cbe16c168895a6334315ba4101963c028c29b0e
             env:
               APP_URL: https://bookorbit.kantai.xyz
               CLIENT_URL: https://bookorbit.kantai.xyz
