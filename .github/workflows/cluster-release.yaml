@@ -19,6 +19,8 @@ permissions:
   contents: read
 
 env:
+  # Must match status.webhookPath for Receiver cluster-release/flux-system.
+  FLUX_RECEIVER_URL: https://flux-webhook.kantai.xyz/hook/ef1ac25eeff8057bf82070418a3eabb755c4821b29ff32377c75863bc1692ab5
   OCI_REPOSITORY: ghcr.io/${{ github.repository }}/cluster
 
 jobs:
@@ -103,3 +105,21 @@ jobs:
           DIGEST: ${{ steps.publish.outputs.digest }}
         run: |
           flux tag artifact "oci://${OCI_REPOSITORY}@${DIGEST}" --tag latest
+
+      - name: Notify Flux
+        run: |
+          token="$(curl --fail-with-body --silent --show-error \
+            --header "Authorization: bearer ${ACTIONS_ID_TOKEN_REQUEST_TOKEN}" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=notification-controller" \
+            | jq -er '.value')"
+          for attempt in $(seq 1 30); do
+            if curl --fail-with-body --silent --show-error \
+              --request POST \
+              --header "Authorization: Bearer ${token}" \
+              "${FLUX_RECEIVER_URL}"; then
+              exit 0
+            fi
+            echo "Flux Receiver unavailable (attempt ${attempt}/30); retrying in 10 seconds"
+            sleep 10
+          done
+          exit 1

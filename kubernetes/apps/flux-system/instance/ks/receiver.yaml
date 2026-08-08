@@ -3,18 +3,20 @@
 apiVersion: notification.toolkit.fluxcd.io/v1
 kind: Receiver
 metadata:
-  name: github-webhook
+  name: cluster-release
 spec:
-  type: github
-  events:
-    - ping
-    - push
-  secretRef:
-    name: github-webhook-token-secret
+  type: generic-oidc
+  oidcProviders:
+    - issuerURL: https://token.actions.githubusercontent.com
+      audience: notification-controller
+      validations:
+        - expression: claims.repository == "jfroy/flatops"
+          message: unexpected repository
+        - expression: claims.ref == "refs/heads/main"
+          message: release must run from main
+        - expression: claims.workflow_ref == "jfroy/flatops/.github/workflows/cluster-release.yaml@refs/heads/main"
+          message: unexpected workflow
   resources:
     - apiVersion: source.toolkit.fluxcd.io/v1
-      kind: GitRepository
-      name: flux-system
-    - apiVersion: kustomize.toolkit.fluxcd.io/v1
-      kind: Kustomization
+      kind: OCIRepository
       name: flux-system
