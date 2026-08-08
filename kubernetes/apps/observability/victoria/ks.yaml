@@ -16,7 +16,7 @@ spec:
   path: ./kubernetes/apps/observability/victoria/logs
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -44,7 +44,7 @@ spec:
   path: ./kubernetes/apps/observability/victoria/metrics
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -68,7 +68,7 @@ spec:
   path: ./kubernetes/apps/observability/victoria/operator
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -84,7 +84,7 @@ spec:
   path: ./kubernetes/apps/observability/victoria/operator-crds
   prune: false
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

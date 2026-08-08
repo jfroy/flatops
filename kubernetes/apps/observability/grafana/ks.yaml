@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/observability/grafana/dashboards
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -28,7 +28,7 @@ spec:
   path: ./kubernetes/apps/observability/grafana/instance
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -48,7 +48,7 @@ spec:
   path: ./kubernetes/apps/observability/grafana/operator
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   wait: true

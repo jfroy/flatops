@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/common
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -24,7 +24,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/cf-httproute
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -40,7 +40,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/cf-httproute-proxied
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -56,7 +56,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/cf-crd
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -72,7 +72,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/cf-crd-proxied
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -88,7 +88,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/unifi
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -104,7 +104,7 @@ spec:
   path: ./kubernetes/apps/network/external-dns/unifi-crd
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

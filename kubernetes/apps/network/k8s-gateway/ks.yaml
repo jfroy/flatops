@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/network/k8s-gateway/tailscale-dns
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

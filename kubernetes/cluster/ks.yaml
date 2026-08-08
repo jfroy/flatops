@@ -11,7 +11,7 @@ spec:
   path: ./kubernetes/apps
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -62,7 +62,7 @@ spec:
   path: ./kubernetes/vap
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

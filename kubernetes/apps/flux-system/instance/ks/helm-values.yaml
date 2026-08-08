@@ -9,13 +9,26 @@ instance:
     - helm-controller
     - notification-controller
   sync:
-    kind: GitRepository
-    url: https://github.com/jfroy/flatops
-    ref: refs/heads/main
+    kind: OCIRepository
+    url: oci://ghcr.io/jfroy/flatops/cluster
+    ref: latest
     path: kubernetes/cluster
-    interval: 1h
+    interval: 5m
   kustomize:
     patches:
+      # Only reconcile cluster state from artifacts signed by this workflow on main.
+      - patch: |-
+          - op: add
+            path: /spec/verify
+            value:
+              provider: cosign
+              matchOIDCIdentity:
+                - issuer: ^https://token[.]actions[.]githubusercontent[.]com$
+                  subject: ^https://github[.]com/jfroy/flatops/[.]github/workflows/cluster-release[.]yaml@refs/heads/main$
+        target:
+          group: source.toolkit.fluxcd.io
+          kind: OCIRepository
+          name: flux-system
       # Increase the number of reconciliations that can be performed in parallel
       # https://fluxcd.io/flux/installation/configuration/vertical-scaling/#increase-the-number-of-workers-and-limits
       - patch: |

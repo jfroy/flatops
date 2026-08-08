@@ -13,7 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Cluster
 
-This is **kantai**, a Kubernetes cluster running Talos Linux, with a mix of bare-metal and virtual nodes, managed entirely through GitOps via FluxCD and Flux Operator. All services live under `kantai.xyz`. Current repo configuration targets Talos `v1.13.2` and Kubernetes `v1.36.1`. Flux syncs `refs/heads/main` from `https://github.com/jfroy/flatops` at `kubernetes/cluster`.
+This is **kantai**, a Kubernetes cluster running Talos Linux, with a mix of bare-metal and virtual nodes, managed entirely through GitOps via FluxCD and Flux Operator. All services live under `kantai.xyz`. Current repo configuration targets Talos `v1.13.2` and Kubernetes `v1.36.1`. Flux syncs `kubernetes/cluster` from the `latest` artifact at `oci://ghcr.io/jfroy/flatops/cluster`. GitHub Actions publishes and keylessly signs the artifact from `refs/heads/main`; Flux verifies its Cosign identity before reconciliation.
 
 ## Flux MCP Server
 
@@ -139,6 +139,7 @@ Renovate automatically opens PRs for container image and Helm chart updates. Min
 GitHub Actions workflows in `.github/workflows/`:
 
 - `claude-review.yaml` — runs `anthropics/claude-code-action` on every non-Renovate, non-fork PR to review the diff against these conventions and post inline review comments. Needs the `ANTHROPIC_API_KEY` repository secret
+- `cluster-release.yaml` — builds the `kubernetes/` tree into an OCI artifact on main, publishes it to GHCR, signs its digest with GitHub OIDC/Cosign, verifies the signature, promotes it to `latest`, then calls the OIDC-authenticated Flux Receiver for immediate reconciliation
 - `label-sync.yaml` — syncs `.github/labels.yaml` to the repository's labels
 
 PR manifest diffs are not a workflow: `konflate` runs in-cluster (`kubernetes/apps/flux-system/konflate/`), renders HelmReleases and Kustomizations for changed manifests, and reports back as PR comments and status checks. Its UI is at `konflate.kantai.xyz`.
