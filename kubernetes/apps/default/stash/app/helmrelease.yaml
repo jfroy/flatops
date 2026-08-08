@@ -60,7 +60,7 @@ spec:
           stash:
             image:
               repository: ghcr.io/jfroy/stash
-              tag: v0.31.1-cudajellyfin
+              tag: v0.31.1-cudajellyfin@sha256:720df0459b84722d086cf6cacb2248d451aa7491eba13d88c1c956f052df21e0
             env:
               AI_BACKEND_BASE_URL: https://stash.kantai.xyz/sais
               HOME: /config
