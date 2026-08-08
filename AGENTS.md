@@ -136,4 +136,9 @@ Renovate automatically opens PRs for container image and Helm chart updates. Min
 
 ## CI
 
-- `flate.yaml` — runs `flate diff` for changed Kubernetes manifests on PRs and Renovate pushes, uploading/commenting HelmRelease and Kustomization diffs
+GitHub Actions workflows in `.github/workflows/`:
+
+- `claude-review.yaml` — runs `anthropics/claude-code-action` on every non-Renovate, non-fork PR to review the diff against these conventions and post inline review comments. Needs the `ANTHROPIC_API_KEY` repository secret
+- `label-sync.yaml` — syncs `.github/labels.yaml` to the repository's labels
+
+PR manifest diffs are not a workflow: `konflate` runs in-cluster (`kubernetes/apps/flux-system/konflate/`), renders HelmReleases and Kustomizations for changed manifests, and reports back as PR comments and status checks. Its UI is at `konflate.kantai.xyz`.

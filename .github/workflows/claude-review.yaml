@@ -1,0 +1,76 @@
+---
+# yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
+name: Claude Review
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  review:
+    name: Claude Review - Review Pull Request
+    # Skip Renovate's high volume of mechanical dependency bumps, and skip fork
+    # PRs, where `pull_request` withholds secrets so the job could only fail.
+    if: >-
+      github.actor != 'renovate[bot]'
+      && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Review
+        uses: anthropics/claude-code-action@6d63f3a36cec5179d0cf49088ae8cef8ad18cf17 # v1.0.189
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            REPO: ${{ github.repository }}
+            PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Review this pull request. The PR branch is already checked out in
+            the current working directory. Read AGENTS.md first — it documents
+            the conventions this repository expects.
+
+            This is a Flux-managed Kubernetes GitOps repository. There is no
+            test suite; a bad manifest breaks the cluster on the next
+            reconciliation. Focus on:
+
+            - Kustomize wiring: new resources actually referenced from a
+              kustomization.yaml or ks.yaml, correct relative paths, apps
+              registered in kubernetes/apps/default/kustomization.yaml
+            - Flux correctness: valid apiVersions and kinds, chartRef/OCIRepository
+              targets that exist, dependsOn ordering, postBuild substitutions
+              whose variables are actually defined
+            - Deviations from the documented app pattern, HelmRelease global
+              defaults, security context, and route/Gateway conventions
+            - Secrets: nothing plaintext, ExternalSecret keys consistent with
+              the 1Password entries the app expects
+            - Breaking or destructive changes: removed resources, renamed PVCs
+              or volsync targets, storage or network changes that drop data
+
+            Report only issues that are actionable and specific to this diff.
+            Do not restate what the diff does, and do not open with a summary
+            of the change. If the change looks correct, say so briefly.
+
+            Use `gh pr comment` for top-level feedback.
+            Use `mcp__github_inline_comment__create_inline_comment` (with
+            `confirmed: true`) to flag specific lines.
+            Only post GitHub comments — do not emit the review as chat output.
+          claude_args: |
+            --allowedTools "mcp__github_inline_comment__create_inline_comment,Bash(gh pr comment:*),Bash(gh pr diff:*),Bash(gh pr view:*)"
