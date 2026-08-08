@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/default/media-pv/app
   prune: false  # don't GC local ZFS volumes
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

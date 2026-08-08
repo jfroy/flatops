@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/default/immich/app
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -30,7 +30,7 @@ spec:
   path: ./kubernetes/apps/default/immich/frame
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -55,7 +55,7 @@ spec:
   path: ./kubernetes/apps/default/immich/pet-tagger
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -78,7 +78,7 @@ spec:
   path: ./kubernetes/apps/default/immich/valkey
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
