@@ -38,11 +38,16 @@ spec:
               DB_ENGINE: postgres
               OIDC_ADMIN_GROUP: mealie_admins
               OIDC_AUTH_ENABLED: "true"
+              OIDC_CLIENT_ID: 3409db10-3155-4d9c-bae5-f9d7eb4d02c8
               OIDC_CONFIGURATION_URL: https://pid.kantai.xyz/.well-known/openid-configuration
               OIDC_PROVIDER_NAME: Pocket ID
               OIDC_REMEMBER_ME: "true"
               OIDC_SIGNUP_ENABLED: "true"
-              OPENAI_MODEL: gpt-5-mini
+              SMTP_AUTH_STRATEGY: NONE
+              SMTP_FROM_EMAIL: mealie@kantai.xyz
+              SMTP_FROM_NAME: Mealie
+              SMTP_HOST: etampe.default.svc.cluster.local
+              SMTP_PORT: "2525"
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
