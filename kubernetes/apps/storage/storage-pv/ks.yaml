@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/storage/storage-pv/ks
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   wait: true

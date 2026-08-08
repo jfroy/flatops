@@ -8,7 +8,7 @@ spec:
   path: ./kubernetes/apps/kube-system/coredns/app
   prune: false  # don't GC coredns to avoid unwanted DR
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

@@ -11,8 +11,6 @@ spec:
   eventSources:
     - kind: FluxInstance
       name: "*"
-    - kind: GitRepository
-      name: "*"
     - kind: HelmRelease
       name: "*"
     - kind: HelmRepository

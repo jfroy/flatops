@@ -26,7 +26,7 @@ spec:
   path: ./kubernetes/apps/rook-ceph/cluster/app
   prune: false  # don't GC ceph cluster to avoid unwanted DR
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

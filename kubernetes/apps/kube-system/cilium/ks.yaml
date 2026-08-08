@@ -14,7 +14,7 @@ spec:
   path: ./kubernetes/apps/kube-system/cilium/app
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -31,7 +31,7 @@ spec:
   path: ./kubernetes/apps/kube-system/cilium/config
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

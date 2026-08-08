@@ -13,7 +13,7 @@ spec:
   path: ./kubernetes/apps/observability/silence-operator/app
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -31,7 +31,7 @@ spec:
   path: ./kubernetes/apps/observability/silence-operator/silences
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

@@ -18,7 +18,7 @@ spec:
   path: ./kubernetes/apps/kopiur-system/kopiur/app
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -36,7 +36,7 @@ spec:
   path: ./kubernetes/apps/kopiur-system/kopiur/repository
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h

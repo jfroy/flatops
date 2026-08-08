@@ -16,7 +16,7 @@ spec:
   path: ./kubernetes/apps/cert-manager/cert-manager/app
   prune: true
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
@@ -43,7 +43,7 @@ spec:
   path: ./kubernetes/apps/cert-manager/cert-manager/issuers
   prune: false  # don't delete issued certificates
   sourceRef:
-    kind: GitRepository
+    kind: OCIRepository
     name: flux-system
     namespace: flux-system
   interval: 1h
