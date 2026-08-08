@@ -2,6 +2,11 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
+      matchDatasources: ["github-releases"],
+      matchPackageNames: ["fluxcd/flux2"],
+      extractVersion: "^v(?<version>.+)$",
+    },
+    {
       matchDatasources: ["docker"],
       matchPackageNames: ["ghcr.io/home-operations/plex"],
       versioning: "loose"
