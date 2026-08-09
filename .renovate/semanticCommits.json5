@@ -1,0 +1,67 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  packageRules: [
+    {
+      matchDatasources: [
+        "docker"
+      ],
+      semanticCommitScope: "container",
+      commitMessageTopic: "image {{depName}}"
+    },
+    {
+      matchDatasources: [
+        "helm"
+      ],
+      semanticCommitScope: "helm",
+      commitMessageTopic: "chart {{depName}}"
+    },
+    {
+      matchManagers: [
+        "github-actions"
+      ],
+      semanticCommitType: "ci",
+      semanticCommitScope: "github-action",
+      commitMessageTopic: "action {{depName}}"
+    },
+    {
+      matchDatasources: [
+        "github-releases"
+      ],
+      semanticCommitType: "chore",
+      semanticCommitScope: "github-release",
+      commitMessageTopic: "release {{depName}}"
+    },
+    {
+      matchManagers: [
+        "renovate-config"
+      ],
+      semanticCommitType: "chore",
+      semanticCommitScope: "renovate-config",
+      commitMessageTopic: "config {{depName}}"
+    },
+    {
+      matchManagers: [
+        "mise"
+      ],
+      semanticCommitType: "chore",
+      semanticCommitScope: "mise",
+      commitMessageTopic: "tool {{depName}}"
+    },
+    {
+      matchUpdateTypes: [
+        "minor"
+      ],
+      matchCurrentVersion: "/^v?0\\./",
+      semanticCommitType: "feat",
+      commitMessagePrefix: "{{semanticCommitType}}({{semanticCommitScope}})!:",
+      commitMessageExtra: "({{currentVersion}} ➔ {{newVersion}})"
+    },
+    {
+      matchUpdateTypes: [
+        "minor"
+      ],
+      matchCurrentVersion: "/^v?0\\./",
+      additionalBranchPrefix: "major-"
+    },
+  ]
+}

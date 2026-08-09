@@ -2,36 +2,80 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/home-operations/plex"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/home-operations/plex"
+      ],
       versioning: "loose"
     },
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/jellyfin/jellyfin-vue"],
-      versioning: "regex:^unstable\\.(?<major>\\d{4})-(?<minor>\\d{2})-(?<patch>\\d{2})\\.(?<build>[a-f0-9]+)$"
-    },
-    {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/tensorchord/vchord-scratch"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/tensorchord/vchord-scratch"
+      ],
       versioning: "regex:^pg(?<compatibility>\\d+)-v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/cloudnative-pg/postgis-extension"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/cloudnative-pg/postgis-extension"
+      ],
       versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>\\d+-\\w+)$"
-    },
-    {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["registry.kantai.xyz/**", "tif.etincelle.cloud/**"],
-      enabled: false
     },
     // - Disable InfluxDB major releases; keep v1 and v2 separate
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["docker.io/library/influxdb", "influxdb"],
-      matchUpdateTypes: ["major"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "docker.io/library/influxdb",
+        "influxdb"
+      ],
+      matchUpdateTypes: [
+        "major"
+      ],
       enabled: false,
+    },
+    {
+      matchPackageNames: [
+        "/cloudflared/"
+      ],
+      changelogUrl: "https://github.com/cloudflare/cloudflared/blob/master/RELEASE_NOTES"
+    },
+    {
+      matchDatasources: [
+        "docker"
+      ],
+      matchManagers: [
+        "helmfile"
+      ],
+      overrideDepName: "{{packageName}}"
+    },
+    {
+      matchFileNames: [
+        ".mise.toml",
+        "mise.toml"
+      ],
+      matchDatasources: [
+        "github-releases",
+        "github-tags"
+      ],
+      overridePackageName: "{{#if (lookup (split packageName '/') 1)}}{{packageName}}{{else if (lookup (split packageName ':') 1)}}{{ lookup (split packageName ':') 1 }}/{{ lookup (split packageName ':') 1 }}{{else}}{{packageName}}/{{packageName}}{{/if}}"
+    },
+    {
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/mogenius/helm-charts/renovate-operator"
+      ],
+      sourceUrl: "https://github.com/mogenius/renovate-operator"
     },
   ]
 }

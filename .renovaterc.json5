@@ -9,21 +9,23 @@
     ":disableRateLimiting",
     ":semanticCommits",
     ":timezone(America/Los_Angeles)",
-    "github>home-operations/renovate-presets//config/registryAliases.json5",
-    "github>home-operations/renovate-presets//managers/grafanaDashboards.json5",
-    "github>home-operations/renovate-presets//overrides/changelogs.json5",
-    "github>home-operations/renovate-presets//overrides/renovateOperator.json5",
-    "github>home-operations/renovate-presets//policies/semanticCommits.json5",
+    "github>home-operations/renovate-presets//apps/grafanaDashboards.json5",
     "github>jfroy/flatops//.renovate/autoMerge.json5",
     "github>jfroy/flatops//.renovate/customManagers.json5",
     "github>jfroy/flatops//.renovate/groups.json5",
     "github>jfroy/flatops//.renovate/labels.json5",
     "github>jfroy/flatops//.renovate/packageRules.json5",
+    "github>jfroy/flatops//.renovate/semanticCommits.json5",
     "github>jfroy/flatops//.renovate/talosFactory.json5",
   ],
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
-  gitIgnoredAuthors: ["29139614+renovate[bot]@users.noreply.github.com"],
+  gitIgnoredAuthors: [
+    "29139614+renovate[bot]@users.noreply.github.com"
+  ],
   rebaseWhen: "conflicted",
+  registryAliases: {
+    "mirror.gcr.io": "docker.io"
+  },
   flux: {
     managerFilePatterns: [
       "/^kubernetes/.+\\.yaml$/",
@@ -38,5 +40,10 @@
     managerFilePatterns: [
       "/^kubernetes/.+\\.yaml$/",
     ],
+  },
+  kustomize: {
+    managerFilePatterns: [
+      "/^kubernetes/.*kustomization\\.yaml$/",
+    ]
   },
 }

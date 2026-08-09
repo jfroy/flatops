@@ -2,20 +2,36 @@
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
   packageRules: [
     {
-      matchUpdateTypes: ["major"],
-      addLabels: ["type/major"],
+      matchUpdateTypes: [
+        "major"
+      ],
+      addLabels: [
+        "type/major"
+      ],
     },
     {
-      matchUpdateTypes: ["minor"],
-      addLabels: ["type/minor"],
+      matchUpdateTypes: [
+        "minor"
+      ],
+      addLabels: [
+        "type/minor"
+      ],
     },
     {
-      matchUpdateTypes: ["patch"],
-      addLabels: ["type/patch"],
+      matchUpdateTypes: [
+        "patch"
+      ],
+      addLabels: [
+        "type/patch"
+      ],
     },
     {
-      matchUpdateTypes: ["digest"],
-      addLabels: ["type/digest"],
+      matchUpdateTypes: [
+        "digest"
+      ],
+      addLabels: [
+        "type/digest"
+      ],
     },
   ],
 }

@@ -3,68 +3,130 @@
   packageRules: [
     // - Don't automerge Talos
     {
-      matchDatasources: ["docker", "custom.talos-factory"],
-      matchPackageNames: ["/siderolabs/"],
+      matchDatasources: [
+        "docker",
+        "custom.talos-factory"
+      ],
+      matchPackageNames: [
+        "/siderolabs/"
+      ],
       automerge: false,
     },
     // - Don't automerge gpu-operator
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["**/gpu-operator"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "**/gpu-operator"
+      ],
       automerge: false,
     },
     // - Don't automerge postgres
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/cloudnative-pg/postgresql"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/cloudnative-pg/postgresql"
+      ],
       automerge: false,
     },
     // - Don't automerge Cilium minor releases; they are basically major releases
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["quay.io/cilium/charts/cilium"],
-      matchUpdateTypes: ["major", "minor"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "quay.io/cilium/charts/cilium"
+      ],
+      matchUpdateTypes: [
+        "major",
+        "minor"
+      ],
       automerge: false,
     },
     // - Don't automerge qbittorrent major+minor releases; some trackers whitelist clients
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/home-operations/qbittorrent"],
-      matchUpdateTypes: ["major", "minor"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/home-operations/qbittorrent"
+      ],
+      matchUpdateTypes: [
+        "major",
+        "minor"
+      ],
       automerge: false,
     },
     // - Don't automerge Rook-Ceph minor releases; they are basically major releases
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/rook/rook-ceph", "ghcr.io/rook/rook-ceph-cluster"],
-      matchUpdateTypes: ["major", "minor"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/rook/rook-ceph",
+        "ghcr.io/rook/rook-ceph-cluster"
+      ],
+      matchUpdateTypes: [
+        "major",
+        "minor"
+      ],
       automerge: false,
     },
     // - Don't automerge Ceph image major/minor; storage updates need review
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["quay.io/ceph/ceph"],
-      matchUpdateTypes: ["major", "minor"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "quay.io/ceph/ceph"
+      ],
+      matchUpdateTypes: [
+        "major",
+        "minor"
+      ],
       automerge: false,
     },
     // - Don't automerge Samba; updates are disruptive
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/jfroy/samba"],
-      matchUpdateTypes: ["major", "minor", "patch", "digest"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/jfroy/samba"
+      ],
+      matchUpdateTypes: [
+        "major",
+        "minor",
+        "patch",
+        "digest"
+      ],
       automerge: false,
     },
     // - Automerge digest updates from trusted repos
     {
-      matchDatasources: ["docker"],
-      matchUpdateTypes: ["digest"],
-      matchPackageNames: ["ghcr.io/home-operations**/*", "ghcr.io/jfroy/*"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchUpdateTypes: [
+        "digest"
+      ],
+      matchPackageNames: [
+        "ghcr.io/home-operations**/*",
+        "ghcr.io/jfroy/*"
+      ],
       automerge: true,
     },
     // - Packages whose major versions are basically minor or patch releases
     {
-      matchDatasources: ["docker"],
-      matchUpdateTypes: ["major"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchUpdateTypes: [
+        "major"
+      ],
       matchPackageNames: [
         "ghcr.io/mendhak/http-https-echo",
         "ghcr.io/prometheus-community/charts/kube-prometheus-stack",
@@ -75,8 +137,12 @@
     },
     // - Packages which use digest releases
     {
-      matchDatasources: ["docker"],
-      matchUpdateTypes: ["digest"],
+      matchDatasources: [
+        "docker"
+      ],
+      matchUpdateTypes: [
+        "digest"
+      ],
       matchPackageNames: [
         "docker.io/electh/nextflux",
         "ghcr.io/lklynet/hypermind",
@@ -86,7 +152,9 @@
     },
     // - Automerge Grafana dashboards
     {
-      matchDatasources: ["custom.grafana-dashboards"],
+      matchDatasources: [
+        "custom.grafana-dashboards"
+      ],
       automerge: true,
     }
   ]
