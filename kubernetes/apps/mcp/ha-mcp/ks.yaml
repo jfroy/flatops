@@ -8,6 +8,8 @@ spec:
   dependsOn:
     - name: toolhive-operator
       namespace: toolhive-system
+    - name: mcp-telemetry
+      namespace: mcp
   healthChecks:
     - apiVersion: toolhive.stacklok.dev/v1beta1
       kind: MCPServer

@@ -1,0 +1,19 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./grafanadashboard.yaml
+  - ./mcptelemetryconfig.yaml
+  - ./podmonitor.yaml
+configMapGenerator:
+  - name: toolhive-dashboards
+    files:
+      - ./configmaps/toolhive-mcp.json
+    options:
+      annotations:
+        kustomize.toolkit.fluxcd.io/substitute: disabled
+      labels:
+        grafana_dashboard: "1"
+generatorOptions:
+  disableNameSuffixHash: true

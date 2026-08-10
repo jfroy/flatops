@@ -13,6 +13,8 @@ spec:
   permissionProfile:
     type: builtin
     name: network
+  telemetryConfigRef:
+    name: prometheus
   oidcConfigRef:
     name: ha-mcp
     # trailing slash: pocket-id normalizes the RFC 8707 resource and stamps

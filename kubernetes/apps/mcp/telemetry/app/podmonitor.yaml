@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/monitoring.coreos.com/podmonitor_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: toolhive-mcpserver
+spec:
+  # The operator labels every proxyrunner pod with toolhive-name=<MCPServer>,
+  # so each server gets its own job value instead of one shared "mcp/toolhive-mcpserver".
+  jobLabel: toolhive-name
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mcpserver
+  podMetricsEndpoints:
+    - port: http
+      path: /metrics
