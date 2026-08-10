@@ -18,14 +18,12 @@ spec:
         containers:
           pocket-id:
             image:
-              repository: registry.kantai.xyz/pocket-id/pocket-id
-              tag: latest-distroless-amd64@sha256:72808e68b4c773b9d81da43c70b25c41744a29f6285b4a22b81c4d24de63cd95
+              repository: ghcr.io/pocket-id/pocket-id
+              tag: v2.13.0@sha256:c9c1d7b70006968d673a1073df048a3fdec73ccb54e182320b56bb911340f6f1
             env:
               ANALYTICS_DISABLED: "true"
               APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
-              CIMD_ENABLED: true
               DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
-              DCR_ENABLED: true
               GEOLITE_DB_PATH: /data/GeoLite2-City.mmdb
               METRICS_ENABLED: "true"
               OTEL_EXPORTER_OTLP_METRICS_COMPRESSION: gzip
