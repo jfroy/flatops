@@ -16,4 +16,4 @@ spec:
       - issuer: ^https://token.actions.githubusercontent.com$
         subject: ^https://github.com/stakater/Reloader/.*$
   ref:
-    tag: 2.2.15
+    tag: 2.2.16
