@@ -19,7 +19,7 @@ spec:
           komga:
             image:
               repository: ghcr.io/gotson/komga
-              tag: 1.26.0@sha256:95a08cc78344946db7cb28dc001c4659576bf8227621498aa3fcdbad7d22d8f4
+              tag: 1.26.1@sha256:e109902ebebb8a05f633f48d84a2ac7bb1334bf0f6fbc17262a333082c7de44d
             env:
               KOMGA_OAUTH2ACCOUNTCREATION: "true"
               SERVER_PORT: &port 25600
