@@ -27,9 +27,6 @@ spec:
     - pvc:
         name: ${APP}
   verification:
-    deep:
-      schedule:
-        cron: H 5 1 * *
     quick:
       schedule:
         cron: H 3 * * *

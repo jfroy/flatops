@@ -22,6 +22,15 @@ spec:
       prefix: ""
   create:
     enabled: true
+  bootstrap:
+    failurePolicy:
+      activeDeadlineSeconds: 900
+  health:
+    probe:
+      interval: 1h
+  parameters:
+    epoch:
+      minDuration: 6h
   encryption:
     passwordSecretRef:
       name: kopiur-r2
@@ -29,15 +38,14 @@ spec:
       key: KOPIA_PASSWORD
   moverDefaults:
     cache:
-      capacity: 1Mi
-      mode: Ephemeral
-      storageClassName: openebs-hostpath
+      capacity: 1Gi
+      contentCacheSizeMb: 512
+      metadataCacheSizeMb: 384
+      mode: Persistent
+      storageClassName: ceph-block
     podSecurityContext:
       fsGroup: 1000
       fsGroupChangePolicy: OnRootMismatch
-    scratch:
-      capacity: 1Mi
-      storageClassName: openebs-hostpath
     securityContext:
       runAsUser: 1000
       runAsGroup: 1000
