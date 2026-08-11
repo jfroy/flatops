@@ -19,7 +19,7 @@ spec:
           immich-pet-tagger:
             image:
               repository: ghcr.io/tedornitier/immich-pet-tagger
-              tag: v1.7.0-cuda@sha256:3ab43fdc47037b75d28057db087a5db1c6c405900d5cacacd67d2adaea0f962d
+              tag: v1.7.1-cuda@sha256:a842ef73d9e427292bd28e40905fb11dc40099b897ebb999bb018b8c79f612f3
             args:
               - python
               - /app/main.py
