@@ -21,7 +21,7 @@ spec:
           houndarr:
             image:
               repository: ghcr.io/av1155/houndarr
-              tag: v1.13.1@sha256:475cf515388aee659e44a28435949a42a4e0de87e03b3f20d7f05fcb21fc76b7
+              tag: v1.13.2@sha256:c7a21fb5ce8f37e2e9865a8f8bac5427d9bd699e6f0e4014a8b2da889f6dbdfb
             env:
               HOUNDARR_SECURE_COOKIES: "true"
               HOUNDARR_TRUSTED_PROXIES: 10.11.0.0/16
