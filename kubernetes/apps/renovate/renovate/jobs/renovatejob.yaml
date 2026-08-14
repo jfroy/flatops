@@ -10,7 +10,11 @@ spec:
   discoveryFilters:
   - jfroy/*
   skipForks: true
-  secretRef: github-jfroy-bot-auth-token
+  githubAppReference:
+    secretName: github-jfroy-bot-app
+    appIdSecretKey: APP_ID
+    installationIdSecretKey: INSTALL_ID
+    pemSecretKey: PEM
   # renovate: datasource=docker depName=ghcr.io/jfroy/renovate
   image: ghcr.io/jfroy/renovate:44.23.0@sha256:6373c06150744baeae3350a9c7eae52c4ece4a23553f8d4380fd3db07d344606
   schedule: 0,30 * * * *
@@ -31,19 +35,24 @@ spec:
         key: token
     sync:
       enabled: true
+  renovateConfig:
+    inline: |
+      module.exports = {
+        allowedCommands: ['^helm-docs( .*)?$', '^helm-schema( .*)?$'],
+        allowedUnsafeExecutions: ['mise'],
+        platformCommit: 'enabled',
+        hostRules: [
+          {
+            hostType: 'docker',
+            matchHost: 'docker.io',
+            username: process.env.DOCKERHUB_USERNAME,
+            password: process.env.DOCKERHUB_TOKEN,
+          },
+        ],
+      };
   extraEnv:
     - name: LOG_LEVEL
       value: debug
-    - name: RENOVATE_ALLOWED_COMMANDS
-      value: >-
-        [
-          "^helm-docs( .*)?$",
-          "^helm-schema( .*)?$"
-        ]
-    - name: RENOVATE_ALLOWED_UNSAFE_EXECUTIONS
-      value: "mise"
-    - name: RENOVATE_PLATFORM_COMMIT
-      value: enabled
     - name: DOCKERHUB_USERNAME
       valueFrom:
         secretKeyRef:
@@ -54,13 +63,3 @@ spec:
         secretKeyRef:
           name: docker-hub-token
           key: DOCKERHUB_TOKEN
-    - name: RENOVATE_HOST_RULES
-      value: >-
-        [
-          {
-            "hostType": "docker",
-            "matchHost": "docker.io",
-            "username": "$(DOCKERHUB_USERNAME)",
-            "password": "$(DOCKERHUB_TOKEN)"
-          }
-        ]

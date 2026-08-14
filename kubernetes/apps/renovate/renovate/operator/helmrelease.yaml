@@ -51,6 +51,16 @@ spec:
         secretKey: oidc-client-secret
         sessionSecretKey: session-key
         redirectUrl: https://renovate.kantai.xyz/auth/callback
+    authorization:
+      # Authentication (OIDC) is the gate; every user who signs in is an admin.
+      enabled: false
+    policy:
+      enabled: true
+      allowedImages:
+        - renovate/renovate
+        - docker.io/renovate/renovate
+        - ghcr.io/renovatebot/renovate
+        - ghcr.io/jfroy/renovate
     valkey:
       enabled: false
     metrics:
