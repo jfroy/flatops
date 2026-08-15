@@ -29,7 +29,7 @@ spec:
           oxicloud:
             image:
               repository: docker.io/diocrafts/oxicloud
-              tag: 0.8.9@sha256:3ad395e8efe17992e4c2a3f59794e93659294b227c27d2620d99374943f677ab
+              tag: 0.8.9@sha256:f1fc790ae41f3935a71e33d361d39152304a4cb5803d53fd870a930cf47e4308
             command: ["oxicloud"]
             env:
               OXICLOUD_BASE_URL: https://oxicloud.kantai.xyz
