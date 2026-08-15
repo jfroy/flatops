@@ -45,6 +45,9 @@ spec:
                       - gateway.networking.k8s.io/gateway-name
       envoyService:
         externalTrafficPolicy: Local
+        # Required: cilium runs with defaultLBServiceIPAM=none, so LB-IPAM only
+        # allocates for services carrying a recognized cilium load balancer class.
+        loadBalancerClass: io.cilium/bgp-control-plane
   shutdown:
     drainTimeout: 180s
   telemetry:
@@ -84,6 +87,7 @@ spec:
   infrastructure:
     annotations:
       external-dns.alpha.kubernetes.io/hostname: external.kantai.xyz
+      lbipam.cilium.io/ips: 10.10.0.2
   listeners:
     - name: https
       protocol: HTTPS
@@ -139,6 +143,9 @@ metadata:
     external-dns.kantai.xyz/unifi: "true"
 spec:
   gatewayClassName: envoy
+  infrastructure:
+    annotations:
+      lbipam.cilium.io/ips: 10.10.0.3
   listeners:
     - name: https
       protocol: HTTPS

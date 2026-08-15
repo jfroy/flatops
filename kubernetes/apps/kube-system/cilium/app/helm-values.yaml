@@ -6,10 +6,24 @@ bandwidthManager:
 bgpControlPlane:
   enabled: true
 bpf:
+  # Explicit map maxima take precedence over dynamic sizing (agent only computes
+  # a size when the option is unset). Pinned to upstream's own auto-sizing floors
+  # so every node gets identical maps regardless of RAM: without this, kantai1's
+  # 251GiB inflated preallocated BPF maps to ~2.9GiB of agent RSS while kantai2
+  # (7.7GiB) sat at the floor anyway.
+  ctAnyMax: 65536 # LimitTableAutoGlobalAnyMin
+  ctTcpMax: 131072 # LimitTableAutoGlobalTCPMin
   datapathMode: veth
+  # Only still governs the sock-rev-nat map, which has no dedicated helm value.
+  mapDynamicSizeRatio: 0.0005
   masquerade: true # See https://github.com/siderolabs/talos/issues/8836 (forwardKubeDNSToHost)
+  natMax: 131072 # LimitTableAutoNatGlobalMin
+  neighMax: 131072
   preallocateMaps: true
-  tproxy: true # NOTE: incompatible with netkit
+  # Only redirects traffic into the L7 proxy, which l7Proxy=false disables. Also
+  # the sole blocker for bpf.datapathMode=netkit, which 1.20 rejects at render
+  # time when tproxy is on (cilium#39892).
+  tproxy: false
 cgroup:
   automount:
     enabled: false

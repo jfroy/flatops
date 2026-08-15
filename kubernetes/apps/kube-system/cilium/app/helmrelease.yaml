@@ -16,14 +16,14 @@ spec:
     hubble:
       enabled: true
       metrics:
+        # dns:query and http omitted: both are L7 metrics that require the L7
+        # proxy (l7Proxy=false here), so they only ever emitted empty series.
         enabled:
-          - dns:query
           - drop
           - tcp
           - flow
           - port-distribution
           - icmp
-          - http
         serviceMonitor:
           enabled: true
         dashboards:
