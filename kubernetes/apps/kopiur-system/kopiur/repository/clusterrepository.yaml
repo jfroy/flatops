@@ -36,6 +36,10 @@ spec:
       name: kopiur-r2
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  maintenance:
+    mover:
+      cache:
+        capacity: 4Gi
   moverDefaults:
     cache:
       capacity: 1Gi
