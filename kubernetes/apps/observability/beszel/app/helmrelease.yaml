@@ -17,7 +17,7 @@ spec:
           beszel:
             image:
               repository: ghcr.io/henrygd/beszel/beszel
-              tag: 0.18.8@sha256:d562169ffe44b294ec847d2129a11621b5086aa62128ec37352ab4a194256103
+              tag: 0.18.8@sha256:99181067e5a46b3147231f456114280a8119eed371808bce79e6e7f173946975
             env:
               APP_URL: https://beszel.kantai.xyz
               DISABLE_PASSWORD_AUTH: "true"
