@@ -1,0 +1,34 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: litellm
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 1.95.0
+  url: oci://ghcr.io/berriai/litellm-helm
+  verify:
+    provider: cosign
+    secretRef:
+      name: litellm-cosign-pub
+---
+# Public key for verifying litellm-helm chart signatures (cosign, key-based, not keyless —
+# BerriAI signs both the litellm-helm chart and the litellm container images with the same
+# key). Not sensitive: this is the published verification key, safe to check into git.
+# Source: https://raw.githubusercontent.com/BerriAI/litellm/main/cosign.pub
+apiVersion: v1
+kind: Secret
+metadata:
+  name: litellm-cosign-pub
+type: Opaque
+stringData:
+  cosign.pub: |
+    -----BEGIN PUBLIC KEY-----
+    MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEKi4ivqGpE231OGH50PKbqy1Y1Kkb
+    POJC8+i2Wko82gBOUCe3M0Vw86H/4rhUhfoYEti4gdJ9wZbYmK0I2EE96g==
+    -----END PUBLIC KEY-----
