@@ -25,14 +25,8 @@ spec:
     name: prometheus
   oidcConfigRef:
     name: flux-operator-mcp
-    # trailing slash: pocket-id normalizes the RFC 8707 resource and stamps
-    # aud="https://flux-mcp.kantai.xyz/"; the proxy does an exact-string aud check.
-    audience: https://flux-mcp.kantai.xyz/
-    resourceUrl: https://flux-mcp.kantai.xyz/
-    scopes:
-      - openid
-      - profile
-      - email
+    audience: https://flux-mcp.kantai.xyz/mcp
+    resourceUrl: https://flux-mcp.kantai.xyz/mcp
   resources:
     requests:
       cpu: 50m
