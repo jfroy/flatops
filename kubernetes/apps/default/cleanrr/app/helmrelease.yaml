@@ -40,9 +40,6 @@ spec:
                   httpGet:
                     path: /health/live
                     port: &port 80
-                  periodSeconds: 30
-                  timeoutSeconds: 5
-                  failureThreshold: 5
               readiness:
                 enabled: true
                 custom: true
@@ -66,11 +63,6 @@ spec:
               allowPrivilegeEscalation: false
               capabilities: {drop: ["ALL"]}
               readOnlyRootFilesystem: true
-            resources:
-              requests:
-                cpu: 10m
-              limits:
-                memory: 128Mi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
