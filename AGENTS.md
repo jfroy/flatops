@@ -91,6 +91,15 @@ App-template apps follow the same four-file layout:
 - Routes use `parentRefs: [{name: envoy-internal, namespace: network}]` for LAN/tailnet-only services, or `envoy-external` for public internet.
 - Postgres apps use `ghcr.io/home-operations/postgres-init` as `initContainers.init-db` with complimentary secrets.
 
+**Resources and probes:**
+
+Both default to unset. Add either one only when there is a specific reason to, and let the reason be visible in the manifest.
+
+- Do not set `resources`. Most workloads here run without CPU or memory requests and limits, and land in the `BestEffort` QoS class on purpose. Add `resources` only for a device the scheduler must allocate (`nvidia.com/gpu`), to shape scheduling for a genuinely large workload, or to cap a workload with a known appetite.
+- Do not override probe timings. Set `enabled: true` plus, for a `custom: true` probe, the `httpGet` or `exec` block, and stop there — Kubernetes supplies the rest (`periodSeconds: 10`, `timeoutSeconds: 1`, `failureThreshold: 3`). Restating those values adds noise without changing behavior. The override that does earn its place is a `startup` probe `failureThreshold` for an app that is genuinely slow to come up, which buys startup time without slackening liveness afterwards.
+
+`photon` shows both exceptions together: its liveness and readiness probes are bare `httpGet`, its startup probe raises `failureThreshold` to 720 for a two-hour startup budget while the geocoding index loads, and it declares `memory` requests and limits (4Gi/10Gi) for that index. See `kubernetes/apps/default/photon/app/helmrelease.yaml`.
+
 **`externalsecret.yaml` key points:**
 
 - `ClusterSecretStore` name: `onepassword`.
