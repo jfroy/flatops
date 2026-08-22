@@ -1,0 +1,93 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cleanrr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      cleanrr:
+        strategy: RollingUpdate
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          cleanrr:
+            image:
+              repository: ghcr.io/zariel/cleanrr
+              tag: v0.1.6@sha256:ff5de090d4295a56cedd8c8167d0e5b070970d3ca304090d36001c922fc8a2d0
+            env:
+              CLEANRR_LISTEN_ADDR: 0.0.0.0:80
+              CLEANRR_MINIMUM_AGE: 5m
+              CLEANRR_POLL_INTERVAL: 2m
+              CLEANRR_REMOVE_FROM_CLIENT: false
+              CLEANRR_SERVERS__RADARR__URL: http://radarr.default.svc.cluster.local
+              CLEANRR_SERVERS__SONARR__URL: http://sonarr.default.svc.cluster.local
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: cleanrr-secret
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/live
+                    port: &port 80
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/ready
+                    port: *port
+                  periodSeconds: 10
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/startup
+                    port: *port
+                  failureThreshold: 30
+                  periodSeconds: 10
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: {drop: ["ALL"]}
+              readOnlyRootFilesystem: true
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 128Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      cleanrr:
+        controller: cleanrr
+        ports:
+          http:
+            port: *port
+    serviceMonitor:
+      cleanrr:
+        serviceName: cleanrr
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
