@@ -9,6 +9,7 @@ resources:
   - ./browserr/ks.yaml
   - ./buildkit/ks.yaml
   - ./changedetection/ks.yaml
+  - ./cleanrr/ks.yaml
   - ./crd-schema-publisher/ks.yaml
   - ./dawarich/ks.yaml
   - ./docker-registry-ui/ks.yaml
