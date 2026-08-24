@@ -19,7 +19,7 @@ spec:
           pocket-id:
             image:
               repository: ghcr.io/pocket-id/pocket-id
-              tag: next-distroless@sha256:f4a7c8deb30d1c0988870295870b85ee1b05c56e5d9f6ebea5e114f66a1e6874
+              tag: next-distroless@sha256:97b3229a777fd908abb9ab0c081ef9676aa69836e43207565b0f117f99c05207
             env:
               ANALYTICS_DISABLED: "true"
               APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
