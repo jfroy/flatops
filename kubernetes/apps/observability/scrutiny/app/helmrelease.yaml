@@ -19,7 +19,7 @@ spec:
           web:
             image:
               repository: ghcr.io/starosdev/scrutiny
-              tag: 1.68.0-web@sha256:b87dc6a45fa1895306a387574fe687a1fdffbff5f645db092c83c7d83689cd21
+              tag: 1.69.2-web@sha256:8f14bc6c10a79abcc0d1577ca745dc57ca78bf366649ebddf70b0c3aea3ad593
             env:
               SCRUTINY_WEB_INFLUXDB_BUCKET: scrutiny
               SCRUTINY_WEB_INFLUXDB_HOST: localhost
