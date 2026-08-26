@@ -59,6 +59,17 @@ spec:
         urlPrefix: /
         port: 8080
         ssl: false
+      healthCheck:
+        # Residual CVE-2025-30156 warnings that cannot be cleared while CSI keys
+        # stay on aes (see security.cephx below). Muted so the cluster reports
+        # HEALTH_OK.
+        muteHealthWarning:
+          AUTH_INSECURE_CLIENT_KEY_TYPE:
+            policy: mute
+          AUTH_INSECURE_KEYS_ALLOWED:
+            policy: mute
+          AUTH_INSECURE_KEYS_CREATABLE:
+            policy: mute
       mgr:
         count: 2
         allowMultiplePerNode: true
@@ -100,6 +111,17 @@ spec:
           requests:
             memory: 16Gi
             cpu: "2"
+      security:
+        cephx:
+          # CVE-2025-30156: rotate mon/mgr/osd/rgw keys to the aes256k cipher.
+          # https://rook.io/docs/rook/latest-release/Storage-Configuration/Advanced/cephx-key-rotation/
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+          # CSI keys stay on aes: aes256k kernel mounts need Linux 7.0+ and the
+          # Talos nodes are on 6.18. Revisit after a kernel bump.
+          csi:
+            keyType: aes
       storage:
         useAllNodes: false
         useAllDevices: false
