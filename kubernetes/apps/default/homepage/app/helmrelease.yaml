@@ -19,9 +19,13 @@ spec:
           homepage:
             image:
               repository: ghcr.io/gethomepage/homepage
-              tag: v1.13.2@sha256:a0b71c8e757298d02560186bab9fbe3fc2d375c523a62cc1019177b37e48aa28
+              tag: v2.1.2@sha256:da9dca9ec258c628146bed1445da0853f2b88f0b10bafd97c091de807c363d60
             env:
-              HOMEPAGE_ALLOWED_HOSTS: "*"
+              HOMEPAGE_ALLOWED_HOSTS: "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+              HOMEPAGE_AUTH_ENABLED: "true"
+              HOMEPAGE_EXTERNAL_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
+              HOMEPAGE_OIDC_ISSUER: https://pid.kantai.xyz
+              HOMEPAGE_OIDC_NAME: Pocket ID
               NODE_OPTIONS: "--max-http-header-size=65536"
               PUID: 1000
               PGID: 1000
@@ -29,6 +33,8 @@ spec:
             envFrom:
               - secretRef:
                   name: homepage-secret
+              - secretRef:
+                  name: homepage-auth
             probes:
               liveness:
                 enabled: true
@@ -37,9 +43,16 @@ spec:
                   httpGet:
                     path: /api/healthcheck
                     port: &port 3000
+                    httpHeaders:
+                      # HOMEPAGE_ALLOWED_HOSTS is validated before the
+                      # /api/healthcheck auth exemption, and kubelet would
+                      # otherwise send the pod IP as Host and get a 400.
+                      - name: Host
+                        value: localhost:3000
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
         serviceAccount:
           identifier: homepage
     defaultPodOptions:
@@ -50,6 +63,11 @@ spec:
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
     persistence:
+      cache:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /app/.next/cache
       homepage-config:
         type: configMap
         name: homepage-config
@@ -60,6 +78,11 @@ spec:
         sizeLimit: 100Mi
         globalMounts:
           - path: /app/config/logs
+      tmp:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /tmp
     route:
       homepage:
         hostnames:
