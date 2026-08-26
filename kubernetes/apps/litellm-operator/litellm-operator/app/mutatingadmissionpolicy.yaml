@@ -80,43 +80,46 @@ spec:
       expression: >-
         has(object.metadata.labels) &&
         object.metadata.labels[?'app.kubernetes.io/managed-by'].orValue('') == 'litellm-operator'
-  variables:
-    # Defined once so the JSONPatch branches below stay in sync.
-    - name: initDb
-      expression: >-
-        Object.spec.initContainers{
-          name: "init-db",
-          image: "ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec",
-          envFrom: [
-            Object.spec.initContainers.envFrom{
-              secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-db"}
-            },
-            Object.spec.initContainers.envFrom{
-              secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-initdb"}
-            }
-          ],
-          securityContext: Object.spec.initContainers.securityContext{
-            allowPrivilegeEscalation: false,
-            readOnlyRootFilesystem: true,
-            runAsNonRoot: true,
-            runAsUser: 1000,
-            capabilities: Object.spec.initContainers.securityContext.capabilities{
-              drop: ["ALL"]
-            },
-            seccompProfile: Object.spec.initContainers.securityContext.seccompProfile{
-              type: "RuntimeDefault"
-            }
-          }
-        }
   mutations:
     # JSONPatch, not ApplyConfiguration: envFrom and capabilities.drop are atomic
-    # lists, which apply configurations are forbidden from mutating.
+    # lists, which apply configurations are forbidden from mutating. The Object.*
+    # constructors below are only declared inside mutation expressions, so this
+    # cannot be hoisted into spec.variables.
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
-          has(object.spec.initContainers)
-            ? [JSONPatch{op: "add", path: "/spec/initContainers/-", value: variables.initDb}]
-            : [JSONPatch{op: "add", path: "/spec/initContainers", value: [variables.initDb]}]
+          [
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers",
+              value: [
+                Object.spec.initContainers{
+                  name: "init-db",
+                  image: "ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec",
+                  envFrom: [
+                    Object.spec.initContainers.envFrom{
+                      secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-db"}
+                    },
+                    Object.spec.initContainers.envFrom{
+                      secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-initdb"}
+                    }
+                  ],
+                  securityContext: Object.spec.initContainers.securityContext{
+                    allowPrivilegeEscalation: false,
+                    readOnlyRootFilesystem: true,
+                    runAsNonRoot: true,
+                    runAsUser: 1000,
+                    capabilities: Object.spec.initContainers.securityContext.capabilities{
+                      drop: ["ALL"]
+                    },
+                    seccompProfile: Object.spec.initContainers.securityContext.seccompProfile{
+                      type: "RuntimeDefault"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
 ---
 apiVersion: admissionregistration.k8s.io/v1
 kind: MutatingAdmissionPolicyBinding
