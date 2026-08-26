@@ -21,6 +21,14 @@ spec:
     parentRefs:
       - name: envoy-internal
         namespace: network
+  # The proxy takes ~45s (prisma migrate, then model registration). The CRD
+  # exposes no startupProbe.
+  livenessProbe:
+    httpGet:
+      path: /health/liveliness
+      port: 4000
+    initialDelaySeconds: 120
+    timeoutSeconds: 5
   callbacks:
     callbacks: ["prometheus", "s3_v2"]
   generalSettings:
