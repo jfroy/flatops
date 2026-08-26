@@ -9,4 +9,10 @@ spec:
   chartRef:
     kind: OCIRepository
     name: litellm-operator
-  values: {}
+  values:
+    resources:
+      requests:
+        cpu: 10m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
