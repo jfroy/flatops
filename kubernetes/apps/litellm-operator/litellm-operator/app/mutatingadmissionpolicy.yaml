@@ -82,9 +82,14 @@ spec:
         object.metadata.labels[?'app.kubernetes.io/managed-by'].orValue('') == 'litellm-operator'
   mutations:
     # JSONPatch, not ApplyConfiguration: envFrom and capabilities.drop are atomic
-    # lists, which apply configurations are forbidden from mutating. The Object.*
-    # constructors below are only declared inside mutation expressions, so this
-    # cannot be hoisted into spec.variables.
+    # lists, which apply configurations are forbidden from mutating.
+    #
+    # Two ops on purpose. A patch value that is a list *containing* an Object
+    # panics kube-apiserver: cel-go's baseList.ConvertToNative recurses into the
+    # element and tries to assign a *structpb.Struct into a *structpb.Value slot
+    # (list.go:206, via mutating/patch/json_patch.go:177). Creating the empty list
+    # first and then appending keeps every value either an empty list or a bare
+    # Object, neither of which hits that path.
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
@@ -92,32 +97,35 @@ spec:
             JSONPatch{
               op: "add",
               path: "/spec/initContainers",
-              value: [
-                Object.spec.initContainers{
-                  name: "init-db",
-                  image: "ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec",
-                  envFrom: [
-                    Object.spec.initContainers.envFrom{
-                      secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-db"}
-                    },
-                    Object.spec.initContainers.envFrom{
-                      secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-initdb"}
-                    }
-                  ],
-                  securityContext: Object.spec.initContainers.securityContext{
-                    allowPrivilegeEscalation: false,
-                    readOnlyRootFilesystem: true,
-                    runAsNonRoot: true,
-                    runAsUser: 1000,
-                    capabilities: Object.spec.initContainers.securityContext.capabilities{
-                      drop: ["ALL"]
-                    },
-                    seccompProfile: Object.spec.initContainers.securityContext.seccompProfile{
-                      type: "RuntimeDefault"
-                    }
+              value: []
+            },
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/-",
+              value: Object.spec.initContainers{
+                name: "init-db",
+                image: "ghcr.io/home-operations/postgres-init:18.4.0@sha256:ebd9d30add17acdf935d73eb004758c7dfd9388aaa605fda70ad74378ab92aec",
+                envFrom: [
+                  Object.spec.initContainers.envFrom{
+                    secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-db"}
+                  },
+                  Object.spec.initContainers.envFrom{
+                    secretRef: Object.spec.initContainers.envFrom.secretRef{name: "litellm-initdb"}
+                  }
+                ],
+                securityContext: Object.spec.initContainers.securityContext{
+                  allowPrivilegeEscalation: false,
+                  readOnlyRootFilesystem: true,
+                  runAsNonRoot: true,
+                  runAsUser: 1000,
+                  capabilities: Object.spec.initContainers.securityContext.capabilities{
+                    drop: ["ALL"]
+                  },
+                  seccompProfile: Object.spec.initContainers.securityContext.seccompProfile{
+                    type: "RuntimeDefault"
                   }
                 }
-              ]
+              }
             }
           ]
 ---
