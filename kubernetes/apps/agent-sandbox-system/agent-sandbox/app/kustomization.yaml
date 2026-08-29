@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # renovate: datasource=github-releases depName=kubernetes-sigs/agent-sandbox
+  - https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v0.5.4/sandbox.yaml
+  # renovate: datasource=github-releases depName=kubernetes-sigs/agent-sandbox
+  - https://github.com/kubernetes-sigs/agent-sandbox/releases/download/v0.5.4/extensions.yaml
+patches:
+  - patch: |-
+      $patch: delete
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: agent-sandbox-system
