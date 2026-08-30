@@ -90,3 +90,19 @@ spec:
     apiKeyRef:
       name: litellm
       key: OPENAI_API_KEY
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmmodel_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMModel
+metadata:
+  name: text-embedding-3-small
+spec:
+  proxyRef: litellm
+  modelName: text-embedding-3-small
+  params:
+    model: openai/text-embedding-3-small
+    apiKeyRef:
+      name: litellm
+      key: OPENAI_API_KEY
+  info:
+    mode: embedding
