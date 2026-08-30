@@ -1,0 +1,89 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openshell
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: openshell
+  values:
+    workload:
+      kind: deployment
+    replicaCount: 1
+
+    server:
+      externalDbSecret: openshell-db
+
+      disableTls: true
+      tls:
+        clientCaSecretName: ""
+
+      oidc:
+        issuer: https://pid.kantai.xyz
+        audience: openshell-cli
+
+      credentialStorage:
+        existingSecret: openshell-cek
+
+      workspaceStorageClass: ceph-block
+      workspaceDefaultStorageSize: 20Gi
+
+      telemetryEnabled: false
+      logLevel: info
+
+    grpcRoute:
+      enabled: true
+      gateway:
+        create: false
+        name: envoy-internal
+        namespace: network
+      hostnames:
+        - openshell.kantai.xyz
+
+    pkiInitJob:
+      enabled: true
+    certManager:
+      enabled: false
+
+    networkPolicy:
+      enabled: true
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              group: apps
+              version: v1
+              kind: Deployment
+              name: openshell
+            patch: |
+              - op: add
+                path: /spec/template/spec/initContainers
+                value:
+                  - name: init-db
+                    image: ghcr.io/home-operations/postgres-init:18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
+                    envFrom:
+                      - secretRef:
+                          name: openshell-db
+                      - secretRef:
+                          name: openshell-initdb
+                    securityContext:
+                      allowPrivilegeEscalation: false
+                      readOnlyRootFilesystem: true
+                      runAsNonRoot: true
+                      runAsUser: 1000
+                      capabilities:
+                        drop: ["ALL"]
+          - patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: openshell
+              spec:
+                template:
+                  metadata:
+                    annotations:
+                      reloader.stakater.com/auto: "true"
