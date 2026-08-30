@@ -4,5 +4,5 @@ kind: Namespace
 metadata:
   name: .invalid
   labels:
-    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/enforce-version: latest
