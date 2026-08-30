@@ -63,6 +63,12 @@ Two categories of deployments exist in this cluster:
 
 `OCIRepository` sources are strongly preferred over `HelmRepository` sources. When an upstream chart is not available as an OCI artifact, pull it via the cluster's `ocharted` on-demand OCI mirror.
 
+`OCIRepository` has no `tag@digest` form — `ref.tag` and `ref.digest` are separate fields and the digest wins. To pin a chart by digest, set both: the tag keeps the pin readable and gives Renovate something to bump. See `kubernetes/apps/openshell/openshell/app/ocirepository.yaml`.
+
+When a project ships release manifests instead of a chart, reference the release URL directly from `app/kustomization.yaml` with a `# renovate: datasource=github-releases depName=org/repo` comment above it. Apply upstream unmodified — including its own namespace — rather than relocating it: a kustomize `namespace:` directive rewrites `ClusterRoleBinding` subjects and webhook service references but silently leaves `cert-manager.io/inject-ca-from` annotations pointing at the old namespace. Delete only upstream's bare `Namespace` object (`$patch: delete`) so this repo's `namespace.yaml` owns it with PSA labels and the common component's prune-disabled annotation. See `kubernetes/apps/agent-sandbox-system/agent-sandbox/app/` and `kubernetes/apps/cnpg-system/barman-cloud/app/`.
+
+When an upstream chart offers no hook for something this repo needs — most often an init container — inject it with `spec.postRenderers[].kustomize.patches` rather than forking the chart. Prefer a strategic-merge patch over JSON6902 when the target path may not exist in the rendered output (a JSON6902 `add` on a child of an absent map fails). See `kubernetes/apps/openshell/openshell/app/helmrelease.yaml`, which patches in the standard `postgres-init` container this way.
+
 ## App Pattern (kubernetes/apps/default/)
 
 App-template apps follow the same four-file layout:
@@ -80,7 +86,8 @@ App-template apps follow the same four-file layout:
 
 - Use `components/kopiur` to wire up daily Kopia backups to Cloudflare R2.
   - Set `postBuild.substitute` with `APP: *app` at minimum when using this component.
-- Postgres apps add `dependsOn: cnpg-pg18vc` in `cnpg-system`
+  - Override `KOPIUR_UID` / `KOPIUR_GID` when the app's PVC is owned by something other than 1000, or the mover cannot read it.
+- Postgres apps add `dependsOn: {name: pg18vc, namespace: database}` — that is the CNPG cluster's own `Kustomization`, not the operator's.
 
 **`helmrelease.yaml` key points:**
 
@@ -109,9 +116,21 @@ Both default to unset. Add either one only when there is a specific reason to, a
 
 **Registering a new `Kustomization`:** Add `- ./<appname>/ks.yaml` to `kubernetes/apps/<namespace>/kustomization.yaml` in alphabetical order.
 
+**Adding a namespace:** create `kubernetes/apps/<namespace>/` with `namespace.yaml` (name `.invalid` — the global `NamespaceTransformer` rewrites it), `kustomization.yaml` listing the namespace and each app's `ks.yaml`, and `transformers/kustomization.yaml` setting `namespace: <namespace>`. Add `components/common` always, and `components/kopiur/secret` when any app in it takes backups. There is no top-level `kubernetes/apps/kustomization.yaml`; Flux discovers namespace directories on its own. Infrastructure gets its own namespace rather than being pooled into `default`.
+
+## Pod Security
+
+`kubernetes/vap/` binds a `ValidatingAdmissionPolicy` to every namespace labelled `pod-security.kubernetes.io/enforce: restricted`. A separate baseline policy applies to every namespace not labelled `privileged`.
+
+Label a namespace `restricted` only when every image in it can meet that bar. Use `baseline` when an image starts as root and drops privileges itself, or when its runtime uid is undocumented. Use `privileged` only where the workload genuinely needs it and keep unrelated workloads out of that namespace, since it is the blast radius.
+
+Both PSA and the policy read the pod *spec*, not the running process, so an upstream manifest that declares no `securityContext` fails even when its image already runs unprivileged. That is a missing declaration, not a real capability requirement: patch the fields in rather than downgrading the namespace. `agent-sandbox` is a good example. See `kubernetes/apps/agent-sandbox-system/agent-sandbox/app/kustomization.yaml`.
+
 ## Secrets & SOPS
 
 `.sops.yaml` covers `bootstrap/` and `talos/` directories only. These use SOPS age encryption. Kubernetes secrets come entirely from 1Password via `external-secrets`; there are no SOPS-encrypted files under `kubernetes/`.
+
+**Non-rotatable secrets.** Some generated values encrypt data at rest, and regenerating one makes everything it encrypted permanently undecryptable — with no error at the time, only later failures to read. Keep each in its own `ExternalSecret` with `refreshInterval: "0"`, separate from any rotatable value in the same app, so that deleting a Secret to rotate one thing cannot take the other with it. Current members of this set:
 
 ## Networking Architecture
 
@@ -128,6 +147,35 @@ Rook-Ceph provides S3-compatible object storage. It can be used with path-style 
 ## PostgreSQL Apps
 
 CNPG cluster: `pg18vc-rw.database.svc.cluster.local`. Apps provision their own database via the `init-db` init container. Each app needs three ExternalSecrets: `<app>`, `<app>-db`, `<app>-initdb`.
+
+`postgres-init` also runs arbitrary SQL as the superuser after creating the role and database: mount a ConfigMap at `/initdb` and it executes `/initdb/<INIT_POSTGRES_DBNAME>.sql`. **The filename must match the database name** — rename one without the other and the SQL is silently skipped. This is the only hook that can install extensions, since `CREATE EXTENSION` needs superuser while `postgres-init` otherwise leaves the app user as a plain owner. `pg18vc` carries `postgis`, `timescaledb`, `timescaledb-toolkit` and `vchord`; any app wanting one needs this file. See `kubernetes/apps/default/immich/app/immich.sql` and `kubernetes/apps/memini/memini/app/memini.sql`.
+
+## Inference (LiteLLM)
+
+All in-cluster inference goes through the LiteLLM proxy at `http://litellm.litellm.svc.cluster.local:4000/v1`. Apps must not hold upstream provider keys directly. Models are declared as `LiteLLMModel` resources in `kubernetes/apps/litellm/litellm/app/litellmmodels.yaml`; embeddings are served by `text-embedding-3-small` at 1536 dimensions.
+
+Per-consumer keys are `LiteLLMVirtualKey` resources. The operator resolves `spec.proxyRef` in the resource's *own* namespace and writes the generated Secret there, so these must live in the `litellm` namespace beside the `LiteLLMProxy` — they cannot be declared in the consuming app's namespace.
+
+Delivery across the namespace boundary uses external-secrets' `kubernetes` provider, **pushing outward from `litellm`** rather than letting consumers pull:
+
+1. `LiteLLMVirtualKey` in `litellm` generates Secret `litellm-vk-<app>`, key `LITELLM_API_KEY`.
+2. A `SecretStore` in `litellm` (`push-<app>`) sets `remoteNamespace: <app>` and authenticates as the `litellm-key-push` ServiceAccount.
+3. A `PushSecret` in `litellm` (`deletionPolicy: Delete`) writes Secret `<app>-litellm` into that namespace. `remoteRef.property` renames the key to whatever the app expects (`OPENAI_API_KEY`, `MEMINI_EMBED_API_KEY`, …), so no templating and no `ExternalSecret` on the consumer side.
+4. The consumer namespace grants the push by adding `components/litellm-key-push` to its `kustomization.yaml` — a `Role`/`RoleBinding` for that ServiceAccount. It goes on the *namespace* kustomization, not the app's, so it is applied by `cluster-apps` directly and does not create a dependency cycle with the app's own `dependsOn: litellm`.
+
+The direction is the point. A `SecretStore` grants `get`/`list`/`watch` on **every** Secret in its `remoteNamespace`, and RBAC `resourceNames` cannot restrict `list`/`watch`. Pointing consumers at `remoteNamespace: litellm` would therefore hand every consumer the proxy master key and the upstream provider keys, defeating virtual keys entirely. Pushing instead gives the trusted namespace write access to the untrusted ones and gives consumers no read access at all. Apply the same reasoning to any future cross-namespace secret: push from the owner, never pull from the vault.
+
+Do not use 1Password `PushSecret` for this. 1Password's API limits are low, and writes invalidate the `onepassword` store's read cache, so a push loop costs far more than its own call count.
+
+`memini` pushes its `MEMINI_API_KEY` to `opencode` the same way (`components/memini-key-push`), so the MCP bearer token is never hand-copied.
+
+Always set `spec.models` on a virtual key — an empty list grants every model on the proxy. Deleting the `LiteLLMVirtualKey` revokes the key in LiteLLM, and `deletionPolicy: Delete` removes the pushed Secret, so the consumer fails loudly rather than serving a key the proxy no longer honours.
+
+Apps that are themselves gateways (`omniroute`) are the exception: their upstream providers live in their own encrypted store and are configured through their UI, not from the manifest.
+
+Every chat model on this proxy is a reasoning model, and hidden reasoning tokens are spent inside the completion budget. An app that caps completion length — and most default to something near 4096 — will get truncated responses back (`finish_reason: "length"`) rather than an error, so raise that cap explicitly when wiring one up. `memini` sets `MEMINI_LLM_MAX_TOKENS` for this reason.
+
+**memini** pins `MEMINI_EMBED_MODEL` and `MEMINI_EMBED_DIMS`. Vectors from different embedding models are not comparable, so memini records which model produced a store's vectors and refuses to start when the model changes. Changing the model means running `memini reembed`; changing the dimensionality means a fresh store (`memini export`, then `import`). Its `MEMINI_LLM_BASE_URL` enables write-time distillation, background consolidation, `POST /v1/answer` and the `memory_answer` MCP tool; `MEMINI_RERANK` stays `off`, since that one is priced per recall rather than per write.
 
 ## Talos Configuration
 
