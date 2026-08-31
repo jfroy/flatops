@@ -1,0 +1,20 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmvirtualkey_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: openshell
+spec:
+  proxyRef: litellm
+  secretName: litellm-vk-openshell
+  secretKey: LITELLM_API_KEY
+  keyAlias: openshell
+  metadata:
+    consumer_namespace: openshell
+  models:
+    - claude-sonnet-5
+    - claude-opus-5
+    - claude-fable-5
+    - gpt-5.6-sol
+    - gpt-5.6-terra
+    - gpt-5.6-luna

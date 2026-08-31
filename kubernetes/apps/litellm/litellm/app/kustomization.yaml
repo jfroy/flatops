@@ -4,9 +4,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./externalsecret.yaml
-  - ./objectbucketclaim.yaml
-  - ./litellmproxy.yaml
-  - ./litellmmodels.yaml
-  - ./servicemonitor.yaml
-  - ./prometheusrule.yaml
   - ./grafanadashboard.yaml
+  - ./litellmmodels.yaml
+  - ./litellmproxy.yaml
+  - ./litellmvirtualkeys.yaml
+  - ./objectbucketclaim.yaml
+  - ./prometheusrule.yaml
+  - ./servicemonitor.yaml
