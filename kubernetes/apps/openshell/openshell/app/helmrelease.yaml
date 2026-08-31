@@ -24,9 +24,6 @@ spec:
       oidc:
         issuer: https://pid.kantai.xyz
         audience: openshell-cli
-        rolesClaim: groups
-        adminRole: openshell-admin
-        userRole: openshell-user
 
       credentialStorage:
         existingSecret: openshell-cek
