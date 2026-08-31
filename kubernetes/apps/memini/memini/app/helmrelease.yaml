@@ -39,8 +39,6 @@ spec:
               MEMINI_EMBED_DIMS: "1536"
               MEMINI_LLM_BASE_URL: http://litellm.litellm.svc.cluster.local:4000/v1
               MEMINI_LLM_MODEL: gpt-5.6-luna
-              # Reasoning tokens are spent inside this budget, and a distill call
-              # that overruns it returns truncated JSON and is lost silently.
               MEMINI_LLM_MAX_TOKENS: "16384"
               MEMINI_LOG_FORMAT: json
             envFrom:
