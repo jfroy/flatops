@@ -87,3 +87,18 @@ spec:
                   metadata:
                     annotations:
                       reloader.stakater.com/auto: "true"
+          - patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: openshell
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: openshell-gateway
+                        env:
+                          - name: OPENSHELL_OIDC_ADMIN_ROLE
+                            value: ""
+                          - name: OPENSHELL_OIDC_USER_ROLE
+                            value: ""
