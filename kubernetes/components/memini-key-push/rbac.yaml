@@ -1,0 +1,25 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: memini-key-push
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["authorization.k8s.io"]
+    resources: ["selfsubjectrulesreviews"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: memini-key-push
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: memini-key-push
+subjects:
+  - kind: ServiceAccount
+    name: memini-key-push
+    namespace: memini

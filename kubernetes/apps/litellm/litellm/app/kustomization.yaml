@@ -10,4 +10,7 @@ resources:
   - ./litellmvirtualkeys.yaml
   - ./objectbucketclaim.yaml
   - ./prometheusrule.yaml
+  - ./pushsecrets.yaml
+  - ./rbac.yaml
+  - ./secretstores.yaml
   - ./servicemonitor.yaml

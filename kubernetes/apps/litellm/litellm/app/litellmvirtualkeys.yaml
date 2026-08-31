@@ -3,6 +3,42 @@
 apiVersion: litellm.home-operations.com/v1alpha1
 kind: LiteLLMVirtualKey
 metadata:
+  name: memini
+spec:
+  proxyRef: litellm
+  secretName: litellm-vk-memini
+  secretKey: LITELLM_API_KEY
+  keyAlias: memini
+  metadata:
+    consumer_namespace: memini
+  models:
+    - text-embedding-3-small
+    - gpt-5.6-luna
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmvirtualkey_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
+  name: opencode
+spec:
+  proxyRef: litellm
+  secretName: litellm-vk-opencode
+  secretKey: LITELLM_API_KEY
+  keyAlias: opencode
+  metadata:
+    consumer_namespace: opencode
+  models:
+    - claude-sonnet-5
+    - claude-opus-5
+    - claude-fable-5
+    - gpt-5.6-sol
+    - gpt-5.6-terra
+    - gpt-5.6-luna
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/litellm.home-operations.com/litellmvirtualkey_v1alpha1.json
+apiVersion: litellm.home-operations.com/v1alpha1
+kind: LiteLLMVirtualKey
+metadata:
   name: openshell
 spec:
   proxyRef: litellm

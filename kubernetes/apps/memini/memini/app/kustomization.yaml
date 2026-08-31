@@ -1,0 +1,17 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./externalsecret.yaml
+  - ./rbac.yaml
+  - ./secretstore.yaml
+  - ./pushsecret.yaml
+  - ./ocirepository.yaml
+  - ./helmrelease.yaml
+configMapGenerator:
+  - name: memini-initdb
+    files:
+      - ./memini.sql
+generatorOptions:
+  disableNameSuffixHash: true

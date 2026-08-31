@@ -1,0 +1,90 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: memini
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: memini
+  values:
+    controllers:
+      main:
+        type: deployment
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
+            envFrom:
+              - secretRef:
+                  name: memini-db
+              - secretRef:
+                  name: memini-initdb
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        containers:
+          main:
+            env:
+              TZ: America/Los_Angeles
+              MEMINI_BACKEND: postgres
+              MEMINI_EMBED_BASE_URL: http://litellm.litellm.svc.cluster.local:4000/v1
+              MEMINI_EMBED_MODEL: text-embedding-3-small
+              MEMINI_EMBED_DIMS: "1536"
+              MEMINI_LLM_BASE_URL: http://litellm.litellm.svc.cluster.local:4000/v1
+              MEMINI_LLM_MODEL: gpt-5.6-luna
+              # Reasoning tokens are spent inside this budget, and a distill call
+              # that overruns it returns truncated JSON and is lost silently.
+              MEMINI_LLM_MAX_TOKENS: "16384"
+              MEMINI_LOG_FORMAT: json
+            envFrom:
+              - secretRef:
+                  name: memini
+              - secretRef:
+                  name: memini-db
+              - secretRef:
+                  name: memini-litellm
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            fsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+    persistence:
+      data:
+        enabled: false
+      initdb:
+        type: configMap
+        name: memini-initdb
+        advancedMounts:
+          main:
+            init-db:
+              - path: /initdb
+    route:
+      main:
+        enabled: true
+        hostnames: ["memini.kantai.xyz"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+      ui:
+        enabled: true
+        hostnames: ["memini-ui.kantai.xyz"]
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    serviceMonitor:
+      main:
+        enabled: true

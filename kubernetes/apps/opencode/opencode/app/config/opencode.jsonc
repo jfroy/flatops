@@ -1,0 +1,24 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "litellm/claude-sonnet-5",
+  "provider": {
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM",
+      "options": {
+        "baseURL": "http://litellm.litellm.svc.cluster.local:4000/v1",
+        "apiKey": "{env:LITELLM_API_KEY}"
+      }
+    }
+  },
+  "mcp": {
+    "memini": {
+      "type": "remote",
+      "url": "http://memini.memini.svc.cluster.local:8080/mcp",
+      "enabled": true,
+      "headers": {
+        "Authorization": "Bearer {env:MEMINI_API_KEY}"
+      }
+    }
+  }
+}
