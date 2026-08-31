@@ -71,6 +71,10 @@ spec:
       value: "openid profile email"
     - name: GENERIC_USER_ID_ATTRIBUTE
       value: sub
+    - name: GENERIC_USER_ROLE_ATTRIBUTE
+      value: litellm_role
+    - name: GENERIC_INCLUDE_TOKEN_CLAIMS
+      value: "true"
     - name: DATABASE_URL
       valueFrom:
         secretKeyRef:
