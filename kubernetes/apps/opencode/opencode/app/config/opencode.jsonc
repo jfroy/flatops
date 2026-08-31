@@ -1,6 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "litellm/claude-sonnet-5",
+  "model": "litellm/claude-opus-5",
+  "small_model": "litellm/claude-sonnet-5",
   "provider": {
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
@@ -8,6 +9,14 @@
       "options": {
         "baseURL": "http://litellm.litellm.svc.cluster.local:4000/v1",
         "apiKey": "{env:LITELLM_API_KEY}"
+      },
+      "models": {
+        "claude-opus-5": { "name": "Claude Opus 5" },
+        "claude-sonnet-5": { "name": "Claude Sonnet 5" },
+        "claude-fable-5": { "name": "Claude Fable 5" },
+        "gpt-5.6-sol": { "name": "GPT-5.6 Sol" },
+        "gpt-5.6-terra": { "name": "GPT-5.6 Terra" },
+        "gpt-5.6-luna": { "name": "GPT-5.6 Luna" }
       }
     }
   },
