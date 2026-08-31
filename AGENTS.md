@@ -140,6 +140,10 @@ Both PSA and the policy read the pod *spec*, not the running process, so an upst
 - **Domain:** `*.kantai.xyz` with wildcard cert from Let's Encrypt (DNS-01 via Cloudflare)
 - All internal service hostnames follow `${APP_SUBDOMAIN:-${APP}}.kantai.xyz`
 
+**Route kinds and DNS.** Each external-dns instance watches an explicit list of source types, so a route kind that is not listed simply gets no record.
+
+`GRPCRoute` is deliberately **not** registered by `edns-cf-httproute-proxied`. That instance forces `--default-targets=external.kantai.xyz`, which is the Cloudflare Tunnel, and Cloudflare supports gRPC over Tunnel only via private subnet routing — public hostname deployments are not supported. gRPC on the internal path works because those records are DNS-only (grey cloud), so Cloudflare never proxies them and the zone's gRPC setting is irrelevant. Anything gRPC therefore belongs on `envoy-internal`.
+
 ## Object Storage
 
 Rook-Ceph provides S3-compatible object storage. It can be used with path-style or virtual-host-style (preferred) via `<bucket>.s3.kantai.xyz`. It is available from inside and outside the cluster (via Tailscale).

@@ -19,7 +19,7 @@ spec:
     policy: sync
     serviceMonitor:
       enabled: true
-    sources: ["gateway-httproute", "service"]
+    sources: ["gateway-grpcroute", "gateway-httproute", "service"]
     triggerLoopOnEvent: true
     txtOwnerId: unifi
     txtPrefix: edns.

@@ -18,4 +18,4 @@ spec:
       loadBalancerClass: tailscale
       port: 53
       type: LoadBalancer
-    watchedResources: ["HTTPRoute"]
+    watchedResources: ["GRPCRoute", "HTTPRoute"]

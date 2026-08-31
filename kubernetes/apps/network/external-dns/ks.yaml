@@ -19,9 +19,9 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: edns-cf-httproute
+  name: edns-cf-gatewayroutes
 spec:
-  path: ./kubernetes/apps/network/external-dns/cf-httproute
+  path: ./kubernetes/apps/network/external-dns/cf-gatewayroutes
   prune: true
   sourceRef:
     kind: GitRepository
