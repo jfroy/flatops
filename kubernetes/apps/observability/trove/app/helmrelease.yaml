@@ -56,7 +56,7 @@ spec:
           agent-k8s:
             image:
               repository: ghcr.io/techdox/trove-agent-k8s
-              tag: 0.17.1@sha256:02445b9824444107dcfce0a2dd67eee0a43e897485aca118e9a64fb1e4cde87f
+              tag: 0.18.0@sha256:43854f81133d85ca9890a67b48e4ce4d6e71673b542344314009328debda3e98
             env:
               TROVE_CLUSTER_NAME: kantai
               TROVE_SERVER_URL: http://trove.observability.svc.cluster.local:8080
