@@ -19,7 +19,7 @@ spec:
           filebrowser:
             image:
               repository: ghcr.io/gtsteffaniak/filebrowser
-              tag: 1.5.3-stable@sha256:e2ac55ccbe53d63b3f1d7d5ea5b82edf589b005a4b747b59912f97c6ba4f969e
+              tag: 1.5.5-stable@sha256:ffc2c9914b37f6e9afc67e8cf5693f5fa63bb0a83491dc9229caa073828d7503
             env:
               FILEBROWSER_CONFIG: /etc/filebrowser/config.yaml
               TZ: America/Los_Angeles
