@@ -13,6 +13,7 @@ resources:
   - ./grafana/ks.yaml
   # - ./idrac-exporter/ks.yaml
   - ./kite/ks.yaml
+  - ./kubagachi/ks.yaml
   - ./kube-prometheus-stack/ks.yaml
   - ./netronome/ks.yaml
   - ./nut-exporter/ks.yaml
