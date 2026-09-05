@@ -1,0 +1,22 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kubagachi
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: kubagachi-chart
+  values:
+    # in-cluster mode (default): watches this cluster via the pod's own
+    # ServiceAccount, using the RBAC the chart provisions below.
+    rbac:
+      create: true
+      clusterRead: true
+      # The embedded terminal (pods/exec + pods/attach) is a broad write
+      # surface on top of the already-broad cluster-wide read. Off by
+      # default per upstream's own security guidance; flip to true if the
+      # exec terminal is wanted.
+      podExec: false
