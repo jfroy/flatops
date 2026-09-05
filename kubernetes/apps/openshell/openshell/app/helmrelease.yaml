@@ -10,6 +10,10 @@ spec:
     kind: OCIRepository
     name: openshell
   values:
+    agentSandbox:
+      preflight:
+        enabled: false
+
     workload:
       kind: deployment
     replicaCount: 1
