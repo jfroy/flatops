@@ -26,7 +26,7 @@ spec:
           valkey:
             image:
               repository: ghcr.io/valkey-io/valkey
-              tag: 9.1.1@sha256:3acc0687f2a2e1091fae6450d7842dd658c941338cf0a873ddd9e14b9e4ea4dd
+              tag: 9.1.1@sha256:64e361b630ecf18dff7ca4df6a88e6eafc193687eb48cff2c7e0a293ab67d29a
             args:
               - --save
               - ""
