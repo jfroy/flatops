@@ -57,10 +57,12 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: false
             resources:
-              requests:
-                nvidia.com/gpu: 1
-              limits:
-                nvidia.com/gpu: 1
+              claims:
+                - name: gpu
+        pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: any-nvidia-gpu
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
