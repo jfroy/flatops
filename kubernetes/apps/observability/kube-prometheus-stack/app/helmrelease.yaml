@@ -35,8 +35,17 @@ spec:
         matchLabels:
           grafana.internal/instance: grafana
 
+    coreDns:
+      serviceMonitor:
+        authorization: &cpAuth
+          type: Bearer
+          credentials:
+            name: vmagent-kantai-token
+            key: token
+
     kubeApiServer:
       serviceMonitor:
+        authorization: *cpAuth
         metricRelabelings:
           - action: drop
             sourceLabels: ["__name__"]
@@ -56,6 +65,7 @@ spec:
 
     kubelet:
       serviceMonitor:
+        authorization: *cpAuth
         cAdvisorMetricRelabelings:
           # Drop less useful container CPU metrics.
           - sourceLabels: [__name__]
@@ -106,6 +116,7 @@ spec:
         - 10.1.1.2
         - 10.1.1.3
       serviceMonitor:
+        authorization: *cpAuth
         metricRelabelings:
           - action: drop
             sourceLabels: ["__name__"]
@@ -113,10 +124,13 @@ spec:
 
     kubeEtcd:
       endpoints: *cp
+      serviceMonitor:
+        authorization: *cpAuth
 
     kubeScheduler:
       endpoints: *cp
       serviceMonitor:
+        authorization: *cpAuth
         metricRelabelings:
           - action: drop
             sourceLabels: ["__name__"]

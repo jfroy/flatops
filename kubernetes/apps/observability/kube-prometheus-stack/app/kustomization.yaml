@@ -9,3 +9,4 @@ resources:
   - ./ocirepository.yaml
   - ./prometheusrule.yaml
   - ./scrapeconfig.yaml
+  - ./secret.yaml
