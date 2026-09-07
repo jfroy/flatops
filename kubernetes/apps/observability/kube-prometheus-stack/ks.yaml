@@ -8,6 +8,7 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
+    - name: victoria-metrics
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   prune: true
   sourceRef:
