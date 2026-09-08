@@ -114,9 +114,9 @@ The [Tailscale Operator](https://tailscale.com/kubernetes-operator) integrates t
 
 ### Secrets Management
 
-#### external-secrets + 1Password
+#### external-secrets + OpenBao
 
-[external-secrets](https://external-secrets.io/) synchronizes secrets from 1Password into Kubernetes using the 1Password Connect server. A `ClusterSecretStore` provides cluster-wide access to secrets.
+[external-secrets](https://external-secrets.io/) synchronizes secrets from [OpenBao](https://openbao.org/) into Kubernetes. OpenBao runs on [etincelle](https://github.com/jfroy/etincelle), a small bootstrap host outside the cluster, so the cluster's secret store is not itself a dependency of the cluster. It serves KV v2 at `https://bao.etincelle.cloud`, and the `openbao` `ClusterSecretStore` authenticates with a projected ServiceAccount token validated against a static copy of the cluster's JWKS, so no bootstrap secret lives in the cluster. Backups are daily age-encrypted Raft snapshots and logical KV exports to Cloudflare R2.
 
 ### Certificate Management
 

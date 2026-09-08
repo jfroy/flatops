@@ -79,7 +79,7 @@ App-template apps follow the same four-file layout:
   app/
     helmrelease.yaml    # HelmRelease — app-template or upstream chart via OCIRepository/HelmRepository
     kustomization.yaml  # Kustomize manifest listing resources in app/
-    externalsecret.yaml # Secrets pulled from 1Password via external-secrets
+    externalsecret.yaml # Secrets pulled from OpenBao via external-secrets
 ```
 
 **`ks.yaml` key points:**
@@ -109,10 +109,11 @@ Both default to unset. Add either one only when there is a specific reason to, a
 
 **`externalsecret.yaml` key points:**
 
-- `ClusterSecretStore` name: `onepassword`.
+- `ClusterSecretStore` name: `openbao`.
 - App secret uses `dataFrom.extract.key: <appname>`.
+- A single field is `key: <item>` plus `property: <field>`. The 1Password `key: <item>/<field>` form no longer resolves.
 - Postgres `-db` secret generates a password via `generators.external-secrets.io/v1alpha1/Password/password32` and populates CNPG connection vars.
-- Postgres `-initdb` secret pulls the CNPG superuser password from `cnpg-pg18vc/password`.
+- Postgres `-initdb` secret pulls the CNPG superuser password from `cnpg-pg18vc`, property `password`.
 
 **Registering a new `Kustomization`:** Add `- ./<appname>/ks.yaml` to `kubernetes/apps/<namespace>/kustomization.yaml` in alphabetical order.
 
@@ -128,7 +129,11 @@ Both PSA and the policy read the pod *spec*, not the running process, so an upst
 
 ## Secrets & SOPS
 
-`.sops.yaml` covers `bootstrap/` and `talos/` directories only. These use SOPS age encryption. Kubernetes secrets come entirely from 1Password via `external-secrets`; there are no SOPS-encrypted files under `kubernetes/`.
+`.sops.yaml` covers `bootstrap/` and `talos/` directories only. These use SOPS age encryption. Kubernetes secrets come entirely from OpenBao via `external-secrets`; there are no SOPS-encrypted files under `kubernetes/`.
+
+OpenBao runs on [etincelle](https://github.com/jfroy/etincelle), outside the cluster, and serves KV v2 mounted at `kantai/` from `https://bao.etincelle.cloud`. The `openbao` `ClusterSecretStore` authenticates with a projected ServiceAccount token (`external-secrets/external-secrets`, audience `openbao`) that OpenBao validates against a static copy of the cluster's JWKS: no bootstrap secret in the cluster, and no callback from OpenBao to the API server. `serviceAccountRef` in a `ClusterSecretStore` must carry `namespace` — without it, every `ExternalSecret` outside `external-secrets` fails while the store still reports Ready.
+
+Bootstrap secrets that cannot come from OpenBao — its seal key, recovery key and root token, the R2 backup credentials, etincelle's own provisioning items — stay in 1Password (vault `kantai`). Rotating the cluster's ServiceAccount signing key means re-running `task openbao-init` on etincelle with a fresh `kubectl get --raw /openid/v1/jwks`.
 
 **Non-rotatable secrets.** Some generated values encrypt data at rest, and regenerating one makes everything it encrypted permanently undecryptable — with no error at the time, only later failures to read. Keep each in its own `ExternalSecret` with `refreshInterval: "0"`, separate from any rotatable value in the same app, so that deleting a Secret to rotate one thing cannot take the other with it. Current members of this set:
 
@@ -169,7 +174,7 @@ Delivery across the namespace boundary uses external-secrets' `kubernetes` provi
 
 The direction is the point. A `SecretStore` grants `get`/`list`/`watch` on **every** Secret in its `remoteNamespace`, and RBAC `resourceNames` cannot restrict `list`/`watch`. Pointing consumers at `remoteNamespace: litellm` would therefore hand every consumer the proxy master key and the upstream provider keys, defeating virtual keys entirely. Pushing instead gives the trusted namespace write access to the untrusted ones and gives consumers no read access at all. Apply the same reasoning to any future cross-namespace secret: push from the owner, never pull from the vault.
 
-Do not use 1Password `PushSecret` for this. 1Password's API limits are low, and writes invalidate the `onepassword` store's read cache, so a push loop costs far more than its own call count.
+Cross-namespace delivery uses the `kubernetes` provider, not the vault. The 1Password rate limit that used to forbid a push loop is gone, but routing through OpenBao would be worse: the `kantai-eso` policy grants the single ESO ServiceAccount read on all of `kantai/data/*`, so a consumer's `ExternalSecret` could read any secret in the vault. Pushing is what keeps the master key out of consumer namespaces.
 
 `memini` pushes its `MEMINI_API_KEY` to `opencode` the same way (`components/memini-key-push`), so the MCP bearer token is never hand-copied.
 
