@@ -21,7 +21,6 @@ spec:
               repository: ghcr.io/jfroy/stash
               tag: v0.31.1-cudajellyfin@sha256:720df0459b84722d086cf6cacb2248d451aa7491eba13d88c1c956f052df21e0
             env:
-              AI_BACKEND_BASE_URL: https://stash.kantai.xyz/sais
               HOME: /config
               STASH_BLOBS_PATH: /blobs
               STASH_BLOBS_STORAGE: FILESYSTEM
@@ -76,10 +75,6 @@ spec:
       dockerenv:
         data:
           dockerenv: ""
-      sais-initdb:
-        data:
-          sais.sql: |
-            CREATE EXTENSION IF NOT EXISTS "vector";
     persistence:
       bulk-transcode-plugin:
         type: image
@@ -95,16 +90,10 @@ spec:
             stash:
               - path: /cache
                 subPath: stash
-            nams:
-              - path: /cache
-                subPath: nams
       config:
         existingClaim: ${APP}
         advancedMounts:
           stash:
-            sais:
-              - path: /stash
-                readOnly: true
             stash:
               - path: /config
       data:
