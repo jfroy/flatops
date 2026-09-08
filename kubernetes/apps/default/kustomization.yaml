@@ -19,7 +19,6 @@ resources:
   # - ./familynido/ks.yaml
   # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
-  # - ./grimmory/ks.yaml
   - ./homebox/ks.yaml
   - ./homepage/ks.yaml
   - ./houndarr/ks.yaml
