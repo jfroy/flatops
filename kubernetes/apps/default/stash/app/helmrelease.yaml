@@ -16,47 +16,6 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          sais:
-            image:
-              repository: ghcr.io/skier233/stash-ai-server
-              tag: 0.9.3
-            env:
-              AI_SERVER_DATA_DIR: /app/data
-              AI_SERVER_HOST: 0.0.0.0
-              AI_SERVER_PORT: &saisPort 4153
-              AI_SERVER_PLUGINS_DIR: /app/plugins
-              STASH_DB_PATH: /stash/stash-go.sqlite
-              STASH_URL: http://localhost:9999 # NOTE: if the service url is used, stashapi gets EPERM on connect; netpols?
-              TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: sais
-              - secretRef:
-                  name: sais-db
-            ports:
-              - containerPort: *saisPort
-                name: http
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  exec:
-                    command:
-                      - /bin/sh
-                      - -ec
-                      - |
-                        python3 - <<'PY'
-                        import json, sys, urllib.request
-                        data = urllib.request.urlopen("http://127.0.0.1:4153/api/v1/system/health", timeout=1).read()
-                        j = json.loads(data)
-                        sys.exit(0 if j.get("status") == "ok" else 1)
-                        PY
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            restartPolicy: Always
           stash:
             image:
               repository: ghcr.io/jfroy/stash
@@ -104,41 +63,6 @@ spec:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
-          nams:
-            image:
-              repository: registry.kantai.xyz/nams
-              tag: 3.2.1@sha256:2215b72a676b13fb06e0c8fd79737272d366a30ff1698bfc837a3153774e6df7
-            env:
-              TORCHINDUCTOR_CACHE_DIR: /cache
-              TZ: America/Los_Angeles
-            probes:
-              liveness: &probe
-                enabled: false
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 8000
-              readiness: *probe
-            securityContext:
-              allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
-              capabilities: { drop: ["ALL"] }
-            resources:
-              requests:
-                nvidia.com/gpu: 1
-              limits:
-                nvidia.com/gpu: 1
-            restartPolicy: Always
-          sais-initdb:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
-            envFrom:
-              - secretRef:
-                  name: sais-db
-              - secretRef:
-                  name: sais-initdb
         pod:
           hostname: stash
           securityContext:
@@ -202,23 +126,6 @@ spec:
         globalMounts:
           - path: /.dockerenv
             subPath: dockerenv
-      nams-license:
-        type: secret
-        name: nams-license
-        advancedMounts:
-          stash:
-            nams:
-              - path: /app/models/.ai_license_fingerprint
-                subPath: .ai_license_fingerprint
-              - path: /app/models/licenseV1.0.lic
-                subPath: licenseV1.0.lic
-      nams-logs:
-        type: emptyDir
-        sizeLimit: 100Mi
-        advancedMounts:
-          stash:
-            nams:
-              - path: /app/logs
       plugins:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
@@ -231,33 +138,6 @@ spec:
               - path: /plugins
             stash:
               - path: /plugins
-      sais-data:
-        type: persistentVolumeClaim
-        storageClass: ceph-block
-        accessMode: ReadWriteOnce
-        retain: true
-        size: 1Gi
-        advancedMounts:
-          stash:
-            sais:
-              - path: /app/data
-                subPath: data
-              - path: /app/plugins
-                subPath: plugins
-      sais-initdb:
-        type: configMap
-        identifier: sais-initdb
-        advancedMounts:
-          stash:
-            sais-initdb:
-              - path: /initdb
-      sais-plugin:
-        type: image
-        image: registry.kantai.xyz/sais-frontend:0.5.0b2@sha256:eac1c7c1aee019231211b03824eabc824fe6808e9c5009c78b84279d604ae6b6
-        advancedMounts:
-          stash:
-            install-plugins:
-              - path: /install/AIOverhaul
       scrapers:
         type: persistentVolumeClaim
         storageClass: openebs-hostpath
@@ -286,27 +166,9 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - port: *saisPort
-                identifier: sais
-            filters:
-              - type: URLRewrite
-                urlRewrite:
-                  path:
-                    type: ReplacePrefixMatch
-                    replacePrefixMatch: /
-            matches:
-              - path:
-                  type: PathPrefix
-                  value: /sais
-          - backendRefs:
               - port: *port
                 identifier: stash
     service:
-      sais:
-        controller: stash
-        ports:
-          http:
-            port: *saisPort
       stash:
         controller: stash
         forceRename: "{{ .Release.Name }}"
