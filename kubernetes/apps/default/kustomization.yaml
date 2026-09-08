@@ -36,7 +36,6 @@ resources:
   # - ./notifier/ks.yaml
   # - ./octoeverywhere-bambu-connect/ks.yaml
   # - ./ollama/ks.yaml
-  # - ./oxicloud/ks.yaml
   - ./paperless/ks.yaml
   - ./pgadmin/ks.yaml
   - ./photon/ks.yaml
