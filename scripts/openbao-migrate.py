@@ -5,6 +5,9 @@ Usage: scripts/openbao-migrate.py copy     one KV secret per 1Password item refe
                                            fields keyed by label (files by name for Document items)
        scripts/openbao-migrate.py verify   every referenced item matches OpenBao field for field, and
                                            every remoteRef in kubernetes/ resolves in OpenBao
+       scripts/openbao-migrate.py retire [--apply] [--force]
+                                           archive the 1Password items OpenBao already holds verbatim;
+                                           lists what it would do unless --apply is given
 
 Requires: python3 (stdlib only) and the 1Password CLI `op` signed in to the kantai vault.
   BAO_ADDR   OpenBao address (default https://bao.etincelle.cloud)
@@ -66,10 +69,20 @@ class Bao:
     def kv_put(self, name: str, fields: dict[str, str]) -> None:
         self.request("POST", f"{KV_MOUNT}/data/{urllib.parse.quote(name, safe='')}", {"data": fields})
 
+    def kv_list(self) -> list[str]:
+        resp = self.request("GET", f"{KV_MOUNT}/metadata/?list=true")
+        return [] if resp is None else [k for k in resp["data"]["keys"] if not k.endswith("/")]
+
 
 def op(*args: str) -> str:
     return subprocess.run(["op", *args, "--vault", OP_VAULT, "--format", "json"],
                           check=True, capture_output=True, text=True).stdout
+
+
+def op_archive(title: str) -> None:
+    """Move an item to the vault's Archive: recoverable indefinitely from the 1Password apps."""
+    subprocess.run(["op", "item", "delete", title, "--vault", OP_VAULT, "--archive"],
+                   check=True, capture_output=True, text=True)
 
 
 def item_titles() -> list[str]:
@@ -211,16 +224,66 @@ def verify(bao: Bao, titles: list[str]) -> int:
     return 0 if ok else 1
 
 
+def retire(bao: Bao, titles: list[str], apply_now: bool, force: bool) -> int:
+    """Archive the 1Password items OpenBao already holds verbatim.
+
+    Membership is decided by evidence rather than by the manifests, which have moved on: an
+    item is retired only when OpenBao holds one of the same name whose fields match exactly.
+    Everything else is the bootstrap material OpenBao was never meant to hold, and is listed
+    and left alone. Archiving is recoverable; nothing is permanently deleted.
+    """
+    store = Path("kubernetes/apps/external-secrets/external-secrets/stores/onepassword")
+    if store.is_dir() and not force:
+        sys.exit(f"ERROR: {store} still exists, so the cluster can still read from 1Password.\n"
+                 "       Decommission that store first; --force overrides.")
+
+    in_bao = set(bao.kv_list())
+    migrated, mismatched, kept = [], [], []
+    for title in titles:
+        if title not in in_bao:
+            kept.append(title)
+        elif bao.kv_get(title) == item_fields(title):
+            migrated.append(title)
+        else:
+            mismatched.append(title)
+
+    for t in kept:
+        print(f"KEEP      {t}")
+    for t in mismatched:
+        print(f"MISMATCH  {t}  (OpenBao differs from 1Password; re-run copy)")
+
+    if mismatched:
+        print(f"==> Refusing: {len(mismatched)} item(s) differ from OpenBao. Nothing archived.")
+        return 1
+    if not apply_now:
+        for t in migrated:
+            print(f"WOULD     {t}")
+        print(f"==> {len(migrated)} item(s) would be archived, {len(kept)} kept. "
+              "Re-run with --apply.")
+        return 0
+    for t in migrated:
+        op_archive(t)
+        print(f"ARCHIVED  {t}")
+    print(f"==> Archived {len(migrated)} item(s); {len(kept)} kept. Restore any of them from "
+          "the Archive in the 1Password apps.")
+    return 0
+
+
 def main() -> int:
-    mode = sys.argv[1] if len(sys.argv) == 2 else None
-    if mode not in ("copy", "verify"):
-        sys.exit(f"Usage: {sys.argv[0]} copy|verify")
+    args = sys.argv[1:]
+    mode = args[0] if args else None
+    if mode not in ("copy", "verify", "retire"):
+        sys.exit(f"Usage: {sys.argv[0]} copy | verify | retire [--apply] [--force]")
     token = os.environ.get("BAO_TOKEN") or sys.exit("ERROR: BAO_TOKEN is required")
     bao = Bao(os.environ.get("BAO_ADDR", "https://bao.etincelle.cloud"), token)
     try:
         titles = item_titles()
         print(f"==> {len(titles)} items in 1Password vault {OP_VAULT}")
-        return copy(bao, titles) if mode == "copy" else verify(bao, titles)
+        if mode == "copy":
+            return copy(bao, titles)
+        if mode == "verify":
+            return verify(bao, titles)
+        return retire(bao, titles, "--apply" in args, "--force" in args)
     except subprocess.CalledProcessError as e:
         sys.exit(f"ERROR: {' '.join(e.cmd[:3])} failed: {e.stderr.strip()}")
 

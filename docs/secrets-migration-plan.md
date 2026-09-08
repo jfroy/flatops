@@ -226,11 +226,16 @@ Mechanics: `scripts/openbao-adopt-generated.py seed` reads each live Secret with
 
 ### 5.8 Decommission the 1Password store
 
-Once everything has been Ready on `openbao` for a week or so and one full snapshot/restore drill has passed (6.4): delete `stores/onepassword/`, remove its health check from `ks.yaml`, `kubectl delete secret -n external-secrets onepassword-token`, revoke the service account in 1Password, and update README.md and AGENTS.md (store name, the `item/field` → `property` convention, and drop the "no 1Password PushSecret" rule in favour of "push generated secrets to `generated/`"). The `kantai` vault itself stays, holding only bootstrap material.
+Gated on two things: every `ExternalSecret` Ready on `openbao` for a week or so, and one full snapshot/restore drill (6.4). Then, in order:
+
+1. Delete `stores/onepassword/` and its health check in `ks.yaml`; `kubectl delete secret -n external-secrets onepassword-token`; revoke the service account in 1Password. (README.md and AGENTS.md were updated when the switch landed.)
+2. `scripts/openbao-migrate.py retire` — lists what it would archive; `--apply` archives it. Membership is decided by evidence rather than by the manifests, which have since moved on as apps were added and removed: an item is retired only when OpenBao holds one of the same name whose fields match 1Password exactly. Anything else is listed as `KEEP` and left alone, which is how the bootstrap material (seal key, R2 credentials, etincelle's provisioning items, the ZFS and secure-boot keys, the image-factory keys) survives. A single mismatch aborts the whole run before anything is touched. The script refuses to run at all while `stores/onepassword/` is still in the repo, so step 1 cannot be skipped.
+
+`op item delete --archive` is used rather than a plain delete: archived items are recoverable indefinitely from the 1Password apps, and they drop out of `op item list`, so a re-run is naturally idempotent. The `kantai` vault itself stays, holding only bootstrap material.
 
 ### 5.9 Rollback
 
-At any point before 5.8: revert the manifest PR; the `onepassword` store is still there and still authoritative; ESO rewrites identical Secrets again. After 5.8, rollback is a new 1Password service-account token plus a revert of the store deletion; the vault items are still there.
+At any point before 5.8: revert the manifest PR; the `onepassword` store is still there and still authoritative; ESO rewrites identical Secrets again. After 5.8, rollback is a new 1Password service-account token, a revert of the store deletion, and restoring the archived items from the 1Password Archive.
 
 ## 6. Backup and disaster recovery
 
