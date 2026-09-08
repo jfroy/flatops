@@ -41,6 +41,9 @@ spec:
     - dnsName: "ds.etincelle.cloud"
       recordType: A
       targets: ["10.1.0.2"]
+    - dnsName: "bao.etincelle.cloud"
+      recordType: A
+      targets: ["10.1.0.2"]
     - dnsName: "registry.etincelle.cloud"
       recordType: A
       targets: ["10.1.0.2"]
