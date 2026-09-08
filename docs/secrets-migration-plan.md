@@ -180,7 +180,7 @@ spec:
           path: jwt
           role: kantai-eso
           kubernetesServiceAccountToken:
-            serviceAccountRef: { name: external-secrets }
+            serviceAccountRef: { name: external-secrets, namespace: external-secrets }  # namespace is required in a ClusterSecretStore
             audiences: ["openbao"]
             expirationSeconds: 600
 ```
@@ -200,7 +200,25 @@ The `PushSecret`s in `litellm` and `memini` use the `kubernetes` provider and ar
 
 ### 5.6 Close the generator gap
 
-For each of the 46 `refreshInterval: "0"` generator secrets, add a `PushSecret` (`secretStoreRef: openbao`, `remoteRef.remoteKey: generated/<app>`, `deletionPolicy: None`, `updatePolicy: IfNotExists` so a re-created generator cannot overwrite the archived value). A single `PushSecret` per app can carry all keys. This is the step 1Password could not do. Once pushed, you could also flip those `ExternalSecret`s to read from `kantai/generated/<app>` instead of generating, which makes a rebuilt cluster come back with the *same* peppers and keys, which is the whole point. Do that in a second PR after confirming the pushed copies exist.
+54 `ExternalSecret`s generate their value with the `Password` generator, so those values exist only in etcd and a rebuilt cluster regenerates them. Most of that is harmless — `*-db` passwords are reset by `postgres-init`, service passwords are read by both sides from the same Secret, and session/JWT secrets cost a logout. The exception is any value that encrypts data at rest or authenticates credentials that cannot be reissued: regenerating one is a silent data-loss event.
+
+Seven were adopted into OpenBao, each on documented upstream behaviour rather than on the look of the name:
+
+| Adopted | Why |
+|---|---|
+| `litellm-salt` | `LITELLM_SALT_KEY` encrypts provider credentials in the database; upstream says never to change it |
+| `pocket-id-keys` | `ENCRYPTION_KEY` encrypts the token-signing private keys |
+| `open-webui-keys` | `OAUTH_*_ENCRYPTION_KEY` encrypt stored OAuth credentials; a wrong key crashes startup with no recovery path |
+| `filebrowser-keys` | `FILEBROWSER_TOTP_SECRET` encrypts stored TOTP secrets; changing it locks out every 2FA user |
+| `homebox-keys` | `HBOX_AUTH_API_KEY_PEPPER` — rotating it invalidates every issued API key |
+| `openshell-cek` | key-encryption-key wrapping content keys |
+| `kite` | `KITE_ENCRYPT_KEY`, plus the `JWT_SECRET` that shares its Secret. `DB_PASSWORD` stays generated — `postgres-init` resets the role to whatever the Secret holds — so this `ExternalSecret` keeps a generator alongside the extract, and keeps `refreshInterval: "0"` with it |
+
+Deliberately left generated, on the same evidence: Paperless's `SECRET_KEY` and Zipline's `CORE_SECRET` (sessions only, per upstream), Dawarich's `SECRET_KEY_BASE` (its 2FA uses separate `OTP_ENCRYPTION_*` keys), Karakeep's `MEILI_MASTER_KEY` (Meilisearch documents a master-key reset), LiteLLM's master key (upstream documents rotation), and every `*-db`, valkey, CouchDB and RabbitMQ password.
+
+Two of the seven — `filebrowser-keys` and `open-webui-keys` — belong to apps commented out of `kubernetes/apps/default/kustomization.yaml`, so they have no live Secret to adopt. Their manifests still read from the vault, which makes enabling either app require a vault value first (the `ExternalSecret` stays NotReady otherwise) rather than quietly minting an encryption key from a generator. `seed --create-missing` mints one matching the `password32` spec.
+
+Mechanics: `scripts/openbao-adopt-generated.py seed` reads each live Secret with `kubectl`, maps the rendered keys back to the pre-template names the generator produced (`LITELLM_SALT_KEY` → `SALT_KEY_RAW`, `key-encryption-key` → base64-decoded `KEK_RAW`, and so on) and writes them to `kantai/<item>`; `verify` re-derives and diffs. The manifest change then replaces the `dataFrom` generator block with `extract: {key: <item>}`. Where no generator remains, `refreshInterval: "0"` is dropped: it existed to stop the generator running again, and now only prevents a vault-side rotation from propagating. `kite` is the exception — it still generates `DB_PASSWORD`, so it keeps both the generator entry and `refreshInterval: "0"`. Target Secret names, template keys and rendered values are unchanged, so no workload sees a new value. **Seed before merging the manifest change** — the reverse order leaves ESO reading a path that does not exist (it fails safe and keeps the existing Secret, but the ExternalSecret goes NotReady).
 
 ### 5.7 etincelle's own bootstrap secrets
 
@@ -255,6 +273,8 @@ Resolved 2026-09-05: scope is the cluster only (personal vault stays where it is
 **etincelle** (working copy, uncommitted): `containers/systemd/openbao.container` (ghcr.io/openbao/openbao:2.6.2, Raft, `U`-chowned volumes), `openbao/config.hcl` (static seal from `/etc/etincelle/secrets/openbao-seal.key`, `disable_mlock`, XFF from Caddy), Caddy block, tmpfiles entries, `scripts/bao` host wrapper, `scripts/openbao-init.py` + `openbaolib.py` + `openbao-token.py` (workstation-side Python, stdlib, drive the HTTP API at `bao.etincelle.cloud`; init is idempotent: init → recovery key + root token to 1Password, audit, KV v2 `kantai` max_versions=10, policies `kantai-eso` and `openbao-snapshot`, `jwt` auth with JWKS→PEM conversion and role `kantai-eso`, AppRole for the backup job, optional `oidc/` mount against Pocket ID for humans, revokes root at the end; `task openbao-token` mints a scoped token from the recovery key when the cluster is down), a separate `ghcr.io/jfroy/openbao-snapshot-etincelle` image (Alpine + python3/age/rclone + `openbao-snapshot/openbao-snapshot.py`, built by its own workflow like the Caddy image) run as a one-shot quadlet from a daily timer — nothing beyond config and unit files is added to the host (Raft snapshot + logical KV export, age-encrypted, rclone to R2, node-exporter textfile metric; refuses to run until `openbao/backup-age.pub` holds a real recipient), `provision-secrets.sh` additions (seal key with generate-and-store offer, R2 env, snapshot AppRole env), Taskfile tasks `openbao-init` and `openbao-snapshot-now`, README runbook, workflow `paths`. Renovate already tracks quadlet images through the existing bot, so `renovate.json` was left alone.
 
 **flatops** (branch `openbao-secrets` off `main`, uncommitted): `stores/openbao/clustersecretstore.yaml` (vault provider, `path: kantai`, v2, JWT auth against role `kantai-eso`, audience `openbao`), registered in `stores/kustomization.yaml` and as a second health check in `ks.yaml`; `scripts/openbao-migrate.py copy|verify` (Python, stdlib, HTTP API: 1Password → KV by field label, then a two-way diff plus a check that every `remoteRef` in `kubernetes/` resolves); `scripts/openbao-rewrite-externalsecrets.py [--check]` (text-preserving rewrite: 152 store refs in 77 files, 73 `item/field` keys → `key` + `property`; validated on a scratch clone, not yet run on the branch). This doc lives at `docs/secrets-migration-plan.md`.
+
+**Generator adoption (done):** `scripts/openbao-adopt-generated.py` plus the seven manifest changes in 5.6; AGENTS.md now carries the rule (never generate a secret that encrypts data at rest) and the adopted list.
 
 **Manual prerequisites before `task provision`:** R2 bucket + scoped API token + lifecycle rule (e.g. `raft/` 30 d, `kv/` 90 d); `age-keygen`, recipient into `openbao/backup-age.pub`, private key into 1Password `openbao-backup-age`; 1Password item `openbao-backup-r2`; DNS for `bao.etincelle.cloud` if not covered by a wildcard. Then: push etincelle → bootc update → `task provision HOST=…` → `kubectl get --raw /openid/v1/jwks > kantai-jwks.json` → `task openbao-init HOST=… JWKS=kantai-jwks.json` → `task openbao-snapshot-now HOST=…` → `BAO_TOKEN=… scripts/openbao-migrate.py copy && … verify` → merge the flatops store PR → run the rewrite script (`--base64 nams-license-2026-02-05-2`: that Document item's `.lic` file is binary and is stored base64-encoded, so its ExternalSecret gets `decodingStrategy: Base64`), validate, merge (5.5) → 5.6 → 5.8. `copy` only migrates the 80 items `kubernetes/` references (128 direct references plus the 7 `<app>-oidc` pairs resolved from the `envoy-gateway-oidc` component); the other 35 vault items are bootstrap material and stay in 1Password.
 

@@ -135,7 +135,13 @@ OpenBao runs on [etincelle](https://github.com/jfroy/etincelle), outside the clu
 
 Bootstrap secrets that cannot come from OpenBao — its seal key, recovery key and root token, the R2 backup credentials, etincelle's own provisioning items — stay in 1Password (vault `kantai`). Rotating the cluster's ServiceAccount signing key means re-running `task openbao-init` on etincelle with a fresh `kubectl get --raw /openid/v1/jwks`.
 
-**Non-rotatable secrets.** Some generated values encrypt data at rest, and regenerating one makes everything it encrypted permanently undecryptable — with no error at the time, only later failures to read. Keep each in its own `ExternalSecret` with `refreshInterval: "0"`, separate from any rotatable value in the same app, so that deleting a Secret to rotate one thing cannot take the other with it. Current members of this set:
+**Never generate a secret that encrypts data at rest.** Regenerating one makes everything it encrypted permanently undecryptable — with no error at the time, only later failures to read — and a rebuilt cluster regenerates every `Password` generator by definition. Encryption keys, peppers and salts live in OpenBao like any other secret and are read with `dataFrom.extract`. The generator is for values that can be reissued, where the worst case is a logout or a service restart.
+
+Judge a value by what breaks when it changes, not by its name. `LITELLM_SALT_KEY` encrypts provider credentials in LiteLLM's database and its documentation says never to change it; Paperless's `SECRET_KEY` and Zipline's `CORE_SECRET` have the same shape but only sign sessions, so those stay generated. Where upstream does not say, assume it encrypts something.
+
+Already adopted for this reason: `homebox-keys`, `pocket-id-keys`, `filebrowser-keys`, `open-webui-keys`, `litellm-salt`, `openshell-cek`, `kite`. `scripts/openbao-adopt-generated.py` records why each one moved and re-checks that OpenBao still matches the live Secret.
+
+A generated value that is genuinely rotatable still belongs in its own `ExternalSecret`, separate from any other generated value in the same app, so that deleting a Secret to rotate one thing cannot take the other with it.
 
 ## Networking Architecture
 
