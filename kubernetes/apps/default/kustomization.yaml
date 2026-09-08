@@ -16,7 +16,6 @@ resources:
   # - ./docling/ks.yaml
   - ./esphome/ks.yaml
   - ./etampe/ks.yaml
-  # - ./familynido/ks.yaml
   # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
   - ./homebox/ks.yaml
