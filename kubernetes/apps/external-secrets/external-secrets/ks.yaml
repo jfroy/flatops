@@ -35,6 +35,9 @@ spec:
     - apiVersion: external-secrets.io/v1
       kind: ClusterSecretStore
       name: onepassword
+    - apiVersion: external-secrets.io/v1
+      kind: ClusterSecretStore
+      name: openbao
   healthCheckExprs:
     - apiVersion: external-secrets.io/v1
       kind: ClusterSecretStore
