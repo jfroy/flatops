@@ -16,6 +16,11 @@ spec:
   storage:
     size: 100Gi
     storageClass: openebs-hostpath
+  ephemeralVolumesSizeLimit:
+    shm: 2Gi
+  resources:
+    requests:
+      memory: 12Gi
   superuserSecret:
     name: pg18vc-superuser-secret
   enableSuperuserAccess: true
@@ -54,9 +59,10 @@ spec:
         extension_control_path:
           - /usr/share/postgresql/18/
     parameters:
+      effective_cache_size: 24GB
       max_connections: "100"
-      max_locks_per_transaction: '1024'
-      shared_buffers: 64MB
+      max_locks_per_transaction: '4096'
+      shared_buffers: 8GB
       timescaledb.max_background_workers: '32'
       timescaledb.max_tuples_decompressed_per_dml_transaction: '0'
       timescaledb.telemetry_level: 'off'
