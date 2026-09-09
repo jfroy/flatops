@@ -21,7 +21,7 @@ spec:
           cloudflared:
             image:
               repository: docker.io/cloudflare/cloudflared
-              tag: 2026.8.3
+              tag: 2026.9.0
             args:
               - tunnel
               - --config
