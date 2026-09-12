@@ -19,6 +19,8 @@ spec:
       verifyImages: true
       maxDiffConcurrency: 2
       renderConcurrency: "8"
+      kubeVersion: '{{ .Capabilities.KubeVersion.Version }}'
+      helmApiVersions: '{{ join "," .Capabilities.APIVersions }}'
     secret:
       existingSecret: konflate
     httpRoute:
