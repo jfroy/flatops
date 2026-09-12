@@ -48,12 +48,10 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
             resources:
-              claims:
-                - name: gpu
-        pod:
-          resourceClaims:
-            - name: gpu
-              resourceClaimTemplateName: any-nvidia-gpu
+              requests:
+                nvidia.com/gpu: 1
+              limits:
+                nvidia.com/gpu: 1
       vue:
         annotations:
           reloader.stakater.com/auto: "true"

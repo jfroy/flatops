@@ -15,23 +15,9 @@ spec:
   upgrade:
     disableOpenAPIValidation: true
   values:
-    clusterPolicy:
-      deployCR: false
-    gpuCluster:
-      deployCR: true
-    draDriver:
-      featureGates:
-        ConsumableShares: true
-      computeDomains:
-        enabled: false
-      gpus:
-        kubeletPlugin:
-          env:
-            - name: CONSUMABLE_SHARES
-              value: unlimited
     dcgmExporter:
       env:
-        - name: KUBERNETES_ENABLE_DRA
+        - name: KUBERNETES_VIRTUAL_GPUS
           value: "true"
       serviceMonitor:
         enabled: true
@@ -42,6 +28,10 @@ spec:
             targetLabel: instance
             replacement: $1
             action: replace
+    devicePlugin:
+      config:
+        name: time-slicing-config-all
+        default: any
     driver:
       enabled: false
     hostPaths:
