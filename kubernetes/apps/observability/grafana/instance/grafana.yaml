@@ -7,6 +7,8 @@ metadata:
   labels:
     grafana.internal/instance: grafana
 spec:
+  # renovate: datasource=docker depName=docker.io/grafana/grafana
+  version: 13.2.2
   config:
     analytics:
       check_for_updates: "false"
@@ -45,9 +47,10 @@ spec:
       news_feed_enabled: "false"
     plugins:
       plugin_admin_enabled: "false"
+      # Grafana >=13.2 updates preinstalled plugins from grafana.com on startup
+      # which breaks under readOnlyRootFilesystem.
+      preinstall_auto_update: "false"
       preinstall_sync: "fetzerch-sunandmoon-datasource,victoriametrics-logs-datasource,victoriametrics-metrics-datasource"
-    security:
-      angular_support_enabled: "true"
     server:
       enable_gzip: "true"
       root_url: https://grafana.kantai.xyz
