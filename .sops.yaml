@@ -3,6 +3,12 @@ stores:
   yaml:
     indent: 2
 creation_rules:
+  - path_regex: talos/topf\.yaml$
+    encrypted_regex: ^data$
+    key_groups:
+      - age:
+          - "age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t"
+    mac_only_encrypted: true
   - path_regex: (bootstrap|talos)/.*\.sops\.ya?ml
     key_groups:
       - age:

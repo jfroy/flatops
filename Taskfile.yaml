@@ -13,7 +13,7 @@ vars:
   SCRIPTS_DIR: '{{.ROOT_DIR}}/scripts'
   SOPS_CONFIG_FILE: '{{.ROOT_DIR}}/.sops.yaml'
   TALOS_DIR: '{{.ROOT_DIR}}/talos'
-  TALOSCONFIG: '{{.ROOT_DIR}}/talos/clusterconfig/talosconfig'
+  TALOSCONFIG: '{{.ROOT_DIR}}/talos/talosconfig'
 
 dotenv:
   - '{{.KUBERNETES_DIR}}/apps/talos-admin/.env'

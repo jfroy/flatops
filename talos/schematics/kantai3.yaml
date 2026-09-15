@@ -1,0 +1,14 @@
+---
+customization:
+  bootloader: sd-boot
+  extraKernelArgs:
+    - -selinux
+    - lsm=landlock,lockdown,yama,apparmor,bpf
+    - lsm.debug
+    - amd_pstate=active
+    - spec_rstack_overflow=microcode
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/amd-ucode
+      - siderolabs/kata-containers
+      - siderolabs/util-linux-tools

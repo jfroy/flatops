@@ -1,0 +1,8 @@
+---
+machine:
+  kernel:
+    modules:
+      - name: nvme-tcp
+      - name: vfio-pci
+      - name: vhost_net
+      - name: vhost_vsock

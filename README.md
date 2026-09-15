@@ -243,7 +243,7 @@ The [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/
 │   │   └── volsync-system/
 │   ├── components/              # Reusable Kustomize components
 │   └── transformers/            # Global Kustomize transformers
-├── talos/                       # Talos configuration
+├── talos/                       # Talos configuration (topf)
 └── Taskfile.yaml                # Task runner commands
 ```
 
@@ -257,9 +257,17 @@ Bootstrap is currently broken and unusable. I love my pets.
 
 **Update Talos node configuration:**
 
+Edit `talos/topf.yaml` or the patch tree under `talos/`, then:
+
 ```sh
-task talos:gen-mc
-task talos:apply-mc
+task talos:diff     # dry-run diff against the live nodes
+task talos:apply
+```
+
+**Upgrade Talos:**
+
+```sh
+task talos:upgrade  # to the version pinned in talos/topf.yaml
 ```
 
 ## 🔒 Security

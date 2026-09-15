@@ -1,0 +1,4 @@
+---
+machine:
+  install:
+    wipe: false

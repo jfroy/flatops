@@ -1,0 +1,10 @@
+---
+customization:
+  bootloader: sd-boot
+  extraKernelArgs:
+    - -selinux
+    - lsm=landlock,lockdown,yama,apparmor,bpf
+    - lsm.debug
+  systemExtensions:
+    officialExtensions:
+      - siderolabs/util-linux-tools

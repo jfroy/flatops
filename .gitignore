@@ -15,6 +15,7 @@
 .decrypted~*
 kubeconfig
 talosconfig
+/talos/output/
 
 # others
 .DS_Store

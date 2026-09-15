@@ -1,0 +1,9 @@
+---
+apiVersion: v1alpha1
+kind: DHCPv4Config
+name: enp1s0f0np0
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: enp1s0f0np0
+mtu: 1500

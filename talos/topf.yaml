@@ -1,0 +1,50 @@
+clusterName: kantai
+clusterEndpoint: https://k8s.kantai.xyz:6443
+# renovate: datasource=docker depName=ghcr.io/siderolabs/imager
+talosVersion: v1.13.7
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.36.2
+# Self-hosted image factory. Schematic IDs are hashed locally from the files in
+# schematics/; a brand-new schematic must be registered once with
+# `topf schematic-ids --submit-to-factory`.
+factory: tif.etincelle.cloud
+# Repo convention keeps the .sops.yaml suffix on encrypted files.
+secretsPath: secrets.sops.yaml
+# Values formerly in talenv.sops.yaml. Only this block is SOPS-encrypted (see
+# .sops.yaml); the rest of the file stays plain so it is diffable and Renovate
+# can bump the versions above.
+data:
+  CLUSTER_POD_V6_CIDR: ENC[AES256_GCM,data:ITH8gxeIEVaXgqTCs5gUMeQZ26Stmc+lPg==,iv:G+ffGeicBC/l0zIXbFaYgNwT/QsWbGVwA8hgSGtg3Hs=,tag:pg8Uov+UGgueYSrOITV5xQ==,type:str]
+  CLUSTER_SVC_V6_CIDR: ENC[AES256_GCM,data:CdmXy9Akd0L9y5NQVYk+ztKPKqp7iO0I7g==,iv:yKCHrpAb0xdLZZVEJ/72Yo35jXLIrJJHHMbjqimAm2U=,tag:iy/Zjs8JJyHSlgOfwS7z7A==,type:str]
+  CLUSTER_NODE_V6_CIDR: ENC[AES256_GCM,data:yJN1DFBRJJ8xBMOo5nlWHr633mw7mV44,iv:vFstFiE10idjOt7cKS6CmKxgrvzD3AlLK0l03jG33n0=,tag:uiuoWdPRavawIyJXGroUQA==,type:str]
+nodes:
+  - host: kantai1
+    ip: 10.1.1.1
+    role: control-plane
+    secureboot: true
+    schematicId: '@schematics/kantai1.yaml'
+  - host: kantai2
+    ip: 10.1.1.2
+    role: control-plane
+    secureboot: true
+    schematicId: '@schematics/kantai2.yaml'
+  - host: kantai3
+    ip: 10.1.1.3
+    role: control-plane
+    schematicId: '@schematics/kantai3.yaml'
+sops:
+  age:
+    - enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAwY1I1Ly9iOVd0TDdhWmxR
+        L09DeUc5ZGRUMjJYR1pqMjlkb1d4VXJUSVdBClprZUdtUHd1aXN2bWFIcDdvZG1p
+        a3NBUmpveXJIbnZ5SzRTMVBEVGNUVHcKLS0tIDVyOXN6NURMeGNKLy9vTGdKQkhI
+        cE4zZzJDZkVBVEFUbGhQdTE3alFKaGcKTs39R3ZaR4Zl9YAHMZS6AvJuSdGOHGdF
+        /2c3hIVqvF0PN/uXaGazEr0DCO4DtmSPs412VfFbykmgfG+PoPgkYg==
+        -----END AGE ENCRYPTED FILE-----
+      recipient: age1u006cywqm39pr9zgh2hn0svnry5gs2ayhrtxucz77qc7j88kmqzqxtxz0t
+  encrypted_regex: ^data$
+  lastmodified: "2026-09-10T16:02:43Z"
+  mac: ENC[AES256_GCM,data:8nEmerlNijSvf4pY/cAb4fXAJLlpM3tmQdVGePcuQEp+q0CXNc4rGTEadeJG8AKFS50EcokXlRCYssCFX4q70HeRMBKjOiPNXLvTLxvYydMp2ne7Ew9oW4kaIWjMrbU2Ae8Y3x5fl0Zd6GFq5pYXM9xfHr6bVaxu1iAsAjDZAYM=,iv:FiucTcdaqcPrTIeupEQ9nFr4+54sbEuylEFBuQBwyRc=,tag:DhiNRUvx402bwp2p47pW1Q==,type:str]
+  mac_only_encrypted: true
+  version: 3.13.3

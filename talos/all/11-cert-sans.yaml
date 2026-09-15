@@ -1,0 +1,9 @@
+---
+machine:
+  certSANs: &sans
+    - k8s.kantai.xyz
+    - 10.10.10.10
+    - 127.0.0.1 # KubePrism
+cluster:
+  apiServer:
+    certSANs: *sans

@@ -1,0 +1,11 @@
+---
+machine:
+  kernel:
+    modules:
+      - name: nvidia
+      - name: nvidia-uvm
+      - name: nvidia-modeset
+      - name: nvme-tcp
+      - name: vfio-pci
+      - name: vhost_net
+      - name: vhost_vsock

@@ -1,0 +1,5 @@
+---
+apiVersion: v1alpha1
+kind: UserVolumeConfig
+name: openebs
+volumeType: directory
