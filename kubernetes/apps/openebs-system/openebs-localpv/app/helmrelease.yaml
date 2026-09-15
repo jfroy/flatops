@@ -13,7 +13,7 @@ spec:
     global:
       imageRegistry: quay.io/
     localpv:
-      basePath: /var/openebs/local
+      basePath: /var/mnt/openebs
     hostpathClass:
       name: openebs-hostpath
     analytics:
