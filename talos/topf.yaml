@@ -1,6 +1,6 @@
 clusterName: kantai
 clusterEndpoint: https://k8s.kantai.xyz:6443
-# renovate: datasource=docker depName=ghcr.io/siderolabs/imager
+# renovate: datasource=custom.talos-factory depName=siderolabs/talos
 talosVersion: v1.13.7
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.36.2
