@@ -72,7 +72,7 @@ spec:
             policy: mute
       mgr:
         count: 2
-        allowMultiplePerNode: true
+        allowMultiplePerNode: false
         modules:
           - name: diskprediction_local
             enabled: true
@@ -84,7 +84,7 @@ spec:
             enabled: true
       mon:
         count: 3
-        allowMultiplePerNode: true
+        allowMultiplePerNode: false
       network:
         connections:
           # encryption:
@@ -96,14 +96,13 @@ spec:
         # dualStack: true
       placement:
         all:
-          nodeAffinity:
-            requiredDuringSchedulingIgnoredDuringExecution:
-              nodeSelectorTerms:
-              - matchExpressions:
-                - key: kubernetes.io/hostname
-                  operator: NotIn
-                  values:
-                    - kantai2
+          tolerations:
+            - key: node-role.kubernetes.io/control-plane
+              operator: Exists
+        mon:
+          tolerations:
+            - key: node.kantai.xyz/low-memory
+              operator: Exists
       resources:
         osd:
           limits:
