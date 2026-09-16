@@ -19,7 +19,7 @@ spec:
           influxdb:
             image:
               repository: docker.io/library/influxdb
-              tag: "1.12.4"
+              tag: "1.13.1"
             args:
               - -config
               - /config/influxdb.conf
