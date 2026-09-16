@@ -8,9 +8,11 @@ spec:
   instances: 2
   enablePDB: false
   affinity:
-    enablePodAntiAffinity: false
+    enablePodAntiAffinity: true
+    podAntiAffinityType: required
+    topologyKey: kubernetes.io/hostname
     nodeSelector:
-      kubernetes.io/hostname: kantai1
+      kubernetes.io/arch: amd64  # timescaledb is amd64 only
   # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=docker
   imageName: ghcr.io/cloudnative-pg/postgresql:18.4-standard-trixie
   storage:
