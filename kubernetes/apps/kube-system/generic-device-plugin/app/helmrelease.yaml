@@ -13,6 +13,10 @@ spec:
   values:
     defaultPodOptions:
       priorityClassName: system-node-critical
+      tolerations:
+        - key: node.kantai.xyz/low-memory
+          operator: Exists
+          effect: NoSchedule
     controllers:
       generic-device-plugin:
         type: daemonset

@@ -45,8 +45,20 @@ spec:
                 minPodLifetimeSeconds: 1800
             - name: RemovePodsHavingTooManyRestarts
               args:
-                podRestartThreshold: 100
+                podRestartThreshold: 80
                 includingInitContainers: true
+            - name: LowNodeUtilization
+              args:
+                metricsUtilization:
+                  source: KubernetesMetrics
+                thresholds:
+                  cpu: 30
+                  memory: 40
+                targetThresholds:
+                  cpu: 70
+                  memory: 70
+                evictionLimits:
+                  node: 3
             - name: RemovePodsViolatingNodeAffinity
               args:
                 nodeAffinityType:
@@ -58,6 +70,7 @@ spec:
           plugins:
             balance:
               enabled:
+                - LowNodeUtilization
                 - RemovePodsViolatingTopologySpreadConstraint
             deschedule:
               enabled:

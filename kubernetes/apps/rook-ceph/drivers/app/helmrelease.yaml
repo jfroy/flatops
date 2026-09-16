@@ -17,6 +17,10 @@ spec:
           name: rook-csi-operator-image-set-configmap
         nodePlugin:
           priorityClassName: system-node-critical
+          tolerations:
+            - key: node.kantai.xyz/low-memory
+              operator: Exists
+              effect: NoSchedule
         controllerPlugin:
           priorityClassName: system-cluster-critical
     drivers:

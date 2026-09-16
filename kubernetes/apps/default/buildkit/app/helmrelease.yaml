@@ -88,6 +88,10 @@ spec:
                         operator: In
                         values:
                           - arm64
+          tolerations:
+            - key: node.kantai.xyz/low-memory
+              operator: Exists
+              effect: NoSchedule
     defaultPodOptions:
       annotations:
         reloader.stakater.com/auto: "true"

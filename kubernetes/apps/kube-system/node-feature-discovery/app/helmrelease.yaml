@@ -10,6 +10,11 @@ spec:
     kind: OCIRepository
     name: node-feature-discovery
   values:
+    worker:
+      tolerations:
+        - key: node.kantai.xyz/low-memory
+          operator: Exists
+          effect: NoSchedule
     topologyUpdater:
       enable: false
       createCRDs: true
