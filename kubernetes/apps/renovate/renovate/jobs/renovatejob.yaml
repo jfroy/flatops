@@ -41,6 +41,7 @@ spec:
         allowedCommands: ['^helm-docs( .*)?$', '^helm-schema( .*)?$'],
         allowedUnsafeExecutions: ['mise'],
         platformCommit: 'enabled',
+        internalHostAccess: 'block',
         hostRules: [
           {
             hostType: 'docker',
@@ -48,6 +49,8 @@ spec:
             username: process.env.DOCKERHUB_USERNAME,
             password: process.env.DOCKERHUB_TOKEN,
           },
+          { matchHost: 'kantai.xyz' },
+          { matchHost: 'etincelle.cloud' },
         ],
       };
   extraEnv:
