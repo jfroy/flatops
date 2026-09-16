@@ -1,7 +1,7 @@
 clusterName: kantai
 clusterEndpoint: https://k8s.kantai.xyz:6443
 # renovate: datasource=custom.talos-factory depName=siderolabs/talos
-talosVersion: v1.13.7
+talosVersion: v1.14.1
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
 kubernetesVersion: v1.36.2
 # Self-hosted image factory. Schematic IDs are hashed locally from the files in
