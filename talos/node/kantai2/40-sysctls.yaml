@@ -6,4 +6,3 @@ machine:
     net.ipv6.conf.all.forwarding: "1"
     net.ipv6.conf.enp0s1.accept_ra: "2"
     net.ipv6.conf.enp0s1.forwarding: "1"
-    vm.nr_hugepages: "1024"
