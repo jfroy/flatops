@@ -17,10 +17,6 @@ spec:
           name: rook-csi-operator-image-set-configmap
         nodePlugin:
           priorityClassName: system-node-critical
-          tolerations:
-            - key: node.kantai.xyz/low-memory
-              operator: Exists
-              effect: NoSchedule
         controllerPlugin:
           priorityClassName: system-cluster-critical
     drivers:
@@ -28,12 +24,27 @@ spec:
         enabled: true
         name: rook-ceph.rbd.csi.ceph.com
         snapshotPolicy: volumeSnapshot
+        nodePlugin:
+          tolerations:
+            - key: node.kantai.xyz/low-memory
+              operator: Exists
+              effect: NoSchedule
       cephfs:
         enabled: true
         name: rook-ceph.cephfs.csi.ceph.com
+        nodePlugin:
+          tolerations:
+            - key: node.kantai.xyz/low-memory
+              operator: Exists
+              effect: NoSchedule
       nfs:
         enabled: false
         name: rook-ceph.nfs.csi.ceph.com
       nvmeof:
         enabled: true
         name: rook-ceph.nvmeof.csi.ceph.com
+        nodePlugin:
+          tolerations:
+            - key: node.kantai.xyz/low-memory
+              operator: Exists
+              effect: NoSchedule
