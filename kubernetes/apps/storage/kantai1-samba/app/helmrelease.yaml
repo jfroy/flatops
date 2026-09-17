@@ -51,7 +51,7 @@ spec:
               - dbus
             image:
               repository: ghcr.io/jfroy/avahi
-              tag: "0.8"
+              tag: 0.8.0@sha256:589266ab70192615a379fd90b936954412ec874463aa205799306af93e131ce6
             restartPolicy: Always
             securityContext:
               allowPrivilegeEscalation: false
