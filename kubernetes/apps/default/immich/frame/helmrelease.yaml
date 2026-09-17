@@ -42,6 +42,12 @@ spec:
             runAsGroup: 1000
             fsGroup: 1000
             fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      # immichframe writes config to a db and imports env vars on first run; store db in emptydir to remain gitops
+      config:
+        type: emptyDir
+        globalMounts:
+          - path: /app/Config
     route:
       immichframe:
         hostnames:
