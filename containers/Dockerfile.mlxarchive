@@ -1,0 +1,23 @@
+# Builds a local image containing NVIDIA's mlxarchive tool, used to package a raw
+# ConnectX firmware .bin into the .mfa2 container format that the in-kernel mlx5_core
+# / devlink flashing path requires (see docs/mellanox-nic-firmware-update.md).
+#
+# Before building: download the MFT Linux x86_64 deb tarball from
+# https://network.nvidia.com/support/mft/ and place it next to this Dockerfile as
+# mft.tgz.
+#
+#   docker build -t mlxarchive-builder -f containers/Dockerfile.mlxarchive containers/
+#   docker run --rm -v "$PWD/bins:/work/bins" -v "$PWD/out:/work/out" mlxarchive-builder \
+#     -v 1.1.1 --bins-dir /work/bins --out-file /work/out/fw.mfa2
+
+FROM debian:bookworm-slim
+
+COPY mft.tgz /tmp/mft.tgz
+RUN cd /tmp && tar xf mft.tgz \
+    && cd mft-*/DEBS \
+    && apt-get update \
+    && apt-get install -y ./mft_*.deb ./mft-oem_*.deb \
+    && rm -rf /var/lib/apt/lists/* /tmp/mft.tgz /tmp/mft-*
+
+WORKDIR /work
+ENTRYPOINT ["mlxarchive"]
