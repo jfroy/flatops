@@ -136,5 +136,5 @@ spec:
       valuesKey: AWS_SECRET_ACCESS_KEY
     - targetPath: superuser.apiToken
       kind: Secret
-      name: netbox-superuser
+      name: netbox-superuser-token
       valuesKey: API_TOKEN
