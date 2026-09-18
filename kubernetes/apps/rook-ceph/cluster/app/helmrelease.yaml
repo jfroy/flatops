@@ -212,6 +212,17 @@ spec:
               secret.reloader.stakater.com/reload: xyz-kantai-s3-tls
             instances: 2
             priorityClassName: system-cluster-critical
+            placement:
+              podAffinity:
+                requiredDuringSchedulingIgnoredDuringExecution:
+                  - topologyKey: kubernetes.io/hostname
+                    labelSelector:
+                      matchLabels:
+                        app: rook-ceph-osd
+                        rook_cluster: rook-ceph
+              tolerations:
+                - key: node-role.kubernetes.io/control-plane
+                  operator: Exists
             port: 80
             securePort: 443
             sslCertificateRef: xyz-kantai-s3-tls
