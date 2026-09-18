@@ -31,18 +31,6 @@ spec:
                     - "FailedBarePods"
                     - "PodsWithLocalStorage"
                     - "SystemCriticalPods"
-            - name: RemoveFailedPods
-              args:
-                reasons:
-                  - "ContainerStatusUnknown"
-                  - "NodeAffinity"
-                  - "NodeShutdown"
-                  - "Terminated"
-                  - "UnexpectedAdmissionError"
-                includingInitContainers: true
-                excludeOwnerKinds:
-                  - "Job"
-                minPodLifetimeSeconds: 1800
             - name: RemovePodsHavingTooManyRestarts
               args:
                 podRestartThreshold: 80
@@ -74,11 +62,36 @@ spec:
                 - RemovePodsViolatingTopologySpreadConstraint
             deschedule:
               enabled:
-                - RemoveFailedPods
                 - RemovePodsHavingTooManyRestarts
                 - RemovePodsViolatingNodeTaints
                 - RemovePodsViolatingNodeAffinity
                 - RemovePodsViolatingInterPodAntiAffinity
+        - name: failed-pods
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                nodeFit: false
+                podProtections:
+                  defaultDisabled:
+                    - "FailedBarePods"
+                    - "PodsWithLocalStorage"
+                    - "SystemCriticalPods"
+            - name: RemoveFailedPods
+              args:
+                reasons:
+                  - "ContainerStatusUnknown"
+                  - "NodeAffinity"
+                  - "NodeShutdown"
+                  - "Terminated"
+                  - "UnexpectedAdmissionError"
+                includingInitContainers: true
+                excludeOwnerKinds:
+                  - "Job"
+                minPodLifetimeSeconds: 1800
+          plugins:
+            deschedule:
+              enabled:
+                - RemoveFailedPods
     service:
       enabled: true
     serviceMonitor:
