@@ -52,6 +52,8 @@ spec:
     releaseCheck:
       url: null
     timeZone: America/Los_Angeles
+    updateStrategy:
+      type: Recreate
     persistence:
       enabled: true
       existingClaim: netbox
@@ -121,6 +123,8 @@ spec:
               topologyKey: kubernetes.io/hostname
     worker:
       enabled: true
+      updateStrategy:
+        type: Recreate
   valuesFrom:
     - targetPath: storages.default.OPTIONS.access_key
       kind: Secret
@@ -130,3 +134,7 @@ spec:
       kind: Secret
       name: netbox-obc
       valuesKey: AWS_SECRET_ACCESS_KEY
+    - targetPath: superuser.apiToken
+      kind: Secret
+      name: netbox-superuser
+      valuesKey: API_TOKEN
