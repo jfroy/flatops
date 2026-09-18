@@ -32,6 +32,15 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
         pod:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: netbox
+                      app.kubernetes.io/instance: netbox
+                      app.kubernetes.io/component: netbox
+                  topologyKey: kubernetes.io/hostname
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
