@@ -110,6 +110,15 @@ spec:
       existingSecretKey: VALKEY_PASSWORD
     housekeeping:
       enabled: true
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: netbox
+                  app.kubernetes.io/instance: netbox
+                  app.kubernetes.io/component: netbox
+              topologyKey: kubernetes.io/hostname
     worker:
       enabled: true
   valuesFrom:
