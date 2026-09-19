@@ -180,14 +180,16 @@ Samba deployments on storage nodes share ZFS-backed volumes to the local network
 
 ### GPU Compute
 
-#### NVIDIA GPU Operator
+#### NVIDIA GPU Operator and DRA driver
 
-The [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/) enables GPU workloads:
+GPU workloads are served through [Dynamic Resource Allocation](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) in the `nvidia-system` namespace:
 
-- Automatic container toolkit management
-- CDI (Container Device Interface) support
-- Time-slicing for GPU sharing
-- DCGM metrics for monitoring
+- [DRA Driver for NVIDIA GPUs](https://dra-driver-nvidia-gpu.sigs.k8s.io/) publishes the GPU as a `gpu.nvidia.com` device; workloads reference the `any-nvidia-gpu` `ResourceClaimTemplate`
+- Consumable-capacity sharing (`consumableShares: unlimited`) replaces device-plugin time-slicing
+- The [NVIDIA GPU Operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/) runs with its device plugin disabled and provides GPU feature discovery, the driver/toolkit validator and DCGM metrics
+- Driver and container toolkit come from Talos system extensions (driver root `/usr/local`)
+
+See [docs/gpu-dra.md](docs/gpu-dra.md).
 
 ### Observability
 
@@ -230,9 +232,9 @@ The [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/
 │   │   ├── default/             # Most applications
 │   │   ├── external-secrets/
 │   │   ├── flux-system/
-│   │   ├── gpu-operator/        # NVIDIA GPU operator
 │   │   ├── kube-system/         # Core infrastructure (Cilium, CoreDNS, etc.)
 │   │   ├── network/             # Networking (Envoy Gateway, external-dns, etc.)
+│   │   ├── nvidia-system/       # NVIDIA GPU operator + DRA driver
 │   │   ├── observability/       # Observability stack
 │   │   ├── observability-agents/# Privileged observability agents
 │   │   ├── openebs-system/

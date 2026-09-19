@@ -47,10 +47,8 @@ spec:
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
             resources:
-              requests:
-                nvidia.com/gpu: 1
-              limits:
-                nvidia.com/gpu: 1
+              claims:
+                - name: gpu
             workingDir: /config
         initContainers:
           install-plugins:
@@ -63,6 +61,9 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: any-nvidia-gpu
           hostname: stash
           securityContext:
             runAsNonRoot: true
