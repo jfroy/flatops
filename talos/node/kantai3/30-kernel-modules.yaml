@@ -1,0 +1,16 @@
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nvme-tcp
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: vfio-pci
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: vhost_net
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: vhost_vsock

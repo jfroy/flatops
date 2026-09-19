@@ -1,18 +1,32 @@
 ---
-# containerd config
-# - discard_unpacked_layers (spegel, https://spegel.dev/docs/getting-started/#talos)
-# - enable_unprivileged_ports, enable_unprivileged_icmp (convenience, https://github.com/kubernetes/kubernetes/issues/102612)
-# - cgroup_writable (buildkit, https://github.com/containerd/containerd/pull/11131, planned for containerd 2.1)
-machine:
-  files:
-    - op: create
-      path: /etc/cri/conf.d/20-customization.part
-      content: |-
-        [plugins.'io.containerd.cri.v1.images']
-          discard_unpacked_layers = false
-        [plugins."io.containerd.cri.v1.runtime"]
-          enable_cdi = true
-          enable_unprivileged_ports = true
-          enable_unprivileged_icmp = true
-        [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.runc]
-          cgroup_writable = true
+# https://github.com/containerd/containerd/pull/11131
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: 30-buildkit
+content: |-
+  [plugins."io.containerd.cri.v1.runtime".containerd.runtimes.runc]
+    cgroup_writable = true
+---
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: 30-cdi
+content: |-
+  [plugins."io.containerd.cri.v1.runtime"]
+    enable_cdi = true
+---
+# https://spegel.dev/docs/getting-started/#talos
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: 30-spegel
+content: |-
+  [plugins.'io.containerd.cri.v1.images']
+    discard_unpacked_layers = false
+---
+# https://github.com/kubernetes/kubernetes/issues/102612
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: 30-unprivileged
+content: |-
+  [plugins."io.containerd.cri.v1.runtime"]
+    enable_unprivileged_ports = true
+    enable_unprivileged_icmp = true

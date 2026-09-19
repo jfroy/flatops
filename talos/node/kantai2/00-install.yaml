@@ -1,5 +1,0 @@
----
-machine:
-  install:
-    diskSelector:
-      size: "> 50GB"

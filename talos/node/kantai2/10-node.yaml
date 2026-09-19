@@ -1,0 +1,33 @@
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.size > 50u * GB
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  secureboot.kantai.xyz: "true"
+  node.kubernetes.io/exclude-from-external-load-balancers:
+    $patch: delete
+taints:
+  node-role.kubernetes.io/control-plane: PreferNoSchedule
+  node.kantai.xyz/low-memory: NoSchedule
+---
+apiVersion: v1alpha1
+kind: KubeAPIServerConfig
+resources:
+  requests:
+    memory: 3Gi
+  limits:
+    memory: 4Gi
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  net.core.bpf_jit_harden: "1"
+  net.ipv6.conf.all.accept_ra: "2"
+  net.ipv6.conf.all.forwarding: "1"
+  net.ipv6.conf.enp0s1.accept_ra: "2"
+  net.ipv6.conf.enp0s1.forwarding: "1"

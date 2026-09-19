@@ -1,9 +1,0 @@
----
-# Enable Host DNS: https://www.talos.dev/v1.8/talos-guides/network/host-dns/
-machine:
-  features:
-    hostDNS:
-      enabled: true
-      resolveMemberNames: true
-      # Incompatible with Cilium bpf masquerade. https://github.com/siderolabs/talos/issues/8836
-      forwardKubeDNSToHost: false

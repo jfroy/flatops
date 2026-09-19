@@ -1,5 +1,0 @@
----
-machine:
-  nodeTaints:
-    node-role.kubernetes.io/control-plane: :PreferNoSchedule
-    node.kantai.xyz/low-memory: :NoSchedule

@@ -1,6 +1,0 @@
----
-machine:
-  nodeLabels:
-    secureboot.kantai.xyz: "true"
-    node.kubernetes.io/exclude-from-external-load-balancers:
-      $patch: delete

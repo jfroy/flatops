@@ -1,5 +1,0 @@
----
-machine:
-  kernel:
-    modules:
-      - name: nvme-tcp

@@ -1,0 +1,23 @@
+---
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.wwid == "eui.0025385691b1844a"
+---
+apiVersion: v1alpha1
+kind: KubeNodeConfig
+labels:
+  node.kubernetes.io/exclude-from-external-load-balancers:
+    $patch: delete
+taints:
+  node-role.kubernetes.io/control-plane: PreferNoSchedule
+---
+apiVersion: v1alpha1
+kind: SysctlConfig
+params:
+  net.core.bpf_jit_harden: "1"
+  net.ipv6.conf.all.accept_ra: "2"
+  net.ipv6.conf.all.forwarding: "1"
+  net.ipv6.conf.enp1s0.accept_ra: "2"
+  net.ipv6.conf.enp1s0.forwarding: "1"
