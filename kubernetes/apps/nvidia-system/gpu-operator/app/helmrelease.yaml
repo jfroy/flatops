@@ -16,9 +16,6 @@ spec:
   values:
     dcgmExporter:
       env:
-        # Map metrics to pods through DRA ResourceClaims instead of the device
-        # plugin's pod-resources view. Needs read access to resource.k8s.io,
-        # which the operator does not grant; see rbac.yaml.
         - name: KUBERNETES_ENABLE_DRA
           value: "true"
       serviceMonitor:
@@ -30,14 +27,8 @@ spec:
             targetLabel: instance
             replacement: $1
             action: replace
-    # Exactly one whole-GPU advertiser per node: dra-driver-nvidia-gpu publishes
-    # the GPU, so the device plugin must stay off. The two allocators keep
-    # independent ledgers and would double-allocate the same card.
     devicePlugin:
       enabled: false
-    # Talos ships the driver and container toolkit as system extensions. The
-    # driver root is /usr/local and must match the DRA driver's
-    # nvidiaDriverRoot.
     driver:
       enabled: false
     hostPaths:

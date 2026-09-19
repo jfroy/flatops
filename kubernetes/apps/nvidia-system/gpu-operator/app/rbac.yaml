@@ -1,7 +1,4 @@
 ---
-# dcgm-exporter with KUBERNETES_ENABLE_DRA resolves GPU → pod through
-# resource.k8s.io objects. The operator creates the ServiceAccount but grants
-# no DRA read access, so this binding supplies it.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:

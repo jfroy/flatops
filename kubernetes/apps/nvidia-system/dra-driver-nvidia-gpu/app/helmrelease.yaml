@@ -10,31 +10,15 @@ spec:
     kind: OCIRepository
     name: dra-driver-nvidia-gpu
   values:
-    # Known noise on Kubernetes < 1.37: the kubelet plugin logs
-    # "device health reporting is not supported by this driver" every 5s.
-    # Kubelet's ResourceHealthStatus stream retries on a fixed interval and
-    # only learns to honour Unimplemented in 1.37 (k/k#139477). Harmless; no
-    # chart value silences it. See docs/gpu-dra.md.
-    # Talos installs the driver via system extension at /usr/local, not host
-    # root. This is why the gpu-operator GPUCluster path failed: its validator
-    # hardcodes / for a preinstalled driver. Must match gpu-operator's
-    # hostPaths.driverInstallDir.
     nvidiaDriverRoot: /usr/local
-    # Acknowledges that the device plugin is off (gpu-operator
-    # devicePlugin.enabled=false). Without this the chart refuses to advertise
-    # GPUs, as a guard against dual advertisement.
+    # Acknowledges gpu-operator devicePlugin.enabled=false; see docs/gpu-dra.md.
     gpuResourcesEnabledOverride: true
     resources:
       gpus:
         enabled: true
-      # Multi-node NVLink; kantai has no NVSwitch fabric.
       computeDomains:
         enabled: false
-    # Replacement for the device plugin's time-slicing replicas: 8. The GPU is
-    # published with allowMultipleAllocations and a memory request policy
-    # defaulting to 0, so any number of claims that omit a memory request may
-    # co-allocate on it. Claims can still request memory explicitly to reserve
-    # scheduler capacity.
     featureGates:
       ConsumableShares: true
+    # Uncapped sharing, replacing time-slicing; see docs/gpu-dra.md.
     consumableShares: unlimited

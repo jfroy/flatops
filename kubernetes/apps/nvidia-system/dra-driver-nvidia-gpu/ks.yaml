@@ -5,9 +5,6 @@ kind: Kustomization
 metadata:
   name: &app dra-driver-nvidia-gpu
 spec:
-  # The device plugin must be gone before the kubelet plugin advertises the
-  # GPU, or the two allocators double-allocate the same card. gpu-operator's
-  # HelmRelease turning Ready with devicePlugin.enabled=false is that signal.
   dependsOn:
     - name: gpu-operator
   healthChecks:
