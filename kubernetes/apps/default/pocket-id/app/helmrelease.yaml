@@ -65,6 +65,19 @@ spec:
           - path: /data
           - path: /app/backend/data
             subPath: backend
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: pocket-id-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
       var:
         type: emptyDir
         sizeLimit: 1Gi
