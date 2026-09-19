@@ -15,6 +15,8 @@ spec:
     disableOpenAPIValidation: true
   values:
     dcgmExporter:
+      # Mounts the SA token the DRA pod mapping needs; see docs/gpu-dra.md.
+      enablePodUID: true
       env:
         - name: KUBERNETES_ENABLE_DRA
           value: "true"

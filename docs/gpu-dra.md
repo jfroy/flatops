@@ -106,11 +106,28 @@ allocate") now means `resources.claims`, not `nvidia.com/gpu` limits.
 
 ## Observability
 
-dcgm-exporter runs with `KUBERNETES_ENABLE_DRA=true` so metrics carry pod
-labels resolved through `ResourceClaim`s. The operator grants its
-ServiceAccount no `resource.k8s.io` access, so
-`kubernetes/apps/nvidia-system/gpu-operator/app/rbac.yaml` binds a read-only
-ClusterRole. (`KUBERNETES_VIRTUAL_GPUS`, the previous setting, only maps
+dcgm-exporter runs with `KUBERNETES_ENABLE_DRA=true` so metrics carry
+`pod`/`namespace`/`container` labels resolved through DRA. That mapping
+(`internal/pkg/transformation/kubernetes.go`) needs an API client: a Pod
+informer filtered to `NODE_NAME` and a `ResourceSlice` informer to translate
+the pod-resources API's device names into GPU UUIDs. Two things make that
+work, and gpu-operator v26.7.0 supplies neither on its own:
+
+- **A ServiceAccount token.** The operator's DaemonSet asset sets
+  `automountServiceAccountToken: false` and only flips it when
+  `dcgmExporter.enablePodLabels` or `enablePodUID` is on; it does not
+  recognise `KUBERNETES_ENABLE_DRA` as needing the API. `enablePodUID: true`
+  is the cheapest switch: it mounts the token, creates the operator's own
+  `nvidia-dcgm-exporter-read-pods` ClusterRole and binding, and adds a
+  `pod_uid` label.
+- **`resourceslices` read access.** The operator's asset carries a `TODO` for
+  this, so `kubernetes/apps/nvidia-system/gpu-operator/app/rbac.yaml` binds
+  a ClusterRole granting `get/list/watch` on exactly that. Drop it once the
+  operator does it itself.
+
+Without the token the exporter logs `Failed to get in-cluster config, pod
+labels will not be available` at startup and emits per-GPU metrics with no
+pod attribution. (`KUBERNETES_VIRTUAL_GPUS`, the previous setting, only maps
 device-plugin time-sliced replicas.)
 
 The `nvidia.com/gpu.*` node labels GFD leaves on kantai1 describe the device
