@@ -76,7 +76,7 @@
       }
     ]
   },
-  "description": "DCGM Exporter metrics with time-sliced (vGPU) deduplication, pod/container attribution, and NVENC/NVDEC video engine utilization.",
+  "description": "DCGM Exporter metrics with DRA claim attribution. The GPU is shared via consumable capacity (allowMultipleAllocations), so device-level metrics are deduplicated across co-resident claims and per-pod views show the shared device state alongside the claim that holds it.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -101,7 +101,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Number of physical GPUs matching the host/gpu filters (deduped across vgpu slots).",
+      "description": "Number of physical GPUs matching the host/gpu filters (deduped across co-resident claims).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -153,7 +153,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "count(group by (Hostname, gpu, UUID) (DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\"}))",
+          "expr": "count(group by (hostname, gpu, UUID) (DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\"}))",
           "instant": true,
           "legendFormat": "",
           "range": false,
@@ -168,7 +168,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Number of currently-allocated time-share (vGPU) slots across selected GPUs.",
+      "description": "ResourceClaims currently allocated on the selected GPUs (one per pod).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -220,14 +220,14 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "count(group by (Hostname, gpu, vgpu) (DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\", pod!=\"\"}))",
+          "expr": "count(group by (hostname, gpu, dra_claim_namespace, dra_claim_name) (DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\", dra_claim_name!=\"\"}))",
           "instant": true,
           "legendFormat": "",
           "range": false,
           "refId": "A"
         }
       ],
-      "title": "Allocated vGPU Slots",
+      "title": "Active DRA Claims",
       "type": "stat"
     },
     {
@@ -235,7 +235,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Distinct pods currently holding a vGPU slot.",
+      "description": "Distinct pods currently holding a GPU claim.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -287,7 +287,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "count(group by (namespace, pod) (DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}))",
+          "expr": "count(group by (namespace, pod) (DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}))",
           "instant": true,
           "legendFormat": "",
           "range": false,
@@ -362,7 +362,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg(max by (Hostname, gpu) (DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\"}))",
+          "expr": "avg(max by (hostname, gpu) (DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\"}))",
           "instant": true,
           "legendFormat": "",
           "range": false,
@@ -377,7 +377,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Total power draw across selected physical GPUs (deduped across vgpu slots).",
+      "description": "Total power draw across selected physical GPUs (deduped across co-resident claims).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -437,7 +437,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(max by (Hostname, gpu) (DCGM_FI_DEV_POWER_USAGE{Hostname=~\"$host\", gpu=~\"$gpu\"}))",
+          "expr": "sum(max by (hostname, gpu) (DCGM_FI_DEV_POWER_USAGE{hostname=~\"$host\", gpu=~\"$gpu\"}))",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -451,7 +451,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "GPU energy consumed in the last 1h and 24h (deduped across vgpu slots).",
+      "description": "GPU energy consumed in the last 1h and 24h (deduped across co-resident claims).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -503,7 +503,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(max by (Hostname, gpu) (increase(DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{Hostname=~\"$host\", gpu=~\"$gpu\"}[1h]))) / 3600000",
+          "expr": "sum(max by (hostname, gpu) (increase(DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{hostname=~\"$host\", gpu=~\"$gpu\"}[1h]))) / 3600000",
           "legendFormat": "1h",
           "range": true,
           "refId": "A"
@@ -514,7 +514,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(max by (Hostname, gpu) (increase(DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{Hostname=~\"$host\", gpu=~\"$gpu\"}[24h]))) / 3600000",
+          "expr": "sum(max by (hostname, gpu) (increase(DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{hostname=~\"$host\", gpu=~\"$gpu\"}[24h]))) / 3600000",
           "legendFormat": "24h",
           "range": true,
           "refId": "B"
@@ -541,7 +541,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Pods currently holding a vGPU time-slice. The metric columns reflect the underlying physical GPU's state (shared across all pods on that GPU). Multiple queries are merged by their shared labels so each row is one (Host, GPU, vGPU, Pod, Container).",
+      "description": "Pods currently holding a ResourceClaim on a GPU. The metric columns reflect the underlying physical GPU's state, shared across every pod on that GPU. Fair-share divides device utilization by the number of co-resident containers. Each row is one (Host, GPU, Claim, Pod, Container).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -719,7 +719,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, vgpu, modelName, namespace, pod, container) (DCGM_FI_DEV_GPU_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
+          "expr": "max by (hostname, gpu, dra_claim_name, modelName, namespace, pod, container) (DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
           "format": "table",
           "instant": true,
           "legendFormat": "",
@@ -732,7 +732,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, vgpu, modelName, namespace, pod, container) (DCGM_FI_DEV_GPU_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) / on(Hostname, gpu) group_left() count by (Hostname, gpu) (group by (Hostname, gpu, vgpu) (DCGM_FI_DEV_GPU_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", pod!=\"\"}))",
+          "expr": "max by (hostname, gpu, dra_claim_name, modelName, namespace, pod, container) (DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) / on(hostname, gpu) group_left() count by (hostname, gpu) (group by (hostname, gpu, namespace, pod, container) (DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", pod!=\"\"}))",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -746,7 +746,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, vgpu, modelName, namespace, pod, container) (DCGM_FI_DEV_FB_USED{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
+          "expr": "max by (hostname, gpu, dra_claim_name, modelName, namespace, pod, container) (DCGM_FI_DEV_FB_USED{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -760,7 +760,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, vgpu, modelName, namespace, pod, container) (DCGM_FI_DEV_ENC_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
+          "expr": "max by (hostname, gpu, dra_claim_name, modelName, namespace, pod, container) (DCGM_FI_DEV_ENC_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -774,7 +774,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, vgpu, modelName, namespace, pod, container) (DCGM_FI_DEV_DEC_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
+          "expr": "max by (hostname, gpu, dra_claim_name, modelName, namespace, pod, container) (DCGM_FI_DEV_DEC_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -788,7 +788,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, vgpu, modelName, namespace, pod, container) (DCGM_FI_DEV_POWER_USAGE{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
+          "expr": "max by (hostname, gpu, dra_claim_name, modelName, namespace, pod, container) (DCGM_FI_DEV_POWER_USAGE{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -797,7 +797,7 @@
           "refId": "PWR"
         }
       ],
-      "title": "Active GPU Allocations (per pod / vGPU slot)",
+      "title": "Active GPU Allocations (per DRA claim)",
       "transformations": [
         {
           "id": "merge",
@@ -811,9 +811,9 @@
             },
             "includeByName": {},
             "indexByName": {
-              "Hostname": 0,
+              "hostname": 0,
               "gpu": 1,
-              "vgpu": 2,
+              "dra_claim_name": 2,
               "modelName": 3,
               "namespace": 4,
               "pod": 5,
@@ -826,9 +826,8 @@
               "Value #PWR": 12
             },
             "renameByName": {
-              "Hostname": "Host",
+              "hostname": "Host",
               "gpu": "GPU",
-              "vgpu": "vGPU",
               "modelName": "Model",
               "namespace": "Namespace",
               "pod": "Pod",
@@ -838,7 +837,8 @@
               "Value #MEM": "GPU Mem MiB",
               "Value #ENC": "ENC %",
               "Value #DEC": "DEC %",
-              "Value #PWR": "Power W"
+              "Value #PWR": "Power W",
+              "dra_claim_name": "Claim"
             }
           }
         }
@@ -850,7 +850,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Top consuming pods by fair-share GPU utilization (device utilization divided by number of co-tenant slots).",
+      "description": "Top consuming pods by fair-share GPU utilization (device utilization divided by number of co-resident containers on that GPU).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -919,9 +919,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(10, max by (namespace, pod, container, Hostname, gpu) (DCGM_FI_DEV_GPU_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) / on(Hostname, gpu) group_left() count by (Hostname, gpu) (group by (Hostname, gpu, vgpu) (DCGM_FI_DEV_GPU_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", pod!=\"\"})))",
+          "expr": "topk(10, max by (namespace, pod, container, hostname, gpu) (DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) / on(hostname, gpu) group_left() count by (hostname, gpu) (group by (hostname, gpu, namespace, pod, container) (DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", pod!=\"\"})))",
           "instant": true,
-          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{Hostname}} GPU{{gpu}}",
+          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{hostname}} GPU{{gpu}}",
           "range": false,
           "refId": "A"
         }
@@ -994,9 +994,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(10, max by (namespace, pod, container, Hostname, gpu) (DCGM_FI_DEV_FB_USED{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}))",
+          "expr": "topk(10, max by (namespace, pod, container, hostname, gpu) (DCGM_FI_DEV_FB_USED{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}))",
           "instant": true,
-          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{Hostname}} GPU{{gpu}}",
+          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{hostname}} GPU{{gpu}}",
           "range": false,
           "refId": "A"
         }
@@ -1009,7 +1009,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Per-pod GPU utilization over time. Each series represents the GPU device load while the pod held a time-slice; pods sharing a GPU will overlap.",
+      "description": "Per-pod GPU utilization over time. Each series is the shared device load while the pod held its claim; pods sharing a GPU will overlap.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1066,7 +1066,7 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 24,
+        "w": 12,
         "x": 0,
         "y": 23
       },
@@ -1098,13 +1098,116 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (namespace, pod, container, Hostname, gpu) (DCGM_FI_DEV_GPU_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
-          "legendFormat": "{{namespace}}/{{pod}}/{{container}} · {{Hostname}} GPU{{gpu}}",
+          "expr": "max by (namespace, pod, container, hostname, gpu) (DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"})",
+          "legendFormat": "{{namespace}}/{{pod}}/{{container}} · {{hostname}} GPU{{gpu}}",
           "range": true,
           "refId": "A"
         }
       ],
       "title": "GPU Utilization by Pod (device-level, co-tenants overlap)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Number of ResourceClaims co-resident on each GPU over time. Sharing is uncapped (consumableShares: unlimited), so this is the actual contention level.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "id": 205,
+      "options": {
+        "legend": {
+          "calcs": [
+            "mean",
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.1.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "range": true,
+          "refId": "A",
+          "expr": "count by (hostname, gpu) (group by (hostname, gpu, dra_claim_name) (DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\", dra_claim_name!=\"\"}))",
+          "legendFormat": "{{hostname}} GPU{{gpu}}"
+        }
+      ],
+      "title": "Claims per GPU",
       "type": "timeseries"
     },
     {
@@ -1125,7 +1228,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "SM utilization per physical GPU (deduped across vgpu slots).",
+      "description": "SM utilization per physical GPU (deduped across co-resident claims).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1212,8 +1315,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_GPU_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_GPU_UTIL{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -1312,8 +1415,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -1412,8 +1515,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_PROF_GR_ENGINE_ACTIVE{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_PROF_GR_ENGINE_ACTIVE{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -1512,8 +1615,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_PROF_DRAM_ACTIVE{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_PROF_DRAM_ACTIVE{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -1539,7 +1642,7 @@
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "Framebuffer memory used per physical GPU (deduped across vgpu slots).",
+      "description": "Framebuffer memory used per physical GPU (deduped across co-resident claims).",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -1624,8 +1727,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_FB_USED{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_FB_USED{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -1733,8 +1836,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_FB_USED{Hostname=~\"$host\", gpu=~\"$gpu\"}) / (max by (Hostname, gpu, modelName) (DCGM_FI_DEV_FB_USED{Hostname=~\"$host\", gpu=~\"$gpu\"}) + max by (Hostname, gpu, modelName) (DCGM_FI_DEV_FB_FREE{Hostname=~\"$host\", gpu=~\"$gpu\"}))",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_FB_USED{hostname=~\"$host\", gpu=~\"$gpu\"}) / (max by (hostname, gpu, modelName) (DCGM_FI_DEV_FB_USED{hostname=~\"$host\", gpu=~\"$gpu\"}) + max by (hostname, gpu, modelName) (DCGM_FI_DEV_FB_FREE{hostname=~\"$host\", gpu=~\"$gpu\"}))",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -1834,8 +1937,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_MEM_COPY_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_MEM_COPY_UTIL{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -1947,8 +2050,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_ENC_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_ENC_UTIL{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -2047,8 +2150,8 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_DEC_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-          "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+          "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_DEC_UTIL{hostname=~\"$host\", gpu=~\"$gpu\"})",
+          "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
           "range": true,
           "refId": "A"
         }
@@ -2130,9 +2233,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(10, max by (namespace, pod, container, Hostname, gpu) (DCGM_FI_DEV_ENC_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) > 0)",
+          "expr": "topk(10, max by (namespace, pod, container, hostname, gpu) (DCGM_FI_DEV_ENC_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) > 0)",
           "instant": true,
-          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{Hostname}} GPU{{gpu}}",
+          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{hostname}} GPU{{gpu}}",
           "range": false,
           "refId": "A"
         }
@@ -2214,9 +2317,9 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "topk(10, max by (namespace, pod, container, Hostname, gpu) (DCGM_FI_DEV_DEC_UTIL{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) > 0)",
+          "expr": "topk(10, max by (namespace, pod, container, hostname, gpu) (DCGM_FI_DEV_DEC_UTIL{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod=~\"$pod\", pod!=\"\"}) > 0)",
           "instant": true,
-          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{Hostname}} GPU{{gpu}}",
+          "legendFormat": "{{namespace}}/{{pod}} ({{container}}) · {{hostname}} GPU{{gpu}}",
           "range": false,
           "refId": "A"
         }
@@ -2239,7 +2342,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "description": "Power draw per physical GPU (deduped across vgpu slots).",
+          "description": "Power draw per physical GPU (deduped across co-resident claims).",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -2324,8 +2427,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_POWER_USAGE{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-              "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_POWER_USAGE{hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
               "range": true,
               "refId": "A"
             }
@@ -2430,8 +2533,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-              "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
               "range": true,
               "refId": "A"
             }
@@ -2536,8 +2639,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_MEMORY_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-              "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_MEMORY_TEMP{hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
               "range": true,
               "refId": "A"
             }
@@ -2649,8 +2752,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu) (DCGM_FI_PROF_PCIE_TX_BYTES{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-              "legendFormat": "TX · {{Hostname}} GPU{{gpu}}",
+              "expr": "max by (hostname, gpu) (DCGM_FI_PROF_PCIE_TX_BYTES{hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "legendFormat": "TX · {{hostname}} GPU{{gpu}}",
               "range": true,
               "refId": "A"
             },
@@ -2660,8 +2763,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu) (DCGM_FI_PROF_PCIE_RX_BYTES{Hostname=~\"$host\", gpu=~\"$gpu\"})",
-              "legendFormat": "RX · {{Hostname}} GPU{{gpu}}",
+              "expr": "max by (hostname, gpu) (DCGM_FI_PROF_PCIE_RX_BYTES{hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "legendFormat": "RX · {{hostname}} GPU{{gpu}}",
               "range": true,
               "refId": "B"
             }
@@ -2762,8 +2865,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu) (increase(DCGM_FI_DEV_PCIE_REPLAY_COUNTER{Hostname=~\"$host\", gpu=~\"$gpu\"}[5m]))",
-              "legendFormat": "{{Hostname}} GPU{{gpu}}",
+              "expr": "max by (hostname, gpu) (increase(DCGM_FI_DEV_PCIE_REPLAY_COUNTER{hostname=~\"$host\", gpu=~\"$gpu\"}[5m]))",
+              "legendFormat": "{{hostname}} GPU{{gpu}}",
               "range": true,
               "refId": "A"
             }
@@ -2874,8 +2977,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_SM_CLOCK{Hostname=~\"$host\", gpu=~\"$gpu\"}) * 1000000",
-              "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_SM_CLOCK{hostname=~\"$host\", gpu=~\"$gpu\"}) * 1000000",
+              "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
               "range": true,
               "refId": "A"
             }
@@ -2972,8 +3075,8 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_MEM_CLOCK{Hostname=~\"$host\", gpu=~\"$gpu\"}) * 1000000",
-              "legendFormat": "{{Hostname}} GPU{{gpu}} ({{modelName}})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_MEM_CLOCK{hostname=~\"$host\", gpu=~\"$gpu\"}) * 1000000",
+              "legendFormat": "{{hostname}} GPU{{gpu}} ({{modelName}})",
               "range": true,
               "refId": "A"
             }
@@ -3057,7 +3160,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS{Hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS{hostname=~\"$host\", gpu=~\"$gpu\"})",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -3071,7 +3174,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS{Hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS{hostname=~\"$host\", gpu=~\"$gpu\"})",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -3085,7 +3188,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_ROW_REMAP_FAILURE{Hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_ROW_REMAP_FAILURE{hostname=~\"$host\", gpu=~\"$gpu\"})",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -3099,7 +3202,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "max by (Hostname, gpu, modelName) (DCGM_FI_DEV_PCIE_REPLAY_COUNTER{Hostname=~\"$host\", gpu=~\"$gpu\"})",
+              "expr": "max by (hostname, gpu, modelName) (DCGM_FI_DEV_PCIE_REPLAY_COUNTER{hostname=~\"$host\", gpu=~\"$gpu\"})",
               "format": "table",
               "hide": false,
               "instant": true,
@@ -3122,7 +3225,7 @@
               "options": {
                 "include": {
                   "names": [
-                    "Hostname 1",
+                    "hostname 1",
                     "gpu",
                     "modelName 1",
                     "Value #UNCORR",
@@ -3139,7 +3242,7 @@
                 "excludeByName": {},
                 "includeByName": {},
                 "indexByName": {
-                  "Hostname 1": 0,
+                  "hostname 1": 0,
                   "gpu": 1,
                   "modelName 1": 2,
                   "Value #UNCORR": 3,
@@ -3148,7 +3251,7 @@
                   "Value #PCIE": 6
                 },
                 "renameByName": {
-                  "Hostname 1": "Host",
+                  "hostname 1": "Host",
                   "gpu": "GPU",
                   "modelName 1": "Model",
                   "Value #UNCORR": "Uncorrectable Remapped Rows",
@@ -3171,7 +3274,8 @@
   "tags": [
     "nvidia",
     "dcgm",
-    "gpu"
+    "gpu",
+    "dra"
   ],
   "templating": {
     "list": [
@@ -3192,7 +3296,7 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP, Hostname)",
+        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP, hostname)",
         "includeAll": true,
         "label": "Host",
         "multi": true,
@@ -3200,7 +3304,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(DCGM_FI_DEV_GPU_TEMP, Hostname)",
+          "query": "label_values(DCGM_FI_DEV_GPU_TEMP, hostname)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -3213,7 +3317,7 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\"}, gpu)",
+        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\"}, gpu)",
         "includeAll": true,
         "label": "GPU ID",
         "multi": true,
@@ -3221,7 +3325,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\"}, gpu)",
+          "query": "label_values(DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\"}, gpu)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
@@ -3235,7 +3339,7 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\", namespace!=\"\"}, namespace)",
+        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\", namespace!=\"\"}, namespace)",
         "includeAll": true,
         "label": "Namespace",
         "multi": true,
@@ -3243,7 +3347,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\", namespace!=\"\"}, namespace)",
+          "query": "label_values(DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\", namespace!=\"\"}, namespace)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -3256,7 +3360,7 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod!=\"\"}, pod)",
+        "definition": "label_values(DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod!=\"\"}, pod)",
         "includeAll": true,
         "label": "Pod",
         "multi": true,
@@ -3264,7 +3368,7 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(DCGM_FI_DEV_GPU_TEMP{Hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod!=\"\"}, pod)",
+          "query": "label_values(DCGM_FI_DEV_GPU_TEMP{hostname=~\"$host\", gpu=~\"$gpu\", namespace=~\"$namespace\", pod!=\"\"}, pod)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -3279,8 +3383,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Better NVIDIA DCGM Dashboard",
+  "title": "NVIDIA GPU (DCGM / DRA)",
   "uid": "nvidia-dcgm-dashboard",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
