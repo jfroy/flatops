@@ -6,6 +6,7 @@ resources:
   - ./grafanadashboard.yaml
   - ./helmrelease.yaml
   - ./ocirepository.yaml
+  - ./rbac.yaml
 configMapGenerator:
   - name: nvidia-dcgm-dashboards
     files:
@@ -15,8 +16,5 @@ configMapGenerator:
         kustomize.toolkit.fluxcd.io/substitute: disabled
       labels:
         grafana_dashboard: "1"
-  - name: time-slicing-config-all
-    files:
-      - any=./resources/time-slicing-config-all.yaml
 generatorOptions:
   disableNameSuffixHash: true

@@ -42,13 +42,15 @@ spec:
               startup:
                 enabled: false
             resources:
-              requests:
-                nvidia.com/gpu: 1
-              limits:
-                nvidia.com/gpu: 1
+              claims:
+                - name: gpu
             securityContext: &csc
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
+        pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: any-nvidia-gpu
       microservices:
         annotations:
           reloader.stakater.com/auto: "true"
@@ -70,13 +72,16 @@ spec:
               NODE_EXTRA_CA_CERTS: /certs/ca-certificates.crt
               TZ: America/Los_Angeles
             resources:
+              claims:
+                - name: gpu
               requests:
-                nvidia.com/gpu: 1
                 cpu: 100m
                 memory: 250Mi
-              limits:
-                nvidia.com/gpu: 1
             securityContext: *csc
+        pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: any-nvidia-gpu
       server:
         annotations:
           reloader.stakater.com/auto: "true"

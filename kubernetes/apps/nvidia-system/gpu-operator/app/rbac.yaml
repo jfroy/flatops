@@ -1,0 +1,29 @@
+---
+# dcgm-exporter with KUBERNETES_ENABLE_DRA resolves GPU → pod through
+# resource.k8s.io objects. The operator creates the ServiceAccount but grants
+# no DRA read access, so this binding supplies it.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: nvidia-dcgm-exporter-dra
+rules:
+  - apiGroups: ["resource.k8s.io"]
+    resources:
+      - deviceclasses
+      - resourceclaims
+      - resourceclaimtemplates
+      - resourceslices
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: nvidia-dcgm-exporter-dra
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: nvidia-dcgm-exporter-dra
+subjects:
+  - kind: ServiceAccount
+    name: nvidia-dcgm-exporter
+    namespace: nvidia-system

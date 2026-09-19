@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.toolkit.fluxcd.io/ocirepository_v1.json
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: dra-driver-nvidia-gpu
+spec:
+  interval: 1h
+  layerSelector:
+    mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
+    operation: copy
+  ref:
+    tag: 0.5.0
+  # The project moved to kubernetes-sigs; registry.k8s.io is the only chart
+  # location. No cosign signature is published for the chart, so no verify.
+  url: oci://registry.k8s.io/dra-driver-nvidia/charts/dra-driver-nvidia-gpu

@@ -1,0 +1,35 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: dra-driver-nvidia-gpu
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: dra-driver-nvidia-gpu
+  values:
+    # Talos installs the driver via system extension at /usr/local, not host
+    # root. This is why the gpu-operator GPUCluster path failed: its validator
+    # hardcodes / for a preinstalled driver. Must match gpu-operator's
+    # hostPaths.driverInstallDir.
+    nvidiaDriverRoot: /usr/local
+    # Acknowledges that the device plugin is off (gpu-operator
+    # devicePlugin.enabled=false). Without this the chart refuses to advertise
+    # GPUs, as a guard against dual advertisement.
+    gpuResourcesEnabledOverride: true
+    resources:
+      gpus:
+        enabled: true
+      # Multi-node NVLink; kantai has no NVSwitch fabric.
+      computeDomains:
+        enabled: false
+    # Replacement for the device plugin's time-slicing replicas: 8. The GPU is
+    # published with allowMultipleAllocations and a memory request policy
+    # defaulting to 0, so any number of claims that omit a memory request may
+    # co-allocate on it. Claims can still request memory explicitly to reserve
+    # scheduler capacity.
+    featureGates:
+      ConsumableShares: true
+    consumableShares: unlimited

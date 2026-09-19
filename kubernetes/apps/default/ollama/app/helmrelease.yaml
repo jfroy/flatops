@@ -37,13 +37,16 @@ spec:
                     port: http
               readiness: *probes
             resources:
-              limits:
-                nvidia.com/gpu: 1
+              claims:
+                - name: gpu
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
         pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: any-nvidia-gpu
           securityContext:
             runAsNonRoot: true
             runAsUser: 1000
