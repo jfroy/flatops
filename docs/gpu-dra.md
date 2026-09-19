@@ -117,6 +117,32 @@ The `nvidia.com/gpu.*` node labels GFD leaves on kantai1 describe the device
 plugin's view until GFD resyncs; nothing in this repo selects on them. The DRA
 kubelet plugin places via NFD's `feature.node.kubernetes.io/pci-0300_10de.present`.
 
+## Known noise: health stream errors on Kubernetes < 1.37
+
+The kubelet plugin logs this every 5 seconds:
+
+```text
+"handling stream failed" err="rpc error: code = Unimplemented desc = device
+health reporting is not supported by this driver" method="/v1alpha1.DRAResourceHealth/NodeWatchResources"
+```
+
+It is a kubelet/driver version skew, not a misconfiguration. Kubelet 1.36 has
+`ResourceHealthStatus` on by default and opens a health stream to every DRA
+driver inside `wait.UntilWithContext(…, 5s)`, a fixed retry. The NVIDIA
+driver hard-codes `WatchHealthStatus → ErrHealthNotSupported`
+(`cmd/gpu-kubelet-plugin/driver.go`), which the helper maps to
+`Unimplemented`. The kubelet only treats that as "stop watching" from 1.37
+(kubernetes/kubernetes#139477). Allocation is unaffected.
+
+No chart value fixes it: `NVMLDeviceHealthCheck` publishes health as
+ResourceSlice device taints, not over this stream, and the line is
+Error-level so `logVerbosity` cannot hide it. Decision: tolerate it until the
+cluster reaches Kubernetes 1.37. If it needs silencing sooner, a
+`KubeletConfig` patch in `talos/node/kantai1/` setting
+`config.featureGates.ResourceHealthStatus: false` does it at no functional
+cost today (nothing on the node provides device health), and the upstream fix
+would be for the driver to pass `kubeletplugin.HealthService(false)`.
+
 ## Cutover runbook
 
 This is not a merge-and-walk-away change. Switching direction has a drain

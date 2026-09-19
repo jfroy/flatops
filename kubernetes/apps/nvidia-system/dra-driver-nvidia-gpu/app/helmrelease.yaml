@@ -10,6 +10,11 @@ spec:
     kind: OCIRepository
     name: dra-driver-nvidia-gpu
   values:
+    # Known noise on Kubernetes < 1.37: the kubelet plugin logs
+    # "device health reporting is not supported by this driver" every 5s.
+    # Kubelet's ResourceHealthStatus stream retries on a fixed interval and
+    # only learns to honour Unimplemented in 1.37 (k/k#139477). Harmless; no
+    # chart value silences it. See docs/gpu-dra.md.
     # Talos installs the driver via system extension at /usr/local, not host
     # root. This is why the gpu-operator GPUCluster path failed: its validator
     # hardcodes / for a preinstalled driver. Must match gpu-operator's
