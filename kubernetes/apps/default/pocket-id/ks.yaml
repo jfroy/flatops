@@ -7,6 +7,9 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur/backup
+  dependsOn:
+    - name: pg18vc-pocket-id
+      namespace: database
   path: ./kubernetes/apps/default/pocket-id/app
   prune: true
   sourceRef:

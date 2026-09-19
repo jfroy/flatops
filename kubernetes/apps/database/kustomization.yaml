@@ -21,6 +21,7 @@ resources:
   - ./cnpg/tenants/openshell/ks.yaml
   - ./cnpg/tenants/paperless/ks.yaml
   - ./cnpg/tenants/plane/ks.yaml
+  - ./cnpg/tenants/pocket-id/ks.yaml
   - ./cnpg/tenants/prowlarr/ks.yaml
   - ./cnpg/tenants/radarr/ks.yaml
   - ./cnpg/tenants/readur/ks.yaml
