@@ -11,8 +11,8 @@ kind: KubeAPIServerConfig
 extraArgs:
   disable-admission-plugins: PodSecurity  # cluster uses custom VAPs that model the pod security standards
   enable-aggregator-routing: true
-  feature-gates: DRANodeAllocatableResources=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,GangScheduling=true,GenericWorkload=true,PodCertificateRequest=true,TopologyAwareWorkloadScheduling=true,WorkloadAwarePreemption=true,WorkloadWithJob=true
-  runtime-config: certificates.k8s.io/v1beta1/podcertificaterequests=true,scheduling.k8s.io/v1alpha2=true
+  feature-gates: CompositePodGroup=true,DRANodeAllocatableResources=true,DRAPartitionableDevicesType=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,EvictionRequestAPI=true,GenericWorkload=true,NodeLifecycleConditions=true,PodGroupPreemptionPolicy=true,StatefulSetRecreateStrategy=true,TopologyAwareWorkloadScheduling=true,WorkloadWithJob=true
+  runtime-config: lifecycle.k8s.io/v1alpha1=true,resource.k8s.io/v1alpha3=true,scheduling.k8s.io/v1alpha3=true,scheduling.k8s.io/v1beta1=true
 ---
 apiVersion: v1alpha1
 kind: KubeAuthenticationConfig
@@ -32,13 +32,13 @@ kind: KubeControllerManagerConfig
 extraArgs:
   bind-address: 0.0.0.0
   terminated-pod-gc-threshold: "100"
-  feature-gates: DRANodeAllocatableResources=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,GangScheduling=true,GenericWorkload=true,PodCertificateRequest=true,TopologyAwareWorkloadScheduling=true,WorkloadAwarePreemption=true,WorkloadWithJob=true
+  feature-gates: CompositePodGroup=true,DRANodeAllocatableResources=true,DRAPartitionableDevicesType=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,EvictionRequestAPI=true,GenericWorkload=true,NodeLifecycleConditions=true,PodGroupPreemptionPolicy=true,StatefulSetRecreateStrategy=true,TopologyAwareWorkloadScheduling=true,WorkloadWithJob=true
 ---
 apiVersion: v1alpha1
 kind: KubeSchedulerConfig
 extraArgs:
   bind-address: 0.0.0.0
-  feature-gates: DRANodeAllocatableResources=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,GangScheduling=true,GenericWorkload=true,PodCertificateRequest=true,TopologyAwareWorkloadScheduling=true,WorkloadAwarePreemption=true,WorkloadWithJob=true
+  feature-gates: CompositePodGroup=true,DRANodeAllocatableResources=true,DRAPartitionableDevicesType=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,EvictionRequestAPI=true,GenericWorkload=true,NodeLifecycleConditions=true,PodGroupPreemptionPolicy=true,StatefulSetRecreateStrategy=true,TopologyAwareWorkloadScheduling=true,WorkloadWithJob=true
 ---
 apiVersion: v1alpha1
 kind: KubeProxyConfig
@@ -52,14 +52,17 @@ apiVersion: v1alpha1
 kind: KubeletConfig
 config:
   featureGates:
+    CompositePodGroup: true
     DRANodeAllocatableResources: true
+    DRAPartitionableDevicesType: true
     DRAResourcePoolStatus: true
     DRAWorkloadResourceClaims: true
-    GangScheduling: true
+    EvictionRequestAPI: true
     GenericWorkload: true
-    PodCertificateRequest: true
+    NodeLifecycleConditions: true
+    PodGroupPreemptionPolicy: true
+    StatefulSetRecreateStrategy: true
     TopologyAwareWorkloadScheduling: true
-    WorkloadAwarePreemption: true
     WorkloadWithJob: true
 ---
 apiVersion: v1alpha1
