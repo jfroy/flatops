@@ -103,8 +103,8 @@ spec:
     service:
       plex:
         annotations:
-          external-dns.alpha.kubernetes.io/endpoints-type: HostIP
-          external-dns.alpha.kubernetes.io/hostname: plex.internal
+          external-dns.kubernetes.io/endpoints-type: HostIP
+          external-dns.kubernetes.io/hostname: plex.internal
         clusterIP: None
         controller: plex
         ports:

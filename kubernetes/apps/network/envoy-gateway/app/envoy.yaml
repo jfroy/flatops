@@ -86,7 +86,7 @@ spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: external.kantai.xyz
+      external-dns.kubernetes.io/hostname: external.kantai.xyz
       lbipam.cilium.io/ips: 10.10.0.2
   listeners:
     - name: https
