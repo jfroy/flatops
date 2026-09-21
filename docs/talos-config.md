@@ -49,8 +49,8 @@ Two rules:
 - **For a refactor, diff the merged output before and after**, rather than asserting the
   change is behaviour-neutral.
 
-Then `task talos:render`, `talosctl validate --mode metal` against `talos/output`, and
-`task talos:diff` before `task talos:apply`. `talos/output` holds plaintext secrets —
+Then `just talos render`, `talosctl validate --mode metal` against `talos/output`, and
+`just talos diff` before `just talos apply`. `talos/output` holds plaintext secrets —
 delete it when done.
 
 ## Traps

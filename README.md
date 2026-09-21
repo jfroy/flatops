@@ -245,8 +245,9 @@ The [kube-prometheus-stack](https://github.com/prometheus-community/helm-charts/
 │   │   └── volsync-system/
 │   ├── components/              # Reusable Kustomize components
 │   └── transformers/            # Global Kustomize transformers
-├── talos/                       # Talos configuration (topf)
-└── Taskfile.yaml                # Task runner commands
+├── scripts/                     # Maintenance scripts and Just modules
+├── talos/                       # Talos configuration (topf) and Just module
+└── .justfile                    # Just command runner entry point
 ```
 
 ## 🚀 Getting Started
@@ -257,20 +258,51 @@ Bootstrap is currently broken and unusable. I love my pets.
 
 ### Maintenance
 
+Install [Just](https://just.systems/) **1.55.0 or newer** (for example,
+`brew install just` or `mise use -g just@1.58.0`). Recipes also require Bash and
+the relevant tools: `topf`/`sops` for Talos, `sops`/`jq` for encryption.
+
+```sh
+just                         # list modules
+just talos                   # list Talos recipes
+just --list --list-submodules # list every recipe
+just --usage talos apply      # show arguments and options
+```
+
+Just exports the repository-local `kubeconfig`, `age.key`, and
+`talos/talosconfig` paths as `KUBECONFIG`, `SOPS_AGE_KEY_FILE`, and `TALOSCONFIG`.
+It also loads `kubernetes/apps/talos-admin/.env` if present.
+
 **Update Talos node configuration:**
 
 Edit `talos/topf.yaml` or the patch tree under `talos/`, then:
 
 ```sh
-task talos:diff     # dry-run diff against the live nodes
-task talos:apply
+just talos diff                 # dry-run diff against all live nodes
+just talos apply                # apply to all nodes, with topf confirmation
+just talos apply kantai1        # limit to one node
+just talos apply kantai1 --mode staged
+just talos render kantai1 --online # use the node's running Talos version
 ```
 
 **Upgrade Talos:**
 
 ```sh
-task talos:upgrade  # to the version pinned in talos/topf.yaml
+just talos upgrade # to the version pinned in talos/topf.yaml
 ```
+
+`just talos render` writes plaintext secrets into `talos/output`; delete it when
+done. `just talos kubeconfig` prints a temporary admin kubeconfig to stdout and
+does not overwrite the repository's kubeconfig.
+
+**Encrypt local secrets:**
+
+```sh
+just sops encrypt
+```
+
+This covers `bootstrap/` and `talos/` SOPS files and the encrypted `data` block in
+`talos/topf.yaml`. Kubernetes secrets are supplied by OpenBao, not SOPS.
 
 ## 🔒 Security
 

@@ -22,19 +22,24 @@ A Flux MCP server may be available. Use it to inspect live cluster state when tr
 
 ## Maintenance Commands
 
+Just (>= 1.55.0) is the command runner. `.justfile` registers `talos/mod.just`,
+`scripts/rook/mod.just`, and `scripts/sops/mod.just`; run `just` or `just talos` to
+list recipes. Node names are positional arguments, with `--online` for rendering
+and `--mode <mode>` for applying.
+
 ```sh
 # Talos: render machine configs to talos/output for inspection (contains secrets)
-task talos:render
+just talos render
 
 # Diff the rendered config against the live nodes without applying
-task talos:diff
+just talos diff
 
 # Apply machine configs, or limit to one node
-task talos:apply
-task talos:apply HOSTNAME=kantai1
+just talos apply
+just talos apply kantai1
 
 # Upgrade Talos to the version pinned in talos/topf.yaml
-task talos:upgrade
+just talos upgrade
 ```
 
 Flux reconciliation, when appropriate and after Git state is ready:
