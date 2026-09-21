@@ -60,16 +60,13 @@ spec:
         port: 8080
         ssl: false
       healthCheck:
-        # Residual CVE-2025-30156 warnings that cannot be cleared while CSI keys
-        # stay on aes (see security.cephx below). Muted so the cluster reports
-        # HEALTH_OK.
         muteHealthWarning:
           AUTH_INSECURE_CLIENT_KEY_TYPE:
-            policy: mute
+            policy: unmute
           AUTH_INSECURE_KEYS_ALLOWED:
-            policy: mute
+            policy: unmute
           AUTH_INSECURE_KEYS_CREATABLE:
-            policy: mute
+            policy: unmute
       mgr:
         count: 2
         allowMultiplePerNode: false
@@ -117,10 +114,15 @@ spec:
           daemon:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
-          # CSI keys stay on aes: aes256k kernel mounts need Linux 7.0+ and the
-          # Talos nodes are on 6.18. Revisit after a kernel bump.
+          # Talos v1.14.1 includes the aes256k backport for its Linux 6.18 kernel.
+          # https://github.com/siderolabs/pkgs/commit/bc45b690bd6008343a99df03c516e22f73e30fce
           csi:
-            keyType: aes
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+            # Retain existing mount credentials until all nodes have remounted
+            # their volumes; then retire old keys before restricting allowedCiphers.
+            keepPriorKeyCountMax: 1
+            keyType: aes256k
       storage:
         useAllNodes: false
         useAllDevices: false
