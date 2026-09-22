@@ -18,28 +18,28 @@ spec:
     substitute:
       APP: *app
       APP_SUBDOMAIN: photos
----
-# yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app immichframe
-spec:
-  components:
-    - ../../../../components/kopiur/backup
-  path: ./kubernetes/apps/default/immich/frame
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
-  postBuild:
-    substitute:
-      APP: *app
-      APP_SUBDOMAIN: photoframe
+# ---
+# # yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: &app immichframe
+# spec:
+#   components:
+#     - ../../../../components/kopiur/backup
+#   path: ./kubernetes/apps/default/immich/frame
+#   prune: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: flux-system
+#     namespace: flux-system
+#   interval: 1h
+#   retryInterval: 2m
+#   timeout: 5m
+#   postBuild:
+#     substitute:
+#       APP: *app
+#       APP_SUBDOMAIN: photoframe
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
