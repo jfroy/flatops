@@ -20,7 +20,7 @@ spec:
           immich-skylight:
             image:
               repository: ghcr.io/jfroy/immich-skylight
-              tag: 0.1.0@sha256:b8972a248dd5eb8d52b566a87b853137c5339bdd6e489835bb50b50c01d8dfbb
+              tag: 0.2.0@sha256:7e34a030f39d3ad5cbe86b99b0d154f609251ea8f5bee0862776372a6b3f3e11
             args: [run]
             env:
               HTTP_ADDR: :8080
