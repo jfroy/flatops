@@ -26,6 +26,7 @@ spec:
               HTTP_ADDR: :8080
               IMMICH_FAVORITES: "false"
               IMMICH_IMAGE_SOURCE: preview
+              INCLUDE_VIDEOS: "true"
               IMMICH_TAGS: Skylight
               IMMICH_URL: http://immich-server.default.svc.cluster.local:2283
               LOG_LEVEL: info
