@@ -3,7 +3,7 @@ clusterEndpoint: https://k8s.kantai.xyz:6443
 # renovate: datasource=custom.talos-factory depName=siderolabs/talos
 talosVersion: v1.14.1
 # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
-kubernetesVersion: v1.37.0
+kubernetesVersion: v1.37.1
 # Self-hosted image factory. Schematic IDs are hashed locally from the files in
 # schematics/; a brand-new schematic must be registered once with
 # `topf schematic-ids --submit-to-factory`.
