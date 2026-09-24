@@ -10,5 +10,5 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: v26.7.0
+    tag: v26.7.1
   url: oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator
