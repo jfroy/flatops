@@ -11,4 +11,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/prometheus-node-exporter
   ref:
-    tag: 4.57.0
+    tag: 4.58.0
