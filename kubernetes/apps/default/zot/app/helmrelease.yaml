@@ -79,6 +79,7 @@ spec:
         enabled: true
         interval: 1m
         path: /metrics
+        basicAuth: null
     extraVolumes:
       - name: tmp
         emptyDir: {}
