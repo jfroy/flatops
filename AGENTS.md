@@ -12,13 +12,13 @@ This is **kantai**, a Kubernetes cluster running Talos Linux, with a mix of bare
 - Do not run mutating `kubectl` commands unless the user explicitly authorizes the exact action first.
 - Forbidden without prior authorization: `kubectl apply`, `create`, `delete`, `replace`, `patch`, `edit`, `scale`, `rollout restart`, `annotate`, `label`, `cordon`, `drain`, and any other command that changes live cluster state.
 - Read-only inspection is allowed: `kubectl get`, `describe`, `logs`, `events`, `top`, `auth can-i`, and `diff` or `apply --dry-run=server`.
-- Prefer the Flux MCP server, `flux` read commands, and local rendering/diff tools for troubleshooting. If a live change is necessary, stop and ask first with the exact command and reason.
+- Prefer Flux MCP tools and local rendering/diff tools for troubleshooting. If a live change is necessary, stop and ask first with the exact command and reason.
 - `flux reconcile ...` is allowed only to ask Flux to apply committed Git state or when explicitly requested by the user; do not use Flux as a substitute for direct manifest application.
-- Always specify the context when using `flux` or `kubectl`.
+- Always specify the context when using `flux` or `kubectl`. A tailscale context is likely available, but may not work on some hosts due to VPN. In such situations, a kantai.xyz context is likely available.
 
-## Flux MCP Server
+## Flux MCP
 
-A Flux MCP server may be available. Use it to inspect live cluster state when troubleshooting.
+Flux MCP tools are likely available. Use them to inspect live cluster state when troubleshooting.
 
 ## Maintenance Commands
 
