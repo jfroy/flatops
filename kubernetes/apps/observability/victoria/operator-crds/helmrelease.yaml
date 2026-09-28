@@ -9,3 +9,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: victoria-metrics-operator-crds
+  values:
+    crds:
+      annotations:
+        helm.sh/resource-policy: keep

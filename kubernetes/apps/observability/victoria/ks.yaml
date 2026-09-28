@@ -82,7 +82,7 @@ metadata:
   name: victoria-operator-crds
 spec:
   path: ./kubernetes/apps/observability/victoria/operator-crds
-  prune: false
+  prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
