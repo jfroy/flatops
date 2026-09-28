@@ -134,6 +134,17 @@ Both default to unset. Add either one only when there is a specific reason to, a
 
 **Adding a namespace:** create `kubernetes/apps/<namespace>/` with `namespace.yaml` (name `.invalid` — the global `NamespaceTransformer` rewrites it), `kustomization.yaml` listing the namespace and each app's `ks.yaml`, and `transformers/kustomization.yaml` setting `namespace: <namespace>`. Add `components/common` always, and `components/kopiur/secret` when any app in it takes backups. There is no top-level `kubernetes/apps/kustomization.yaml`; Flux discovers namespace directories on its own. Infrastructure gets its own namespace rather than being pooled into `default`.
 
+## Comments in Manifests
+
+Comments should almost never appear in manifests under `kubernetes/`. The manifest, its Git history and this file explain the common case; a comment that restates a field, labels a section, or narrates why a change was made is noise that rots.
+
+A comment earns its place in only two cases:
+
+- **A tracked upstream problem.** A `TODO` that cites the specific issue, bug or PR by URL and says what to undo once it is fixed, e.g. `# TODO: drop once https://github.com/org/repo/issues/123 ships`.
+- **A genuinely unusual set of lines.** Something a reader would otherwise "fix" back to the convention: a deliberate deviation from the patterns above, a non-obvious workaround, or a value whose reason cannot be recovered from the manifest itself. Keep it to one or two lines at that spot.
+
+Machine-read directives are not comments in this sense and stay: `# yaml-language-server: $schema=…` and `# renovate: …`. Do not leave commented-out YAML behind; delete it, since Git keeps it.
+
 ## Pod Security
 
 `kubernetes/vap/` binds a `ValidatingAdmissionPolicy` to every namespace labelled `pod-security.kubernetes.io/enforce: restricted`. A separate baseline policy applies to every namespace not labelled `privileged`.
