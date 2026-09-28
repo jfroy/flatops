@@ -64,24 +64,7 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: cert-manager
-    - name: victoria-operator-crds
   path: ./kubernetes/apps/observability/victoria/operator
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  interval: 1h
-  retryInterval: 2m
-  timeout: 5m
----
-# yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: victoria-operator-crds
-spec:
-  path: ./kubernetes/apps/observability/victoria/operator-crds
   prune: true
   sourceRef:
     kind: GitRepository
