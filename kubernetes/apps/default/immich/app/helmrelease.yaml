@@ -58,7 +58,7 @@ spec:
           microservices:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.2.2
+              tag: v3.2.4
             envFrom:
               - secretRef:
                   name: immich-db
@@ -89,7 +89,7 @@ spec:
           server:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.2.2
+              tag: v3.2.4
             envFrom:
               - secretRef:
                   name: immich-db
