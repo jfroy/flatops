@@ -8,7 +8,7 @@ metadata:
     grafana.internal/instance: grafana
 spec:
   # renovate: datasource=docker depName=docker.io/grafana/grafana
-  version: 13.2.2
+  version: 13.2.3
   config:
     analytics:
       check_for_updates: "false"
