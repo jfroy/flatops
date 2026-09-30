@@ -77,5 +77,33 @@
       ],
       sourceUrl: "https://github.com/mogenius/renovate-operator"
     },
+    {
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/siderolabs/kubelet"
+      ],
+      sourceUrl: "https://github.com/kubernetes/kubernetes",
+      changelogUrl: "https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG/CHANGELOG-{{newMajor}}.{{newMinor}}.md#v{{newMajor}}{{newMinor}}{{newPatch}}"
+    },
+    {
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/jfroy/samba"
+      ],
+      changelogUrl: "https://www.samba.org/samba/history/samba-{{newVersion}}.html"
+    },
+    {
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/cloudnative-pg/postgresql"
+      ],
+      changelogUrl: "https://www.postgresql.org/docs/release/{{newMajor}}.{{newMinor}}/"
+    },
   ]
 }
