@@ -16,7 +16,7 @@ spec:
     installationIdSecretKey: INSTALL_ID
     pemSecretKey: PEM
   # renovate: datasource=docker depName=ghcr.io/jfroy/renovate
-  image: ghcr.io/jfroy/renovate:44.125.2@sha256:3d733b794ee17692b0237940adec96cbac4e3ddcf53f0951bad840365ffd98e0
+  image: ghcr.io/jfroy/renovate:44.126.0@sha256:6c9b325b00befbe835c5ed7333773d24e61f627c183809143703735359cfa9fc
   schedule: 0,30 * * * *
   parallelism: 10
   resources:
