@@ -99,6 +99,10 @@ spec:
                 subPath: library/manga
               - path: /manga-adult
                 subPath: library/manga-adult
+              - path: /media2/qbittorrent/complete/books
+                subPath: qbittorrent/complete/books
+              - path: /media2/sabnzbd/complete/books
+                subPath: sabnzbd/complete/books
       tmp:
         type: emptyDir
     route:
