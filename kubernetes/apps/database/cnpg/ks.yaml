@@ -45,7 +45,7 @@ spec:
   dependsOn:
     - name: pg18vc
       namespace: database
-  path: ./kubernetes/apps/database/cnpg/tenants
+  path: ./kubernetes/apps/database/cnpg/tenants/common
   prune: true
   sourceRef:
     kind: GitRepository

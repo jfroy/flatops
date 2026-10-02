@@ -7,7 +7,7 @@ metadata:
 spec:
   dependsOn:
     - name: netbox-valkey
-    - name: pg18vc-tenants
+    - name: pg18vc-netbox
       namespace: database
   components:
     - ../../../../components/kopiur/backup

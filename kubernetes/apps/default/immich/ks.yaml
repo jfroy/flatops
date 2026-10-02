@@ -6,7 +6,7 @@ metadata:
   name: &app immich
 spec:
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-immich
       namespace: database
   path: ./kubernetes/apps/default/immich/app
   prune: true

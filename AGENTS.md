@@ -102,7 +102,7 @@ App-template apps follow the same four-file layout:
 - Use `components/kopiur` to wire up daily Kopia backups to Cloudflare R2.
   - Set `postBuild.substitute` with `APP: *app` at minimum when using this component.
   - Override `KOPIUR_UID` / `KOPIUR_GID` when the app's PVC is owned by something other than 1000, or the mover cannot read it.
-- Postgres apps add `dependsOn: {name: pg18vc-tenants, namespace: database}` — the `Kustomization` holding every app's `Database`, `DatabaseRole` and pushed credentials, which itself depends on the CNPG cluster's `pg18vc`.
+- Postgres apps add `dependsOn: {name: pg18vc-<app>, namespace: database}` — the app's tenant `Kustomization` in `database`, which only turns Ready once the role, the database and the pushed client certificate are.
 
 **`helmrelease.yaml` key points:**
 
@@ -185,7 +185,7 @@ Rook-Ceph provides S3-compatible object storage. It can be used with path-style 
 
 ## PostgreSQL Apps
 
-CNPG cluster: `pg18vc-rw.database.svc.cluster.local`. Roles and databases are declared with CNPG's `DatabaseRole` and `Database` resources, one file per app in `kubernetes/apps/database/cnpg/tenants/<app>.yaml`, reconciled by the `pg18vc-tenants` `Kustomization`. Nothing in an app's namespace holds the superuser password.
+CNPG cluster: `pg18vc-rw.database.svc.cluster.local`. Roles and databases are declared with CNPG's `DatabaseRole` and `Database` resources. Each app is a tenant with its own `Kustomization`, `pg18vc-<app>`, laid out like an app: `kubernetes/apps/database/cnpg/tenants/<app>/ks.yaml` plus `app/` holding `databaserole.yaml`, `database.yaml` and `pushsecret.yaml`, and registered in `kubernetes/apps/database/kustomization.yaml`. Its health checks name those three objects, with `healthCheckExprs` treating a `Database` or `DatabaseRole` as current once `status.applied` is true at the current generation (a failed extension clears `applied`) and the role's client certificate has been issued. A failure shows up as that one tenant's `Kustomization` timing out, not as a broken app. Shared pieces (the `cert_login` group role, the `push-<namespace>` `SecretStore`s and their ServiceAccount) live in `tenants/common`, reconciled by `pg18vc-tenants`, which every tenant depends on. Nothing in an app's namespace holds the superuser password.
 
 Apps authenticate with client certificates, not passwords. Each app's `DatabaseRole` sets `clientCertificate: {}`, `disablePassword: true` and membership in `cert_login`, and `pg18vc` carries `hostssl all +cert_login all cert` in `pg_hba`. CNPG signs the certificate with the cluster's client CA (`pg18vc-ca`, operator-managed), stores it in `<app>-client-cert` beside the role, and renews it before its 90 days run out.
 
@@ -197,11 +197,11 @@ CNPG requires the role, the database and that Secret to live in the `Cluster`'s 
 
 The key file mode matters: libpq and lib/pq refuse a key readable by anyone but its owner and group, and a Secret volume is owned by root, so `0440` plus the pod's `fsGroup` is the combination that is both accepted and readable. Every pod that mounts the key needs an `fsGroup`. Reloader restarts apps when the certificate renews; drivers that load it once at startup (node-postgres, postgres.js) depend on that.
 
-Prisma (LiteLLM) speaks its own dialect: `sslmode=require&sslaccept=strict`, `sslcert` as the *server root* and `sslidentity` as a PKCS#12 client identity. `sslcert` loads exactly one PEM certificate, so LiteLLM mounts trust-manager's single-root `cluster-ca-root.crt` instead of the default-CA bundle, and its `PushSecret` templates `identity.p12` from the CNPG certificate with ESO's `pemToPkcs12` (go-pkcs12 `Modern` encoding, which OpenSSL 3 reads; empty password, Prisma's default). See `tenants/litellm.yaml` and `kubernetes/apps/litellm/litellm/app/litellmproxy.yaml`.
+Prisma (LiteLLM) speaks its own dialect: `sslmode=require&sslaccept=strict`, `sslcert` as the *server root* and `sslidentity` as a PKCS#12 client identity. `sslcert` loads exactly one PEM certificate, so LiteLLM mounts trust-manager's single-root `cluster-ca-root.crt` instead of the default-CA bundle, and its `PushSecret` templates `identity.p12` from the CNPG certificate with ESO's `pemToPkcs12` (go-pkcs12 `Modern` encoding, which OpenSSL 3 reads; empty password, Prisma's default). See `tenants/litellm/app/pushsecret.yaml` and `kubernetes/apps/litellm/litellm/app/litellmproxy.yaml`.
 
-Extensions go in `Database.spec.extensions`, listed dependencies first: CNPG runs a plain `CREATE EXTENSION` with no `CASCADE`, so `vchord` needs `vector` before it and `earthdistance` needs `cube`. `pg18vc` carries `postgis`, `timescaledb`, `timescaledb-toolkit` and `vchord`. See `tenants/immich.yaml`.
+Extensions go in `Database.spec.extensions`, listed dependencies first: CNPG runs a plain `CREATE EXTENSION` with no `CASCADE`, so `vchord` needs `vector` before it and `earthdistance` needs `cube`. `pg18vc` carries `postgis`, `timescaledb`, `timescaledb-toolkit` and `vchord`. See `tenants/immich/app/database.yaml`.
 
-Leave `databaseReclaimPolicy` and `databaseRoleReclaimPolicy` at their `retain` default, so deleting a manifest never drops data. Deleting a `DatabaseRole` always deletes its certificate Secret, whatever the policy. A `DatabaseRole` pointed at an existing role adopts it and forces every omitted attribute back to its default, revoking memberships not listed in `inRoles`; declare any group role the app depends on (`tenants/toolhive-registry.yaml`) rather than letting the app create it.
+Leave `databaseReclaimPolicy` and `databaseRoleReclaimPolicy` at their `retain` default, so deleting a manifest never drops data. Deleting a `DatabaseRole` always deletes its certificate Secret, whatever the policy. A `DatabaseRole` pointed at an existing role adopts it and forces every omitted attribute back to its default, revoking memberships not listed in `inRoles`; declare any group role the app depends on (`tenants/toolhive-registry/app/databaserole.yaml`) rather than letting the app create it.
 
 ## Inference (LiteLLM)
 

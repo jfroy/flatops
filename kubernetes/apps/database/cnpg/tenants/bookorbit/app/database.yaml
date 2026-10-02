@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: bookorbit
+spec:
+  cluster:
+    name: pg18vc
+  name: bookorbit
+  owner: bookorbit
+  extensions:
+    - name: uuid-ossp
+    - name: pg_trgm
+    - name: vector

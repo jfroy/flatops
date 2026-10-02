@@ -5,7 +5,7 @@ metadata:
   name: kite
 spec:
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-kite
       namespace: database
   path: ./kubernetes/apps/observability/kite/app
   prune: true

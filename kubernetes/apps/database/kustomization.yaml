@@ -4,6 +4,32 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - ./cnpg/ks.yaml
+  - ./cnpg/tenants/autobrr/ks.yaml
+  - ./cnpg/tenants/bookorbit/ks.yaml
+  - ./cnpg/tenants/dashbrr/ks.yaml
+  - ./cnpg/tenants/dawarich/ks.yaml
+  - ./cnpg/tenants/homebox/ks.yaml
+  - ./cnpg/tenants/immich/ks.yaml
+  - ./cnpg/tenants/kite/ks.yaml
+  - ./cnpg/tenants/litellm/ks.yaml
+  - ./cnpg/tenants/mealie/ks.yaml
+  - ./cnpg/tenants/memini/ks.yaml
+  - ./cnpg/tenants/memos/ks.yaml
+  - ./cnpg/tenants/miniflux/ks.yaml
+  - ./cnpg/tenants/netbox/ks.yaml
+  - ./cnpg/tenants/netronome/ks.yaml
+  - ./cnpg/tenants/openshell/ks.yaml
+  - ./cnpg/tenants/paperless/ks.yaml
+  - ./cnpg/tenants/plane/ks.yaml
+  - ./cnpg/tenants/prowlarr/ks.yaml
+  - ./cnpg/tenants/radarr/ks.yaml
+  - ./cnpg/tenants/readur/ks.yaml
+  - ./cnpg/tenants/seerr/ks.yaml
+  - ./cnpg/tenants/sonarr/ks.yaml
+  - ./cnpg/tenants/spoolman/ks.yaml
+  - ./cnpg/tenants/toolhive-registry/ks.yaml
+  - ./cnpg/tenants/tracearr/ks.yaml
+  - ./cnpg/tenants/zipline/ks.yaml
   - ./influxdb/ks.yaml
   - ./namespace.yaml
 components:

@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: openshell
+spec:
+  cluster:
+    name: pg18vc
+  name: openshell
+  login: true
+  inRoles:
+    - cert_login
+  disablePassword: true
+  clientCertificate: {}

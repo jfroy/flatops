@@ -9,7 +9,7 @@ spec:
     - ../../../../components/envoy-gateway-oidc
     - ../../../../components/kopiur/backup
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-sonarr
       namespace: database
   path: ./kubernetes/apps/default/sonarr/app
   prune: true
