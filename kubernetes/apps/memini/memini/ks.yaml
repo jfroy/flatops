@@ -6,7 +6,7 @@ metadata:
   name: memini
 spec:
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-memini
       namespace: database
     - name: litellm
       namespace: litellm

@@ -8,7 +8,7 @@ spec:
   components:
     - ../../../../components/envoy-gateway-oidc
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-prowlarr
       namespace: database
   path: ./kubernetes/apps/default/prowlarr/app
   prune: true

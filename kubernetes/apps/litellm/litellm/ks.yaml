@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: litellm-operator
       namespace: litellm-operator
-    - name: pg18vc-tenants
+    - name: pg18vc-litellm
       namespace: database
   path: ./kubernetes/apps/litellm/litellm/app
   prune: true

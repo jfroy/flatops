@@ -6,7 +6,7 @@ metadata:
   name: &app plane
 spec:
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-plane
       namespace: database
   path: ./kubernetes/apps/plane/plane/app
   prune: true

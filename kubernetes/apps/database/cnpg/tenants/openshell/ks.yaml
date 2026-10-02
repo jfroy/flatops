@@ -1,0 +1,45 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &name pg18vc-openshell
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: cnpg
+      app.kubernetes.io/instance: *name
+  dependsOn:
+    - name: pg18vc-tenants
+      namespace: database
+  healthChecks:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: DatabaseRole
+      name: openshell
+      namespace: database
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Database
+      name: openshell
+      namespace: database
+    - apiVersion: external-secrets.io/v1alpha1
+      kind: PushSecret
+      name: openshell
+      namespace: database
+  healthCheckExprs:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Database
+      current: status.applied == true && status.observedGeneration == metadata.generation
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: DatabaseRole
+      current: >-
+        status.applied == true && status.observedGeneration == metadata.generation &&
+        has(status.clientCertificate) && has(status.clientCertificate.expiration)
+  path: ./kubernetes/apps/database/cnpg/tenants/openshell/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m

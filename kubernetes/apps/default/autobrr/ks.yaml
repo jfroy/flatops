@@ -6,7 +6,7 @@ metadata:
   name: &app autobrr
 spec:
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-autobrr
       namespace: database
   path: ./kubernetes/apps/default/autobrr/app
   prune: true

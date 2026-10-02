@@ -6,7 +6,7 @@ metadata:
   name: &app miniflux
 spec:
   dependsOn:
-    - name: pg18vc-tenants
+    - name: pg18vc-miniflux
       namespace: database
   path: ./kubernetes/apps/default/miniflux/app
   prune: true
