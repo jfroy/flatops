@@ -36,6 +36,7 @@ spec:
               RADARR__AUTH__METHOD: External
               RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
               RADARR__LOG__DBENABLED: "False"
+              RADARR__SERVER__ALLOWEDHOSTS: "radarr.kantai.xyz,radarr,radarr.default,radarr.default.svc,radarr.default.svc.cluster.local"
               RADARR__SERVER__PORT: &port 80
               RADARR__UPDATE__BRANCH: develop
               TZ: America/Los_Angeles
@@ -50,6 +51,10 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
+                    # Host filtering rejects the kubelet's default Host of the pod IP.
+                    httpHeaders:
+                      - name: Host
+                        value: localhost
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false

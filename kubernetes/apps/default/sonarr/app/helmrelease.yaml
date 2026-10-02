@@ -36,6 +36,7 @@ spec:
               SONARR__AUTH__METHOD: External
               SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
               SONARR__LOG__DBENABLED: "False"
+              SONARR__SERVER__ALLOWEDHOSTS: "sonarr.kantai.xyz,sonarr,sonarr.default,sonarr.default.svc,sonarr.default.svc.cluster.local"
               SONARR__SERVER__PORT: &port 80
               SONARR__UPDATE__BRANCH: develop
               TZ: America/Los_Angeles
@@ -50,6 +51,10 @@ spec:
                   httpGet:
                     path: /ping
                     port: *port
+                    # Host filtering rejects the kubelet's default Host of the pod IP.
+                    httpHeaders:
+                      - name: Host
+                        value: localhost
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
