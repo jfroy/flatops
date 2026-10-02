@@ -22,6 +22,8 @@ spec:
               tag: v1.87.0@sha256:1a72b15b3cc3899082de38fbc05efab0dc0498135be359aa280078876c68f455
             env:
               AUTOBRR__CHECK_FOR_UPDATES: "false"
+              AUTOBRR__DATABASE_DSN: "postgres://autobrr@pg18vc-rw.database.svc.cluster.local:5432/autobrr?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
+              AUTOBRR__DATABASE_TYPE: postgres
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 80
               AUTOBRR__LOG_LEVEL: INFO
@@ -59,6 +61,19 @@ spec:
     persistence:
       config:
         type: emptyDir
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: autobrr-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
     route:
       autobrr:
         hostnames:

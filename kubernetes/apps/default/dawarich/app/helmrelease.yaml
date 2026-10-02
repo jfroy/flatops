@@ -50,10 +50,17 @@ spec:
             env: &env
               APPLICATION_HOSTS: "{{ .Release.Name }}.kantai.xyz"
               APPLICATION_PROTOCOL: http
+              DATABASE_HOST: pg18vc-rw.database.svc.cluster.local
+              DATABASE_NAME: dawarich
+              DATABASE_USERNAME: dawarich
               DISTANCE_UNIT: km
               MIN_MINUTES_SPENT_IN_CITY: 60
               OIDC_ISSUER: https://pid.kantai.xyz
               OIDC_REDIRECT_URI: "https://{{ .Release.Name }}.kantai.xyz/users/auth/openid_connect/callback"
+              PGSSLCERT: /etc/postgresql/client/tls.crt
+              PGSSLKEY: /etc/postgresql/client/tls.key
+              PGSSLMODE: verify-full
+              PGSSLROOTCERT: /etc/postgresql/ca/ca.crt
               PHOTON_API_HOST: photon.default.svc.cluster.local:2322
               PHOTON_API_USE_HTTPS: false
               RAILS_ENV: production
@@ -64,8 +71,6 @@ spec:
             envFrom: &envFrom
               - secretRef:
                   name: dawarich
-              - secretRef:
-                  name: dawarich-pg
               - secretRef:
                   name: dawarich-keys
             probes:
@@ -116,6 +121,29 @@ spec:
               - path: /dawarich_db_data
                 subPath: dawarich_db_data
             sidekick: *mounts
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        advancedMounts:
+          dawarich:
+            app:
+              - path: /etc/postgresql/ca
+                readOnly: true
+            sidekick:
+              - path: /etc/postgresql/ca
+                readOnly: true
+      pg-client:
+        type: secret
+        name: dawarich-pg
+        defaultMode: 0440
+        advancedMounts:
+          dawarich:
+            app:
+              - path: /etc/postgresql/client
+                readOnly: true
+            sidekick:
+              - path: /etc/postgresql/client
+                readOnly: true
       tmp:
         type: emptyDir
         medium: Memory

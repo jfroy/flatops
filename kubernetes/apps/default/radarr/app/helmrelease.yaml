@@ -26,6 +26,7 @@ spec:
               RADARR__AUTH__METHOD: External
               RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
               RADARR__LOG__DBENABLED: "False"
+              RADARR__POSTGRES__MAINDBCONNECTIONSTRING: "Host=pg18vc-rw.database.svc.cluster.local;Port=5432;Database=radarr-main;Username=radarr;SSL Mode=VerifyFull;Root Certificate=/etc/postgresql/ca/ca.crt;SSL Certificate=/etc/postgresql/client/tls.crt;SSL Key=/etc/postgresql/client/tls.key"
               RADARR__SERVER__ALLOWEDHOSTS: "radarr.kantai.xyz,radarr,radarr.default,radarr.default.svc,radarr.default.svc.cluster.local"
               RADARR__SERVER__PORT: &port 80
               RADARR__UPDATE__BRANCH: develop
@@ -64,6 +65,19 @@ spec:
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: radarr-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
       tmp:
         type: emptyDir
     route:

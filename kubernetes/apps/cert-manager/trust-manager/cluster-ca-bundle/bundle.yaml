@@ -42,3 +42,17 @@ spec:
   target:
     secret:
       key: ca.crt
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/trust.cert-manager.io/bundle_v1alpha1.json
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: cluster-ca-root.crt
+spec:
+  sources:
+    - secret:
+        name: cluster-ca
+        key: ca.crt
+  target:
+    configMap:
+      key: ca.crt

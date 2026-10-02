@@ -21,6 +21,8 @@ spec:
               repository: ghcr.io/autobrr/dashbrr
               tag: v0.7.0@sha256:0a14f0b614e840e0157290d70abd753ea124a7af28769e79f11acbfc5db01cf0
             env:
+              DASHBRR__DB_DSN: "postgres://dashbrr@pg18vc-rw.database.svc.cluster.local:5432/dashbrr?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
+              DASHBRR__DB_TYPE: postgres
               DASHBRR__LISTEN_ADDR: 0.0.0.0:8080
               DASHBRR__OIDC_CLIENT_ID: 66af8a8d-47e3-47d0-b3a3-f17a057f67f3
               DASHBRR__OIDC_ISSUER: https://pid.kantai.xyz
@@ -29,8 +31,6 @@ spec:
             envFrom:
               - secretRef:
                   name: dashbrr
-              - secretRef:
-                  name: dashbrr-pg
             probes:
               liveness: &probe
                 enabled: true
@@ -56,6 +56,19 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /data
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: dashbrr-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
     route:
       dashbrr:
         hostnames:

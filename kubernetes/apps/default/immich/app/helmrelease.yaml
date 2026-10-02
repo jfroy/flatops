@@ -61,10 +61,9 @@ spec:
               tag: v3.2.4
             envFrom:
               - secretRef:
-                  name: immich-pg
-              - secretRef:
                   name: immich-valkey
             env:
+              DB_URL: "postgresql://immich@pg18vc-rw.database.svc.cluster.local:5432/immich?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               IMMICH_MEDIA_LOCATION: /photos
               IMMICH_TELEMETRY_INCLUDE: all
               IMMICH_TRUSTED_PROXIES: 10.11.0.0/16
@@ -92,10 +91,9 @@ spec:
               tag: v3.2.4
             envFrom:
               - secretRef:
-                  name: immich-pg
-              - secretRef:
                   name: immich-valkey
             env:
+              DB_URL: "postgresql://immich@pg18vc-rw.database.svc.cluster.local:5432/immich?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               IMMICH_MEDIA_LOCATION: /photos
               IMMICH_TELEMETRY_INCLUDE: all
               IMMICH_TRUSTED_PROXIES: 10.11.0.0/16
@@ -164,6 +162,31 @@ spec:
                 subPath: cache
               - path: /.cache
                 subPath: dotCache
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        advancedMounts:
+          microservices:
+            microservices:
+              - path: /etc/postgresql/ca
+                readOnly: true
+          server:
+            server:
+              - path: /etc/postgresql/ca
+                readOnly: true
+      pg-client:
+        type: secret
+        name: immich-pg
+        defaultMode: 0440
+        advancedMounts:
+          microservices:
+            microservices:
+              - path: /etc/postgresql/client
+                readOnly: true
+          server:
+            server:
+              - path: /etc/postgresql/client
+                readOnly: true
       photos:
         type: persistentVolumeClaim
         existingClaim: photos

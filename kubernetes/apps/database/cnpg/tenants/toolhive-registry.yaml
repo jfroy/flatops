@@ -1,28 +1,4 @@
 ---
-# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: toolhive-registry-pguser
-spec:
-  refreshInterval: "0"
-  target:
-    name: toolhive-registry-pguser
-    template:
-      type: kubernetes.io/basic-auth
-      metadata:
-        labels:
-          cnpg.io/reload: "true"
-      data:
-        username: toolhive_registry
-        password: "{{ .password }}"
-  dataFrom:
-    - sourceRef:
-        generatorRef:
-          apiVersion: generators.external-secrets.io/v1alpha1
-          kind: Password
-          name: password32
----
 # yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: DatabaseRole
@@ -44,9 +20,10 @@ spec:
   name: toolhive_registry
   login: true
   inRoles:
+    - cert_login
     - toolhive_registry_server
-  passwordSecret:
-    name: toolhive-registry-pguser
+  disablePassword: true
+  clientCertificate: {}
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
 apiVersion: postgresql.cnpg.io/v1
@@ -72,17 +49,13 @@ spec:
       name: push-toolhive-system
   selector:
     secret:
-      name: toolhive-registry-pguser
-  template:
-    type: Opaque
-    data:
-      THV_REGISTRY_DATABASE_PASSWORD: "{{ .password }}"
+      name: toolhive-registry-client-cert
   dataTo:
     - storeRef:
         name: push-toolhive-system
       remoteKey: toolhive-registry-pg
       match:
-        regexp: "^(THV_REGISTRY_DATABASE_PASSWORD)$"
+        regexp: "^(tls\\.crt|tls\\.key)$"
       metadata:
         apiVersion: kubernetes.external-secrets.io/v1alpha1
         kind: PushSecretMetadata

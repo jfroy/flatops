@@ -26,6 +26,7 @@ spec:
               PROWLARR__AUTH__METHOD: External
               PROWLARR__AUTH__REQUIRED: DisabledForLocalAddresses
               PROWLARR__LOG__DBENABLED: "False"
+              PROWLARR__POSTGRES__MAINDBCONNECTIONSTRING: "Host=pg18vc-rw.database.svc.cluster.local;Port=5432;Database=prowlarr-main;Username=prowlarr;SSL Mode=VerifyFull;Root Certificate=/etc/postgresql/ca/ca.crt;SSL Certificate=/etc/postgresql/client/tls.crt;SSL Key=/etc/postgresql/client/tls.key"
               PROWLARR__SERVER__ALLOWEDHOSTS: "prowlarr.kantai.xyz,prowlarr,prowlarr.default,prowlarr.default.svc,prowlarr.default.svc.cluster.local"
               PROWLARR__SERVER__PORT: &port 80
               PROWLARR__UPDATE__BRANCH: develop
@@ -61,6 +62,19 @@ spec:
     persistence:
       config:
         type: emptyDir
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: prowlarr-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
       tmp:
         type: emptyDir
     route:

@@ -47,6 +47,14 @@ spec:
               PAPERLESS_CONVERT_TMPDIR: /scratch
               PAPERLESS_DATA_DIR: /data
               PAPERLESS_DATE_PARSER_LANGUAGES: en
+              PAPERLESS_DBHOST: pg18vc-rw.database.svc.cluster.local
+              PAPERLESS_DBNAME: paperless
+              PAPERLESS_DBPORT: "5432"
+              PAPERLESS_DBSSLCERT: /etc/postgresql/client/tls.crt
+              PAPERLESS_DBSSLKEY: /etc/postgresql/client/tls.key
+              PAPERLESS_DBSSLMODE: verify-full
+              PAPERLESS_DBSSLROOTCERT: /etc/postgresql/ca/ca.crt
+              PAPERLESS_DBUSER: paperless
               PAPERLESS_DB_READ_CACHE_ENABLED: true
               PAPERLESS_DBENGINE: postgresql
               PAPERLESS_DISABLE_REGULAR_LOGIN: true
@@ -71,8 +79,6 @@ spec:
                   name: paperless-env
               - secretRef:
                   name: paperless
-              - secretRef:
-                  name: paperless-pg
               - secretRef:
                   name: paperless-secret-key
             probes:
@@ -107,6 +113,23 @@ spec:
       inbox:
         type: emptyDir
         sizeLimit: 1Mi
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        advancedMounts:
+          paperless:
+            paperless:
+              - path: /etc/postgresql/ca
+                readOnly: true
+      pg-client:
+        type: secret
+        name: paperless-pg
+        defaultMode: 0440
+        advancedMounts:
+          paperless:
+            paperless:
+              - path: /etc/postgresql/client
+                readOnly: true
       run:
         type: emptyDir
         medium: Memory

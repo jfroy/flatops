@@ -28,12 +28,21 @@ spec:
               repository: ghcr.io/autobrr/netronome
               tag: v0.15.0@sha256:50039e4cfadc4fc0d60147f369ebf4ca077cf107dce18c07e38baf80005b9660
             env:
+              NETRONOME__DB_HOST: pg18vc-rw.database.svc.cluster.local
+              NETRONOME__DB_NAME: netronome
+              # Never sent under cert auth; netronome's keyword DSN breaks on an empty password.
+              NETRONOME__DB_PASSWORD: unused
+              NETRONOME__DB_PORT: "5432"
+              NETRONOME__DB_SSLMODE: verify-full
+              NETRONOME__DB_TYPE: postgres
+              NETRONOME__DB_USER: netronome
               NETRONOME__HOST: 0.0.0.0
               NETRONOME__PORT: &port 7575
+              PGSSLCERT: /etc/postgresql/client/tls.crt
+              PGSSLKEY: /etc/postgresql/client/tls.key
+              PGSSLROOTCERT: /etc/postgresql/ca/ca.crt
               TZ: America/Los_Angeles
             envFrom:
-              - secretRef:
-                  name: netronome-pg
               - secretRef:
                   name: netronome-oidc
             securityContext:
@@ -50,6 +59,8 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
     persistence:
       data:
         existingClaim: "${APP}"
@@ -73,6 +84,23 @@ spec:
         storageClass: openebs-hostpath
         accessMode: ReadWriteOnce
         size: 100Gi
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        advancedMounts:
+          netronome:
+            netronome:
+              - path: /etc/postgresql/ca
+                readOnly: true
+      pg-client:
+        type: secret
+        name: netronome-pg
+        defaultMode: 0440
+        advancedMounts:
+          netronome:
+            netronome:
+              - path: /etc/postgresql/client
+                readOnly: true
       tmp:
         type: emptyDir
         medium: Memory

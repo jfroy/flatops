@@ -75,16 +75,11 @@ spec:
       value: litellm_role
     - name: GENERIC_INCLUDE_TOKEN_CLAIMS
       value: "true"
+    # Prisma's TLS dialect: sslcert is the single server root, sslidentity a PKCS#12 client identity.
     - name: DATABASE_URL
-      valueFrom:
-        secretKeyRef:
-          name: litellm-pg
-          key: DATABASE_URL
+      value: "postgresql://litellm@pg18vc-rw.database.svc.cluster.local:5432/litellm?sslmode=require&sslaccept=strict&sslcert=/etc/postgresql/ca/ca.crt&sslidentity=/etc/postgresql/client/identity.p12"
     - name: DATABASE_URL_READ_REPLICA
-      valueFrom:
-        secretKeyRef:
-          name: litellm-pg
-          key: DATABASE_URL_READ_REPLICA
+      value: "postgresql://litellm@pg18vc-ro.database.svc.cluster.local:5432/litellm?sslmode=require&sslaccept=strict&sslcert=/etc/postgresql/ca/ca.crt&sslidentity=/etc/postgresql/client/identity.p12"
   envFrom:
     - secretRef:
         name: litellm
@@ -104,6 +99,13 @@ spec:
     - name: npm
       emptyDir:
         sizeLimit: 500Mi
+    - name: pg-ca
+      configMap:
+        name: cluster-ca-root.crt
+    - name: pg-client
+      secret:
+        secretName: litellm-pg
+        defaultMode: 0440
   volumeMounts:
     - name: tmp
       mountPath: /tmp
@@ -111,3 +113,9 @@ spec:
       mountPath: /.cache
     - name: npm
       mountPath: /.npm
+    - name: pg-ca
+      mountPath: /etc/postgresql/ca
+      readOnly: true
+    - name: pg-client
+      mountPath: /etc/postgresql/client
+      readOnly: true

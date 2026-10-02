@@ -65,6 +65,31 @@ spec:
                 name: openshell
               spec:
                 template:
+                  spec:
+                    containers:
+                      - name: openshell-gateway
+                        volumeMounts:
+                          - name: pg-ca
+                            mountPath: /etc/postgresql/ca
+                            readOnly: true
+                          - name: pg-client
+                            mountPath: /etc/postgresql/client
+                            readOnly: true
+                    volumes:
+                      - name: pg-ca
+                        configMap:
+                          name: cluster-ca.crt
+                      - name: pg-client
+                        secret:
+                          secretName: openshell-pg
+                          defaultMode: 0440
+          - patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: openshell
+              spec:
+                template:
                   metadata:
                     annotations:
                       reloader.stakater.com/auto: "true"

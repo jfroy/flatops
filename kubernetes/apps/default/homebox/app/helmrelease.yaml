@@ -21,9 +21,16 @@ spec:
               repository: ghcr.io/sysadminsmedia/homebox
               tag: 0.26.2@sha256:b1ad7e3c63f732a5f6daa466e8116be4f545b3b120383a64dcb62beb00a660cc
             env:
+              HBOX_DATABASE_DATABASE: homebox
+              HBOX_DATABASE_HOST: pg18vc-rw.database.svc.cluster.local
+              HBOX_DATABASE_PORT: "5432"
+              HBOX_DATABASE_SSL_CERT: /etc/postgresql/client/tls.crt
+              HBOX_DATABASE_SSL_KEY: /etc/postgresql/client/tls.key
+              HBOX_DATABASE_SSL_ROOT_CERT: /etc/postgresql/ca/ca.crt
+              HBOX_DATABASE_USERNAME: homebox
               HBOX_OPTIONS_CHECK_GITHUB_RELEASE: "false"
               HBOX_DATABASE_DRIVER: postgres
-              HBOX_DATABASE_SSL_MODE: disable
+              HBOX_DATABASE_SSL_MODE: verify-full
               HBOX_LOG_FORMAT: json
               HBOX_LOG_LEVEL: info
               HBOX_OIDC_ISSUER_URL: https://pid.kantai.xyz
@@ -38,8 +45,6 @@ spec:
             envFrom:
               - secretRef:
                   name: homebox
-              - secretRef:
-                  name: homebox-pg
               - secretRef:
                   name: homebox-keys
             securityContext:
@@ -61,6 +66,19 @@ spec:
         sizeLimit: 100Mi
         globalMounts:
           - path: /.cache
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: homebox-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
     route:
       homebox:
         hostnames:
