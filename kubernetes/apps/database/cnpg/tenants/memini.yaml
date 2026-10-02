@@ -1,0 +1,81 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: memini-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: memini-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: memini
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: memini
+spec:
+  cluster:
+    name: pg18vc
+  name: memini
+  login: true
+  passwordSecret:
+    name: memini-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: memini
+spec:
+  cluster:
+    name: pg18vc
+  name: memini
+  owner: memini
+  extensions:
+    - name: vector
+    - name: vchord
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: memini
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-memini
+  selector:
+    secret:
+      name: memini-pguser
+  template:
+    type: Opaque
+    data:
+      MEMINI_POSTGRES_DSN: "postgresql://memini:{{ .password }}@pg18vc-rw.database.svc.cluster.local:5432/memini"
+  dataTo:
+    - storeRef:
+        name: push-memini
+      remoteKey: memini-pg
+      match:
+        regexp: "^(MEMINI_POSTGRES_DSN)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

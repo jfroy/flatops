@@ -7,6 +7,9 @@ metadata:
 spec:
   components:
     - ../../../../components/kopiur/backup
+  dependsOn:
+    - name: pg18vc-tenants
+      namespace: database
   path: ./kubernetes/apps/default/bookorbit/app
   prune: true
   sourceRef:

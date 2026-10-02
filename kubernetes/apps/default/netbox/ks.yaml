@@ -7,6 +7,8 @@ metadata:
 spec:
   dependsOn:
     - name: netbox-valkey
+    - name: pg18vc-tenants
+      namespace: database
   components:
     - ../../../../components/kopiur/backup
   path: ./kubernetes/apps/default/netbox/app

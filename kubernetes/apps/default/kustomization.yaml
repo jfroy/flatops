@@ -61,5 +61,6 @@ resources:
 components:
   - ../../components/common
   - ../../components/kopiur/secret
+  - ../../components/pg18vc-push
 transformers:
   - ./transformers

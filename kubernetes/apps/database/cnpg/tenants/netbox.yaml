@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: netbox-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: netbox-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: netbox
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: netbox
+spec:
+  cluster:
+    name: pg18vc
+  name: netbox
+  login: true
+  passwordSecret:
+    name: netbox-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: netbox
+spec:
+  cluster:
+    name: pg18vc
+  name: netbox
+  owner: netbox
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: netbox
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-default
+  selector:
+    secret:
+      name: netbox-pguser
+  template:
+    type: Opaque
+    data:
+      DB_PASSWORD: "{{ .password }}"
+  dataTo:
+    - storeRef:
+        name: push-default
+      remoteKey: netbox-pg
+      match:
+        regexp: "^(DB_PASSWORD)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

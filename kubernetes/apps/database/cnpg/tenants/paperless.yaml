@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: paperless-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: paperless-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: paperless
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: paperless
+spec:
+  cluster:
+    name: pg18vc
+  name: paperless
+  login: true
+  passwordSecret:
+    name: paperless-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: paperless
+spec:
+  cluster:
+    name: pg18vc
+  name: paperless
+  owner: paperless
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: paperless
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-default
+  selector:
+    secret:
+      name: paperless-pguser
+  template:
+    type: Opaque
+    data:
+      PAPERLESS_DBHOST: pg18vc-rw.database.svc.cluster.local
+      PAPERLESS_DBNAME: paperless
+      PAPERLESS_DBPASS: "{{ .password }}"
+      PAPERLESS_DBPORT: "5432"
+      PAPERLESS_DBUSER: paperless
+  dataTo:
+    - storeRef:
+        name: push-default
+      remoteKey: paperless-pg
+      match:
+        regexp: "^(PAPERLESS_DBHOST|PAPERLESS_DBNAME|PAPERLESS_DBPASS|PAPERLESS_DBPORT|PAPERLESS_DBUSER)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

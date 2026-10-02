@@ -47,6 +47,9 @@ spec:
       kind: HelmRelease
       name: *app
       namespace: toolhive-system
+  dependsOn:
+    - name: pg18vc-tenants
+      namespace: database
   path: ./kubernetes/apps/toolhive-system/toolhive/registry
   prune: true
   sourceRef:

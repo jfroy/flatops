@@ -12,25 +12,11 @@ spec:
     name: app-template
     namespace: flux-system
   values:
-    configMaps:
-      dawarich-initdb:
-        data:
-          dawarich.sql: |
-            CREATE EXTENSION IF NOT EXISTS "postgis";
     controllers:
       dawarich:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          initdb:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
-            envFrom:
-              - secretRef:
-                  name: dawarich-db
-              - secretRef:
-                  name: dawarich-initdb
           valkey:
             image:
               repository: ghcr.io/valkey-io/valkey
@@ -79,7 +65,7 @@ spec:
               - secretRef:
                   name: dawarich
               - secretRef:
-                  name: dawarich-db
+                  name: dawarich-pg
               - secretRef:
                   name: dawarich-keys
             probes:
@@ -130,13 +116,6 @@ spec:
               - path: /dawarich_db_data
                 subPath: dawarich_db_data
             sidekick: *mounts
-      initdb:
-        type: configMap
-        identifier: dawarich-initdb
-        advancedMounts:
-          dawarich:
-            initdb:
-              - path: /initdb
       tmp:
         type: emptyDir
         medium: Memory

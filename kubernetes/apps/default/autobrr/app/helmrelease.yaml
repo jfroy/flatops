@@ -15,16 +15,6 @@ spec:
       autobrr:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
-            envFrom:
-              - secretRef:
-                  name: autobrr-secret
-              - secretRef:
-                  name: autobrr-initdb-secret
         containers:
           autobrr:
             image:

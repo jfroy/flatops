@@ -11,27 +11,10 @@ spec:
     name: app-template
     namespace: flux-system
   values:
-    configMaps:
-      initdb:
-        data:
-          bookorbit.sql: |
-            CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-            CREATE EXTENSION IF NOT EXISTS "pg_trgm";
-            CREATE EXTENSION IF NOT EXISTS "vector";
     controllers:
       bookorbit:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
-            envFrom:
-              - secretRef:
-                  name: bookorbit-db
-              - secretRef:
-                  name: bookorbit-initdb
         containers:
           bookorbit:
             image:
@@ -49,7 +32,7 @@ spec:
               - secretRef:
                   name: bookorbit
               - secretRef:
-                  name: bookorbit-db
+                  name: bookorbit-pg
               - secretRef:
                   name: bookorbit-keys
             probes:
@@ -80,13 +63,6 @@ spec:
           bookorbit:
             bookorbit:
               - path: /data
-      initdb:
-        type: configMap
-        identifier: initdb
-        advancedMounts:
-          bookorbit:
-            init-db:
-              - path: /initdb
       media2:
         type: persistentVolumeClaim
         existingClaim: media2

@@ -61,7 +61,7 @@ spec:
               tag: v3.2.4
             envFrom:
               - secretRef:
-                  name: immich-db
+                  name: immich-pg
               - secretRef:
                   name: immich-valkey
             env:
@@ -92,7 +92,7 @@ spec:
               tag: v3.2.4
             envFrom:
               - secretRef:
-                  name: immich-db
+                  name: immich-pg
               - secretRef:
                   name: immich-valkey
             env:
@@ -122,16 +122,6 @@ spec:
                 cpu: 100m
                 memory: 250Mi
             securityContext: *csc
-        initContainers:
-          initdb:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
-            envFrom:
-              - secretRef:
-                  name: immich-db
-              - secretRef:
-                  name: immich-initdb
     defaultPodOptions:
       enableServiceLinks: false
       securityContext:
@@ -162,13 +152,6 @@ spec:
           microservices:
             microservices:
               - path: /usr/src/app/node_modules/local-reverse-geocoder/geonames_dump
-      initdb:
-        type: configMap
-        name: immich-initdb
-        advancedMounts:
-          server:
-            initdb:
-              - path: /initdb
       model-cache:
         type: persistentVolumeClaim
         accessMode: ReadWriteOnce

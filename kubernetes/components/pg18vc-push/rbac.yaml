@@ -1,0 +1,25 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: pg18vc-push
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["authorization.k8s.io"]
+    resources: ["selfsubjectrulesreviews"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: pg18vc-push
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pg18vc-push
+subjects:
+  - kind: ServiceAccount
+    name: pg18vc-push
+    namespace: database

@@ -82,7 +82,7 @@ Two categories of deployments exist in this cluster:
 
 When a project ships release manifests instead of a chart, reference the release URL directly from `app/kustomization.yaml` with a `# renovate: datasource=github-releases depName=org/repo` comment above it. Apply upstream unmodified — including its own namespace — rather than relocating it: a kustomize `namespace:` directive rewrites `ClusterRoleBinding` subjects and webhook service references but silently leaves `cert-manager.io/inject-ca-from` annotations pointing at the old namespace. Delete only upstream's bare `Namespace` object (`$patch: delete`) so this repo's `namespace.yaml` owns it with PSA labels and the common component's prune-disabled annotation. See `kubernetes/apps/agent-sandbox-system/agent-sandbox/app/` and `kubernetes/apps/cnpg-system/barman-cloud/app/`.
 
-When an upstream chart offers no hook for something this repo needs — most often an init container — inject it with `spec.postRenderers[].kustomize.patches` rather than forking the chart. Prefer a strategic-merge patch over JSON6902 when the target path may not exist in the rendered output (a JSON6902 `add` on a child of an absent map fails). See `kubernetes/apps/openshell/openshell/app/helmrelease.yaml`, which patches in the standard `postgres-init` container this way.
+When an upstream chart offers no hook for something this repo needs — most often an init container — inject it with `spec.postRenderers[].kustomize.patches` rather than forking the chart. Prefer a strategic-merge patch over JSON6902 when the target path may not exist in the rendered output (a JSON6902 `add` on a child of an absent map fails). See `kubernetes/apps/openshell/openshell/app/helmrelease.yaml`, which patches the gateway Deployment this way.
 
 ## App Pattern (kubernetes/apps/default/)
 
@@ -102,7 +102,7 @@ App-template apps follow the same four-file layout:
 - Use `components/kopiur` to wire up daily Kopia backups to Cloudflare R2.
   - Set `postBuild.substitute` with `APP: *app` at minimum when using this component.
   - Override `KOPIUR_UID` / `KOPIUR_GID` when the app's PVC is owned by something other than 1000, or the mover cannot read it.
-- Postgres apps add `dependsOn: {name: pg18vc, namespace: database}` — that is the CNPG cluster's own `Kustomization`, not the operator's.
+- Postgres apps add `dependsOn: {name: pg18vc-tenants, namespace: database}` — the `Kustomization` holding every app's `Database`, `DatabaseRole` and pushed credentials, which itself depends on the CNPG cluster's `pg18vc`.
 
 **`helmrelease.yaml` key points:**
 
@@ -111,7 +111,7 @@ App-template apps follow the same four-file layout:
 - Annotate the resource that owns `Pods` (e.g. a `Deployment`, `StatefulSet`, `DaemonSet`, etc) with `reloader.stakater.com/auto: "true"` when secrets are used.
 - Lock down the security context: `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `capabilities: {drop: ["ALL"]}`, `readOnlyRootFilesystem: true`.
 - Routes use `parentRefs: [{name: envoy-internal, namespace: network}]` for LAN/tailnet-only services, or `envoy-external` for public internet.
-- Postgres apps use `ghcr.io/home-operations/postgres-init` as `initContainers.init-db` with complimentary secrets.
+- Postgres apps read their connection settings from the `<app>-pg` Secret; see PostgreSQL Apps.
 
 **Resources and probes:**
 
@@ -127,8 +127,6 @@ Both default to unset. Add either one only when there is a specific reason to, a
 - `ClusterSecretStore` name: `openbao`.
 - App secret uses `dataFrom.extract.key: <appname>`.
 - A single field is `key: <item>` plus `property: <field>`. The 1Password `key: <item>/<field>` form no longer resolves.
-- Postgres `-db` secret generates a password via `generators.external-secrets.io/v1alpha1/Password/password32` and populates CNPG connection vars.
-- Postgres `-initdb` secret pulls the CNPG superuser password from `cnpg-pg18vc`, property `password`.
 
 **Registering a new `Kustomization`:** Add `- ./<appname>/ks.yaml` to `kubernetes/apps/<namespace>/kustomization.yaml` in alphabetical order.
 
@@ -187,9 +185,17 @@ Rook-Ceph provides S3-compatible object storage. It can be used with path-style 
 
 ## PostgreSQL Apps
 
-CNPG cluster: `pg18vc-rw.database.svc.cluster.local`. Apps provision their own database via the `init-db` init container. Each app needs three ExternalSecrets: `<app>`, `<app>-db`, `<app>-initdb`.
+CNPG cluster: `pg18vc-rw.database.svc.cluster.local`. Roles and databases are declared with CNPG's `DatabaseRole` and `Database` resources, one file per app in `kubernetes/apps/database/cnpg/tenants/<app>.yaml`, reconciled by the `pg18vc-tenants` `Kustomization`. Nothing in an app's namespace holds the superuser password.
 
-`postgres-init` also runs arbitrary SQL as the superuser after creating the role and database: mount a ConfigMap at `/initdb` and it executes `/initdb/<INIT_POSTGRES_DBNAME>.sql`. **The filename must match the database name** — rename one without the other and the SQL is silently skipped. This is the only hook that can install extensions, since `CREATE EXTENSION` needs superuser while `postgres-init` otherwise leaves the app user as a plain owner. `pg18vc` carries `postgis`, `timescaledb`, `timescaledb-toolkit` and `vchord`; any app wanting one needs this file. See `kubernetes/apps/default/immich/app/immich.sql` and `kubernetes/apps/memini/memini/app/memini.sql`.
+CNPG requires both resources, and the `passwordSecret` a `DatabaseRole` reads, to live in the `Cluster`'s namespace, so credentials are made in `database` and pushed outward the same way LiteLLM keys are:
+
+1. `ExternalSecret <app>-pguser` produces the `kubernetes.io/basic-auth` Secret the `DatabaseRole` reads, labelled `cnpg.io/reload: "true"`. The password comes from the `password32` generator, or from the app's OpenBao item when the app already keeps it there (the *arr apps, `autobrr`, `spoolman`).
+2. `PushSecret <app>` templates that Secret into whatever keys the app expects (`DATABASE_URL`, `DB_PASSWORD`, …) and writes `<app>-pg` into the app's namespace through the `push-<namespace>` `SecretStore`. Its `dataTo` entry pushes only the templated keys, and `targetMergePolicy: Ignore` keeps the source's labels off the copy. Apps whose password is already in OpenBao need no push; their own `ExternalSecret` reads the same item.
+3. The consumer namespace adds `components/pg18vc-push` to its `kustomization.yaml`, granting the `database/pg18vc-push` ServiceAccount write access to its Secrets.
+
+Extensions go in `Database.spec.extensions`, listed dependencies first: CNPG runs a plain `CREATE EXTENSION` with no `CASCADE`, so `vchord` needs `vector` before it and `earthdistance` needs `cube`. `pg18vc` carries `postgis`, `timescaledb`, `timescaledb-toolkit` and `vchord`. See `tenants/immich.yaml`.
+
+Leave `databaseReclaimPolicy` and `databaseRoleReclaimPolicy` at their `retain` default, so deleting a manifest never drops data. A `DatabaseRole` pointed at an existing role adopts it and forces every omitted attribute back to its default, revoking memberships not listed in `inRoles`; declare any group role the app depends on (`tenants/toolhive-registry.yaml`) rather than letting the app create it.
 
 ## Inference (LiteLLM)
 

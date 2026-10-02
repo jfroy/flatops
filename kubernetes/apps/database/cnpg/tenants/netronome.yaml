@@ -1,0 +1,84 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: netronome-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: netronome-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: netronome
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: netronome
+spec:
+  cluster:
+    name: pg18vc
+  name: netronome
+  login: true
+  passwordSecret:
+    name: netronome-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: netronome
+spec:
+  cluster:
+    name: pg18vc
+  name: netronome
+  owner: netronome
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: netronome
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-observability
+  selector:
+    secret:
+      name: netronome-pguser
+  template:
+    type: Opaque
+    data:
+      NETRONOME__DB_HOST: pg18vc-rw.database.svc.cluster.local
+      NETRONOME__DB_NAME: netronome
+      NETRONOME__DB_PASSWORD: "{{ .password }}"
+      NETRONOME__DB_PORT: "5432"
+      NETRONOME__DB_SSLMODE: disable
+      NETRONOME__DB_TYPE: postgres
+      NETRONOME__DB_USER: netronome
+  dataTo:
+    - storeRef:
+        name: push-observability
+      remoteKey: netronome-pg
+      match:
+        regexp: "^(NETRONOME__DB_HOST|NETRONOME__DB_NAME|NETRONOME__DB_PASSWORD|NETRONOME__DB_PORT|NETRONOME__DB_SSLMODE|NETRONOME__DB_TYPE|NETRONOME__DB_USER)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

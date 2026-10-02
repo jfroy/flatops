@@ -1,0 +1,82 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: homebox-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: homebox-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: homebox
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: homebox
+spec:
+  cluster:
+    name: pg18vc
+  name: homebox
+  login: true
+  passwordSecret:
+    name: homebox-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: homebox
+spec:
+  cluster:
+    name: pg18vc
+  name: homebox
+  owner: homebox
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: homebox
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-default
+  selector:
+    secret:
+      name: homebox-pguser
+  template:
+    type: Opaque
+    data:
+      HBOX_DATABASE_DATABASE: homebox
+      HBOX_DATABASE_HOST: pg18vc-rw.database.svc.cluster.local
+      HBOX_DATABASE_PASSWORD: "{{ .password }}"
+      HBOX_DATABASE_PORT: "5432"
+      HBOX_DATABASE_USERNAME: homebox
+  dataTo:
+    - storeRef:
+        name: push-default
+      remoteKey: homebox-pg
+      match:
+        regexp: "^(HBOX_DATABASE_DATABASE|HBOX_DATABASE_HOST|HBOX_DATABASE_PASSWORD|HBOX_DATABASE_PORT|HBOX_DATABASE_USERNAME)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

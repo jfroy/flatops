@@ -1,0 +1,78 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: openshell-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: openshell-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: openshell
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: openshell
+spec:
+  cluster:
+    name: pg18vc
+  name: openshell
+  login: true
+  passwordSecret:
+    name: openshell-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: openshell
+spec:
+  cluster:
+    name: pg18vc
+  name: openshell
+  owner: openshell
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: openshell
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-openshell
+  selector:
+    secret:
+      name: openshell-pguser
+  template:
+    type: Opaque
+    data:
+      uri: "postgresql://openshell:{{ .password }}@pg18vc-rw.database.svc.cluster.local:5432/openshell"
+  dataTo:
+    - storeRef:
+        name: push-openshell
+      remoteKey: openshell-pg
+      match:
+        regexp: "^(uri)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore
