@@ -16,11 +16,9 @@ resources:
   # - ./docling/ks.yaml
   - ./esphome/ks.yaml
   - ./etampe/ks.yaml
-  # - ./glance/ks.yaml
   - ./gluetun/ks.yaml
   - ./gpu-claim-templates/ks.yaml
   - ./homebox/ks.yaml
-  - ./homepage/ks.yaml
   - ./houndarr/ks.yaml
   - ./immich/ks.yaml
   - ./jellyfin/ks.yaml
