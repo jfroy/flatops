@@ -24,7 +24,7 @@ spec:
       restartPolicy: OnFailure
       containers:
         - name: setcors
-          image: docker.io/amazon/aws-cli:2.37.8@sha256:420ab345e847291b541b45d989535f55bcff957c27fa1100fae4aa233e86398c
+          image: docker.io/amazon/aws-cli:2.37.9@sha256:92de75724b6a746951f0e8b915d86bbccd7cb55aff96cd0cb4f7017272160780
           command:
             - /bin/sh
             - -c
