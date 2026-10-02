@@ -28,12 +28,17 @@ spec:
               - --port
               - "8000"
             env:
+              PGSSLCERT: /etc/postgresql/client/tls.crt
+              PGSSLKEY: /etc/postgresql/client/tls.key
+              PGSSLMODE: verify-full
+              PGSSLROOTCERT: /etc/postgresql/ca/ca.crt
+              SPOOLMAN_DB_HOST: pg18vc-rw.database.svc.cluster.local
+              SPOOLMAN_DB_NAME: spoolman
+              SPOOLMAN_DB_PORT: "5432"
               SPOOLMAN_DB_TYPE: postgres
+              SPOOLMAN_DB_USERNAME: spoolman
               SPOOLMAN_METRICS_ENABLED: "true"
               TZ: America/Los_Angeles
-            envFrom:
-              - secretRef:
-                  name: spoolman
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
@@ -50,6 +55,19 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /home/app/.local/share/spoolman
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: spoolman-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
     route:
       spoolman:
         hostnames:

@@ -18,6 +18,7 @@ spec:
         containers:
           main:
             env:
+              MEMINI_POSTGRES_DSN: "postgresql://memini@pg18vc-rw.database.svc.cluster.local:5432/memini?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               TZ: America/Los_Angeles
               MEMINI_BACKEND: postgres
               MEMINI_EMBED_BASE_URL: http://litellm.litellm.svc.cluster.local:4000/v1
@@ -30,8 +31,6 @@ spec:
             envFrom:
               - secretRef:
                   name: memini
-              - secretRef:
-                  name: memini-pg
               - secretRef:
                   name: memini-litellm
             securityContext:
@@ -49,6 +48,19 @@ spec:
     persistence:
       data:
         enabled: false
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: memini-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
     route:
       main:
         enabled: true

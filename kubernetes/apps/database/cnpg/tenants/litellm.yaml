@@ -1,28 +1,4 @@
 ---
-# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: litellm-pguser
-spec:
-  refreshInterval: "0"
-  target:
-    name: litellm-pguser
-    template:
-      type: kubernetes.io/basic-auth
-      metadata:
-        labels:
-          cnpg.io/reload: "true"
-      data:
-        username: litellm
-        password: "{{ .password }}"
-  dataFrom:
-    - sourceRef:
-        generatorRef:
-          apiVersion: generators.external-secrets.io/v1alpha1
-          kind: Password
-          name: password32
----
 # yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: DatabaseRole
@@ -33,8 +9,10 @@ spec:
     name: pg18vc
   name: litellm
   login: true
-  passwordSecret:
-    name: litellm-pguser
+  inRoles:
+    - cert_login
+  disablePassword: true
+  clientCertificate: {}
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
 apiVersion: postgresql.cnpg.io/v1
@@ -60,20 +38,17 @@ spec:
       name: push-litellm
   selector:
     secret:
-      name: litellm-pguser
+      name: litellm-client-cert
   template:
-    type: Opaque
+    type: kubernetes.io/tls
     data:
-      DATABASE_PASSWORD: "{{ .password }}"
-      DATABASE_URL: "postgresql://litellm:{{ .password }}@pg18vc-rw.database.svc.cluster.local:5432/litellm"
-      DATABASE_URL_READ_REPLICA: "postgresql://litellm:{{ .password }}@pg18vc-ro.database.svc.cluster.local:5432/litellm"
-      DATABASE_USERNAME: litellm
+      identity.p12: '{{ pemToPkcs12 (index . "tls.crt") (index . "tls.key") | b64dec }}'
   dataTo:
     - storeRef:
         name: push-litellm
       remoteKey: litellm-pg
       match:
-        regexp: "^(DATABASE_PASSWORD|DATABASE_URL|DATABASE_URL_READ_REPLICA|DATABASE_USERNAME)$"
+        regexp: "^(identity\\.p12|tls\\.crt|tls\\.key)$"
       metadata:
         apiVersion: kubernetes.external-secrets.io/v1alpha1
         kind: PushSecretMetadata

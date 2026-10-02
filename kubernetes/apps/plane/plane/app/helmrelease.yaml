@@ -56,6 +56,7 @@ spec:
       docstore_bucket: plane
       aws_region: us-west-1
       aws_s3_endpoint_url: https://s3.kantai.xyz
+      pgdb_remote_url: "postgresql://plane@pg18vc-rw.database.svc.cluster.local:5432/plane?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
   valuesFrom:
     - kind: Secret
       name: plane
@@ -70,10 +71,6 @@ spec:
       valuesKey: RABBITMQ_DEFAULT_PASS
       targetPath: rabbitmq.default_password
     - kind: Secret
-      name: plane-pg
-      valuesKey: PGDB_REMOTE_URL
-      targetPath: env.pgdb_remote_url
-    - kind: Secret
       name: plane-obc
       valuesKey: AWS_ACCESS_KEY_ID
       targetPath: env.aws_access_key
@@ -84,6 +81,118 @@ spec:
   postRenderers:
     - kustomize:
         patches:
+          - target:
+              kind: Deployment
+              name: plane-api-wl
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: plane-api-wl
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: plane-api
+                        volumeMounts:
+                          - name: pg-ca
+                            mountPath: /etc/postgresql/ca
+                            readOnly: true
+                          - name: pg-client
+                            mountPath: /etc/postgresql/client
+                            readOnly: true
+                    volumes:
+                      - name: pg-ca
+                        configMap:
+                          name: cluster-ca.crt
+                      - name: pg-client
+                        secret:
+                          secretName: plane-pg
+                          defaultMode: 0440
+          - target:
+              kind: Deployment
+              name: plane-worker-wl
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: plane-worker-wl
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: plane-worker
+                        volumeMounts:
+                          - name: pg-ca
+                            mountPath: /etc/postgresql/ca
+                            readOnly: true
+                          - name: pg-client
+                            mountPath: /etc/postgresql/client
+                            readOnly: true
+                    volumes:
+                      - name: pg-ca
+                        configMap:
+                          name: cluster-ca.crt
+                      - name: pg-client
+                        secret:
+                          secretName: plane-pg
+                          defaultMode: 0440
+          - target:
+              kind: Deployment
+              name: plane-beat-worker-wl
+            patch: |
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: plane-beat-worker-wl
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: plane-beat-worker
+                        volumeMounts:
+                          - name: pg-ca
+                            mountPath: /etc/postgresql/ca
+                            readOnly: true
+                          - name: pg-client
+                            mountPath: /etc/postgresql/client
+                            readOnly: true
+                    volumes:
+                      - name: pg-ca
+                        configMap:
+                          name: cluster-ca.crt
+                      - name: pg-client
+                        secret:
+                          secretName: plane-pg
+                          defaultMode: 0440
+          - target:
+              kind: Job
+              name: plane-api-migrate-.*
+            patch: |
+              apiVersion: batch/v1
+              kind: Job
+              metadata:
+                name: plane-api-migrate
+              spec:
+                template:
+                  spec:
+                    containers:
+                      - name: plane-api-migrate
+                        volumeMounts:
+                          - name: pg-ca
+                            mountPath: /etc/postgresql/ca
+                            readOnly: true
+                          - name: pg-client
+                            mountPath: /etc/postgresql/client
+                            readOnly: true
+                    volumes:
+                      - name: pg-ca
+                        configMap:
+                          name: cluster-ca.crt
+                      - name: pg-client
+                        secret:
+                          secretName: plane-pg
+                          defaultMode: 0440
           # Chart hardcodes WEB_URL to http://; TLS terminates at the gateway.
           - target:
               kind: ConfigMap

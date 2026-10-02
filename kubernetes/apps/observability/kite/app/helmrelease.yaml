@@ -23,10 +23,7 @@ spec:
       - name: DB_TYPE
         value: postgres
       - name: DB_DSN
-        valueFrom:
-          secretKeyRef:
-            name: kite-pg
-            key: DB_DSN
+        value: "host=pg18vc-rw.database.svc.cluster.local dbname=kite user=kite sslmode=verify-full sslrootcert=/etc/postgresql/ca/ca.crt sslcert=/etc/postgresql/client/tls.crt sslkey=/etc/postgresql/client/tls.key"
       - name: OIDC_CLIENT_SECRET
         valueFrom:
           secretKeyRef:
@@ -53,11 +50,24 @@ spec:
         emptyDir:
           medium: Memory
           sizeLimit: 1Mi
+      - name: pg-ca
+        configMap:
+          name: cluster-ca.crt
+      - name: pg-client
+        secret:
+          secretName: kite-pg
+          defaultMode: 0440
     volumeMounts:
       - name: tmp
         mountPath: /tmp
       - name: run
         mountPath: /run
+      - name: pg-ca
+        mountPath: /etc/postgresql/ca
+        readOnly: true
+      - name: pg-client
+        mountPath: /etc/postgresql/client
+        readOnly: true
     gateway:
       enabled: true
       create: false

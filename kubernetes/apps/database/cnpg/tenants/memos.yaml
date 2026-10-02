@@ -1,28 +1,4 @@
 ---
-# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: memos-pguser
-spec:
-  refreshInterval: "0"
-  target:
-    name: memos-pguser
-    template:
-      type: kubernetes.io/basic-auth
-      metadata:
-        labels:
-          cnpg.io/reload: "true"
-      data:
-        username: memos
-        password: "{{ .password }}"
-  dataFrom:
-    - sourceRef:
-        generatorRef:
-          apiVersion: generators.external-secrets.io/v1alpha1
-          kind: Password
-          name: password32
----
 # yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
 apiVersion: postgresql.cnpg.io/v1
 kind: DatabaseRole
@@ -33,8 +9,10 @@ spec:
     name: pg18vc
   name: memos
   login: true
-  passwordSecret:
-    name: memos-pguser
+  inRoles:
+    - cert_login
+  disablePassword: true
+  clientCertificate: {}
 ---
 # yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
 apiVersion: postgresql.cnpg.io/v1
@@ -60,17 +38,13 @@ spec:
       name: push-default
   selector:
     secret:
-      name: memos-pguser
-  template:
-    type: Opaque
-    data:
-      MEMOS_DSN: "postgres://memos:{{ .password }}@pg18vc-rw.database.svc.cluster.local/memos"
+      name: memos-client-cert
   dataTo:
     - storeRef:
         name: push-default
       remoteKey: memos-pg
       match:
-        regexp: "^(MEMOS_DSN)$"
+        regexp: "^(tls\\.crt|tls\\.key)$"
       metadata:
         apiVersion: kubernetes.external-secrets.io/v1alpha1
         kind: PushSecretMetadata

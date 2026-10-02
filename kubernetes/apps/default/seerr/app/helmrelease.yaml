@@ -16,13 +16,29 @@ spec:
     securityContext:
       readOnlyRootFilesystem: true
     extraEnv:
+      - name: DB_HOST
+        value: pg18vc-rw.database.svc.cluster.local
+      - name: DB_NAME
+        value: seerr
+      - name: DB_PORT
+        value: "5432"
+      - name: DB_SSL_CA_FILE
+        value: /etc/postgresql/ca/ca.crt
+      - name: DB_SSL_CERT_FILE
+        value: /etc/postgresql/client/tls.crt
+      - name: DB_SSL_KEY_FILE
+        value: /etc/postgresql/client/tls.key
+      - name: DB_TYPE
+        value: postgres
+      - name: DB_USE_SSL
+        value: "true"
+      - name: DB_USER
+        value: seerr
       - name: TZ
         value: America/Los_Angeles
     extraEnvFrom:
       - secretRef:
           name: seerr
-      - secretRef:
-          name: seerr-pg
     config:
       persistence:
         existingClaim: seerr
@@ -37,6 +53,13 @@ spec:
         emptyDir:
           medium: Memory
           sizeLimit: 128Mi
+      - name: pg-ca
+        configMap:
+          name: cluster-ca.crt
+      - name: pg-client
+        secret:
+          secretName: seerr-pg
+          defaultMode: 0440
     volumeMounts:
       - name: logs
         mountPath: /app/config/logs
@@ -44,6 +67,12 @@ spec:
         mountPath: /app/.next/cache
       - name: tmp
         mountPath: /tmp
+      - name: pg-ca
+        mountPath: /etc/postgresql/ca
+        readOnly: true
+      - name: pg-client
+        mountPath: /etc/postgresql/client
+        readOnly: true
     route:
       main:
         enabled: true

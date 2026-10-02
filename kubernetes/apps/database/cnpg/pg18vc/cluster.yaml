@@ -60,6 +60,8 @@ spec:
           - /usr/lib/postgresql/18/lib/
         extension_control_path:
           - /usr/share/postgresql/18/
+    pg_hba:
+      - hostssl all +cert_login all cert
     parameters:
       effective_cache_size: 24GB
       max_connections: "100"

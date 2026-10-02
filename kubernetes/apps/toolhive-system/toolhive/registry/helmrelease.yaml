@@ -11,19 +11,27 @@ spec:
   values:
     podAnnotations:
       reloader.stakater.com/auto: "true"
+    podSecurityContext:
+      fsGroup: 65535
     extraEnv:
-      - name: THV_REGISTRY_DATABASE_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: toolhive-registry-pg
-            key: THV_REGISTRY_DATABASE_PASSWORD
+      - name: PGSSLCERT
+        value: /etc/postgresql/client/tls.crt
+      - name: PGSSLKEY
+        value: /etc/postgresql/client/tls.key
       - name: PGSSLROOTCERT
         value: /certs/ca-certificates.crt
     extraVolumes:
+      - name: pg-client
+        secret:
+          secretName: toolhive-registry-pg
+          defaultMode: 0440
       - name: cluster-ca
         configMap:
           name: cluster-ca-certificates.crt
     extraVolumeMounts:
+      - name: pg-client
+        mountPath: /etc/postgresql/client
+        readOnly: true
       - name: cluster-ca
         mountPath: /certs
         readOnly: true
@@ -53,7 +61,7 @@ spec:
         port: 5432
         user: toolhive_registry
         database: toolhive_registry
-        sslMode: verify-ca
+        sslMode: verify-full
         maxOpenConns: 10
         maxIdleConns: 5
         connMaxLifetime: 30m

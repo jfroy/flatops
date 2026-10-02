@@ -111,7 +111,7 @@ App-template apps follow the same four-file layout:
 - Annotate the resource that owns `Pods` (e.g. a `Deployment`, `StatefulSet`, `DaemonSet`, etc) with `reloader.stakater.com/auto: "true"` when secrets are used.
 - Lock down the security context: `runAsNonRoot: true`, `allowPrivilegeEscalation: false`, `capabilities: {drop: ["ALL"]}`, `readOnlyRootFilesystem: true`.
 - Routes use `parentRefs: [{name: envoy-internal, namespace: network}]` for LAN/tailnet-only services, or `envoy-external` for public internet.
-- Postgres apps read their connection settings from the `<app>-pg` Secret; see PostgreSQL Apps.
+- Postgres apps mount the `<app>-pg` client certificate and connect with `sslmode=verify-full`; see PostgreSQL Apps.
 
 **Resources and probes:**
 
@@ -187,15 +187,21 @@ Rook-Ceph provides S3-compatible object storage. It can be used with path-style 
 
 CNPG cluster: `pg18vc-rw.database.svc.cluster.local`. Roles and databases are declared with CNPG's `DatabaseRole` and `Database` resources, one file per app in `kubernetes/apps/database/cnpg/tenants/<app>.yaml`, reconciled by the `pg18vc-tenants` `Kustomization`. Nothing in an app's namespace holds the superuser password.
 
-CNPG requires both resources, and the `passwordSecret` a `DatabaseRole` reads, to live in the `Cluster`'s namespace, so credentials are made in `database` and pushed outward the same way LiteLLM keys are:
+Apps authenticate with client certificates, not passwords. Each app's `DatabaseRole` sets `clientCertificate: {}`, `disablePassword: true` and membership in `cert_login`, and `pg18vc` carries `hostssl all +cert_login all cert` in `pg_hba`. CNPG signs the certificate with the cluster's client CA (`pg18vc-ca`, operator-managed), stores it in `<app>-client-cert` beside the role, and renews it before its 90 days run out.
 
-1. `ExternalSecret <app>-pguser` produces the `kubernetes.io/basic-auth` Secret the `DatabaseRole` reads, labelled `cnpg.io/reload: "true"`. The password comes from the `password32` generator, or from the app's OpenBao item when the app already keeps it there (the *arr apps, `autobrr`, `spoolman`).
-2. `PushSecret <app>` templates that Secret into whatever keys the app expects (`DATABASE_URL`, `DB_PASSWORD`, …) and writes `<app>-pg` into the app's namespace through the `push-<namespace>` `SecretStore`. Its `dataTo` entry pushes only the templated keys, and `targetMergePolicy: Ignore` keeps the source's labels off the copy. Apps whose password is already in OpenBao need no push; their own `ExternalSecret` reads the same item.
-3. The consumer namespace adds `components/pg18vc-push` to its `kustomization.yaml`, granting the `database/pg18vc-push` ServiceAccount write access to its Secrets.
+CNPG requires the role, the database and that Secret to live in the `Cluster`'s namespace, so the certificate is pushed outward the same way LiteLLM keys are:
+
+1. `PushSecret <app>` copies `tls.crt` and `tls.key` from `<app>-client-cert` to `<app>-pg` in the app's namespace through the `push-<namespace>` `SecretStore`. Its `dataTo` entry pushes only those keys, and `targetMergePolicy: Ignore` keeps the source's labels off the copy.
+2. The consumer namespace adds `components/pg18vc-push` to its `kustomization.yaml`, granting the `database/pg18vc-push` ServiceAccount write access to its Secrets.
+3. The app mounts `<app>-pg` at `/etc/postgresql/client` with `defaultMode: 0440`, and trust-manager's `cluster-ca.crt` ConfigMap at `/etc/postgresql/ca`. It connects with `sslmode=verify-full`, `sslrootcert=/etc/postgresql/ca/ca.crt`, `sslcert=/etc/postgresql/client/tls.crt` and `sslkey=/etc/postgresql/client/tls.key`, as connection-string parameters or the `PGSSLMODE`/`PGSSLROOTCERT`/`PGSSLCERT`/`PGSSLKEY` variables that libpq, lib/pq, pgx, asyncpg and Npgsql all read. Connection strings carry no secret, so they live in the HelmRelease.
+
+The key file mode matters: libpq and lib/pq refuse a key readable by anyone but its owner and group, and a Secret volume is owned by root, so `0440` plus the pod's `fsGroup` is the combination that is both accepted and readable. Every pod that mounts the key needs an `fsGroup`. Reloader restarts apps when the certificate renews; drivers that load it once at startup (node-postgres, postgres.js) depend on that.
+
+Prisma (LiteLLM) speaks its own dialect: `sslmode=require&sslaccept=strict`, `sslcert` as the *server root* and `sslidentity` as a PKCS#12 client identity. `sslcert` loads exactly one PEM certificate, so LiteLLM mounts trust-manager's single-root `cluster-ca-root.crt` instead of the default-CA bundle, and its `PushSecret` templates `identity.p12` from the CNPG certificate with ESO's `pemToPkcs12` (go-pkcs12 `Modern` encoding, which OpenSSL 3 reads; empty password, Prisma's default). See `tenants/litellm.yaml` and `kubernetes/apps/litellm/litellm/app/litellmproxy.yaml`.
 
 Extensions go in `Database.spec.extensions`, listed dependencies first: CNPG runs a plain `CREATE EXTENSION` with no `CASCADE`, so `vchord` needs `vector` before it and `earthdistance` needs `cube`. `pg18vc` carries `postgis`, `timescaledb`, `timescaledb-toolkit` and `vchord`. See `tenants/immich.yaml`.
 
-Leave `databaseReclaimPolicy` and `databaseRoleReclaimPolicy` at their `retain` default, so deleting a manifest never drops data. A `DatabaseRole` pointed at an existing role adopts it and forces every omitted attribute back to its default, revoking memberships not listed in `inRoles`; declare any group role the app depends on (`tenants/toolhive-registry.yaml`) rather than letting the app create it.
+Leave `databaseReclaimPolicy` and `databaseRoleReclaimPolicy` at their `retain` default, so deleting a manifest never drops data. Deleting a `DatabaseRole` always deletes its certificate Secret, whatever the policy. A `DatabaseRole` pointed at an existing role adopts it and forces every omitted attribute back to its default, revoking memberships not listed in `inRoles`; declare any group role the app depends on (`tenants/toolhive-registry.yaml`) rather than letting the app create it.
 
 ## Inference (LiteLLM)
 

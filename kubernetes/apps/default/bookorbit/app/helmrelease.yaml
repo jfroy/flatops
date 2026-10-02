@@ -23,6 +23,7 @@ spec:
             env:
               APP_URL: https://bookorbit.kantai.xyz
               CLIENT_URL: https://bookorbit.kantai.xyz
+              DATABASE_URL: "postgresql://bookorbit@pg18vc-rw.database.svc.cluster.local:5432/bookorbit?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               NODE_ENV: production
               NODE_MAX_OLD_SPACE_SIZE: 2048
               OIDC_ALLOW_LOCAL_ISSUERS: true
@@ -31,8 +32,6 @@ spec:
             envFrom:
               - secretRef:
                   name: bookorbit
-              - secretRef:
-                  name: bookorbit-pg
               - secretRef:
                   name: bookorbit-keys
             probes:
@@ -79,6 +78,19 @@ spec:
                 subPath: qbittorrent/complete/books
               - path: /media2/sabnzbd/complete/books
                 subPath: sabnzbd/complete/books
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: bookorbit-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
       tmp:
         type: emptyDir
     route:

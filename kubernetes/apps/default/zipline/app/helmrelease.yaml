@@ -27,6 +27,7 @@ spec:
               CORE_RETURN_HTTPS_URLS: "true"
               CORE_TEMP_DIRECTORY: /tmp/zipline
               CORE_TRUST_PROXY: "true"
+              DATABASE_URL: "postgresql://zipline@pg18vc-rw.database.svc.cluster.local:5432/zipline?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               DATASOURCE_S3_ACCESS_KEY_ID:
                 valueFrom:
                   secretKeyRef:
@@ -62,8 +63,6 @@ spec:
                   name: zipline
               - secretRef:
                   name: zipline-keys
-              - secretRef:
-                  name: zipline-pg
             probes:
               liveness: &probe
                 enabled: true
@@ -91,6 +90,19 @@ spec:
         name: cluster-ca-certificates.crt
         globalMounts:
           - path: /certs
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: zipline-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
       tmp:
         type: emptyDir
         globalMounts:

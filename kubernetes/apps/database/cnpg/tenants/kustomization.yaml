@@ -23,6 +23,7 @@ resources:
   - ./prowlarr.yaml
   - ./radarr.yaml
   - ./readur.yaml
+  - ./roles.yaml
   - ./secretstores.yaml
   - ./seerr.yaml
   - ./serviceaccount.yaml

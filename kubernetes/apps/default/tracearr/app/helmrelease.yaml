@@ -46,14 +46,13 @@ spec:
               tag: 2.6.0@sha256:7485fede9126029e40e212719a1e5985cb9e86e070211448fb600a5511acbc4d
             env:
               CORS_ORIGIN: "https://tracearr.kantai.xyz"
+              DATABASE_URL: "postgres://tracearr@pg18vc-rw.database.svc.cluster.local:5432/tracearr?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               HOST: "0.0.0.0"
               NODE_ENV: production
               PORT: &port 3000
               REDIS_URL: redis://localhost:6379
               TZ: America/Los_Angeles
             envFrom:
-              - secretRef:
-                  name: tracearr-pg
               - secretRef:
                   name: tracearr-keys
             probes:
@@ -78,6 +77,23 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             seccompProfile: {type: RuntimeDefault}
     persistence:
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        advancedMounts:
+          tracearr:
+            tracearr:
+              - path: /etc/postgresql/ca
+                readOnly: true
+      pg-client:
+        type: secret
+        name: tracearr-pg
+        defaultMode: 0440
+        advancedMounts:
+          tracearr:
+            tracearr:
+              - path: /etc/postgresql/client
+                readOnly: true
       tmp:
         type: emptyDir
         sizeLimit: 5Gi
