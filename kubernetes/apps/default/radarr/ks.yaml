@@ -8,6 +8,9 @@ spec:
   components:
     - ../../../../components/envoy-gateway-oidc
     - ../../../../components/kopiur/backup
+  dependsOn:
+    - name: pg18vc-tenants
+      namespace: database
   path: ./kubernetes/apps/default/radarr/app
   prune: true
   sourceRef:

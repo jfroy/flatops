@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ./autobrr.yaml
+  - ./bookorbit.yaml
+  - ./dashbrr.yaml
+  - ./dawarich.yaml
+  - ./homebox.yaml
+  - ./immich.yaml
+  - ./kite.yaml
+  - ./litellm.yaml
+  - ./mealie.yaml
+  - ./memini.yaml
+  - ./memos.yaml
+  - ./miniflux.yaml
+  - ./netbox.yaml
+  - ./netronome.yaml
+  - ./openshell.yaml
+  - ./paperless.yaml
+  - ./plane.yaml
+  - ./prowlarr.yaml
+  - ./radarr.yaml
+  - ./readur.yaml
+  - ./secretstores.yaml
+  - ./seerr.yaml
+  - ./serviceaccount.yaml
+  - ./sonarr.yaml
+  - ./spoolman.yaml
+  - ./toolhive-registry.yaml
+  - ./tracearr.yaml
+  - ./zipline.yaml

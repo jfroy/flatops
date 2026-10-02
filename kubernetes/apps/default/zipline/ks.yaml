@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: zipline
 spec:
+  dependsOn:
+    - name: pg18vc-tenants
+      namespace: database
   path: ./kubernetes/apps/default/zipline/app
   prune: true
   sourceRef:

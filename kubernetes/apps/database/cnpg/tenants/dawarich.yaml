@@ -1,0 +1,83 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: dawarich-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: dawarich-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: dawarich
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: dawarich
+spec:
+  cluster:
+    name: pg18vc
+  name: dawarich
+  login: true
+  passwordSecret:
+    name: dawarich-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: dawarich
+spec:
+  cluster:
+    name: pg18vc
+  name: dawarich
+  owner: dawarich
+  extensions:
+    - name: postgis
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: dawarich
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-default
+  selector:
+    secret:
+      name: dawarich-pguser
+  template:
+    type: Opaque
+    data:
+      DATABASE_HOST: pg18vc-rw.database.svc.cluster.local
+      DATABASE_NAME: dawarich
+      DATABASE_PASSWORD: "{{ .password }}"
+      DATABASE_USERNAME: dawarich
+  dataTo:
+    - storeRef:
+        name: push-default
+      remoteKey: dawarich-pg
+      match:
+        regexp: "^(DATABASE_HOST|DATABASE_NAME|DATABASE_PASSWORD|DATABASE_USERNAME)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

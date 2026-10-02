@@ -1,0 +1,79 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: plane-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: plane-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: plane
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: plane
+spec:
+  cluster:
+    name: pg18vc
+  name: plane
+  login: true
+  passwordSecret:
+    name: plane-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: plane
+spec:
+  cluster:
+    name: pg18vc
+  name: plane
+  owner: plane
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: plane
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-plane
+  selector:
+    secret:
+      name: plane-pguser
+  template:
+    type: Opaque
+    data:
+      DB_PASSWORD: "{{ .password }}"
+      PGDB_REMOTE_URL: "postgresql://plane:{{ .password }}@pg18vc-rw.database.svc.cluster.local:5432/plane"
+  dataTo:
+    - storeRef:
+        name: push-plane
+      remoteKey: plane-pg
+      match:
+        regexp: "^(DB_PASSWORD|PGDB_REMOTE_URL)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

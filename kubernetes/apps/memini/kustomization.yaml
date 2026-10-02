@@ -8,5 +8,6 @@ resources:
 components:
   - ../../components/common
   - ../../components/litellm-key-push
+  - ../../components/pg18vc-push
 transformers:
   - ./transformers

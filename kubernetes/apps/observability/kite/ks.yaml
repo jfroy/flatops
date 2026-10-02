@@ -4,6 +4,9 @@ kind: Kustomization
 metadata:
   name: kite
 spec:
+  dependsOn:
+    - name: pg18vc-tenants
+      namespace: database
   path: ./kubernetes/apps/observability/kite/app
   prune: true
   sourceRef:

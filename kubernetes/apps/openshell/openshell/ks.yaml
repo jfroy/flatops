@@ -8,7 +8,7 @@ spec:
   dependsOn:
     - name: agent-sandbox
       namespace: agent-sandbox-system
-    - name: pg18vc
+    - name: pg18vc-tenants
       namespace: database
   path: ./kubernetes/apps/openshell/openshell/app
   prune: true

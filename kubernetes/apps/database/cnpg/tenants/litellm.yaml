@@ -1,0 +1,81 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: litellm-pguser
+spec:
+  refreshInterval: "0"
+  target:
+    name: litellm-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: litellm
+        password: "{{ .password }}"
+  dataFrom:
+    - sourceRef:
+        generatorRef:
+          apiVersion: generators.external-secrets.io/v1alpha1
+          kind: Password
+          name: password32
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: litellm
+spec:
+  cluster:
+    name: pg18vc
+  name: litellm
+  login: true
+  passwordSecret:
+    name: litellm-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: litellm
+spec:
+  cluster:
+    name: pg18vc
+  name: litellm
+  owner: litellm
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/pushsecret_v1alpha1.json
+apiVersion: external-secrets.io/v1alpha1
+kind: PushSecret
+metadata:
+  name: litellm
+spec:
+  deletionPolicy: Delete
+  refreshInterval: 1h
+  secretStoreRefs:
+    - kind: SecretStore
+      name: push-litellm
+  selector:
+    secret:
+      name: litellm-pguser
+  template:
+    type: Opaque
+    data:
+      DATABASE_PASSWORD: "{{ .password }}"
+      DATABASE_URL: "postgresql://litellm:{{ .password }}@pg18vc-rw.database.svc.cluster.local:5432/litellm"
+      DATABASE_URL_READ_REPLICA: "postgresql://litellm:{{ .password }}@pg18vc-ro.database.svc.cluster.local:5432/litellm"
+      DATABASE_USERNAME: litellm
+  dataTo:
+    - storeRef:
+        name: push-litellm
+      remoteKey: litellm-pg
+      match:
+        regexp: "^(DATABASE_PASSWORD|DATABASE_URL|DATABASE_URL_READ_REPLICA|DATABASE_USERNAME)$"
+      metadata:
+        apiVersion: kubernetes.external-secrets.io/v1alpha1
+        kind: PushSecretMetadata
+        spec:
+          targetMergePolicy: Ignore

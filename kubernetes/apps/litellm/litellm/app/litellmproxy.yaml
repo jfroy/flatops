@@ -78,12 +78,12 @@ spec:
     - name: DATABASE_URL
       valueFrom:
         secretKeyRef:
-          name: litellm-db
+          name: litellm-pg
           key: DATABASE_URL
     - name: DATABASE_URL_READ_REPLICA
       valueFrom:
         secretKeyRef:
-          name: litellm-db
+          name: litellm-pg
           key: DATABASE_URL_READ_REPLICA
   envFrom:
     - secretRef:

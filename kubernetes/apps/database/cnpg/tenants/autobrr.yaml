@@ -1,0 +1,49 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/external-secrets.io/externalsecret_v1.json
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: autobrr-pguser
+spec:
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: openbao
+  target:
+    name: autobrr-pguser
+    template:
+      type: kubernetes.io/basic-auth
+      metadata:
+        labels:
+          cnpg.io/reload: "true"
+      data:
+        username: autobrr
+        password: "{{ .password }}"
+  data:
+    - secretKey: password
+      remoteRef:
+        key: autobrr
+        property: POSTGRES_PASSWORD
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/databaserole_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: DatabaseRole
+metadata:
+  name: autobrr
+spec:
+  cluster:
+    name: pg18vc
+  name: autobrr
+  login: true
+  passwordSecret:
+    name: autobrr-pguser
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/postgresql.cnpg.io/database_v1.json
+apiVersion: postgresql.cnpg.io/v1
+kind: Database
+metadata:
+  name: autobrr
+spec:
+  cluster:
+    name: pg18vc
+  name: autobrr
+  owner: autobrr

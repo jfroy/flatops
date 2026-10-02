@@ -5,6 +5,9 @@ kind: Kustomization
 metadata:
   name: &app miniflux
 spec:
+  dependsOn:
+    - name: pg18vc-tenants
+      namespace: database
   path: ./kubernetes/apps/default/miniflux/app
   prune: true
   sourceRef:

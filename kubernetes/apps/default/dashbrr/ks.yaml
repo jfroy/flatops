@@ -6,7 +6,7 @@ metadata:
   name: &app dashbrr
 spec:
   dependsOn:
-    - name: pg18vc
+    - name: pg18vc-tenants
       namespace: database
   path: ./kubernetes/apps/default/dashbrr/app
   prune: true

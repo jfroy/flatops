@@ -70,7 +70,7 @@ spec:
       valuesKey: RABBITMQ_DEFAULT_PASS
       targetPath: rabbitmq.default_password
     - kind: Secret
-      name: plane-db
+      name: plane-pg
       valuesKey: PGDB_REMOTE_URL
       targetPath: env.pgdb_remote_url
     - kind: Secret
@@ -92,26 +92,6 @@ spec:
               - op: replace
                 path: /data/WEB_URL
                 value: https://plane.kantai.xyz
-          # Create the plane role + database in CNPG before migrations run.
-          - target:
-              kind: Job
-              name: plane-api-migrate-.*
-            patch: |
-              - op: add
-                path: /spec/template/spec/initContainers
-                value:
-                  - name: init-db
-                    image: ghcr.io/home-operations/postgres-init:18.6.0@sha256:b6d3af974df781c673d37e49bdddfa14a6f5be28b18d2cb7713f0449bea4057b
-                    envFrom:
-                      - secretRef:
-                          name: plane-db
-                      - secretRef:
-                          name: plane-initdb
-                    securityContext:
-                      allowPrivilegeEscalation: false
-                      readOnlyRootFilesystem: true
-                      capabilities:
-                        drop: ["ALL"]
           # Entrypoint runs `celery worker` with no --concurrency, so the prefork pool
           # sizes to the node's core count and OOMs on a many-core node. Cap it.
           - target:

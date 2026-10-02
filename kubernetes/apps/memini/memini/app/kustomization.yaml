@@ -9,9 +9,3 @@ resources:
   - ./pushsecret.yaml
   - ./ocirepository.yaml
   - ./helmrelease.yaml
-configMapGenerator:
-  - name: memini-initdb
-    files:
-      - ./memini.sql
-generatorOptions:
-  disableNameSuffixHash: true

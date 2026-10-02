@@ -7,5 +7,6 @@ resources:
   - ./openshell/ks.yaml
 components:
   - ../../components/common
+  - ../../components/pg18vc-push
 transformers:
   - ./transformers
