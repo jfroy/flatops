@@ -61,7 +61,8 @@ spec:
         port: 5432
         user: toolhive_registry
         database: toolhive_registry
-        sslMode: verify-full
+        # toolhive-core bootstraps TLS from postgres://localhost, so verify-full checks the wrong hostname.
+        sslMode: verify-ca
         maxOpenConns: 10
         maxIdleConns: 5
         connMaxLifetime: 30m
