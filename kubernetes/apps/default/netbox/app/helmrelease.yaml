@@ -119,32 +119,6 @@ spec:
       database: 1
       existingSecretName: netbox-valkey
       existingSecretKey: VALKEY_PASSWORD
-    housekeeping:
-      enabled: true
-      affinity:
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            - labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: netbox
-                  app.kubernetes.io/instance: netbox
-                  app.kubernetes.io/component: netbox
-              topologyKey: kubernetes.io/hostname
-      extraVolumes:
-        - name: pg-ca
-          configMap:
-            name: cluster-ca.crt
-        - name: pg-client
-          secret:
-            secretName: netbox-pg
-            defaultMode: 0440
-      extraVolumeMounts:
-        - name: pg-ca
-          mountPath: /etc/postgresql/ca
-          readOnly: true
-        - name: pg-client
-          mountPath: /etc/postgresql/client
-          readOnly: true
     worker:
       enabled: true
       updateStrategy:
