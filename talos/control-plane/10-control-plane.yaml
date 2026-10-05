@@ -32,7 +32,9 @@ kind: KubeControllerManagerConfig
 extraArgs:
   bind-address: 0.0.0.0
   terminated-pod-gc-threshold: "100"
-  feature-gates: CompositePodGroup=true,DRANodeAllocatableResources=true,DRAPartitionableDevicesType=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,EvictionRequestAPI=true,GenericWorkload=true,NodeLifecycleConditions=true,PodGroupPreemptionPolicy=true,StatefulSetRecreateStrategy=true,TopologyAwareWorkloadScheduling=true,WorkloadWithJob=true
+  # WorkloadWithJob stays off here only: the 1.37 Job controller names the PodGroupTemplate "<job>-pgt-0" untruncated, so
+  # Jobs named over 57 chars (kopiur's snapdel-*) get an invalid Workload and never create pods. Re-enable once upstream truncates.
+  feature-gates: CompositePodGroup=true,DRANodeAllocatableResources=true,DRAPartitionableDevicesType=true,DRAResourcePoolStatus=true,DRAWorkloadResourceClaims=true,EvictionRequestAPI=true,GenericWorkload=true,NodeLifecycleConditions=true,PodGroupPreemptionPolicy=true,StatefulSetRecreateStrategy=true,TopologyAwareWorkloadScheduling=true
 ---
 apiVersion: v1alpha1
 kind: KubeSchedulerConfig
