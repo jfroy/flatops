@@ -4,3 +4,6 @@ kind: RuntimeClass
 metadata:
   name: kata
 handler: kata
+scheduling:
+  nodeSelector:
+    node.kantai.xyz/kata: "true"

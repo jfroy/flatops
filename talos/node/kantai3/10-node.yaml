@@ -8,6 +8,7 @@ provisioning:
 apiVersion: v1alpha1
 kind: KubeNodeConfig
 labels:
+  node.kantai.xyz/kata: "true"
   node.kubernetes.io/exclude-from-external-load-balancers:
     $patch: delete
 taints:

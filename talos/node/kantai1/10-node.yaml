@@ -10,6 +10,7 @@ kind: KubeNodeConfig
 labels:
   secureboot.kantai.xyz: "true"
   node.kantai.xyz/high-cpu: "true"
+  node.kantai.xyz/kata: "true"
   node.kubernetes.io/exclude-from-external-load-balancers:
     $patch: delete
 taints:
