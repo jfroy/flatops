@@ -7,11 +7,12 @@ bgpControlPlane:
   enabled: true
 bpf:
   # Explicit map maxima take precedence over dynamic sizing (agent only computes
-  # a size when the option is unset). Pinned to upstream's own auto-sizing floors
-  # so every node gets identical maps regardless of RAM: without this, kantai1's
-  # 251GiB inflated preallocated BPF maps to ~2.9GiB of agent RSS while kantai2
-  # (7.7GiB) sat at the floor anyway.
-  ctAnyMax: 65536 # LimitTableAutoGlobalAnyMin
+  # a size when the option is unset). Pinned so every node gets identical maps
+  # regardless of RAM: without this, kantai1's 251GiB inflated preallocated BPF
+  # maps to ~2.9GiB of agent RSS while kantai2 (7.7GiB) sat at the floor anyway.
+  # ctAnyMax is twice upstream's floor: at 65536, ct_any4_global ran at ~60% on
+  # kantai1 and peaked at 96% (kantai3: 91%).
+  ctAnyMax: 131072
   ctTcpMax: 131072 # LimitTableAutoGlobalTCPMin
   datapathMode: veth
   # Only still governs the sock-rev-nat map, which has no dedicated helm value.
@@ -42,18 +43,6 @@ endpointRoutes:
   enabled: true
 envoy:
   enabled: false
-  rollOutPods: true
-  prometheus:
-    serviceMonitor:
-      enabled: true
-gatewayAPI:
-  enabled: false
-  enableAlpn: true
-  gatewayClass:
-    create: "false"
-  xffNumTrustedHops: 1
-hubble:
-  enabled: false
 ipam:
   mode: kubernetes
 ipv4:
@@ -65,15 +54,11 @@ k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
-l2announcements:
-  enabled: false
 l7Proxy: false
 loadBalancer:
   acceleration: disabled
   algorithm: maglev
   mode: dsr
-localRedirectPolicies:
-  enabled: true
 operator:
   replicas: 2
   rollOutPods: true

@@ -19,7 +19,7 @@ spec:
         # dns:query and http omitted: both are L7 metrics that require the L7
         # proxy (l7Proxy=false here), so they only ever emitted empty series.
         enabled:
-          - drop
+          - drop:sourceContext=workload|reserved-identity;destinationContext=workload|reserved-identity
           - tcp
           - flow
           - port-distribution
