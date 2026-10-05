@@ -22,6 +22,8 @@ spec:
         enabled: true
       serviceMonitor:
         enabled: true
+    # The default of 8 lets a backlog of Deleting Snapshots, each requeued every 15s, starve new Snapshots of reconciles.
+    reconcileConcurrency: 32
     podSecurityContext:
       runAsNonRoot: true
       runAsUser: 1000
