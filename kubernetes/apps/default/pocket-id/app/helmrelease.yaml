@@ -23,7 +23,7 @@ spec:
             env:
               ANALYTICS_DISABLED: "true"
               APP_URL: https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz
-              DB_CONNECTION_STRING: file:/data/pocket-id.db?_pragma=journal_mode(WAL)&_pragma=busy_timeout(2500)&_txlock=immediate
+              DB_CONNECTION_STRING: "postgres://pocket_id@pg18vc-rw.database.svc.cluster.local:5432/pocket_id?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               GEOLITE_DB_PATH: /data/GeoLite2-City.mmdb
               METRICS_ENABLED: "true"
               OTEL_EXPORTER_OTLP_METRICS_COMPRESSION: gzip
@@ -63,8 +63,6 @@ spec:
         existingClaim: ${APP}
         globalMounts:
           - path: /data
-          - path: /app/backend/data
-            subPath: backend
       pg-ca:
         type: configMap
         name: cluster-ca.crt
