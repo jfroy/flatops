@@ -58,7 +58,7 @@ spec:
           microservices:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.2.4
+              tag: v3.3.0
             envFrom:
               - secretRef:
                   name: immich-valkey
@@ -88,7 +88,7 @@ spec:
           server:
             image:
               repository: ghcr.io/immich-app/immich-server
-              tag: v3.2.4
+              tag: v3.3.0
             envFrom:
               - secretRef:
                   name: immich-valkey
