@@ -20,7 +20,7 @@ spec:
           machine-learning:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v3.3.1-cuda
+              tag: v3.3.3-cuda
             env:
               MACHINE_LEARNING_MODEL_REVISION: v2
             probes:
