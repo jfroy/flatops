@@ -16,4 +16,4 @@ spec:
       - issuer: ^https://token.actions.githubusercontent.com$
         subject: ^https://github.com/spegel-org/spegel/.*$
   ref:
-    tag: 0.7.4
+    tag: 0.8.0
