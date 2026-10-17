@@ -19,7 +19,7 @@ spec:
           nextflux:
             image:
               repository: docker.io/electh/nextflux
-              tag: latest@sha256:f1ad38e0ba01001d897e3348b55fac3a445b4a923a38f6b23dfe511e0c8fb730
+              tag: latest@sha256:37752eb6e667e28036464feaceb523f91dcb346f7b7e44e2b1fb1ac9bf2cc815
               pullPolicy: Always
             env:
               TZ: America/Los_Angeles
