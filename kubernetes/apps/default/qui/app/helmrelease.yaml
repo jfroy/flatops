@@ -19,7 +19,7 @@ spec:
           qui:
             image:
               repository: ghcr.io/autobrr/qui
-              tag: v1.33.0@sha256:95f8868f2e8d70b3af6108b85c8418e965b6daa9691f594e969598631a54eec3
+              tag: v1.33.0@sha256:0348a74d25118969ed31baf5af922685ec03a0ef84af4e01d7c8441bc341d5b8
             env:
               QUI__HOST: 0.0.0.0
               QUI__METRICS_ENABLED: true
