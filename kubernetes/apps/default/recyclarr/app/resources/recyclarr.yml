@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/refs/tags/v8.7.2/schemas/config-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/recyclarr/recyclarr/refs/tags/v8.8.0/schemas/config-schema.json
 sonarr:
   series:
     base_url: http://sonarr.default.svc.cluster.local
@@ -22,6 +22,8 @@ sonarr:
         reset_unmatched_scores:
           enabled: true
       - trash_id: 20e0fc959f1f1704bed501f23bdae76f # [Anime] Remux-1080p
+        quality_definition:
+          type: anime
         reset_unmatched_scores:
           enabled: true
     custom_format_groups:
