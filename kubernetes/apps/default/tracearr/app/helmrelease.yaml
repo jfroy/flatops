@@ -43,7 +43,7 @@ spec:
           tracearr:
             image:
               repository: ghcr.io/connorgallopo/tracearr
-              tag: 3.1.0@sha256:433ed90eb7890a8de3a31a3ed87e7a2cbbe4c505291b4010fb29f4f18e74b62e
+              tag: 3.1.1@sha256:d0fe66480953c51da9bf82c3909799e80a4d24165962c747e756be31fcd0fb8f
             env:
               CORS_ORIGIN: "https://tracearr.kantai.xyz"
               DATABASE_URL: "postgres://tracearr@pg18vc-rw.database.svc.cluster.local:5432/tracearr?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
