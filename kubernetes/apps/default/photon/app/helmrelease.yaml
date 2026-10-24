@@ -23,7 +23,7 @@ spec:
           photon:
             image:
               repository: ghcr.io/rtuszik/photon-docker
-              tag: 2.4.0@sha256:21549c60f9e6488fff3217e40429a652c4b445f374800333fe32859e47cec293
+              tag: 2.5.0@sha256:c5babeb0ac396b485822036cf3c69e54fb6c79d699328a4e042e11bbd6f73f1a
             env:
               PGID: 9011
               PUID: 9011
