@@ -23,8 +23,6 @@ spec:
             env:
               RADARR__APP__INSTANCENAME: Radarr
               RADARR__APP__THEME: auto
-              RADARR__AUTH__METHOD: External
-              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
               RADARR__LOG__DBENABLED: "False"
               RADARR__POSTGRES__MAINDBCONNECTIONSTRING: "Host=pg18vc-rw.database.svc.cluster.local;Port=5432;Database=radarr-main;Username=radarr;SSL Mode=VerifyFull;Root Certificate=/etc/postgresql/ca/ca.crt;SSL Certificate=/etc/postgresql/client/tls.crt;SSL Key=/etc/postgresql/client/tls.key"
               RADARR__SERVER__ALLOWEDHOSTS: "radarr.kantai.xyz,radarr,radarr.default,radarr.default.svc,radarr.default.svc.cluster.local"
