@@ -21,14 +21,12 @@ spec:
               repository: ghcr.io/home-operations/sonarr
               tag: 5.0.0.2785@sha256:825bf13276077b2fa57dd1c0a67d10b2e71891b7391d19636615ede8ddc0a4a5
             env:
-              # Sonarr v4 has no connection-string option; Npgsql reads the client cert from PGSSL*.
+              # Sonarr has no connection-string option; Npgsql reads the client cert from PGSSL*.
               PGSSLCERT: /etc/postgresql/client/tls.crt
               PGSSLKEY: /etc/postgresql/client/tls.key
               PGSSLROOTCERT: /etc/postgresql/ca/ca.crt
               SONARR__APP__INSTANCENAME: Sonarr
               SONARR__APP__THEME: auto
-              SONARR__AUTH__METHOD: External
-              SONARR__AUTH__REQUIRED: DisabledForLocalAddresses
               SONARR__LOG__DBENABLED: "False"
               SONARR__POSTGRES__HOST: pg18vc-rw.database.svc.cluster.local
               SONARR__POSTGRES__MAINDB: sonarr-main

@@ -6,7 +6,6 @@ metadata:
   name: &app sonarr
 spec:
   components:
-    - ../../../../components/envoy-gateway-oidc
     - ../../../../components/kopiur/backup
   dependsOn:
     - name: pg18vc-sonarr
