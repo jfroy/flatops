@@ -15,6 +15,8 @@ spec:
       cloudflared:
         replicas: 2
         strategy: RollingUpdate
+        podDisruptionBudget:
+          minAvailable: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -53,6 +55,16 @@ spec:
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
     defaultPodOptions:
+      terminationGracePeriodSeconds: 45
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          # Honor taints so kantai2 (NoSchedule) is not counted and cannot strand the surge pod.
+          nodeTaintsPolicy: Honor
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: cloudflared
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
