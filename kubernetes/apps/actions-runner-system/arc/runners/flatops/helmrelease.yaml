@@ -49,7 +49,7 @@ spec:
             type: RuntimeDefault
         containers:
           - name: runner
-            image: ghcr.io/home-operations/actions-runner:2.338.1
+            image: ghcr.io/home-operations/actions-runner:2.338.2
             command:
               - /home/runner/run.sh
             env:
