@@ -77,9 +77,15 @@ spec:
       value: "true"
     # Prisma's TLS dialect: sslcert is the single server root, sslidentity a PKCS#12 client identity.
     - name: DATABASE_URL
-      value: "postgresql://litellm@pg18vc-rw.database.svc.cluster.local:5432/litellm?sslmode=require&sslaccept=strict&sslcert=/etc/postgresql/ca/ca.crt&sslidentity=/etc/postgresql/client/identity.p12"
+      value: "postgresql://litellm@pg18vc-rw.database.svc.cluster.local:5432/litellm?sslmode=require&sslaccept=strict&sslcert=/etc/postgresql/ca/ca.crt&sslidentity=/etc/postgresql/identity/identity.p12"
     - name: DATABASE_URL_READ_REPLICA
-      value: "postgresql://litellm@pg18vc-ro.database.svc.cluster.local:5432/litellm?sslmode=require&sslaccept=strict&sslcert=/etc/postgresql/ca/ca.crt&sslidentity=/etc/postgresql/client/identity.p12"
+      value: "postgresql://litellm@pg18vc-ro.database.svc.cluster.local:5432/litellm?sslmode=require&sslaccept=strict&sslcert=/etc/postgresql/ca/ca.crt&sslidentity=/etc/postgresql/identity/identity.p12"
+    # LiteLLM's psycopg migration lock rewrites DATABASE_URL for libpq and drops sslidentity, so libpq
+    # takes its client certificate from these instead. Prisma ignores them.
+    - name: PGSSLCERT
+      value: /etc/postgresql/client/tls.crt
+    - name: PGSSLKEY
+      value: /etc/postgresql/client/tls.key
   envFrom:
     - secretRef:
         name: litellm
@@ -106,6 +112,10 @@ spec:
       secret:
         secretName: litellm-pg
         defaultMode: 0440
+    - name: pg-identity
+      secret:
+        secretName: litellm-pg-identity
+        defaultMode: 0440
   volumeMounts:
     - name: tmp
       mountPath: /tmp
@@ -118,4 +128,7 @@ spec:
       readOnly: true
     - name: pg-client
       mountPath: /etc/postgresql/client
+      readOnly: true
+    - name: pg-identity
+      mountPath: /etc/postgresql/identity
       readOnly: true
