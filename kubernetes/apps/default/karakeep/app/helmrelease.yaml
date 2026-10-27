@@ -12,42 +12,33 @@ spec:
     namespace: flux-system
   values:
     controllers:
-      browserless:
+      chrome:
         containers:
-          browserless:
+          chrome:
             image:
-              repository: ghcr.io/browserless/chromium
-              tag: v2.57.3@sha256:40dff7c23e0e378ba451c23ef66394ffb81bd11e6b9fe8ef3066d59eb402cc5d
+              repository: ghcr.io/karakeep-app/karakeep-chrome
+              tag: 156.0.8078.47-r1@sha256:4ad61127638dd27bfe685222787c5780dd1d083d23a7658c39af657775814c44
+            args:
+              - --disable-gpu
+              - --disable-dev-shm-usage
+              - --hide-scrollbars
+              - --disable-blink-features=AutomationControlled
+              - --window-size=1440,900
             env:
-              CONCURRENT: 10
-              DATA_DIR: /profile
-              DOWNLOAD_DIR: /downloads
-              ENABLE_DEBUGGER: false
-              EXTERNAL: http://karakeep-browserless.default.svc.cluster.local
-              HEALTH: true
-              SCREEN_DEPTH: 16
-              SCREEN_HEIGHT: 1024
-              SCREEN_WIDTH: 1920
-              TIMEOUT: 600000 # 10 minutes
-              TOKEN:
-                valueFrom:
-                  secretKeyRef:
-                    name: karakeep-keys
-                    key: BROWSERLESS_TOKEN
               TZ: America/Los_Angeles
             probes:
               liveness: &probe
                 enabled: true
                 custom: true
                 spec:
-                  tcpSocket:
-                    port: 3000
+                  httpGet:
+                    path: /json/version
+                    port: &chromePort 9222
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
-        pod:
-          annotations:
-            reloader.stakater.com/auto: "true"
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
       karakeep:
         containers:
           karakeep:
@@ -56,10 +47,14 @@ spec:
               tag: 0.34.1@sha256:69ae5315c618b7c14c1af3e34c6e211acdb231793af424ecd1cab0b70691d987
             env:
               BROWSER_CONNECT_ONDEMAND: true
+              BROWSER_WEB_URL: http://karakeep-chrome.default.svc.cluster.local:9222
               COREPACK_INTEGRITY_KEYS: 0
               CRAWLER_DOWNLOAD_BANNER_IMAGE: true
+              CRAWLER_BROWSER_TIMEZONE: America/Los_Angeles
               CRAWLER_ENABLE_ADBLOCKER: true
+              CRAWLER_JOB_TIMEOUT_SEC: 120
               CRAWLER_NUM_WORKERS: 1
+              CRAWLER_PREFLIGHT_USER_AGENT: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36
               CRAWLER_SCREENSHOT_TIMEOUT_SEC: 30
               CRAWLER_STORE_SCREENSHOT: true
               DATA_DIR: /data
@@ -79,7 +74,9 @@ spec:
               - secretRef:
                   name: karakeep
               - secretRef:
-                  name: karakeep-keys
+                  name: karakeep-meili
+              - secretRef:
+                  name: karakeep-nextauth
             probes:
               liveness: &probe
                 enabled: true
@@ -111,7 +108,7 @@ spec:
               TZ: America/Los_Angeles
             envFrom:
               - secretRef:
-                  name: karakeep-keys
+                  name: karakeep-meili
             probes:
               liveness: &probe
                 enabled: true
@@ -147,16 +144,6 @@ spec:
             karakeep:
               - path: /app/apps/web/.next/cache
                 subPath: web-cache
-      browserless:
-        type: emptyDir
-        sizeLimit: 1Gi
-        advancedMounts:
-          browserless:
-            browserless:
-              - path: /profile
-                subPath: profile
-              - path: /downloads
-                subPath: downloads
       data:
         existingClaim: "${APP}"
         advancedMounts:
@@ -200,11 +187,11 @@ spec:
         ports:
           http:
             port: *webPort
-      browserless:
-        controller: browserless
+      chrome:
+        controller: chrome
         ports:
           http:
-            port: 3000
+            port: *chromePort
       meilisearch:
         controller: meilisearch
         ports:
