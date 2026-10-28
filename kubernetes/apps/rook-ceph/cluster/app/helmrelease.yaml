@@ -109,6 +109,8 @@ spec:
             cpu: "2"
       security:
         cephx:
+          allowedCiphers:
+            - aes256k
           # CVE-2025-30156: rotate mon/mgr/osd/rgw keys to the aes256k cipher.
           # https://rook.io/docs/rook/latest-release/Storage-Configuration/Advanced/cephx-key-rotation/
           daemon:
