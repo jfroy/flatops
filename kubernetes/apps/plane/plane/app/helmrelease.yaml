@@ -17,7 +17,7 @@ spec:
       - paths: ["/spec/template/metadata/annotations/timestamp"]
   values:
     # renovate: datasource=github-releases depName=makeplane/plane
-    planeVersion: v1.4.2
+    planeVersion: v1.4.3
     web:
       image: docker.io/makeplane/plane-frontend
     space:
