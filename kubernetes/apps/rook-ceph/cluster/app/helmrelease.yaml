@@ -119,9 +119,11 @@ spec:
           csi:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
-            # Retain existing mount credentials until all nodes have remounted
-            # their volumes; then retire old keys before restricting allowedCiphers.
-            keepPriorKeyCountMax: 1
+            keepPriorKeyCountMax: 0
+            keyType: aes256k
+          rbdMirrorPeer:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
             keyType: aes256k
       storage:
         useAllNodes: false
