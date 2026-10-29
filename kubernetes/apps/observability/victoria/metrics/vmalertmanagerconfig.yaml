@@ -16,6 +16,8 @@ spec:
         group_wait: 0s
         repeat_interval: 5m
         matchers: [alertname=Watchdog]
+      - receiver: tuppr-pushover
+        matchers: [notify=tuppr-pushover]
       - receiver: discord
         group_interval: 10m
         group_wait: 1m
@@ -28,6 +30,22 @@ spec:
       - url_secret:
           name: alertmanager-secrets
           key: healthchecks-io-url
+  - name: tuppr-pushover
+    pushover_configs:
+      - send_resolved: true
+        user_key:
+          name: alertmanager-tuppr-pushover
+          key: user-key
+        token:
+          name: alertmanager-tuppr-pushover
+          key: token
+        priority: '{{ if eq .CommonLabels.severity "critical" }}1{{ else }}0{{ end }}'
+        title: >-
+          {{ .CommonLabels.alertname }} [{{ .Status | toUpper }}]
+        message: |-
+          {{- range .Alerts }}
+          {{ or .Annotations.description .Annotations.summary .Annotations.message }}
+          {{- end }}
   - name: discord
     discord_configs:
       - send_resolved: true
