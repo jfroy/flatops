@@ -1,0 +1,77 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: openspeedtest
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      openspeedtest:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          openspeedtest:
+            image:
+              repository: docker.io/openspeedtest/latest
+              tag: v2.0.8@sha256:1127de0693c36bcf8c297c73d09891df8ec243680d027a6b6fab13fa0954ff46
+            # Bypass the image's entrypoint: it rewrites config with sed and runs crond for Let's Encrypt.
+            command: ["nginx", "-g", "daemon off;"]
+            probes:
+              liveness: &probe
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: &port 3000
+              readiness: *probe
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      config:
+        type: configMap
+        name: openspeedtest-config
+        globalMounts:
+          - path: /etc/nginx/conf.d/OpenSpeedTest-Server.conf
+            subPath: openspeedtest.conf
+            readOnly: true
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /var/cache/nginx
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
+    route:
+      openspeedtest:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                identifier: openspeedtest
+    service:
+      openspeedtest:
+        controller: openspeedtest
+        ports:
+          http:
+            port: *port
