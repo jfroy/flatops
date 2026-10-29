@@ -1,0 +1,48 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/monitoring.coreos.com/prometheusrule_v1.json
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: tuppr-rules
+spec:
+  groups:
+    - name: tuppr.progress
+      rules:
+        # severity none: info would be swallowed by the InfoInhibitor rule.
+        - alert: TalosUpgradeInProgress
+          expr: |-
+            max by (namespace, name) (tuppr_talos_upgrade_phase{phase=~"PreHook|Draining|Upgrading|Rebooting|PostHook"}) == 1
+          # Bridges the Pending and HealthChecking gaps between nodes.
+          keep_firing_for: 15m
+          annotations:
+            summary: >-
+              Talos upgrade {{ $labels.name }} is in progress
+          labels:
+            severity: none
+            notify: tuppr-pushover
+
+        - alert: KubernetesUpgradeInProgress
+          expr: |-
+            max by (namespace, name) (tuppr_kubernetes_upgrade_phase{phase="Upgrading"}) == 1
+          annotations:
+            summary: >-
+              Kubernetes upgrade {{ $labels.name }} is in progress
+          labels:
+            severity: none
+            notify: tuppr-pushover
+
+    - name: tuppr.stalled
+      rules:
+        - alert: TupprUpgradeStalled
+          expr: |-
+            max by (namespace, upgrade_type, name) (
+              tuppr_upgrade_progressing{reason!~"Completed|Failed|HealthChecking|MaintenanceWindow|Waiting.*|Suspended"} == 0
+            )
+          for: 30m
+          annotations:
+            summary: >-
+              {{ $labels.upgrade_type }} upgrade {{ $labels.name }} has not progressed for 30 minutes;
+              its status message has the cause
+          labels:
+            severity: warning
+            notify: tuppr-pushover

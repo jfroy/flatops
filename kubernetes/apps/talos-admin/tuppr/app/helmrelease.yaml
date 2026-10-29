@@ -10,11 +10,18 @@ spec:
     kind: OCIRepository
     name: tuppr
   values:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
+    notification:
+      enabled: true
+      secretName: tuppr-notification
     monitoring:
       serviceMonitor:
         enabled: true
       prometheusRule:
         enabled: true
+        additionalRuleLabels:
+          notify: tuppr-pushover
       dashboards:
         enabled: true
         grafanaOperator:
