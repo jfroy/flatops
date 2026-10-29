@@ -21,6 +21,8 @@ spec:
               repository: ghcr.io/home-operations/plex
               tag: 1.43.5.11079@sha256:06ef0fc23e9af9bbaf284c3f27972f94e703d13d6f745edeb6818fcbebf6c673
             env:
+              # Plex's musl loader skips /usr/lib, where the DRA CDI spec mounts the NVIDIA libraries.
+              LD_LIBRARY_PATH: /usr/lib
               PLEX_ADVERTISE_URL: http://plex.internal:22400,http://10.1.1.1:22400
               PLEX_NO_AUTH_NETWORKS: 10.1.0.0/16,10.10.0.0/16,10.11.0.0/16,10.12.0.0/16
               PLEX_PREFERENCE_0: TreatWanIpAsLocal=0

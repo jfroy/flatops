@@ -101,6 +101,16 @@ device attributes rather than narrowing `any-nvidia-gpu`.
 `ResourceClaimTemplate.spec` is immutable; changing the request later needs
 `force: true` on the Kustomization or a one-time manual delete.
 
+The CDI spec mounts the driver libraries at `/usr/lib` (their host path
+under `nvidiaDriverRoot`), not the distribution's multiarch directory, and
+registers them in the container's `ld.so.cache`. glibc consumers find them
+there. Plex does not: its transcoder and server run on a bundled musl loader
+whose search path (`/usr/lib/plexmediaserver/etc/ld-musl-x86_64.path`) omits
+`/usr/lib` and ignores `ld.so.cache`, so CUDA init fails and the
+transcoding-device list shows only "Auto". Plex sets
+`LD_LIBRARY_PATH=/usr/lib` for that reason; nothing else lives directly in
+`/usr/lib` in that image.
+
 The `resources` exception in `AGENTS.md` ("a device the scheduler must
 allocate") now means `resources.claims`, not `nvidia.com/gpu` limits.
 
