@@ -59,6 +59,18 @@ spec:
             resources:
               claims:
                 - name: gpu
+          log-server: &log
+            image:
+              repository: docker.io/library/busybox
+              tag: 1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
+            command: ["tail", "-F", "-n", "0", "/logs/Plex Media Server.log"]
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+          log-scanner:
+            <<: *log
+            command: ["tail", "-F", "-n", "0", "/logs/Plex Media Scanner.log"]
         pod:
           resourceClaims:
             - name: gpu
@@ -74,32 +86,52 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server
+        advancedMounts:
+          plex:
+            plex:
+              - path: /config/Library/Application Support/Plex Media Server
       local:
         existingClaim: plex-local
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Cache
-            subPath: Cache
-          - path: /config/Library/Application Support/Plex Media Server/Media
-            subPath: Media
-          - path: /config/Library/Application Support/Plex Media Server/Metadata
-            subPath: Metadata
+        advancedMounts:
+          plex:
+            plex:
+              - path: /config/Library/Application Support/Plex Media Server/Cache
+                subPath: Cache
+              - path: /config/Library/Application Support/Plex Media Server/Media
+                subPath: Media
+              - path: /config/Library/Application Support/Plex Media Server/Metadata
+                subPath: Metadata
       logs:
         type: emptyDir
-        globalMounts:
-          - path: /config/Library/Application Support/Plex Media Server/Logs
+        advancedMounts:
+          plex:
+            plex:
+              - path: /config/Library/Application Support/Plex Media Server/Logs
+            log-server: &logMount
+              - path: /logs
+                readOnly: true
+            log-scanner: *logMount
       tmp:
         type: emptyDir
+        advancedMounts:
+          plex:
+            plex:
+              - path: /tmp
       transcode:
         type: emptyDir
+        advancedMounts:
+          plex:
+            plex:
+              - path: /transcode
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
-        globalMounts:
-          - path: /media2/library
-            subPath: library
-            readOnly: true
+        advancedMounts:
+          plex:
+            plex:
+              - path: /media2/library
+                subPath: library
+                readOnly: true
     service:
       plex:
         annotations:
