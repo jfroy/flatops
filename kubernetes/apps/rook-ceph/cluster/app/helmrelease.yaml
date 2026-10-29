@@ -59,6 +59,7 @@ spec:
         urlPrefix: /
         port: 8080
         ssl: false
+        prometheusEndpoint: http://vmsingle-kantai.observability.svc:8429
       healthCheck:
         muteHealthWarning:
           AUTH_INSECURE_CLIENT_KEY_TYPE:
