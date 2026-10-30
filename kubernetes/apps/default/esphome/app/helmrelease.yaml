@@ -67,26 +67,22 @@ spec:
             image:
               repository: docker.io/library/busybox
               tag: 1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
-            # A sandbox created before multus writes its CNI config has no net1. SIGTERM to pause
-            # (PID 1, shared process namespace) makes kubelet recreate the sandbox and rerun CNI.
+            # A sandbox created before multus writes its CNI config never gets net1. Failing here
+            # holds the pod in init until the descheduler multus-check profile evicts it.
             command:
               - /bin/sh
               - -c
               - |
                 [ -e /sys/class/net/net1 ] && exit 0
-                echo "net1 missing, recycling pod sandbox"
-                sleep 10
-                kill -TERM 1
-                sleep 60
+                echo "net1 missing, waiting for descheduler eviction"
                 exit 1
             securityContext:
-              runAsUser: 65535
-              runAsGroup: 65535
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
         pod:
-          shareProcessNamespace: true
+          labels:
+            multus.kantai.xyz/check: "true"
           annotations:
             k8s.v1.cni.cncf.io/networks: |
               [{

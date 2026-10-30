@@ -92,6 +92,27 @@ spec:
             deschedule:
               enabled:
                 - RemoveFailedPods
+        - name: multus-check
+          pluginConfig:
+            - name: DefaultEvictor
+              args:
+                nodeFit: false
+                podProtections:
+                  defaultDisabled:
+                    - "PodsWithLocalStorage"
+            - name: PodLifeTime
+              args:
+                labelSelector:
+                  matchLabels:
+                    multus.kantai.xyz/check: "true"
+                conditions:
+                  - type: Initialized
+                    status: "False"
+                    minTimeSinceLastTransitionSeconds: 120
+          plugins:
+            deschedule:
+              enabled:
+                - PodLifeTime
     service:
       enabled: true
     serviceMonitor:
