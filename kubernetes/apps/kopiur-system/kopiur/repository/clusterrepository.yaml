@@ -42,7 +42,7 @@ spec:
         capacity: 4Gi
   moverDefaults:
     cache:
-      capacity: 1Gi
+      capacity: 2Gi
       contentCacheSizeMb: 512
       metadataCacheSizeMb: 384
       mode: Persistent
