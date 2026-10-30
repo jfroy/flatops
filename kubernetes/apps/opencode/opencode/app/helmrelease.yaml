@@ -41,9 +41,14 @@ spec:
               readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
     defaultPodOptions:
       automountServiceAccountToken: false
       securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
         fsGroup: 1000
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
@@ -64,6 +69,10 @@ spec:
         existingClaim: *app
         globalMounts:
           - path: *home
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp
       config-file:
         type: configMap
         name: opencode-config
