@@ -171,7 +171,7 @@ spec:
           enabled: true
           isDefault: true
           labels: {}
-          mountOptions: []
+          mountOptions: ["discard"]
           name: ceph-block
           reclaimPolicy: Delete
           volumeBindingMode: "Immediate"
