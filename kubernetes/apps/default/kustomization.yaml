@@ -49,6 +49,7 @@ resources:
   - ./readur/ks.yaml
   - ./recyclarr/ks.yaml
   - ./sabnzbd/ks.yaml
+  - ./scryer/ks.yaml
   - ./seerr/ks.yaml
   # - ./shelfmark/ks.yaml
   - ./sonarr/ks.yaml

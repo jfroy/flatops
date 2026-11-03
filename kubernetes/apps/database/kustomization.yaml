@@ -25,6 +25,7 @@ resources:
   - ./cnpg/tenants/prowlarr/ks.yaml
   - ./cnpg/tenants/radarr/ks.yaml
   - ./cnpg/tenants/readur/ks.yaml
+  - ./cnpg/tenants/scryer/ks.yaml
   - ./cnpg/tenants/seerr/ks.yaml
   - ./cnpg/tenants/sonarr/ks.yaml
   - ./cnpg/tenants/spoolman/ks.yaml
