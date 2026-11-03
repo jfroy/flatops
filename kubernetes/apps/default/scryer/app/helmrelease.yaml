@@ -1,0 +1,130 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: scryer
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      scryer:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          scryer:
+            image:
+              repository: ghcr.io/scryer-media/scryer
+              tag: 0.21.23@sha256:7c356b22cd27d335f6da2aa8c5411c500f099c74033407c300b4ba25443b74fc
+            env:
+              SCRYER_ADMIN_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: scryer-secret
+                    key: SCRYER_ADMIN_PASSWORD
+              SCRYER_ANIME_PATH: /media2/library/anime
+              SCRYER_AUTH_ENABLED: "true"
+              SCRYER_DB_URL: "postgres://pg18vc-rw.database.svc.cluster.local:5432/scryer?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
+              # Startup refuses a Postgres URL with no password; pg_hba's cert method never asks for this one.
+              SCRYER_DB_PASSWORD: unused-client-cert-auth
+              SCRYER_DB_USER: scryer
+              SCRYER_DISABLE_SELF_UPGRADE: "true"
+              SCRYER_JWT_SIGNING_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: scryer-secret
+                    key: SCRYER_JWT_SIGNING_SECRET
+              SCRYER_MOVIES_PATH: /media2/library/movies
+              SCRYER_PUBLIC_URL: https://scryer.kantai.xyz
+              SCRYER_RATE_LIMIT_TRUSTED_PROXY_IPS: 10.11.0.0/16
+              SCRYER_SERIES_PATH: /media2/library/tv
+              SCRYER_WEBAUTHN_RP_ID: scryer.kantai.xyz
+              SCRYER_WEBAUTHN_RP_ORIGIN: https://scryer.kantai.xyz
+              TZ: America/Los_Angeles
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: &port 8080
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health/ready
+                    port: *port
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [4000]
+    persistence:
+      cache:
+        type: persistentVolumeClaim
+        suffix: cache
+        accessMode: ReadWriteOnce
+        size: 2Gi
+        storageClass: ceph-block
+        globalMounts:
+          - path: /config/cache
+      config:
+        existingClaim: ${APP}
+      # A key supplied through SCRYER_ENCRYPTION_KEY gets copied to /config/encryption.key; this path does not.
+      encryption-key:
+        type: secret
+        name: scryer-secret
+        defaultMode: 0440
+        globalMounts:
+          - path: /run/secrets/scryer_encryption_key
+            subPath: SCRYER_ENCRYPTION_KEY
+            readOnly: true
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media2
+      # sqlx fails the TLS handshake on any root it cannot parse, so skip the default-CA bundle.
+      pg-ca:
+        type: configMap
+        name: cluster-ca-root.crt
+        globalMounts:
+          - path: /etc/postgresql/ca
+            readOnly: true
+      pg-client:
+        type: secret
+        name: scryer-pg
+        defaultMode: 0440
+        globalMounts:
+          - path: /etc/postgresql/client
+            readOnly: true
+      tmp:
+        type: emptyDir
+    route:
+      scryer:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - port: *port
+                name: scryer
+    service:
+      scryer:
+        controller: scryer
+        ports:
+          http:
+            port: *port
