@@ -26,7 +26,7 @@ spec:
           memos:
             image:
               repository: ghcr.io/usememos/memos
-              tag: 0.31.0@sha256:24c2707ddd8fbd2ceaa7a61ecab86a53cdcde640b24ce572b73da14b00b5785f
+              tag: 26.11.0@sha256:087e7dc6b76b31fcd1107a5767398b2a310ced209adb791efd8760c745dc8034
             env:
               MEMOS_DRIVER: postgres
               MEMOS_DSN: "postgres://memos@pg18vc-rw.database.svc.cluster.local:5432/memos?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
@@ -34,14 +34,21 @@ spec:
               MEMOS_PUBLIC: false
               TZ: America/Los_Angeles
             probes:
-              liveness: &probe
+              # /healthz pings the database; restarting memos would not fix an outage.
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5230
+              readiness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /healthz
                     port: 5230
-              readiness: *probe
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
@@ -73,13 +80,6 @@ spec:
             namespace: network
         rules:
           - backendRefs:
-              - identifier: grpc
-                port: 5230
-            matches:
-              - path:
-                  type: PathPrefix
-                  value: /memos.api.v1
-          - backendRefs:
               - identifier: app
                 port: 5230
     service:
@@ -89,10 +89,3 @@ spec:
           http:
             port: 5230
             appProtocol: http
-      grpc:
-        controller: memos
-        ports:
-          http:
-            port: 5231
-            targetPort: 5230
-            appProtocol: kubernetes.io/h2c
