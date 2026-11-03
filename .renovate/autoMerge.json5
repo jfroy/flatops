@@ -89,6 +89,20 @@
       ],
       automerge: false,
     },
+    // - Don't automerge Memos minor releases; calendar versions don't signal breaking changes
+    {
+      matchDatasources: [
+        "docker"
+      ],
+      matchPackageNames: [
+        "ghcr.io/usememos/memos"
+      ],
+      matchUpdateTypes: [
+        "major",
+        "minor"
+      ],
+      automerge: false,
+    },
     // - Don't automerge Samba; updates are disruptive
     {
       matchDatasources: [
