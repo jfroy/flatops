@@ -66,12 +66,14 @@ spec:
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DNS_CACHING: off
-              DNS_SERVER: off
+              # Weaver needs Postgres: the DNS server sends .local names to kube-dns, and the subnets let it connect.
+              DNS_SERVER: on
               DNS_UPSTREAM_IPV6: off
               DNS_UPSTREAM_PLAIN_ADDRESSES: 1.1.1.1:53,1.0.0.1:53
               DNS_UPSTREAM_RESOLVER_TYPE: plain
               FIREWALL_INPUT_PORTS: "9090,9999"
               FIREWALL_IPTABLES_LOG_LEVEL: debug
+              FIREWALL_OUTBOUND_SUBNETS: 10.11.0.0/16,10.12.0.0/16
               HEALTH_RESTART_VPN: off
               HEALTH_SERVER_ADDRESS: ":9999"
               LOG_LEVEL: debug

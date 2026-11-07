@@ -27,6 +27,8 @@ spec:
               RQBIT_LSD_DISABLE: "true"
               RQBIT_SESSION_PERSISTENCE_LOCATION: /config/session
               RQBIT_UPNP_PORT_FORWARD_DISABLE: "true"
+              # The image's /etc/ssl is mode 0644, so a non-root user cannot reach its CA bundle.
+              SSL_CERT_FILE: /certs/ca-certificates.crt
               TZ: America/Los_Angeles
               XDG_CACHE_HOME: /config/cache
               XDG_DATA_HOME: /config/data
@@ -123,6 +125,14 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
         supplementalGroups: [4000]
     persistence:
+      ca-certificates:
+        type: configMap
+        name: cluster-ca-certificates.crt
+        advancedMounts:
+          rqbit:
+            rqbit:
+              - path: /certs
+                readOnly: true
       config:
         existingClaim: ${APP}
         advancedMounts:
