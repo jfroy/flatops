@@ -27,7 +27,7 @@ spec:
               RQBIT_LSD_DISABLE: "true"
               RQBIT_SESSION_PERSISTENCE_LOCATION: /config/session
               RQBIT_UPNP_PORT_FORWARD_DISABLE: "true"
-              # The image's /etc/ssl is mode 0644, so a non-root user cannot reach its CA bundle.
+              # The image's own CA bundle is under /etc, which the etc emptyDir below hides.
               SSL_CERT_FILE: /certs/ca-certificates.crt
               TZ: America/Los_Angeles
               XDG_CACHE_HOME: /config/cache
@@ -139,6 +139,13 @@ spec:
           rqbit:
             rqbit:
               - path: /config
+      # The image ships /etc as mode 0644, so a non-root user cannot read resolv.conf or hosts.
+      etc:
+        type: emptyDir
+        advancedMounts:
+          rqbit:
+            rqbit:
+              - path: /etc
       gluetun:
         existingClaim: gluetun-update
         advancedMounts:

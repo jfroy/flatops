@@ -13,6 +13,24 @@ spec:
         - ports:
             - port: "1637"
               protocol: UDP
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+            - port: "53"
+              protocol: TCP
+    - toEndpoints:
+        - matchLabels:
+            k8s:io.kubernetes.pod.namespace: database
+            cnpg.io/cluster: pg18vc
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
   ingress:
     - toPorts:
         - ports:
