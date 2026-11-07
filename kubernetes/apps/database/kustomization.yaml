@@ -31,6 +31,7 @@ resources:
   - ./cnpg/tenants/spoolman/ks.yaml
   - ./cnpg/tenants/toolhive-registry/ks.yaml
   - ./cnpg/tenants/tracearr/ks.yaml
+  - ./cnpg/tenants/weaver/ks.yaml
   - ./cnpg/tenants/zipline/ks.yaml
   - ./influxdb/ks.yaml
   - ./namespace.yaml

@@ -48,6 +48,7 @@ resources:
   - ./radarr/ks.yaml
   - ./readur/ks.yaml
   - ./recyclarr/ks.yaml
+  - ./rqbit/ks.yaml
   - ./sabnzbd/ks.yaml
   - ./scryer/ks.yaml
   - ./seerr/ks.yaml
@@ -56,6 +57,7 @@ resources:
   - ./spoolman/ks.yaml
   - ./stash/ks.yaml
   - ./tracearr/ks.yaml
+  - ./weaver/ks.yaml
   - ./ytptube/ks.yaml
   - ./zipline/ks.yaml
   - ./zot/ks.yaml
