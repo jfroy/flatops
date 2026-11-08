@@ -5,6 +5,7 @@ defaultRuntimeSeccompProfileEnabled: true
 config:
   imageGCHighThresholdPercent: 85
   imageGCLowThresholdPercent: 65
+  imageMaximumGCAge: 168h
   maxParallelImagePulls: 10
   maxPods: 400
   serializeImagePulls: false
