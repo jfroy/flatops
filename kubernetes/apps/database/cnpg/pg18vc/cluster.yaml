@@ -64,7 +64,7 @@ spec:
       - hostssl all +cert_login all cert
     parameters:
       effective_cache_size: 24GB
-      max_connections: "100"
+      max_connections: "300"
       max_locks_per_transaction: '4096'
       shared_buffers: 8GB
       timescaledb.max_background_workers: '32'
