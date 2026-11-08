@@ -19,7 +19,7 @@ spec:
           ytptube:
             image:
               repository: ghcr.io/arabcoders/ytptube
-              tag: v2.7.6@sha256:a5b648c6c20d877cf90715415b1b31565dda9399020d80f186000fdd76474f86
+              tag: v2.7.7@sha256:8b406c56502ee501c80254db41ac53465857b136ea1b3dc03da66abf8a1e3587
             env:
               TZ: America/Los_Angeles
               XDG_CACHE_HOME: /tmp
