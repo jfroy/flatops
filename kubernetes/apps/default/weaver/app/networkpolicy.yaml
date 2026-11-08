@@ -1,9 +1,9 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: weaver-allow-gluetun
+  name: weaver-egress
   annotations:
-    future-me-why: allow ingress and egress to gluetun endpoints; also puts pod in deny-by-default mode for egress
+    future-me-why: VPN kill switch; Weaver tunnels Usenet traffic itself, so egress is limited to the WireGuard port, cluster DNS and Postgres
 spec:
   endpointSelector:
     matchLabels:
