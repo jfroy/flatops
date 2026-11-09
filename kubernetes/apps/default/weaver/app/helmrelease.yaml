@@ -54,10 +54,72 @@ spec:
                     path: /readyz
                     port: *port
                     httpHeaders: *host
-            securityContext:
+            securityContext: &securityContext
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
               readOnlyRootFilesystem: true
+        initContainers:
+          gluetun:
+            image:
+              repository: ghcr.io/jfroy/gluetun
+              tag: v3.41.3@sha256:970fdef9eedb103e2f49a5c6716322d52053bc91fa67e6eebe32cfe43f315b50
+            env:
+              BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
+              DNS_CACHING: off
+              # Weaver needs Postgres: the DNS server sends .local names to kube-dns, and the subnets let it connect.
+              DNS_SERVER: on
+              DNS_UPSTREAM_IPV6: off
+              DNS_UPSTREAM_PLAIN_ADDRESSES: 1.1.1.1:53,1.0.0.1:53
+              DNS_UPSTREAM_RESOLVER_TYPE: plain
+              FIREWALL_INPUT_PORTS: "9090,9999"
+              FIREWALL_IPTABLES_LOG_LEVEL: debug
+              FIREWALL_OUTBOUND_SUBNETS: 10.11.0.0/16,10.12.0.0/16
+              HEALTH_RESTART_VPN: off
+              HEALTH_SERVER_ADDRESS: ":9999"
+              LOG_LEVEL: debug
+              PUBLICIP_API: cloudflare
+              STORAGE_SERVERS_DIRECTORY_PATH: /gluetun/servers/
+              TZ: America/Los_Angeles
+              VERSION_INFORMATION: off
+              VPN_INTERFACE: wg0
+              VPN_TYPE: wireguard
+            envFrom:
+              - secretRef:
+                  name: gluetun-weaver-secret
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  periodSeconds: 30
+                  timeoutSeconds: 10
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 10
+                  timeoutSeconds: 10
+                  failureThreshold: 12
+            resources:
+              limits:
+                kernel.org/tun: 1
+            restartPolicy: Always
+            securityContext:
+              <<: *securityContext
+              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
+              readOnlyRootFilesystem: false
+              runAsNonRoot: false
+              runAsUser: 0
+        pod:
+          labels:
+            pod-security.kantai.xyz/allow-added-capabilities: "true"
+          hostname: weaver
     defaultPodOptions:
       nodeSelector:
         kubernetes.io/hostname: kantai1
@@ -71,36 +133,66 @@ spec:
     persistence:
       config:
         existingClaim: ${APP}
+        advancedMounts:
+          weaver:
+            weaver:
+              - path: /config
       encryption-key:
         type: secret
         name: weaver-secret
         defaultMode: 0440
-        globalMounts:
-          - path: /run/secrets/weaver_encryption_key
-            subPath: WEAVER_ENCRYPTION_KEY
-            readOnly: true
+        advancedMounts:
+          weaver:
+            weaver:
+              - path: /run/secrets/weaver_encryption_key
+                subPath: WEAVER_ENCRYPTION_KEY
+                readOnly: true
+      gluetun:
+        existingClaim: gluetun-update
+        advancedMounts:
+          weaver:
+            gluetun:
+              - path: /gluetun
+                readOnly: true
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
-        globalMounts:
-          - path: /media2/weaver
-            subPath: weaver
+        advancedMounts:
+          weaver:
+            weaver:
+              - path: /media2/weaver
+                subPath: weaver
       # sqlx fails the TLS handshake on any root it cannot parse, so skip the default-CA bundle.
       pg-ca:
         type: configMap
         name: cluster-ca-root.crt
-        globalMounts:
-          - path: /etc/postgresql/ca
-            readOnly: true
+        advancedMounts:
+          weaver:
+            weaver:
+              - path: /etc/postgresql/ca
+                readOnly: true
       pg-client:
         type: secret
         name: weaver-pg
         defaultMode: 0440
+        advancedMounts:
+          weaver:
+            weaver:
+              - path: /etc/postgresql/client
+                readOnly: true
+      run:
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 10Mi
         globalMounts:
-          - path: /etc/postgresql/client
-            readOnly: true
+          - path: /run
+          - path: /var/run
       tmp:
         type: emptyDir
+        advancedMounts:
+          weaver:
+            weaver:
+              - path: /tmp
     route:
       weaver:
         hostnames:
