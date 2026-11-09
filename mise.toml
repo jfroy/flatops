@@ -1,3 +1,4 @@
 [tools]
 "github:postfinance/topf" = "0.6.2"
 just = "1.59.0"
+sops = "3.13.3"

@@ -46,5 +46,6 @@ _check:
 
 [private]
 _check-secrets: _check
+    command -v sops >/dev/null || { echo 'Missing sops (topf reads encrypted files as plaintext without it)' >&2; exit 1; }
     test -f secrets.sops.yaml || { echo 'Missing Talos secrets bundle' >&2; exit 1; }
     test -f "$SOPS_AGE_KEY_FILE" && test -f {{ quote(justfile_directory() / '.sops.yaml') }} || { echo 'Missing SOPS age key or config' >&2; exit 1; }
