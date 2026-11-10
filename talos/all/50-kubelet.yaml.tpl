@@ -3,8 +3,8 @@ apiVersion: v1alpha1
 kind: KubeletConfig
 defaultRuntimeSeccompProfileEnabled: true
 config:
-  imageGCHighThresholdPercent: 85
-  imageGCLowThresholdPercent: 65
+  imageGCHighThresholdPercent: 65
+  imageGCLowThresholdPercent: 50
   imageMaximumGCAge: 168h
   maxParallelImagePulls: 10
   maxPods: 400
