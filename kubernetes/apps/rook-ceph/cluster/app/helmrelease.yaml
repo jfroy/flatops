@@ -29,7 +29,7 @@ spec:
   values:
     cephImage:
       # renovate: datasource=docker depName=quay.io/ceph/ceph versioning=loose
-      tag: v20.2.5
+      tag: v21.2.0
     cephClusterSpec:
       disruptionManagement:
         managePodBudgets: false
@@ -79,7 +79,7 @@ spec:
           - name: pg_autoscaler
             enabled: true
           - name: rook
-            enabled: true
+            enabled: false
       mon:
         count: 3
         allowMultiplePerNode: false
