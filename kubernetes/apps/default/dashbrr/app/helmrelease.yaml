@@ -19,7 +19,7 @@ spec:
           dashbrr:
             image:
               repository: ghcr.io/autobrr/dashbrr
-              tag: v0.7.0@sha256:0a14f0b614e840e0157290d70abd753ea124a7af28769e79f11acbfc5db01cf0
+              tag: v0.8.0@sha256:ce36626f51e4f7b2d7017c025c99faf2c41540209f21bb665a601d60c11ffffd
             env:
               DASHBRR__DB_DSN: "postgres://dashbrr@pg18vc-rw.database.svc.cluster.local:5432/dashbrr?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               DASHBRR__DB_TYPE: postgres
