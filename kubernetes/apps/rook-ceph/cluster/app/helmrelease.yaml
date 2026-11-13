@@ -49,6 +49,8 @@ spec:
           mon_max_pg_per_osd: "500"
         mgr:
           mgr/balancer/mode: upmap-read
+          # TODO: drop once https://tracker.ceph.com/issues/82489 ships; each prometheus collect leaks ~2.5MiB.
+          mgr/prometheus/scrape_interval: "600"
       crashCollector:
         disable: true
       csi:
@@ -102,6 +104,10 @@ spec:
             - key: node.kantai.xyz/low-memory
               operator: Exists
       resources:
+        # TODO: drop once https://tracker.ceph.com/issues/82489 ships; mgr leaks until then.
+        mgr:
+          limits:
+            memory: 2Gi
         osd:
           limits:
             memory: 16Gi
