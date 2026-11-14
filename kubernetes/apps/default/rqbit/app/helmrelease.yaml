@@ -194,3 +194,10 @@ spec:
         ports:
           http:
             port: *port
+    serviceMonitor:
+      rqbit:
+        serviceName: rqbit
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
