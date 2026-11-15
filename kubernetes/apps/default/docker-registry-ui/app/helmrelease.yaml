@@ -19,7 +19,7 @@ spec:
           docker-registry-ui:
             image:
               repository: ghcr.io/eznix86/docker-registry-ui
-              tag: 1.6.1@sha256:80b300980176030dd6830e7627e70e2434deabefacf06e6c021080fc82fa0169
+              tag: 1.7.0@sha256:499ff9e50384d0814ec12e83dadfe47e82036258311701850ae1718cd70e8b8e
             env:
               DATABASE_CONNECTION: sqlite
               DATABASE_URL: /data/ui.db
