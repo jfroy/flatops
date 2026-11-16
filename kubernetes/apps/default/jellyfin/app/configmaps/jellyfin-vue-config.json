@@ -1,5 +1,0 @@
-{
-    "defaultServerURLs": ["https://jellyfin.kantai.xyz"],
-    "allowServerSelection": false,
-    "routerMode": "history"
-  }

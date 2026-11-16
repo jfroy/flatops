@@ -54,34 +54,6 @@ spec:
           resourceClaims:
             - name: gpu
               resourceClaimTemplateName: any-nvidia-gpu
-      vue:
-        annotations:
-          reloader.stakater.com/auto: "true"
-        containers:
-          vue:
-            image:
-              repository: ghcr.io/jellyfin/jellyfin-vue
-              tag: unstable.2026-08-02.01f11ae@sha256:49d8694bb84e89ffc3a73f7fadf698c73030badb4174250913567a857e1315c5
-            command: ["nginx"]
-            args: ["-g", "daemon off;"]
-            env:
-              TZ: America/Los_Angeles
-            ports:
-              - containerPort: 80
-                name: http
-            probes:
-              liveness: &vue-probes
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: http
-              readiness: *vue-probes
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-              readOnlyRootFilesystem: true
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -112,15 +84,6 @@ spec:
           jellyfin:
             jellyfin:
               - path: /config
-      config-vue:
-        type: configMap
-        name: jellyfin-vue-config
-        advancedMounts:
-          vue:
-            vue:
-              - path: /usr/share/nginx/html/config.json
-                subPath: config.json
-                readOnly: true
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
@@ -137,17 +100,6 @@ spec:
       tmp:
         type: emptyDir
         sizeLimit: 1Gi
-        advancedMounts:
-          jellyfin:
-            jellyfin:
-              - path: /tmp
-                subPath: jellyfin
-          vue:
-            vue:
-              - path: /tmp
-                subPath: vue
-              - path: /var/cache/nginx
-                subPath: nginx
     route:
       jellyfin:
         hostnames:
@@ -159,32 +111,9 @@ spec:
           - backendRefs:
               - name: jellyfin
                 port: 8096
-      vue:
-        hostnames:
-          - "jellyvue.kantai.xyz"
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
-        rules:
-          - backendRefs:
-              - name: jellyfin-vue
-                port: 80
     service:
       jellyfin:
         controller: jellyfin
         ports:
           http:
             port: 8096
-      vue:
-        controller: vue
-        ports:
-          http:
-            port: 80
-    # TODO: enable metrics after upstream PR is merged and released
-    # https://github.com/jellyfin/jellyfin/pull/14052
-    # serviceMonitor:
-    #   jellyfin:
-    #     serviceName: jellyfin
-    #     endpoints:
-    #       - port: http
-    #         path: /metrics

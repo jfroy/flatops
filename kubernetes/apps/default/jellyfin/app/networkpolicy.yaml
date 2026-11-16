@@ -15,12 +15,3 @@ spec:
         - ports:
             - port: "8096"
               protocol: TCP
-    - fromEntities:
-        - world
-      toPorts:
-        - ports:
-            - port: "8096"
-              protocol: TCP
-          rules:
-            http:
-              - path: "^/(?!metrics).*"
