@@ -26,7 +26,7 @@ spec:
           memos:
             image:
               repository: ghcr.io/usememos/memos
-              tag: 26.11.0@sha256:087e7dc6b76b31fcd1107a5767398b2a310ced209adb791efd8760c745dc8034
+              tag: 26.11.1@sha256:c966301802ac72bbeaf22eae18e9f84e1ee1a02b695aa455c8d131113e72afb8
             env:
               MEMOS_DRIVER: postgres
               MEMOS_DSN: "postgres://memos@pg18vc-rw.database.svc.cluster.local:5432/memos?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
