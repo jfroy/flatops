@@ -10,6 +10,6 @@ spec:
     mediaType: application/vnd.cncf.helm.chart.content.v1.tar+gzip
     operation: copy
   ref:
-    tag: 0.1.8
-    digest: sha256:39a56c77b78edd2a5c4ac7e17720b5720e1649e5e9f63743342a53940c01be81
+    tag: 0.1.9
+    digest: sha256:fbec11e7c70b896ff10d1e898c1749ab1f7ca306ebb98bd3101daad813e11c26
   url: oci://ghcr.io/nvidia/openshell/helm-chart
