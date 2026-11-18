@@ -1,0 +1,108 @@
+# Shell completion runs this outside the task environment, from the caller's directory.
+[task_templates.topf]
+env = { SOPS_AGE_KEY_FILE = "{{ config_root }}/../age.key", TALOSCONFIG = "{{ config_root }}/talosconfig" }
+usage = '''
+complete "hostname" run="yq -r '.nodes[].host' \"$(git rev-parse --show-toplevel)/talos/topf.yaml\""
+'''
+
+[tasks.nodes]
+description = "List nodes and their current state"
+extends = "topf"
+depends = [":check-secrets"]
+usage = 'arg "[hostname]" help="Limit to one node"'
+run = '''
+filter=()
+[[ -n "${usage_hostname:-}" ]] && filter=(--nodes-filter "^${usage_hostname}\$")
+topf nodes "${filter[@]}"
+'''
+
+[tasks.render]
+description = "Render machine configs to talos/output, which holds plaintext secrets"
+extends = "topf"
+depends = [":check-secrets"]
+usage = '''
+arg "[hostname]" help="Limit to one node"
+flag "--online" help="Use the node's running Talos version"
+'''
+run = '''
+args=()
+[[ -n "${usage_hostname:-}" ]] && args+=(--nodes-filter "^${usage_hostname}\$")
+[[ "${usage_online:-}" == "true" ]] && args+=(--online)
+topf render --output "$PWD/output" "${args[@]}"
+echo 'NOTE: talos/output holds cluster secrets in plaintext -- delete it when done.' >&2
+'''
+
+[tasks.diff]
+description = "Diff the rendered config against live nodes without applying"
+extends = "topf"
+depends = [":check-secrets"]
+usage = 'arg "[hostname]" help="Limit to one node"'
+run = '''
+filter=()
+[[ -n "${usage_hostname:-}" ]] && filter=(--nodes-filter "^${usage_hostname}\$")
+topf apply --dry-run "${filter[@]}"
+'''
+
+[tasks.apply]
+description = "Apply machine configs (topf prompts before applying)"
+extends = "topf"
+depends = [":check-secrets"]
+interactive = true
+usage = '''
+arg "[hostname]" help="Limit to one node"
+flag "--mode <mode>" default="auto" help="Talos apply mode" {
+  choices "auto" "reboot" "no-reboot" "staged" "try"
+}
+'''
+run = '''
+filter=()
+[[ -n "${usage_hostname:-}" ]] && filter=(--nodes-filter "^${usage_hostname}\$")
+topf apply --mode="$usage_mode" "${filter[@]}"
+'''
+
+[tasks.upgrade]
+description = "Upgrade Talos to the version in topf.yaml (topf prompts before upgrading)"
+extends = "topf"
+depends = [":check-secrets"]
+interactive = true
+usage = 'arg "[hostname]" help="Limit to one node"'
+run = '''
+filter=()
+[[ -n "${usage_hostname:-}" ]] && filter=(--nodes-filter "^${usage_hostname}\$")
+topf upgrade "${filter[@]}"
+'''
+
+[tasks.schematic-ids]
+description = "Print all resolved schematic IDs (topf does not support filtering these by node)"
+extends = "topf"
+depends = [":check"]
+run = "topf schematic-ids"
+
+[tasks.talosconfig]
+description = "Regenerate talos/talosconfig from the secrets bundle"
+extends = "topf"
+depends = [":check-secrets"]
+run = 'topf talosconfig > "$TALOSCONFIG"'
+
+[tasks.kubeconfig]
+description = "Print a 12h admin kubeconfig (redirect it yourself; does not touch ./kubeconfig)"
+extends = "topf"
+depends = [":check-secrets"]
+run = "topf kubeconfig"
+
+[tasks.check]
+hide = true
+run = '''
+command -v topf >/dev/null || { echo 'Missing topf' >&2; exit 1; }
+test -f topf.yaml || { echo 'Missing talos/topf.yaml' >&2; exit 1; }
+'''
+
+[tasks.check-secrets]
+hide = true
+extends = "topf"
+depends = [":check"]
+run = '''
+command -v sops >/dev/null || { echo 'Missing sops (topf reads encrypted files as plaintext without it)' >&2; exit 1; }
+test -f secrets.sops.yaml || { echo 'Missing Talos secrets bundle' >&2; exit 1; }
+test -f "$SOPS_AGE_KEY_FILE" && test -f "$MISE_MONOREPO_ROOT/.sops.yaml" || { echo 'Missing SOPS age key or config' >&2; exit 1; }
+'''

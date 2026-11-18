@@ -14,5 +14,5 @@ insert_final_newline = true
 indent_size = 4
 trim_trailing_whitespace = false
 
-[{*.sh,*.just,.justfile}]
+[*.sh]
 indent_size = 4

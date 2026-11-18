@@ -22,24 +22,25 @@ Flux MCP tools are likely available. Use them to inspect live cluster state when
 
 ## Maintenance Commands
 
-Just (>= 1.55.0) is the command runner. `.justfile` registers `talos/mod.just`,
-`scripts/rook/mod.just`, and `scripts/sops/mod.just`; run `just` or `just talos` to
-list recipes. Node names are positional arguments, with `--online` for rendering
+mise (>= 2026.11.3) is the command runner, in monorepo mode. The root `mise.toml`
+holds `sops:encrypt` and lists `talos` as a config root; `talos/mise.toml` holds the
+topf tasks. Run `mise tasks --all` to list them and `mise run //talos:apply --help`
+for arguments. Node names are positional arguments, with `--online` for rendering
 and `--mode <mode>` for applying.
 
 ```sh
 # Talos: render machine configs to talos/output for inspection (contains secrets)
-just talos render
+mise run //talos:render
 
 # Diff the rendered config against the live nodes without applying
-just talos diff
+mise run //talos:diff
 
 # Apply machine configs, or limit to one node
-just talos apply
-just talos apply kantai1
+mise run //talos:apply
+mise run //talos:apply kantai1
 
 # Upgrade Talos to the version pinned in talos/topf.yaml
-just talos upgrade
+mise run //talos:upgrade
 ```
 
 Flux reconciliation, when appropriate and after Git state is ready:

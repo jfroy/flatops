@@ -236,7 +236,7 @@ spec:
 ### Phase 2: per-node rollout
 
 Order: kantai2 (arm64 VM, about 17 pods, no kata) → kantai3 → kantai1.
-Convert kantai1 in a maintenance window, ideally with a `just talos upgrade`
+Convert kantai1 in a maintenance window, ideally with a `mise run //talos:upgrade`
 reboot, because its GPU, ZFS and local-volume pods cannot move.
 
 For each node:
