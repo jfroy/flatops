@@ -231,6 +231,7 @@ spec:
           values:
             - esphome
             - plex
+            - tofa
 ---
 # Host Probes / Lifecycle Hooks
 apiVersion: admissionregistration.k8s.io/v1
