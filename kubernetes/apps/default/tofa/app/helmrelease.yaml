@@ -21,6 +21,10 @@ spec:
               repository: ghcr.io/tofatv/tofa
               tag: 0.13.3@sha256:0d1c6192dea84da61abd56e84ef60bd7948b517e3622ab8a88ff9345bf1cff32
             env:
+              ADVERTISED_LAN_IP:
+                valueFrom:
+                  fieldRef:
+                    fieldPath: status.hostIP
               DATABASE_URL: "postgres://tofa@pg18vc-rw.database.svc.cluster.local:5432/tofa?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
               MEDIA_PATH: /media2/library
               TOFA_CUSTOM_ACCESS_URLS: "https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
@@ -30,6 +34,7 @@ spec:
                   name: tofa-session
             ports:
               - containerPort: &port 33333
+                hostPort: 33333
                 name: http
             probes:
               startup:
