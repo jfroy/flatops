@@ -29,6 +29,7 @@ resources:
   - ./cnpg/tenants/seerr/ks.yaml
   - ./cnpg/tenants/sonarr/ks.yaml
   - ./cnpg/tenants/spoolman/ks.yaml
+  - ./cnpg/tenants/tofa/ks.yaml
   - ./cnpg/tenants/toolhive-registry/ks.yaml
   - ./cnpg/tenants/tracearr/ks.yaml
   - ./cnpg/tenants/weaver/ks.yaml

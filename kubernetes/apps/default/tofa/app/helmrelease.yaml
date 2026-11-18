@@ -1,0 +1,137 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/refs/heads/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tofa
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  values:
+    controllers:
+      tofa:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          tofa:
+            image:
+              repository: ghcr.io/tofatv/tofa
+              tag: 0.13.3@sha256:0d1c6192dea84da61abd56e84ef60bd7948b517e3622ab8a88ff9345bf1cff32
+            env:
+              DATABASE_URL: "postgres://tofa@pg18vc-rw.database.svc.cluster.local:5432/tofa?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
+              MEDIA_PATH: /media2/library
+              TOFA_CUSTOM_ACCESS_URLS: "https://${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+              TZ: America/Los_Angeles
+            envFrom:
+              - secretRef:
+                  name: tofa-session
+            ports:
+              - containerPort: &port 33333
+                name: http
+            probes:
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: http
+                  failureThreshold: 30
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/health
+                    port: http
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities: { drop: ["ALL"] }
+              readOnlyRootFilesystem: true
+            resources:
+              claims:
+                - name: gpu
+        pod:
+          resourceClaims:
+            - name: gpu
+              resourceClaimTemplateName: any-nvidia-gpu
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [44, 4000]
+        seccompProfile: { type: RuntimeDefault }
+    persistence:
+      cache:
+        type: persistentVolumeClaim
+        suffix: cache
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        storageClass: ceph-block
+        advancedMounts:
+          tofa:
+            tofa:
+              - path: /data/cache
+      data:
+        existingClaim: ${APP}
+        advancedMounts:
+          tofa:
+            tofa:
+              - path: /data
+      media2:
+        type: persistentVolumeClaim
+        existingClaim: media2
+        advancedMounts:
+          tofa:
+            tofa:
+              - path: /media2/library
+                subPath: library
+                readOnly: true
+      pg-ca:
+        type: configMap
+        name: cluster-ca.crt
+        advancedMounts:
+          tofa:
+            tofa:
+              - path: /etc/postgresql/ca
+                readOnly: true
+      pg-client:
+        type: secret
+        name: tofa-pg
+        defaultMode: 0440
+        advancedMounts:
+          tofa:
+            tofa:
+              - path: /etc/postgresql/client
+                readOnly: true
+      tmp:
+        type: emptyDir
+        advancedMounts:
+          tofa:
+            tofa:
+              - path: /data/tmp
+                subPath: data-tmp
+              - path: /home/tofa
+                subPath: home
+              - path: /tmp
+                subPath: tmp
+    route:
+      tofa:
+        hostnames:
+          - "${APP_SUBDOMAIN:-${APP}}.kantai.xyz"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+    service:
+      tofa:
+        controller: tofa
+        ports:
+          http:
+            port: *port
