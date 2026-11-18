@@ -44,6 +44,7 @@ spec:
                     matchLabelKeys:
                       - gateway.networking.k8s.io/gateway-name
       envoyService:
+        allocateLoadBalancerNodePorts: false
         externalTrafficPolicy: Local
         # Required: cilium runs with defaultLBServiceIPAM=none, so LB-IPAM only
         # allocates for services carrying a recognized cilium load balancer class.
