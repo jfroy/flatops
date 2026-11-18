@@ -15,25 +15,6 @@ spec:
       tofa:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          # One-time move of /data/metadata off the backed-up volume; drop once tofa-metadata holds it.
-          migrate-metadata:
-            image:
-              repository: docker.io/library/busybox
-              tag: 1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
-            command:
-              - sh
-              - -c
-              - |
-                set -eu
-                [ -d /old/metadata ] || exit 0
-                [ -n "$(ls -A /old/metadata)" ] || exit 0
-                cp -a /old/metadata/. /new/
-                find /old/metadata -mindepth 1 -delete
-            securityContext:
-              allowPrivilegeEscalation: false
-              capabilities: { drop: ["ALL"] }
-              readOnlyRootFilesystem: true
         containers:
           tofa:
             image:
@@ -120,8 +101,6 @@ spec:
           tofa:
             tofa:
               - path: /data
-            migrate-metadata:
-              - path: /old
       media2:
         type: persistentVolumeClaim
         existingClaim: media2
@@ -142,8 +121,6 @@ spec:
           tofa:
             tofa:
               - path: /data/metadata
-            migrate-metadata:
-              - path: /new
       pg-ca:
         type: configMap
         name: cluster-ca.crt
