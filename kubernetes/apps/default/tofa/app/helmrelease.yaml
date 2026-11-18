@@ -16,8 +16,8 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
-          # One-time move of /data/data off the backed-up volume; drop once tofa-artifacts holds it.
-          migrate-artifacts:
+          # One-time move of /data/metadata off the backed-up volume; drop once tofa-metadata holds it.
+          migrate-metadata:
             image:
               repository: docker.io/library/busybox
               tag: 1.38.0@sha256:a46257e06c82ad85242d0d38077d0a52d9896389ca60a1a59d3463db586e5fa4
@@ -26,10 +26,10 @@ spec:
               - -c
               - |
                 set -eu
-                [ -d /old/data ] || exit 0
-                [ -n "$(ls -A /old/data)" ] || exit 0
-                cp -a /old/data/. /new/
-                find /old/data -mindepth 1 -delete
+                [ -d /old/metadata ] || exit 0
+                [ -n "$(ls -A /old/metadata)" ] || exit 0
+                cp -a /old/metadata/. /new/
+                find /old/metadata -mindepth 1 -delete
             securityContext:
               allowPrivilegeEscalation: false
               capabilities: { drop: ["ALL"] }
@@ -104,8 +104,6 @@ spec:
           tofa:
             tofa:
               - path: /data/data
-            migrate-artifacts:
-              - path: /new
       cache:
         type: persistentVolumeClaim
         suffix: cache
@@ -122,7 +120,7 @@ spec:
           tofa:
             tofa:
               - path: /data
-            migrate-artifacts:
+            migrate-metadata:
               - path: /old
       media2:
         type: persistentVolumeClaim
@@ -133,6 +131,19 @@ spec:
               - path: /media2/library
                 subPath: library
                 readOnly: true
+      # Downloaded artwork and episode stills; kept off the small, backed-up /data volume.
+      metadata:
+        type: persistentVolumeClaim
+        suffix: metadata
+        accessMode: ReadWriteOnce
+        size: 100Gi
+        storageClass: ceph-block
+        advancedMounts:
+          tofa:
+            tofa:
+              - path: /data/metadata
+            migrate-metadata:
+              - path: /new
       pg-ca:
         type: configMap
         name: cluster-ca.crt
