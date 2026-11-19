@@ -169,16 +169,6 @@
         "custom.grafana-dashboards"
       ],
       automerge: true,
-    },
-    // - Don't automerge scryer; scryarr vendors its GraphQL schema, so updates need a matching bridge release
-    {
-      matchDatasources: [
-        "docker"
-      ],
-      matchPackageNames: [
-        "ghcr.io/scryer-media/scryer"
-      ],
-      automerge: false,
     }
   ]
 }
