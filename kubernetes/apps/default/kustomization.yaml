@@ -50,6 +50,7 @@ resources:
   - ./recyclarr/ks.yaml
   - ./rqbit/ks.yaml
   - ./sabnzbd/ks.yaml
+  - ./scryarr/ks.yaml
   - ./scryer/ks.yaml
   - ./seerr/ks.yaml
   # - ./shelfmark/ks.yaml
