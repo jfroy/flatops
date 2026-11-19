@@ -86,16 +86,9 @@ spec:
             envFrom:
               - secretRef:
                   name: gluetun-weaver-secret
+            # No liveness probe, unlike the other gluetun sidecars: a gluetun-only restart re-reads its own
+            # 127.0.0.1 resolv.conf and loses kube-dns (DNS_SERVER is on here). Gluetun restarts the VPN itself.
             probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 9999
-                  periodSeconds: 30
-                  timeoutSeconds: 10
               startup:
                 enabled: true
                 custom: true
