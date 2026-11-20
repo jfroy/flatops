@@ -19,7 +19,7 @@ spec:
           scryarr:
             image:
               repository: ghcr.io/jfroy/scryarr
-              tag: 0.2.1@sha256:ff92a2606b9a9967c63c9df9b18fd4462cbb57de350abdd8f7e3994a9654d2d4
+              tag: 0.2.2@sha256:4c98cc7e5ab864a2fff3b09e3991bbfc46001b67bf426fbaaa4fbfba5eb6550e
             env:
               SCRYARR_DATA_DIR: /data
               SCRYER_URL: http://scryer.default.svc.cluster.local:8080
