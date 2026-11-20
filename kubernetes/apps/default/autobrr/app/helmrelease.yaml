@@ -19,7 +19,7 @@ spec:
           autobrr:
             image:
               repository: ghcr.io/autobrr/autobrr
-              tag: v1.91.0@sha256:c8ad1fe513d852bf00a0c751530ba205ba74196d68b0ece41a4e7d2138a80185
+              tag: v1.91.1@sha256:8c63fa0ba732eb33b2e531a84b3de3c99ae88e87c49bf077a6194020667ef92f
             env:
               AUTOBRR__CHECK_FOR_UPDATES: "false"
               AUTOBRR__DATABASE_DSN: "postgres://autobrr@pg18vc-rw.database.svc.cluster.local:5432/autobrr?sslmode=verify-full&sslrootcert=/etc/postgresql/ca/ca.crt&sslcert=/etc/postgresql/client/tls.crt&sslkey=/etc/postgresql/client/tls.key"
