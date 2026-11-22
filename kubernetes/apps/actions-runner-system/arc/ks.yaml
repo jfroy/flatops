@@ -16,8 +16,8 @@ spec:
   path: ./kubernetes/apps/actions-runner-system/arc/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: actions-runner-system-arc
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -34,8 +34,8 @@ spec:
   path: ./kubernetes/apps/actions-runner-system/arc/runners
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: actions-runner-system-arc
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

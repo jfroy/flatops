@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/storage/backups/ks
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: storage-backups
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

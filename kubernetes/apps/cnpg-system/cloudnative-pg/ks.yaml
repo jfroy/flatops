@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/cnpg-system/cloudnative-pg/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: cnpg-system-cloudnative-pg
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

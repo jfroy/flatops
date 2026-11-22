@@ -1,0 +1,38 @@
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.extensions.fluxcd.io/artifactgenerator_v1beta1.json
+apiVersion: source.extensions.fluxcd.io/v1beta1
+kind: ArtifactGenerator
+metadata:
+  name: apps
+spec:
+  sources:
+    - alias: repo
+      kind: GitRepository
+      name: flux-system
+  pathPattern: "@repo/kubernetes/apps/{namespace}/{app}"
+  artifacts:
+    - name: "{namespace}-{app}"
+      originRevision: "@repo"
+      copy:
+        - from: "@repo/kubernetes/apps/{namespace}/{app}/**"
+          to: "@artifact/kubernetes/apps/{namespace}/{app}/"
+        - from: "@repo/kubernetes/components/**"
+          to: "@artifact/kubernetes/components/"
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/source.extensions.fluxcd.io/artifactgenerator_v1beta1.json
+apiVersion: source.extensions.fluxcd.io/v1beta1
+kind: ArtifactGenerator
+metadata:
+  name: cnpg-tenants
+spec:
+  sources:
+    - alias: repo
+      kind: GitRepository
+      name: flux-system
+  pathPattern: "@repo/kubernetes/apps/database/cnpg/tenants/{tenant}"
+  artifacts:
+    - name: "database-cnpg-{tenant}"
+      originRevision: "@repo"
+      copy:
+        - from: "@repo/kubernetes/apps/database/cnpg/tenants/{tenant}/**"
+          to: "@artifact/kubernetes/apps/database/cnpg/tenants/{tenant}/"

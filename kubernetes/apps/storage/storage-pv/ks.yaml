@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/storage/storage-pv/ks
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: storage-storage-pv
     namespace: flux-system
   wait: true
   interval: 1h

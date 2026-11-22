@@ -8,8 +8,8 @@ spec:
   path: kubernetes/apps/observability/speedtest-exporter/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-speedtest-exporter
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

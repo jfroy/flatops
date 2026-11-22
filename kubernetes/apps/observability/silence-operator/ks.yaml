@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/observability/silence-operator/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-silence-operator
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -31,8 +31,8 @@ spec:
   path: ./kubernetes/apps/observability/silence-operator/silences
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-silence-operator
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

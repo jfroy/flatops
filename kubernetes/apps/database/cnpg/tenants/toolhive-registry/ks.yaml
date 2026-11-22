@@ -37,8 +37,8 @@ spec:
   path: ./kubernetes/apps/database/cnpg/tenants/toolhive-registry/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: database-cnpg-toolhive-registry
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

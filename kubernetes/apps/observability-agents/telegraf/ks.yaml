@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/observability-agents/telegraf/powerwall
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-agents-telegraf
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -24,8 +24,8 @@ spec:
   path: ./kubernetes/apps/observability-agents/telegraf/zfs
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-agents-telegraf
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

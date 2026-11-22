@@ -11,8 +11,8 @@ spec:
   path: ./kubernetes/apps/plane/plane/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: plane-plane
     namespace: flux-system
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2

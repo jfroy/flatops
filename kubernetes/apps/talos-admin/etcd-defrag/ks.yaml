@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/talos-admin/etcd-defrag/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: talos-admin-etcd-defrag
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

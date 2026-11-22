@@ -12,6 +12,7 @@ spec:
       namespace: flux-system
   path: ./kubernetes/apps/flux-system/operator/ks
   prune: true
+  # Reads Git, not an ExternalArtifact, so a broken source-watcher can still be fixed from Git
   sourceRef:
     kind: GitRepository
     name: flux-system

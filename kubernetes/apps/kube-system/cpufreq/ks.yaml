@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/kube-system/cpufreq/kantai1
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-cpufreq
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

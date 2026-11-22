@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/openebs-system/openebs-localpv/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: openebs-system-openebs-localpv
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

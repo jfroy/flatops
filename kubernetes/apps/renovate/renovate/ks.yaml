@@ -16,8 +16,8 @@ spec:
   path: ./kubernetes/apps/renovate/renovate/operator
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: renovate-renovate
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -34,8 +34,8 @@ spec:
   path: ./kubernetes/apps/renovate/renovate/jobs
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: renovate-renovate
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

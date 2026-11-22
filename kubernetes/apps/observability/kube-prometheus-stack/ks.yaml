@@ -12,8 +12,8 @@ spec:
   path: ./kubernetes/apps/observability/kube-prometheus-stack/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-kube-prometheus-stack
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

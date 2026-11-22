@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/default/photon/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: default-photon
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

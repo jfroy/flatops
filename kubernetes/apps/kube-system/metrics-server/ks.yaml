@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/kube-system/metrics-server/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-metrics-server
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
