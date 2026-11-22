@@ -44,5 +44,8 @@ spec:
           name: cluster-ca
           kind: ClusterIssuer
           group: cert-manager.io
+        cert:
+          # must renew well inside cluster-ca's 1y lifetime; the chart's ~5y default outlives the CA
+          duration: 2160h
     serviceMonitor:
       enabled: true
