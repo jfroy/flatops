@@ -6,8 +6,6 @@ metadata:
   name: &app ceph-csi-drivers
 spec:
   dependsOn:
-    - name: gateway-crd
-      namespace: kube-system
     - name: rook-ceph-operator
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
