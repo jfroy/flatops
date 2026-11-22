@@ -36,6 +36,8 @@ spec:
       name: kopiur-r2
       namespace: kopiur-system
       key: KOPIA_PASSWORD
+  execution:
+    mode: Central
   maintenance:
     mover:
       cache:
