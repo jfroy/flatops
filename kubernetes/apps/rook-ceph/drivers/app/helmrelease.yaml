@@ -25,7 +25,7 @@ spec:
         name: rook-ceph.rbd.csi.ceph.com
         snapshotPolicy: volumeSnapshot
         controllerPlugin:
-          # With this gate on, the provisioner never becomes ready without the ReferenceGrant CRD and rbac.yaml.
+          # With this gate on, the provisioner never becomes ready without the ReferenceGrant CRD (from envoy-gateway) and rbac.yaml.
           containerExtraArgs:
             csi-provisioner:
               - --feature-gates=CrossNamespaceVolumeDataSource=true
