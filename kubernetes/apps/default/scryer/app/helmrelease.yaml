@@ -19,7 +19,7 @@ spec:
           scryer:
             image:
               repository: ghcr.io/scryer-media/scryer
-              tag: 0.22.5@sha256:4b4f8dfd2c4250a6d968bb14d631930e4c5d101a37498bece22ab4b12fcaad15
+              tag: 0.23.0@sha256:f91c092cddbffeb66213e91bdde8f7598c1a58e1384a0bdb5f53baefebb66773
             env:
               SCRYER_ADMIN_PASSWORD:
                 valueFrom:
