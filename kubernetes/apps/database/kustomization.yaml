@@ -38,6 +38,5 @@ resources:
   - ./namespace.yaml
 components:
   - ../../components/common
-  - ../../components/kopiur/secret
 transformers:
   - ./transformers

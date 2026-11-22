@@ -100,9 +100,9 @@ App-template apps follow the same four-file layout:
 
 **`ks.yaml` key points:**
 
-- Use `components/kopiur` to wire up daily Kopia backups to Cloudflare R2.
+- Use `components/kopiur/backup` to wire up Kopia backups to Cloudflare R2.
   - Set `postBuild.substitute` with `APP: *app` at minimum when using this component.
-  - Override `KOPIUR_UID` / `KOPIUR_GID` when the app's PVC is owned by something other than 1000, or the mover cannot read it.
+  - Override `KOPIUR_UID` / `KOPIUR_GID` when the app's PVC is owned by something other than 1000, or the mover cannot read it. The uid must not be 0: the `kopiur-r2` `ClusterRepository` runs in `execution.mode: Central`, so backup and populator-restore movers run in `kopiur-system` (PSA `restricted`), not in the app's namespace. The app's namespace needs no repository secret.
 - Postgres apps add `dependsOn: {name: pg18vc-<app>, namespace: database}` — the app's tenant `Kustomization` in `database`, which only turns Ready once the role, the database and the pushed client certificate are.
 
 **`helmrelease.yaml` key points:**
@@ -131,7 +131,7 @@ Both default to unset. Add either one only when there is a specific reason to, a
 
 **Registering a new `Kustomization`:** Add `- ./<appname>/ks.yaml` to `kubernetes/apps/<namespace>/kustomization.yaml` in alphabetical order.
 
-**Adding a namespace:** create `kubernetes/apps/<namespace>/` with `namespace.yaml` (name `.invalid` — the global `NamespaceTransformer` rewrites it), `kustomization.yaml` listing the namespace and each app's `ks.yaml`, and `transformers/kustomization.yaml` setting `namespace: <namespace>`. Add `components/common` always, and `components/kopiur/secret` when any app in it takes backups. There is no top-level `kubernetes/apps/kustomization.yaml`; Flux discovers namespace directories on its own. Infrastructure gets its own namespace rather than being pooled into `default`.
+**Adding a namespace:** create `kubernetes/apps/<namespace>/` with `namespace.yaml` (name `.invalid` — the global `NamespaceTransformer` rewrites it), `kustomization.yaml` listing the namespace and each app's `ks.yaml`, and `transformers/kustomization.yaml` setting `namespace: <namespace>`. Add `components/common` always. There is no top-level `kubernetes/apps/kustomization.yaml`; Flux discovers namespace directories on its own. Infrastructure gets its own namespace rather than being pooled into `default`.
 
 ## Comments in Manifests
 

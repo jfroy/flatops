@@ -9,6 +9,5 @@ components:
   - ../../components/common
   - ../../components/litellm-key-push
   - ../../components/memini-key-push
-  - ../../components/kopiur/secret
 transformers:
   - ./transformers
