@@ -19,7 +19,7 @@ spec:
           tofa:
             image:
               repository: ghcr.io/tofatv/tofa
-              tag: 0.13.3@sha256:0d1c6192dea84da61abd56e84ef60bd7948b517e3622ab8a88ff9345bf1cff32
+              tag: 0.14.0@sha256:b85c7a8658168e1041ac548b23616e39563dc47a4d95636b151ffcf6baadbbe2
             env:
               ADVERTISED_LAN_IP:
                 valueFrom:
