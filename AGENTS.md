@@ -18,16 +18,16 @@ This is **kantai**, a Kubernetes cluster running Talos Linux, with a mix of bare
 
 ## Flux Sources
 
-Only `flux-system` (the FluxInstance sync), `cluster-vap`, `cluster-apps`, `flux-instance` and `flux-operator` read the `flux-system` `GitRepository`. The last two stay on Git so a broken `source-watcher` can still be fixed by a commit.
-
-Every other `Kustomization` reads an `ExternalArtifact` that `source-watcher` builds from that `GitRepository`. The `ArtifactGenerators` in `kubernetes/apps/flux-system/artifactgenerator.yaml` publish one artifact per directory, all in `flux-system`:
+Only `flux-system` (the FluxInstance sync), `cluster-vap` and `cluster-apps` read the `flux-system` `GitRepository`. Every other `Kustomization` reads an `ExternalArtifact` that `source-watcher` builds from that `GitRepository`. The `ArtifactGenerators` in `kubernetes/apps/flux-system/artifactgenerator.yaml` publish one artifact per directory, all in `flux-system`:
 
 - `apps` matches `kubernetes/apps/{namespace}/{app}` and names the artifact `{namespace}-{app}`. It copies the app directory plus all of `kubernetes/components` to their repository paths, so `spec.path` and the `../../../../components/...` references are unchanged. The namespace prefix is required: directory names such as `operator` and every namespace's `transformers` repeat across namespaces, and the artifact names share one namespace.
 - `cnpg-tenants` matches `kubernetes/apps/database/cnpg/tenants/{tenant}` and names the artifact `database-cnpg-{tenant}`, so a change to one tenant reconciles only that tenant.
 
 An artifact's revision is a digest of its content, so a commit reconciles only the `Kustomizations` whose directory or shared components changed. Anything an app reads from outside its own directory and `kubernetes/components` is missing from its artifact. Konflate renders `ExternalArtifacts` only in the generator's namespace, which is why `artifacts[].namespace` is unused.
 
-Flux makes a dependent wait for the new revision of its dependency only when both read the same source. With one artifact per app, a commit that changes a CRD in one app and uses it in another can fail the dependent's dry run once. `retryInterval: 2m` clears it on the next retry.
+Flux makes a dependent wait for the new revision of its dependency only when both read the same source. With one artifact per app, a commit that changes a CRD in one app and uses it in another can fail the dependent's dry run once. `retryInterval: 2m` clears it on the next retry. Kustomizations that must apply in order within one commit belong in the same app directory, so they share an artifact: `flux-instance` lives in `flux-system/operator/instance` so that a grouped Renovate bump applies `flux-operator` before it.
+
+If `source-watcher` itself breaks, no artifact-backed Kustomization picks up a fix, including the ones that would repair it. `cluster-apps` still applies every `ks.yaml` from Git, so a commit that points `flux-operator` and `flux-instance` back at the `flux-system` `GitRepository` takes effect without `source-watcher`.
 
 ## Flux MCP
 
