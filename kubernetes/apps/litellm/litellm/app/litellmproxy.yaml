@@ -6,7 +6,7 @@ metadata:
   name: litellm
 spec:
   # renovate: datasource=docker depName=ghcr.io/berriai/litellm versioning=loose
-  image: ghcr.io/berriai/litellm:1.112.0-dev.2@sha256:a6306e48c148a33b564a0837a987a5d7f37b976b1562b16b8f4accd3b08db26a
+  image: ghcr.io/berriai/litellm:1.112.0-rc.1@sha256:308236548c78ca58eaa6e82a473f710e5cee279fe9c92ac5a5038cef305a2f3b
   replicas: 1
   applyMode: api
   podAnnotations:
