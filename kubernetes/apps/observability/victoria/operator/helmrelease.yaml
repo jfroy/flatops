@@ -27,7 +27,6 @@ spec:
     strategy:
       name: RemediateOnFailure
     remediation:
-      remediateLastFailure: true
       retries: 2
   values:
     crds:
