@@ -19,7 +19,7 @@ spec:
           weaver:
             image:
               repository: ghcr.io/scryer-media/weaver
-              tag: 0.16.16@sha256:31fcd8cf35bee9fe851d7b4d214e81742a961f67c8a94153363f0ac7a70f0b18
+              tag: 0.17.5@sha256:79c958fa3e897bfd1bf08e7b7fe3380313614afd1b9574c797fc5d30b50da580
             env:
               TZ: America/Los_Angeles
               WEAVER_BOOTSTRAP_LOGIN_PASSWORD:
