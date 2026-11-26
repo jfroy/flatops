@@ -19,6 +19,10 @@ spec:
         reloader.stakater.com/auto: "true"
     route:
       enabled: true
+      annotations:
+        gatus.home-operations.com/endpoint: |-
+          path: /health
+          conditions: ["[STATUS] == 200", "[BODY].scheduler.running == true", "[BODY].executor.running == true"]
       hostnames:
         - renovate.kantai.xyz
       parentRefs:
