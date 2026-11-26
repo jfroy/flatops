@@ -12,9 +12,29 @@ spec:
       namespace: flux-system
   path: ./kubernetes/apps/flux-system/operator/ks
   prune: true
+  # If source-watcher is down, point this and flux-instance at the flux-system GitRepository to apply a fix from Git
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: flux-system-operator
+    namespace: flux-system
+  interval: 1h
+  retryInterval: 2m
+  timeout: 5m
+---
+# yaml-language-server: $schema=https://crd.kantai.xyz/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-instance
+spec:
+  dependsOn:
+    - name: flux-operator
+      namespace: flux-system
+  path: ./kubernetes/apps/flux-system/operator/instance
+  prune: true
+  sourceRef:
+    kind: ExternalArtifact
+    name: flux-system-operator
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

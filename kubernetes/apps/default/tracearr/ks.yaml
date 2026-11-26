@@ -11,8 +11,8 @@ spec:
   path: ./kubernetes/apps/default/tracearr/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: default-tracearr
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

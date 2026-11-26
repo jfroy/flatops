@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/nvidia-system/gpu-operator/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: nvidia-system-gpu-operator
     namespace: flux-system
   wait: true
   interval: 1h

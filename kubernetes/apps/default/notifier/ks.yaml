@@ -9,8 +9,8 @@ spec:
   path: ./kubernetes/apps/default/notifier/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: default-notifier
     namespace: flux-system
   targetNamespace: default
   wait: false

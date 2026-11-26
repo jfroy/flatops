@@ -10,8 +10,8 @@ spec:
   path: ./kubernetes/apps/observability/scrutiny/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-scrutiny
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

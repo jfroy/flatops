@@ -9,8 +9,8 @@ spec:
   path: ./kubernetes/apps/observability/prometheus-operator-crds/app
   prune: false  # don't GC CRDs
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-prometheus-operator-crds
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

@@ -16,8 +16,8 @@ spec:
   path: ./kubernetes/apps/kube-system/multus/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-multus
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -34,8 +34,8 @@ spec:
   path: ./kubernetes/apps/kube-system/multus/networks
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-multus
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

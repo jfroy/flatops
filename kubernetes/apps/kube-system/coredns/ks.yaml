@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/kube-system/coredns/app
   prune: false  # don't GC coredns to avoid unwanted DR
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-coredns
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

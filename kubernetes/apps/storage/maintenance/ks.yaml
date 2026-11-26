@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/storage/maintenance/kantai1
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: storage-maintenance
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/kube-system/gateway-crd/experimental
   prune: false  # don't GC CRDs
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-gateway-crd
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

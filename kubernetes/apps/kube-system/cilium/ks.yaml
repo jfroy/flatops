@@ -14,8 +14,8 @@ spec:
   path: ./kubernetes/apps/kube-system/cilium/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-cilium
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -31,8 +31,8 @@ spec:
   path: ./kubernetes/apps/kube-system/cilium/config
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: kube-system-cilium
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

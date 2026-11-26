@@ -25,8 +25,8 @@ spec:
   path: ./kubernetes/apps/database/cnpg/pg18vc
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: database-cnpg
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -48,8 +48,8 @@ spec:
   path: ./kubernetes/apps/database/cnpg/tenants/common
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: database-cnpg
     namespace: flux-system
   wait: true
   interval: 1h

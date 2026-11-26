@@ -11,8 +11,8 @@ spec:
   path: ./kubernetes/apps/observability-agents/scrutiny-collector/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-agents-scrutiny-collector
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -30,8 +30,8 @@ spec:
   path: ./kubernetes/apps/observability-agents/scrutiny-collector/zfs
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-agents-scrutiny-collector
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

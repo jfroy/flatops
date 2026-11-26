@@ -11,8 +11,8 @@ spec:
   path: ./kubernetes/apps/default/esphome/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: default-esphome
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

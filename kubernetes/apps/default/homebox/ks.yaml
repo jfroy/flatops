@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/default/homebox/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: default-homebox
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

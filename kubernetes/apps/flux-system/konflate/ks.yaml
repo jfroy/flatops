@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/flux-system/konflate/ks
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: flux-system-konflate
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

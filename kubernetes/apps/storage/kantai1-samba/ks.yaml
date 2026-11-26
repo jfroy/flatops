@@ -10,8 +10,8 @@ spec:
   path: ./kubernetes/apps/storage/kantai1-samba/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: storage-kantai1-samba
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

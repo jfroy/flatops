@@ -8,8 +8,8 @@ spec:
   path: ./kubernetes/apps/observability/grafana/dashboards
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-grafana
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -28,8 +28,8 @@ spec:
   path: ./kubernetes/apps/observability/grafana/instance
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-grafana
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -48,8 +48,8 @@ spec:
   path: ./kubernetes/apps/observability/grafana/operator
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-grafana
     namespace: flux-system
   wait: true
   interval: 1h

@@ -9,8 +9,8 @@ spec:
   prune: true
   wait: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: agent-sandbox-system-agent-sandbox
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

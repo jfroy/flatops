@@ -7,8 +7,8 @@ spec:
   path: ./kubernetes/apps/observability/gatus-sidecar/app
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: observability-gatus-sidecar
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

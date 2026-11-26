@@ -7,8 +7,8 @@ spec:
   path: ./kubernetes/apps/toolhive-system/toolhive/crds
   prune: false
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: toolhive-system-toolhive
     namespace: flux-system
   wait: true
   interval: 1h
@@ -30,8 +30,8 @@ spec:
   path: ./kubernetes/apps/toolhive-system/toolhive/operator
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: toolhive-system-toolhive
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
@@ -53,8 +53,8 @@ spec:
   path: ./kubernetes/apps/toolhive-system/toolhive/registry
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: toolhive-system-toolhive
     namespace: flux-system
   interval: 1h
   retryInterval: 2m

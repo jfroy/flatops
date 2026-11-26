@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/flux-system/ocharted/ks
   prune: true
   sourceRef:
-    kind: GitRepository
-    name: flux-system
+    kind: ExternalArtifact
+    name: flux-system-ocharted
     namespace: flux-system
   interval: 1h
   retryInterval: 2m
