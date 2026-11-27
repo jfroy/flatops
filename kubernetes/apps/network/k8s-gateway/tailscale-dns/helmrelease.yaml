@@ -19,3 +19,23 @@ spec:
       port: 53
       type: LoadBalancer
     watchedResources: ["GRPCRoute", "HTTPRoute"]
+    zoneFiles:
+      - filename: etincelle.cloud.db
+        domains: etincelle.cloud
+        fallthrough:
+          enabled: true
+        contents: |
+          $ORIGIN etincelle.cloud.
+          $TTL 60
+          @         IN SOA  ns hostmaster 1 7200 3600 1209600 60
+          @         IN NS   ns
+          bao       IN A    100.65.186.72
+          bao       IN AAAA fd7a:115c:a1e0::913a:ba4a
+          ds        IN A    100.65.186.72
+          ds        IN AAAA fd7a:115c:a1e0::913a:ba4a
+          registry  IN A    100.65.186.72
+          registry  IN AAAA fd7a:115c:a1e0::913a:ba4a
+          static    IN A    100.65.186.72
+          static    IN AAAA fd7a:115c:a1e0::913a:ba4a
+          tif       IN A    100.65.186.72
+          tif       IN AAAA fd7a:115c:a1e0::913a:ba4a
