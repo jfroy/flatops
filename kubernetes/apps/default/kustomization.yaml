@@ -19,6 +19,7 @@ resources:
   - ./etampe/ks.yaml
   - ./gluetun/ks.yaml
   - ./gpu-claim-templates/ks.yaml
+  - ./holyarrs/ks.yaml
   - ./homebox/ks.yaml
   - ./houndarr/ks.yaml
   - ./immich/ks.yaml
